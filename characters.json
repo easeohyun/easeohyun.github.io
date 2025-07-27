@@ -397,9 +397,9 @@
   },
   {
     "id": 999999, "name": "빨강빨강이", "nickname": "가상의 우마무스메", "color": "#f7570b",
-    "SurfaceAptitude": { "Turf": "A", "Dirt": "A" },
-    "DistanceAptitude": { "Short": "A", "Mile": "A", "Medium": "A", "Long": "A" }, 
-    "StrategyAptitude": { "Front": "A", "Pace": "A", "Late": "A", "End": "A" },
+    "SurfaceAptitude": { "Turf": "S", "Dirt": "A" },
+    "DistanceAptitude": { "Short": "A", "Mile": "A", "Medium": "A", "Long": "S" }, 
+    "StrategyAptitude": { "Front": "S", "Pace": "A", "Late": "A", "End": "A" },
     "StatBonuses": { "Speed": 10, "Stamina": 10, "Power": 10, "Guts": 0, "Wit": 0 },
     "skills": { "rainbow": ["아주 강한 테스트 스킬"], "pink": ["엄청난 분홍색 테스트 스킬"], "yellow": ["빛나는 노란 테스트 스킬"], "white": ["평범하고 하얀 테스트 스킬"] },
     "tags": ["예시", "테스트"]
