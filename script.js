@@ -36,14 +36,14 @@
     if (isTermAllChosung) {
       const getChosung = (char) => {
         const code = char.charCodeAt(0) - 44032;
-        return (code >= 0 && code <= 11171) ? CHO[Math.floor(code / 588)] : char; 
+        return (code >= 0 && code <= 11171) ? CHO[Math.floor(code / 588)] : char;
       };
       const targetChosung = [...sanitizedTarget].map(getChosung).join('');
       if (targetChosung.includes(sanitizedTerm)) return true;
     }
     return false;
   }
-  
+
   // 등급에 맞는 span 태그 생성
   function getGradeSpan(grade) {
     if (!grade) return '';
@@ -61,10 +61,10 @@
       resultSummary.textContent = '';
       return;
     }
-    
+
     characterList.style.display = 'grid';
     noResultsContainer.style.display = 'none';
-    
+
     let summaryText = '';
     if (!isFiltered) {
       summaryText = `트레센 학원에 어서오세요, ${count}명의 우마무스메를 만날 수 있답니다!`;
@@ -83,7 +83,7 @@
       StrategyAptitude: { name: '각질 적성', map: { Front: '도주', Pace: '선행', Late: '선입', End: '추입' } },
       StatBonuses: { name: '성장률', map: { Speed: '스피드', Stamina: '스태미나', Power: '파워', Guts: '근성', Wit: '지능' } }
     };
-    
+
     const fragment = document.createDocumentFragment();
 
     charactersToRender.forEach(char => {
@@ -105,22 +105,22 @@
           statsHTML += `<li class="stat-item"><span class="label">${displayName}</span><span class="value">${displayValue}</span></li>`;
         }
       }
-      
+
       let skillHTML = '';
       const skillData = char.skills;
       if (skillData.rainbow) skillData.rainbow.forEach(skill => skillHTML += `<div class="skill-slot skill-rainbow">${skill || ''}</div>`);
       if (skillData.pink)    skillData.pink.forEach(skill => skillHTML += `<div class="skill-slot skill-pink">${skill || ''}</div>`);
       if (skillData.yellow)  skillData.yellow.forEach(skill => skillHTML += `<div class="skill-slot skill-yellow">${skill || ''}</div>`);
       if (skillData.white)   skillData.white.forEach(skill => skillHTML += `<div class="skill-slot skill-white">${skill || ''}</div>`);
-      
+
       const cardDiv = document.createElement('div');
       cardDiv.className = 'character-card';
       cardDiv.dataset.id = char.id;
-      
+
       if (char.color) {
         cardDiv.style.setProperty('--character-color', char.color);
       }
-      
+
       cardDiv.innerHTML = `
         <div class="card-main-info">
             <div class="card-identity">
@@ -135,64 +135,89 @@
           <summary class="skill-summary">스킬 정보 </summary>
           <div class="skill-container">${skillHTML}</div>
         </details>`;
-      
+
       fragment.appendChild(cardDiv);
     });
-    
+
     characterList.appendChild(fragment);
   }
 
-  // 필터, 검색, 정렬을 적용하여 화면을 업데이트하는 메인 함수
+  // 필터, 검색, 정렬을 적용하여 화면을 업데이트하는 메인 함수 (최적화 버전)
   function updateDisplay() {
     const formData = new FormData(filterForm);
-    const activeCheckboxes = Array.from(filterForm.elements).filter(el => el.type === 'checkbox' && el.checked);
-    
-    let filteredCharacters = allCharacters.filter(character => {
-      if (activeCheckboxes.length === 0) return true;
-      return activeCheckboxes.every(checkbox => {
+    const searchInputValue = searchBox.value;
+
+    // 1. 활성화된 필터 조건들을 미리 객체로 가공
+    const activeFilters = Array.from(filterForm.elements)
+      .filter(el => el.type === 'checkbox' && el.checked)
+      .map(checkbox => {
         const key = checkbox.name;
-        const sections = { SurfaceAptitude: 'grade', DistanceAptitude: 'grade', StrategyAptitude: 'grade', StatBonuses: 'value' };
+        const isStatBonus = !!filterForm.querySelector(`input[name="${key}-value"]`);
+        if (isStatBonus) {
+          return { key, type: 'value', value: parseInt(formData.get(`${key}-value`), 10) };
+        } else {
+          return { key, type: 'grade', value: gradeMap[formData.get(`${key}-grade`)] };
+        }
+      });
+
+    // 2. 검색어 가공 (포함/제외)
+    const rawSearchTerms = searchInputValue.split(',').map(term => term.trim()).filter(term => term);
+    const inclusionTerms = rawSearchTerms.filter(term => !term.startsWith('-'));
+    const exclusionTerms = rawSearchTerms.filter(term => term.startsWith('-')).map(term => term.substring(1)).filter(Boolean);
+
+    const isFiltered = activeFilters.length > 0 || rawSearchTerms.length > 0;
+
+    // 3. 필터링 및 검색 실행
+    let filteredCharacters = allCharacters.filter(character => {
+      // 체크박스 필터 조건 검사
+      const passesFilters = activeFilters.every(filter => {
+        const sections = {
+            SurfaceAptitude: 'grade', DistanceAptitude: 'grade',
+            StrategyAptitude: 'grade', StatBonuses: 'value'
+        };
         for (const sectionName in sections) {
-          if (character[sectionName] && character[sectionName][key] !== undefined) {
-            const type = sections[sectionName];
-            if (type === 'value') {
-              return character[sectionName][key] >= parseInt(formData.get(`${key}-value`), 10);
-            } else {
-              return gradeMap[character[sectionName][key]] >= gradeMap[formData.get(`${key}-grade`)];
+          if (character[sectionName] && character[sectionName][filter.key] !== undefined) {
+            if (filter.type === 'value') {
+              return character[sectionName][filter.key] >= filter.value;
+            } else { // type === 'grade'
+              return gradeMap[character[sectionName][filter.key]] >= filter.value;
             }
           }
         }
         return false;
       });
+
+      if (!passesFilters) return false;
+
+      // 검색어 조건 검사 (필요한 경우에만 searchTargets 생성)
+      if (rawSearchTerms.length > 0) {
+        const allSkills = Object.values(character.skills).flat().filter(Boolean);
+        const searchTargets = [String(character.id), character.name, character.nickname, ...allSkills, ...character.tags];
+
+        const passesInclusion = inclusionTerms.every(term =>
+          searchTargets.some(target => smartIncludes(target, term, 'smart'))
+        );
+        if (!passesInclusion) return false;
+
+        const passesExclusion = !exclusionTerms.some(term =>
+          searchTargets.some(target => smartIncludes(target, term, 'smart'))
+        );
+        if (!passesExclusion) return false;
+      }
+
+      return true; // 모든 조건을 통과한 경우
     });
 
-    const rawSearchTerms = searchBox.value.split(',').map(term => term.trim()).filter(term => term);
-    const inclusionTerms = rawSearchTerms.filter(term => !term.startsWith('-'));
-    const exclusionTerms = rawSearchTerms.filter(term => term.startsWith('-')).map(term => term.substring(1)).filter(Boolean);
 
-    if (inclusionTerms.length > 0) {
-      filteredCharacters = filteredCharacters.filter(char => {
-        const allSkills = Object.values(char.skills).flat().filter(Boolean);
-        const searchTargets = [String(char.id), char.name, char.nickname, ...allSkills, ...char.tags];
-        return inclusionTerms.every(term => searchTargets.some(target => smartIncludes(target, term, 'smart')));
-      });
-    }
-
-    if (exclusionTerms.length > 0) {
-      filteredCharacters = filteredCharacters.filter(char => {
-        const allSkills = Object.values(char.skills).flat().filter(Boolean);
-        const searchTargets = [String(char.id), char.name, char.nickname, ...allSkills, ...char.tags];
-        return !exclusionTerms.some(term => searchTargets.some(target => smartIncludes(target, term, 'smart')));
-      });
-    }
-
+    // 4. 정렬
     const sortBy = sortOrder.value;
     if (sortBy === 'name-asc') filteredCharacters.sort((a, b) => a.name.localeCompare(b.name, 'ko') || a.id - b.id);
     else if (sortBy === 'name-desc') filteredCharacters.sort((a, b) => b.name.localeCompare(a.name, 'ko') || a.id - b.id);
     else if (sortBy === 'id-asc') filteredCharacters.sort((a, b) => a.id - b.id);
     else if (sortBy === 'id-desc') filteredCharacters.sort((a, b) => b.id - a.id);
-    
-    renderCharacters(filteredCharacters, activeCheckboxes.length > 0);
+
+    // 5. 렌더링
+    renderCharacters(filteredCharacters, isFiltered);
   }
 
   // 필터 초기화
@@ -201,14 +226,17 @@
     searchBox.value = '';
     updateDisplay();
   }
-  
+
   // 앱 초기화 함수
   async function initializeApp() {
     try {
       const response = await fetch('characters.json');
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
       allCharacters = await response.json();
-      
+
+      // ZZZ, 999999 ID를 가진 테스트/예시용 데이터 제외
+      allCharacters = allCharacters.filter(char => char.id !== 'ZZZ' && char.id !== 999999);
+
       filterForm.addEventListener('input', updateDisplay);
       searchBox.addEventListener('input', updateDisplay);
       sortOrder.addEventListener('change', updateDisplay);
@@ -216,7 +244,38 @@
       noResultsResetButton.addEventListener('click', resetAllFilters);
       scrollTopButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
       scrollBottomButton.addEventListener('click', () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }));
-      
+
+      // --- 단축키 기능 추가 ---
+      document.addEventListener('keydown', (event) => {
+        const activeElement = document.activeElement;
+        // 검색창이나 다른 입력 필드에 포커스가 있을 때는 단축키를 제한적으로 운영
+        if (activeElement && (activeElement.tagName === 'INPUT' || activeElement.tagName === 'SELECT')) {
+            // ESC 키는 입력 중에도 필터 초기화를 위해 항상 동작
+            if (event.key === 'Escape') {
+                resetAllFilters();
+            }
+            return; // 그 외의 키는 기본 동작을 위해 여기서 중단
+        }
+
+        // 입력 필드 외의 공간에서 단축키 동작
+        switch (event.key) {
+            case '/':
+                event.preventDefault(); // '/' 문자가 검색창에 입력되는 현상 방지
+                searchBox.focus();
+                break;
+            case 'Escape':
+                resetAllFilters();
+                break;
+            case '.':
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                break;
+            case ',':
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                break;
+        }
+      });
+      // --- 단축키 기능 끝 ---
+
       updateDisplay();
 
     } catch (error) {

@@ -5,31 +5,31 @@
 /* ================================== */
 body {
   font-family: 'Noto Sans KR', 'Roboto', sans-serif;
-  line-height: 1.5; 
+  line-height: 1.5;
   margin: 0;
   padding: 20px;
   background-color: #f4f4f4;
   color: #333;
 }
 
-main { 
+main {
   max-width: 1600px;
-  margin: auto; 
-  background-color: #fff; 
-  padding: 20px; 
-  border-radius: 8px; 
-  box-shadow: 0 0 10px rgba(0,0,0,0.1); 
+  margin: auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-header { 
-  text-align: center; 
-  border-bottom: 1px solid #ddd; 
-  margin-bottom: 20px; 
-  padding-bottom: 10px; 
+header {
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
 }
 
-h1 { 
-  color: #2c3e50; 
+h1 {
+  color: #2c3e50;
 }
 
 header h1 a {
@@ -44,16 +44,16 @@ header h1 a {
   margin-bottom: 20px;
 }
 
-fieldset { 
-  border: 1px solid #ddd; 
-  border-radius: 4px; 
-  margin-bottom: 15px; 
-  padding: 15px; 
+fieldset {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  padding: 15px;
 }
 
-legend { 
-  font-weight: bold; 
-  color: #3498db; 
+legend {
+  font-weight: bold;
+  color: #3498db;
   padding: 0 10px;
   font-size: 1.1em;
 }
@@ -112,15 +112,15 @@ input[type="number"] { width: 50px; padding: 5px; border: 1px solid #ccc; border
   padding-top: 10px;
 }
 
-#result-summary { 
-  text-align: center; 
-  font-size: 1.2em; 
-  font-weight: bold; 
-  margin-bottom: 20px; 
-  color: #2980b9; 
+#result-summary {
+  text-align: center;
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #2980b9;
 }
 
-#character-list { 
+#character-list {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -145,10 +145,10 @@ input[type="number"] { width: 50px; padding: 5px; border: 1px solid #ccc; border
   border-radius: 12px;
   box-shadow: 0 4px 6px rgba(0,0,0,0.07);
   width: 95%;
-  max-width: 400px; 
+  max-width: 400px;
   padding: 13px;
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
   gap: 12px;
   transition: all 0.2s ease-in-out, border-color 0.3s ease;
 }
@@ -165,37 +165,37 @@ input[type="number"] { width: 50px; padding: 5px; border: 1px solid #ccc; border
   text-align: center;
   padding: 8px;
   border-radius: 8px;
-  margin: 0; 
+  margin: 0;
   color: #000;
 }
 .title-light-bg { background-color: #d1e7dd; }
 .title-dark-bg { background-color: #e2d8c9; }
 .title-hybrid-bg { background: linear-gradient(137.5deg, #d1e7dd 30%, #e2d8c9 70%); }
 
-.card-nickname { 
-  text-align: center; 
-  font-size: 0.85em; 
-  color: #6c757d; 
-  margin-bottom: 12px; 
-  font-weight: 500; 
+.card-nickname {
+  text-align: center;
+  font-size: 0.85em;
+  color: #6c757d;
+  margin-bottom: 12px;
+  font-weight: 500;
 }
 
-.card-stats { 
-  list-style: none; 
-  padding: 0; 
-  margin: 0; 
+.card-stats {
+  list-style: none;
+  padding: 0;
+  margin: 0;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 6px 16px;
 }
 
 .stat-category {
-  grid-column: 1 / -1; 
-  font-weight: bold; 
-  color: #343a40; 
+  grid-column: 1 / -1;
+  font-weight: bold;
+  color: #343a40;
   text-align: center;
-  margin-top: 8px; 
-  padding-top: 8px; 
+  margin-top: 8px;
+  padding-top: 8px;
   border-top: 1px dashed #ced4da;
 }
 .stat-item { display: flex; justify-content: space-between; font-size: 0.9em; }
@@ -203,58 +203,58 @@ input[type="number"] { width: 50px; padding: 5px; border: 1px solid #ccc; border
 .stat-item .value { font-weight: bold; }
 .value .percent { font-size: 0.8em; margin-left: 2px; color: #6c757d; }
 
-.skill-details { 
-  margin-top: 10px; 
-  padding-top: 10px; 
-  border-top: 1px solid #e0e0e0; 
+.skill-details {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #e0e0e0;
 }
-.skill-summary { 
-  font-weight: bold; 
-  color: #343a40; 
-  cursor: pointer; 
-  list-style: none; 
+.skill-summary {
+  font-weight: bold;
+  color: #343a40;
+  cursor: pointer;
+  list-style: none;
   text-align: center;
-  padding: 5px 0; 
+  padding: 5px 0;
 }
-.skill-summary::after { 
-  content: ' ▼'; 
-  font-size: 0.8em; 
+.skill-summary::after {
+  content: ' ▼';
+  font-size: 0.8em;
   display: inline-block;
   transition: transform 0.2s ease-in-out;
 }
-.skill-details[open] > .skill-summary::after { 
+.skill-details[open] > .skill-summary::after {
   transform: rotate(180deg);
 }
 
-.skill-container { 
-  display: flex; 
-  flex-wrap: wrap; 
-  gap: 6px; 
-  padding-top: 10px; 
-  justify-content: center; 
+.skill-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-top: 10px;
+  justify-content: center;
 }
-.skill-slot { 
+.skill-slot {
   flex-grow: 1;
-  height: 22px; 
-  border-radius: 4px; 
-  border: 1px solid rgba(0, 0, 0, 0.1); 
-  display: flex; 
-  align-items: center; 
-  justify-content: center; 
+  height: 22px;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 0.85em;
   font-weight: bold;
   padding: 0 8px;
-  white-space: nowrap; 
+  white-space: nowrap;
 }
 
 /* 등급 및 스킬 색상 (명시도를 높여 !important 제거) */
-.stat-item .value .grade-g { color: #6c757d; } 
-.stat-item .value .grade-f { color: #0d47a1; } 
-.stat-item .value .grade-e { color: #6a1b9a; } 
-.stat-item .value .grade-d { color: #1565c0; } 
-.stat-item .value .grade-c { color: #558b2f; } 
-.stat-item .value .grade-b { color: #c62828; } 
-.stat-item .value .grade-a { color: #ef6c00; } 
+.stat-item .value .grade-g { color: #6c757d; }
+.stat-item .value .grade-f { color: #0d47a1; }
+.stat-item .value .grade-e { color: #6a1b9a; }
+.stat-item .value .grade-d { color: #1565c0; }
+.stat-item .value .grade-c { color: #558b2f; }
+.stat-item .value .grade-b { color: #c62828; }
+.stat-item .value .grade-a { color: #ef6c00; }
 .stat-item .value .grade-s { color: #ffc02f; }
 
 .skill-rainbow { background: linear-gradient(to right, #ffadad, #ffd6a5, #fdffb6, #caffbf, #9bf6ff, #a0c4ff, #bdb2ff); }
@@ -275,28 +275,28 @@ input[type="number"] { width: 50px; padding: 5px; border: 1px solid #ccc; border
 
   .character-card {
     flex-direction: row;
-    max-width: none; 
-    align-items: stretch; 
+    max-width: none;
+    align-items: stretch;
     gap: 20px;
-    padding: 18px; /* 20px - 2px border */
+    padding: 18px;
   }
   .character-card:hover {
     transform: scale(1.02);
   }
 
   .card-main-info {
-    flex: 1; 
+    flex: 2 1 300px; /* 기본적으로 2의 비율, 300px보다 작아질 수 있음 */
     display: flex;
     flex-direction: column;
     min-width: 0;
   }
-  
+
   .card-stats {
-    flex-grow: 1; 
+    flex-grow: 1;
   }
 
   .skill-details {
-    flex: 0 0 200px; 
+    flex: 1 1 220px; /* 기본적으로 1의 비율, 220px보다 작아질 수 있음 (유연성 확보) */
     margin-top: 0;
     padding: 15px;
     border-top: none;
@@ -304,20 +304,20 @@ input[type="number"] { width: 50px; padding: 5px; border: 1px solid #ccc; border
     display: flex;
     flex-direction: column;
   }
-  
+
   .skill-summary {
     text-align: center;
     padding: 0 0 10px 0;
   }
 
   .skill-details[open] {
-      overflow-y: auto; 
+      overflow-y: auto;
   }
 
   .skill-container {
     flex-direction: column;
     justify-content: flex-start;
-    align-items: stretch; 
+    align-items: stretch;
     flex-grow: 1;
     gap: 8px;
     padding-top: 0;
@@ -334,16 +334,16 @@ input[type="number"] { width: 50px; padding: 5px; border: 1px solid #ccc; border
 .scroll-buttons button { width: 40px; height: 40px; border-radius: 50%; border: 1px solid #ddd; background-color: white; color: #333; font-size: 1.2em; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.15); transition: background-color 0.2s, transform 0.2s; }
 .scroll-buttons button:hover { background-color: #f0f0f0; transform: scale(1.1); }
 
-.footer-legal { 
-  font-size: 0.8em; 
-  color: #808080; 
-  text-align: left; 
-  padding: 10px; 
-  max-width: 1200px; 
+footer { /* footer 태그로 변경 */
+  font-size: 0.8em;
+  color: #808080;
+  text-align: left;
+  padding: 10px;
+  max-width: 1200px;
   margin: 20px auto 0 auto;
   border-top: 1px solid #eee;
   line-height: 1.4;
 }
-.footer-legal p { 
-  margin: 0.5em 0; 
+footer p { /* footer p 태그로 변경 */
+  margin: 0.5em 0;
 }
