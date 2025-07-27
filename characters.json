@@ -392,7 +392,7 @@
     "DistanceAptitude": { "Short": "Z", "Mile": "Z", "Medium": "Z", "Long": "Z" }, 
     "StrategyAptitude": { "Front": "Z", "Pace": "Z", "Late": "Z", "End": "Z" },
     "StatBonuses": { "Speed": 0, "Stamina": 0, "Power": 0, "Guts": 0, "Wit": 0 },
-    "skills": { "rainbow": [], "pink": [], "yellow": [], "white": [] },
+    "skills": { "rainbow": ["ZZZ"], "pink": ["ZZZ"], "yellow": ["ZZZ"], "white": ["ZZZ"] },
     "tags": ["ZZZ"]
   },
   {
