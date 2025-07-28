@@ -275,7 +275,7 @@
   // 앱 초기화 함수
   async function initializeApp() {
     try {
-      const response = await fetch('characters.json');
+      const response = await fetch('./characters.json');
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
       allCharacters = await response.json();
 
