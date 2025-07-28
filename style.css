@@ -151,6 +151,8 @@ input[type="number"] { width: 50px; padding: 5px; border: 1px solid #ccc; border
   flex-direction: column;
   gap: 12px;
   transition: all 0.2s ease-in-out, border-color 0.3s ease;
+  min-width: 0; /* 내용물에 의해 카드가 늘어나는 것을 방지 (문제 1 해결) */
+  overflow: hidden; /* 카드를 벗어나는 내용물을 숨김 (문제 1 해결) */
 }
 
 .character-card:hover {
@@ -284,8 +286,8 @@ input[type="number"] { width: 50px; padding: 5px; border: 1px solid #ccc; border
 @media (min-width: 600px) {
   #character-list {
     display: grid;
-    /* auto-fit과 minmax를 사용하여 깨짐 방지 및 자동 열 변환 */
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    /* auto-fit과 minmax를 사용하여 깨짐 방지 및 자동 열 변환 (문제 2 해결) */
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
     align-items: stretch; /* 카드 높이를 동일하게 맞춤 */
     gap: 20px;
   }
