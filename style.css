@@ -226,16 +226,22 @@ input[type="number"] { width: 50px; padding: 5px; border: 1px solid #ccc; border
   transform: rotate(180deg);
 }
 
+/* 스킬 컨테이너 및 슬롯 스타일 수정 */
 .skill-container {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column; /* 행(row)들을 세로로 쌓음 */
   gap: 6px;
   padding-top: 10px;
-  justify-content: center;
 }
+
+.skill-row {
+  display: flex; /* 슬롯들을 가로로 배열 */
+  gap: 6px;
+  width: 100%;
+}
+
 .skill-slot {
-  flex-grow: 1;
-  height: 22px;
+  min-height: 22px;
   border-radius: 4px;
   border: 1px solid rgba(0, 0, 0, 0.1);
   display: flex;
@@ -243,11 +249,21 @@ input[type="number"] { width: 50px; padding: 5px; border: 1px solid #ccc; border
   justify-content: center;
   font-size: 0.85em;
   font-weight: bold;
-  padding: 0 8px;
+  padding: 2px 8px; /* 상하 패딩 추가 */
   white-space: nowrap;
+  text-align: center;
+  flex-grow: 1; /* 기본적으로 꽉 채움 (1개일 때) */
+  flex-shrink: 1;
+  flex-basis: 0; /* flex-grow가 비율대로 작동하도록 */
 }
 
-/* 등급 및 스킬 색상 (명시도를 높여 !important 제거) */
+/* 스킬 개수에 따른 너비 조절 유틸리티 클래스 */
+.skill-row .flex-2 { flex-grow: 1; flex-basis: 50%; }
+.skill-row .flex-3 { flex-grow: 1; flex-basis: 33.33%; }
+.skill-row .flex-4 { flex-grow: 1; flex-basis: 25%; }
+
+
+/* 등급 및 스킬 색상 */
 .stat-item .value .grade-g { color: #6c757d; }
 .stat-item .value .grade-f { color: #0d47a1; }
 .stat-item .value .grade-e { color: #6a1b9a; }
@@ -262,20 +278,34 @@ input[type="number"] { width: 50px; padding: 5px; border: 1px solid #ccc; border
 .skill-yellow { background-color: #fff2b2; border-color: #ffec99; }
 .skill-white { background-color: #f8f9fa; border-color: #dee2e6; }
 
+/* ======================================================= */
+/* 화면 너비 600px 이상일 때 적용될 스타일 (태블릿/모바일 가로) */
+/* ======================================================= */
+@media (min-width: 600px) {
+  #character-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 2열 레이아웃 */
+    align-items: flex-start; /* 카드 높이가 다를 경우를 대비 */
+    gap: 20px;
+  }
+  .character-card {
+    width: auto; /* #character-list의 grid에 맞춰짐 */
+    max-width: none;
+  }
+}
+
 
 /* ======================================================= */
 /* 화면 너비가 992px 이상일 때 적용될 스타일 (데스크탑)     */
 /* ======================================================= */
 @media (min-width: 992px) {
   #character-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(550px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(550px, 1fr)); /* 데스크톱에서는 다시 자동 맞춤 */
     gap: 25px;
   }
 
   .character-card {
     flex-direction: row;
-    max-width: none;
     align-items: stretch;
     gap: 20px;
     padding: 18px;
@@ -285,7 +315,7 @@ input[type="number"] { width: 50px; padding: 5px; border: 1px solid #ccc; border
   }
 
   .card-main-info {
-    flex: 2 1 300px; /* 기본적으로 2의 비율, 300px보다 작아질 수 있음 */
+    flex: 2 1 300px;
     display: flex;
     flex-direction: column;
     min-width: 0;
@@ -296,7 +326,7 @@ input[type="number"] { width: 50px; padding: 5px; border: 1px solid #ccc; border
   }
 
   .skill-details {
-    flex: 1 1 220px; /* 기본적으로 1의 비율, 220px보다 작아질 수 있음 (유연성 확보) */
+    flex: 1 1 220px;
     margin-top: 0;
     padding: 15px;
     border-top: none;
@@ -315,15 +345,15 @@ input[type="number"] { width: 50px; padding: 5px; border: 1px solid #ccc; border
   }
 
   .skill-container {
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: stretch;
     flex-grow: 1;
     gap: 8px;
     padding-top: 0;
   }
   .skill-slot {
-    flex-grow: 0;
+    flex-grow: 0; /* 데스크톱에서는 세로로 쌓이므로 grow 불필요 */
+    flex-basis: auto;
+    white-space: normal; /* 긴 스킬 이름이 줄바꿈 되도록 */
+    word-break: keep-all;
   }
 }
 
@@ -334,7 +364,7 @@ input[type="number"] { width: 50px; padding: 5px; border: 1px solid #ccc; border
 .scroll-buttons button { width: 40px; height: 40px; border-radius: 50%; border: 1px solid #ddd; background-color: white; color: #333; font-size: 1.2em; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.15); transition: background-color 0.2s, transform 0.2s; }
 .scroll-buttons button:hover { background-color: #f0f0f0; transform: scale(1.1); }
 
-footer { /* footer 태그로 변경 */
+footer {
   font-size: 0.8em;
   color: #808080;
   text-align: left;
@@ -344,6 +374,6 @@ footer { /* footer 태그로 변경 */
   border-top: 1px solid #eee;
   line-height: 1.4;
 }
-footer p { /* footer p 태그로 변경 */
+footer p {
   margin: 0.5em 0;
 }

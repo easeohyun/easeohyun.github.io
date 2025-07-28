@@ -50,7 +50,7 @@
     return `<span class="grade-${grade.toLowerCase()}">${grade}</span>`;
   }
 
-  // 캐릭터 카드들을 화면에 렌더링하는 함수
+  // 캐릭터 카드들을 화면에 렌더링하는 함수 (스킬 렌더링 로직 수정)
   function renderCharacters(charactersToRender, isFiltered) {
     const count = charactersToRender.length;
     characterList.innerHTML = '';
@@ -62,7 +62,7 @@
       return;
     }
 
-    characterList.style.display = 'grid';
+    characterList.style.display = ''; // grid 또는 flex는 CSS 미디어쿼리가 담당하므로 JS는 비워줌
     noResultsContainer.style.display = 'none';
 
     let summaryText = '';
@@ -106,12 +106,65 @@
         }
       }
 
+      // --- 스킬 HTML 생성 로직 수정 ---
       let skillHTML = '';
       const skillData = char.skills;
-      if (skillData.rainbow) skillData.rainbow.forEach(skill => skillHTML += `<div class="skill-slot skill-rainbow">${skill || ''}</div>`);
-      if (skillData.pink)    skillData.pink.forEach(skill => skillHTML += `<div class="skill-slot skill-pink">${skill || ''}</div>`);
-      if (skillData.yellow)  skillData.yellow.forEach(skill => skillHTML += `<div class="skill-slot skill-yellow">${skill || ''}</div>`);
-      if (skillData.white)   skillData.white.forEach(skill => skillHTML += `<div class="skill-slot skill-white">${skill || ''}</div>`);
+
+      // 무지개 스킬 (1개 또는 2개)
+      if (skillData.rainbow && skillData.rainbow.length > 0) {
+        skillHTML += '<div class="skill-row">';
+        const flexClass = skillData.rainbow.length === 2 ? 'flex-2' : '';
+        skillData.rainbow.forEach(skill => {
+            skillHTML += `<div class="skill-slot skill-rainbow ${flexClass}">${skill || ''}</div>`;
+        });
+        skillHTML += '</div>';
+      }
+
+      // 핑크 스킬 (2, 3, 4개)
+      if (skillData.pink && skillData.pink.length > 0) {
+        skillHTML += '<div class="skill-row">';
+        let flexClass = '';
+        switch (skillData.pink.length) {
+            case 2: flexClass = 'flex-2'; break;
+            case 3: flexClass = 'flex-3'; break;
+            case 4: flexClass = 'flex-4'; break;
+        }
+        skillData.pink.forEach(skill => {
+            skillHTML += `<div class="skill-slot skill-pink ${flexClass}">${skill || ''}</div>`;
+        });
+        skillHTML += '</div>';
+      }
+
+      // 노랑 스킬 (2개 고정)
+      if (skillData.yellow && skillData.yellow.length > 0) {
+        skillHTML += '<div class="skill-row">';
+        skillData.yellow.forEach(skill => {
+            skillHTML += `<div class="skill-slot skill-yellow flex-2">${skill || ''}</div>`;
+        });
+        skillHTML += '</div>';
+      }
+
+      // 하얀 스킬 (5개 고정, 2줄)
+      if (skillData.white && skillData.white.length > 0) {
+          const topSkills = skillData.white.slice(0, 3);
+          const bottomSkills = skillData.white.slice(3);
+
+          if (topSkills.length > 0) {
+            skillHTML += '<div class="skill-row">';
+            topSkills.forEach(skill => {
+                skillHTML += `<div class="skill-slot skill-white flex-3">${skill || ''}</div>`;
+            });
+            skillHTML += '</div>';
+          }
+          if (bottomSkills.length > 0) {
+            skillHTML += '<div class="skill-row">';
+            bottomSkills.forEach(skill => {
+                skillHTML += `<div class="skill-slot skill-white flex-2">${skill || ''}</div>`;
+            });
+            skillHTML += '</div>';
+          }
+      }
+      // --- 스킬 HTML 생성 로직 끝 ---
 
       const cardDiv = document.createElement('div');
       cardDiv.className = 'character-card';
@@ -142,12 +195,11 @@
     characterList.appendChild(fragment);
   }
 
-  // 필터, 검색, 정렬을 적용하여 화면을 업데이트하는 메인 함수 (최적화 버전)
+  // 필터, 검색, 정렬을 적용하여 화면을 업데이트하는 메인 함수
   function updateDisplay() {
     const formData = new FormData(filterForm);
     const searchInputValue = searchBox.value;
 
-    // 1. 활성화된 필터 조건들을 미리 객체로 가공
     const activeFilters = Array.from(filterForm.elements)
       .filter(el => el.type === 'checkbox' && el.checked)
       .map(checkbox => {
@@ -160,16 +212,13 @@
         }
       });
 
-    // 2. 검색어 가공 (포함/제외)
     const rawSearchTerms = searchInputValue.split(',').map(term => term.trim()).filter(term => term);
     const inclusionTerms = rawSearchTerms.filter(term => !term.startsWith('-'));
     const exclusionTerms = rawSearchTerms.filter(term => term.startsWith('-')).map(term => term.substring(1)).filter(Boolean);
 
     const isFiltered = activeFilters.length > 0 || rawSearchTerms.length > 0;
 
-    // 3. 필터링 및 검색 실행
     let filteredCharacters = allCharacters.filter(character => {
-      // 체크박스 필터 조건 검사
       const passesFilters = activeFilters.every(filter => {
         const sections = {
             SurfaceAptitude: 'grade', DistanceAptitude: 'grade',
@@ -179,7 +228,7 @@
           if (character[sectionName] && character[sectionName][filter.key] !== undefined) {
             if (filter.type === 'value') {
               return character[sectionName][filter.key] >= filter.value;
-            } else { // type === 'grade'
+            } else {
               return gradeMap[character[sectionName][filter.key]] >= filter.value;
             }
           }
@@ -189,7 +238,6 @@
 
       if (!passesFilters) return false;
 
-      // 검색어 조건 검사 (필요한 경우에만 searchTargets 생성)
       if (rawSearchTerms.length > 0) {
         const allSkills = Object.values(character.skills).flat().filter(Boolean);
         const searchTargets = [String(character.id), character.name, character.nickname, ...allSkills, ...character.tags];
@@ -205,18 +253,15 @@
         if (!passesExclusion) return false;
       }
 
-      return true; // 모든 조건을 통과한 경우
+      return true;
     });
 
-
-    // 4. 정렬
     const sortBy = sortOrder.value;
     if (sortBy === 'name-asc') filteredCharacters.sort((a, b) => a.name.localeCompare(b.name, 'ko') || a.id - b.id);
     else if (sortBy === 'name-desc') filteredCharacters.sort((a, b) => b.name.localeCompare(a.name, 'ko') || a.id - b.id);
     else if (sortBy === 'id-asc') filteredCharacters.sort((a, b) => a.id - b.id);
     else if (sortBy === 'id-desc') filteredCharacters.sort((a, b) => b.id - a.id);
 
-    // 5. 렌더링
     renderCharacters(filteredCharacters, isFiltered);
   }
 
@@ -234,7 +279,6 @@
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
       allCharacters = await response.json();
 
-      // ZZZ, 999999 ID를 가진 테스트/예시용 데이터 제외
       allCharacters = allCharacters.filter(char => char.id !== 'ZZZ' && char.id !== 999999);
 
       filterForm.addEventListener('input', updateDisplay);
@@ -245,22 +289,18 @@
       scrollTopButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
       scrollBottomButton.addEventListener('click', () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }));
 
-      // --- 단축키 기능 추가 ---
       document.addEventListener('keydown', (event) => {
         const activeElement = document.activeElement;
-        // 검색창이나 다른 입력 필드에 포커스가 있을 때는 단축키를 제한적으로 운영
         if (activeElement && (activeElement.tagName === 'INPUT' || activeElement.tagName === 'SELECT')) {
-            // ESC 키는 입력 중에도 필터 초기화를 위해 항상 동작
             if (event.key === 'Escape') {
                 resetAllFilters();
             }
-            return; // 그 외의 키는 기본 동작을 위해 여기서 중단
+            return;
         }
 
-        // 입력 필드 외의 공간에서 단축키 동작
         switch (event.key) {
             case '/':
-                event.preventDefault(); // '/' 문자가 검색창에 입력되는 현상 방지
+                event.preventDefault();
                 searchBox.focus();
                 break;
             case 'Escape':
@@ -274,7 +314,6 @@
                 break;
         }
       });
-      // --- 단축키 기능 끝 ---
 
       updateDisplay();
 
@@ -284,7 +323,6 @@
     }
   }
 
-  // 페이지 로드 시 앱 초기화 실행
   document.addEventListener('DOMContentLoaded', initializeApp);
 
 })();
