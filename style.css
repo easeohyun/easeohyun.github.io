@@ -344,21 +344,17 @@ input[type="number"] { width: 50px; padding: 5px; border: 1px solid #ccc; border
       overflow-y: auto;
   }
 
-  /* --- 데스크톱 스킬 컨테이너 수정 --- */
   .skill-container {
-    flex-direction: row; /* 스킬들을 가로로 배열 */
-    flex-wrap: wrap;      /* 공간이 부족하면 다음 줄로 넘김 */
-    align-content: flex-start; /* 여러 줄로 나뉠 경우 위에서부터 채움 */
     flex-grow: 1;
     gap: 8px;
     padding-top: 0;
   }
   .skill-slot {
-    flex-grow: 1; /* 슬롯들이 가로 공간을 채우도록 함 */
-    flex-basis: auto; /* 기본 크기는 내용에 따름 */
-    white-space: nowrap; /* 스킬 이름이 줄바꿈 되지 않도록 */
+    flex-grow: 0; /* 데스크톱에서는 세로로 쌓이므로 grow 불필요 */
+    flex-basis: auto;
+    white-space: normal; /* 긴 스킬 이름이 줄바꿈 되도록 */
+    word-break: keep-all;
   }
-  /* --- 데스크톱 스킬 컨테이너 수정 끝 --- */
 }
 
 /* ================================== */
