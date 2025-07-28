@@ -346,25 +346,27 @@ input[type="number"] { width: 50px; padding: 5px; border: 1px solid #ccc; border
       overflow-y: auto;
   }
 
+  /* --- 데스크톱 스킬 레이아웃 최종 수정 --- */
   .skill-container {
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-direction: column; /* 스킬 그룹(row)을 세로로 쌓음 */
+    flex-wrap: nowrap;
     align-content: flex-start;
     flex-grow: 1;
     gap: 8px;
     padding-top: 0;
   }
-  
-  /* .skill-row의 경계를 없애 모든 스킬이 .skill-container의 자식처럼 행동하게 함 */
+
+  /* .skill-row는 모바일/태블릿과 동일한 flex-direction:row 동작을 유지 (별도 선언 불필요) */
   .skill-row {
-    display: contents;
+     /* display: contents; 제거 */
+     gap: 8px; /* 데스크톱 환경의 더 넓은 간격 적용 */
   }
 
   .skill-slot {
-    flex-grow: 1;
-    /* flex-basis를 0으로 명시하여 내용물 크기에 상관없이 flex-grow 비율로 공간을 분배하도록 함 */
-    flex-basis: 0; 
-    white-space: nowrap;
+    /* JavaScript의 flex 클래스가 모든 화면에서 일관되게 작동하므로 별도 flex 속성 불필요 */
+    /* 데스크톱에서는 긴 스킬 이름이 잘리지 않고 줄바꿈 되도록 설정 */
+    white-space: normal;
+    word-break: keep-all; /* 단어 단위로 줄바꿈 */
   }
 }
 
