@@ -387,15 +387,6 @@
     "tags": ["데지땅", "우마뾰이", "오타쿠"]
   },
   {
-    "id": 102001, "name": "세이운 스카이", "nickname": "걸・미츠・"대박"", "color": "#7FFFD4",
-    "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
-    "DistanceAptitude": { "Short": "F", "Mile": "D", "Medium": "A", "Long": "A" },
-    "StrategyAptitude": { "Front": "A", "Pace": "B", "Late": "G", "End": "G" },
-    "StatBonuses": { "Speed": 0, "Stamina": 10, "Power": 0, "Guts": 0, "Wit": 20 },
-    "skills": { "rainbow": ["아・단・필・유・소・사"], "pink": ["푸른 하늘의 프로페서", "낚시의 프로"], "yellow": ["탈출술", "선수 필승"], "white": ["트릭(뒤)", "리드 킵", "장거리 코너○", "템포 업", "선두 프라이드"] },
-    "tags": ["낚시", "황금세대"]
-  },
-  {
     "id": 102101, "name": "타마모 크로스", "nickname": "하얀 번개", "color": "#A0522D",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "F" },
     "DistanceAptitude": { "Short": "G", "Mile": "D", "Medium": "A", "Long": "A" },
