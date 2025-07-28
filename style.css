@@ -296,9 +296,9 @@ input[type="number"] { width: 50px; padding: 5px; border: 1px solid #ccc; border
 
 
 /* ======================================================= */
-/* 화면 너비가 992px 이상일 때 적용될 스타일 (데스크탑)     */
+/* 화면 너비가 1200px 이상일 때 적용될 스타일 (데스크탑)     */
 /* ======================================================= */
-@media (min-width: 992px) {
+@media (min-width: 1200px) { /* <<-- 이 값을 992px에서 1200px로 수정했습니다. */
   #character-list {
     grid-template-columns: repeat(auto-fit, minmax(550px, 1fr)); /* 데스크톱에서는 다시 자동 맞춤 */
     gap: 25px;
