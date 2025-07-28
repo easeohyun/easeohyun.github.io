@@ -319,7 +319,7 @@
 
     } catch (error) {
       console.error("캐릭터 데이터를 불러오는 데 실패했습니다:", error);
-      characterList.innerHTML = `<p style="text-align:center; color:red;">캐릭터 정보를 불러오지 못했습니다. characters.json 파일이 올바른 위치에 있는지 확인해 주세요.</p>`;
+      characterList.innerHTML = `<p style="text-align:center; color:red;">캐릭터 정보를 불러오지 못했습니다. characters.json 파일이 올바른 위치에 있는지 확인해 주세요.<br>사이트 관리자에게 문의하여 주세요.</p>`;
     }
   }
 

@@ -37,6 +37,24 @@ header h1 a {
   text-decoration: none;
 }
 
+/* ▼▼▼ 경고 문구 스타일 추가 ▼▼▼ */
+@keyframes blink-effect {
+  50% {
+    opacity: 0;
+  }
+}
+
+.warning-banner {
+  margin-top: 15px;
+  padding: 10px;
+  background-color: #fff0f0;
+  border: 1px solid #ff000;
+  border-radius: 4px;
+  color: #c0392b;
+  font-weight: bold;
+  animation: blink-effect 2s infinite;
+}
+
 /* ================================== */
 /* 필터 및 컨트롤 스타일 (Filters & Controls) */
 /* ================================== */
