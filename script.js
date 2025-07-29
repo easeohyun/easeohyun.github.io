@@ -14,6 +14,7 @@
   const noResultsResetButton = document.getElementById('no-results-reset');
   const scrollTopButton = document.getElementById('scroll-top');
   const scrollBottomButton = document.getElementById('scroll-bottom');
+  const toggleSkillsButton = document.getElementById('toggle-skills-btn'); // 새로 추가된 버튼
 
   // 초성 및 스마트 검색 함수
   function smartIncludes(target, term, mode = 'smart') {
@@ -271,6 +272,19 @@
     searchBox.value = '';
     updateDisplay();
   }
+  
+  // 모든 스킬 정보 열기/닫기 토글 함수
+  function toggleAllSkills() {
+    const allDetails = characterList.querySelectorAll('.skill-details');
+    if (allDetails.length === 0) return;
+    
+    // 첫 번째 스킬 정보의 상태를 기준으로, 모든 스킬 정보의 열림/닫힘 상태를 결정
+    const shouldOpen = !allDetails[0].open;
+    
+    allDetails.forEach(detail => {
+      detail.open = shouldOpen;
+    });
+  }
 
   // 앱 초기화 함수
   async function initializeApp() {
@@ -288,6 +302,7 @@
       noResultsResetButton.addEventListener('click', resetAllFilters);
       scrollTopButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
       scrollBottomButton.addEventListener('click', () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }));
+      toggleSkillsButton.addEventListener('click', toggleAllSkills); // 버튼에 클릭 이벤트 연결
 
       document.addEventListener('keydown', (event) => {
         const activeElement = document.activeElement;
@@ -311,6 +326,10 @@
                 break;
             case ',':
                 window.scrollTo({ top: 0, behavior: 'smooth' });
+                break;
+            case '\\': // '\' 키에 대한 단축키 추가
+                event.preventDefault();
+                toggleAllSkills();
                 break;
         }
       });

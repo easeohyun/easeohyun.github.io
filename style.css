@@ -107,6 +107,24 @@ input[type="number"] { width: 50px; padding: 5px; border: 1px solid #ccc; border
 #reset-filters { padding: 8px 15px; border: 1px solid #c0392b; background-color: #e74c3c; color: white; border-radius: 4px; cursor: pointer; font-weight: bold; transition: background-color 0.2s; white-space: nowrap; }
 #reset-filters:hover { background-color: #c0392b; }
 
+#toggle-skills-btn {
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1.5em;
+  line-height: 1;
+  background: linear-gradient(to right, #ffadad, #ffd6a5, #fdffb6, #caffbf, #9bf6ff, #a0c4ff, #bdb2ff);
+  transition: all 0.2s ease;
+}
+
+#toggle-skills-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
 /* ================================== */
 /* 검색창 Placeholder 스타일 */
 /* ================================== */
