@@ -111,34 +111,44 @@
       let skillHTML = '';
       const skillData = char.skills;
 
-      // 무지개 스킬 (1개 또는 2개): 1줄에 모두 표시, 너비 자동 분할
+      // 무지개 스킬 (1개 또는 2개)
       if (skillData.rainbow && skillData.rainbow.length > 0) {
         skillHTML += '<div class="skill-row">';
+        const flexClass = skillData.rainbow.length === 2 ? 'flex-2' : '';
         skillData.rainbow.forEach(skill => {
-            skillHTML += `<div class="skill-slot skill-rainbow">${skill || ''}</div>`;
+            // 1개일때는 flex-grow가, 2개일때는 flex-2 클래스가 너비를 조절
+            skillHTML += `<div class="skill-slot skill-rainbow ${flexClass}">${skill || ''}</div>`;
         });
         skillHTML += '</div>';
       }
 
-      // 핑크 스킬 (2, 3, 4개): 1줄에 모두 표시, 너비 자동 분할
+      // 핑크 스킬 (2, 3, 4개)
       if (skillData.pink && skillData.pink.length > 0) {
         skillHTML += '<div class="skill-row">';
+        let flexClass = '';
+        switch (skillData.pink.length) {
+            case 2: flexClass = 'flex-2'; break;
+            case 3: flexClass = 'flex-3'; break;
+            case 4: flexClass = 'flex-4'; break;
+        }
         skillData.pink.forEach(skill => {
-            skillHTML += `<div class="skill-slot skill-pink">${skill || ''}</div>`;
+            // 개수에 맞는 flex-* 클래스를 부여하여 너비를 강제
+            skillHTML += `<div class="skill-slot skill-pink ${flexClass}">${skill || ''}</div>`;
         });
         skillHTML += '</div>';
       }
 
-      // 노랑 스킬 (2개 고정): 1줄에 2개 표시, 너비 자동 분할
+      // 노랑 스킬 (2개 고정)
       if (skillData.yellow && skillData.yellow.length > 0) {
         skillHTML += '<div class="skill-row">';
         skillData.yellow.forEach(skill => {
-            skillHTML += `<div class="skill-slot skill-yellow">${skill || ''}</div>`;
+            // flex-2 클래스로 너비 50% 고정
+            skillHTML += `<div class="skill-slot skill-yellow flex-2">${skill || ''}</div>`;
         });
         skillHTML += '</div>';
       }
 
-      // 하얀 스킬 (5개 고정): 첫 줄에 3개, 둘째 줄에 2개, 각 줄에서 너비 자동 분할
+      // 하얀 스킬 (5개 고정, 2줄)
       if (skillData.white && skillData.white.length > 0) {
           const topSkills = skillData.white.slice(0, 3);
           const bottomSkills = skillData.white.slice(3);
@@ -146,14 +156,16 @@
           if (topSkills.length > 0) {
             skillHTML += '<div class="skill-row">';
             topSkills.forEach(skill => {
-                skillHTML += `<div class="skill-slot skill-white">${skill || ''}</div>`;
+                // flex-3 클래스로 너비 33.3% 고정
+                skillHTML += `<div class="skill-slot skill-white flex-3">${skill || ''}</div>`;
             });
             skillHTML += '</div>';
           }
           if (bottomSkills.length > 0) {
             skillHTML += '<div class="skill-row">';
             bottomSkills.forEach(skill => {
-                skillHTML += `<div class="skill-slot skill-white">${skill || ''}</div>`;
+                // flex-2 클래스로 너비 50% 고정
+                skillHTML += `<div class="skill-slot skill-white flex-2">${skill || ''}</div>`;
             });
             skillHTML += '</div>';
           }
