@@ -73,7 +73,7 @@ legend {
   font-weight: bold;
   color: #3498db;
   padding: 0 10px;
-  font-size: 1.1em;
+  font-size: 1.25em;
 }
 
 .filter-group { display: flex; flex-wrap: wrap; gap: 20px; }
@@ -82,7 +82,7 @@ input[type="number"] { width: 50px; padding: 5px; border: 1px solid #ccc; border
 
 .filter-item input[type="checkbox"] { display: none; }
 .filter-item label { position: relative; padding-left: 26px; cursor: pointer; user-select: none; }
-.filter-item label::before { content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; border: 1px solid #ccc; border-radius: 3px; background-color: white; transition: all 0.2s ease; }
+.filter-item label::before { content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; border: 1.5px solid #ccc; border-radius: 3px; background-color: white; transition: all 0.2s ease; }
 .filter-item input[type="checkbox"]:checked + label::before { background-color: #3498db; border-color: #3498db; }
 .filter-item label::after { content: ''; position: absolute; left: 5px; top: 50%; width: 6px; height: 10px; border: solid white; border-width: 0 2px 2px 0; transform: translateY(-65%) rotate(45deg); opacity: 0; transition: opacity 0.2s ease; }
 .filter-item input[type="checkbox"]:checked + label::after { opacity: 1; }
@@ -425,4 +425,56 @@ footer {
 }
 footer p {
   margin: 0.5em 0;
+}
+
+/* ================================== */
+/* 사용자 정의 체크박스 색상 (Custom Checkbox Colors) */
+/* ================================== */
+
+/* -- 경기장 적성 -- */
+input[type="checkbox"][name="Turf"]:checked + label::before {
+  background-color: #38761d;
+  border-color: #38761d;
+}
+input[type="checkbox"][name="Dirt"]:checked + label::before {
+  background-color: #744700;
+  border-color: #744700;
+}
+
+/* -- 거리 적성 (추후 변경을 위한 주석 처리) -- */
+/*
+input[type="checkbox"][name="Short"]:checked + label::before { background-color: #somecolor; border-color: #somecolor; }
+input[type="checkbox"][name="Mile"]:checked + label::before { background-color: #somecolor; border-color: #somecolor; }
+input[type="checkbox"][name="Medium"]:checked + label::before { background-color: #somecolor; border-color: #somecolor; }
+input[type="checkbox"][name="Long"]:checked + label::before { background-color: #somecolor; border-color: #somecolor; }
+*/
+
+/* -- 각질 적성 (추후 변경을 위한 주석 처리) -- */
+/*
+input[type="checkbox"][name="Front"]:checked + label::before { background-color: #somecolor; border-color: #somecolor; }
+input[type="checkbox"][name="Pace"]:checked + label::before { background-color: #somecolor; border-color: #somecolor; }
+input[type="checkbox"][name="Late"]:checked + label::before { background-color: #somecolor; border-color: #somecolor; }
+input[type="checkbox"][name="End"]:checked + label::before { background-color: #somecolor; border-color: #somecolor; }
+*/
+
+/* -- 성장률 -- */
+input[type="checkbox"][name="Speed"]:checked + label::before {
+  background-color: #2bb7f1;
+  border-color: #2bb7f1;
+}
+input[type="checkbox"][name="Stamina"]:checked + label::before {
+  background-color: #ff7c67;
+  border-color: #ff7c67;
+}
+input[type="checkbox"][name="Power"]:checked + label::before {
+  background-color: #f39b17;
+  border-color: #f39b17;
+}
+input[type="checkbox"][name="Guts"]:checked + label::before {
+  background-color: #ff6fac;
+  border-color: #ff6fac;
+}
+input[type="checkbox"][name="Wit"]:checked + label::before {
+  background-color: #22bf7d;
+  border-color: #22bf7d;
 }
