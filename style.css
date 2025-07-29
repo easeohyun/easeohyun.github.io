@@ -1,8 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap');
 
-/* ================================== */
-/* 전역 및 레이아웃 스타일 (Global & Layout) */
-/* ================================== */
 body {
   font-family: 'Noto Sans KR', 'Roboto', sans-serif;
   line-height: 1.5;
@@ -55,9 +52,6 @@ header h1 a {
   animation: blink-effect 2s infinite;
 }
 
-/* ================================== */
-/* 필터 및 컨트롤 스타일 (Filters & Controls) */
-/* ================================== */
 .filter-section {
   margin-bottom: 20px;
 }
@@ -125,14 +119,11 @@ input[type="number"] { width: 50px; padding: 5px; border: 1px solid #ccc; border
   box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
 
-/* ================================== */
-/* 검색창 Placeholder 스타일 */
-/* ================================== */
 #search-box::placeholder {
   color: #aab;
   font-style: italic;
   font-weight: 400;
-  opacity: 1; /* Firefox에서 흐려지는 현상 방지 */
+  opacity: 1;
   transition: opacity 0.3s ease, color 0.3s ease;
 }
 
@@ -141,9 +132,6 @@ input[type="number"] { width: 50px; padding: 5px; border: 1px solid #ccc; border
   color: #3498db;
 }
 
-/* ================================== */
-/* 결과 표시 영역 (Results Section) */
-/* ================================== */
 .results-section {
   padding-top: 10px;
 }
@@ -431,7 +419,7 @@ footer p {
 /* 사용자 정의 체크박스 색상 (Custom Checkbox Colors) */
 /* ================================== */
 
-/* -- 경기장 적성 -- */
+
 input[type="checkbox"][name="Turf"]:checked + label::before {
   background-color: #38761d;
   border-color: #38761d;
@@ -441,23 +429,16 @@ input[type="checkbox"][name="Dirt"]:checked + label::before {
   border-color: #744700;
 }
 
-/* -- 거리 적성 (추후 변경을 위한 주석 처리) -- */
-/*
-input[type="checkbox"][name="Short"]:checked + label::before { background-color: #somecolor; border-color: #somecolor; }
-input[type="checkbox"][name="Mile"]:checked + label::before { background-color: #somecolor; border-color: #somecolor; }
-input[type="checkbox"][name="Medium"]:checked + label::before { background-color: #somecolor; border-color: #somecolor; }
-input[type="checkbox"][name="Long"]:checked + label::before { background-color: #somecolor; border-color: #somecolor; }
-*/
+input[type="checkbox"][name="Short"]:checked + label::before { background-color: #333333; border-color: #333333; }
+input[type="checkbox"][name="Mile"]:checked + label::before { background-color: #333333; border-color: #333333; }
+input[type="checkbox"][name="Medium"]:checked + label::before { background-color: #333333; border-color: #333333; }
+input[type="checkbox"][name="Long"]:checked + label::before { background-color: #333333; border-color: #333333; }
 
-/* -- 각질 적성 (추후 변경을 위한 주석 처리) -- */
-/*
-input[type="checkbox"][name="Front"]:checked + label::before { background-color: #somecolor; border-color: #somecolor; }
-input[type="checkbox"][name="Pace"]:checked + label::before { background-color: #somecolor; border-color: #somecolor; }
-input[type="checkbox"][name="Late"]:checked + label::before { background-color: #somecolor; border-color: #somecolor; }
-input[type="checkbox"][name="End"]:checked + label::before { background-color: #somecolor; border-color: #somecolor; }
-*/
+input[type="checkbox"][name="Front"]:checked + label::before { background-color: #333333; border-color: #333333; }
+input[type="checkbox"][name="Pace"]:checked + label::before { background-color: #333333; border-color: #333333; }
+input[type="checkbox"][name="Late"]:checked + label::before { background-color: #333333; border-color: #333333; }
+input[type="checkbox"][name="End"]:checked + label::before { background-color: #333333; border-color: #333333; }
 
-/* -- 성장률 -- */
 input[type="checkbox"][name="Speed"]:checked + label::before {
   background-color: #2bb7f1;
   border-color: #2bb7f1;
