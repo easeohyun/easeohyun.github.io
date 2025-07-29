@@ -14,7 +14,7 @@
   const noResultsResetButton = document.getElementById('no-results-reset');
   const scrollTopButton = document.getElementById('scroll-top');
   const scrollBottomButton = document.getElementById('scroll-bottom');
-  const toggleSkillsButton = document.getElementById('toggle-skills-btn'); // 새로 추가된 버튼
+  const toggleSkillsButton = document.getElementById('toggle-skills-btn');
 
   // 초성 및 스마트 검색 함수
   function smartIncludes(target, term, mode = 'smart') {
@@ -111,41 +111,34 @@
       let skillHTML = '';
       const skillData = char.skills;
 
-      // 무지개 스킬 (1개 또는 2개)
+      // 무지개 스킬 (1개 또는 2개): 1줄에 모두 표시, 너비 자동 분할
       if (skillData.rainbow && skillData.rainbow.length > 0) {
         skillHTML += '<div class="skill-row">';
-        const flexClass = skillData.rainbow.length === 2 ? 'flex-2' : '';
         skillData.rainbow.forEach(skill => {
-            skillHTML += `<div class="skill-slot skill-rainbow ${flexClass}">${skill || ''}</div>`;
+            skillHTML += `<div class="skill-slot skill-rainbow">${skill || ''}</div>`;
         });
         skillHTML += '</div>';
       }
 
-      // 핑크 스킬 (2, 3, 4개)
+      // 핑크 스킬 (2, 3, 4개): 1줄에 모두 표시, 너비 자동 분할
       if (skillData.pink && skillData.pink.length > 0) {
         skillHTML += '<div class="skill-row">';
-        let flexClass = '';
-        switch (skillData.pink.length) {
-            case 2: flexClass = 'flex-2'; break;
-            case 3: flexClass = 'flex-3'; break;
-            case 4: flexClass = 'flex-4'; break;
-        }
         skillData.pink.forEach(skill => {
-            skillHTML += `<div class="skill-slot skill-pink ${flexClass}">${skill || ''}</div>`;
+            skillHTML += `<div class="skill-slot skill-pink">${skill || ''}</div>`;
         });
         skillHTML += '</div>';
       }
 
-      // 노랑 스킬 (2개 고정)
+      // 노랑 스킬 (2개 고정): 1줄에 2개 표시, 너비 자동 분할
       if (skillData.yellow && skillData.yellow.length > 0) {
         skillHTML += '<div class="skill-row">';
         skillData.yellow.forEach(skill => {
-            skillHTML += `<div class="skill-slot skill-yellow flex-2">${skill || ''}</div>`;
+            skillHTML += `<div class="skill-slot skill-yellow">${skill || ''}</div>`;
         });
         skillHTML += '</div>';
       }
 
-      // 하얀 스킬 (5개 고정, 2줄)
+      // 하얀 스킬 (5개 고정): 첫 줄에 3개, 둘째 줄에 2개, 각 줄에서 너비 자동 분할
       if (skillData.white && skillData.white.length > 0) {
           const topSkills = skillData.white.slice(0, 3);
           const bottomSkills = skillData.white.slice(3);
@@ -153,14 +146,14 @@
           if (topSkills.length > 0) {
             skillHTML += '<div class="skill-row">';
             topSkills.forEach(skill => {
-                skillHTML += `<div class="skill-slot skill-white flex-3">${skill || ''}</div>`;
+                skillHTML += `<div class="skill-slot skill-white">${skill || ''}</div>`;
             });
             skillHTML += '</div>';
           }
           if (bottomSkills.length > 0) {
             skillHTML += '<div class="skill-row">';
             bottomSkills.forEach(skill => {
-                skillHTML += `<div class="skill-slot skill-white flex-2">${skill || ''}</div>`;
+                skillHTML += `<div class="skill-slot skill-white">${skill || ''}</div>`;
             });
             skillHTML += '</div>';
           }
@@ -302,7 +295,7 @@
       noResultsResetButton.addEventListener('click', resetAllFilters);
       scrollTopButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
       scrollBottomButton.addEventListener('click', () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }));
-      toggleSkillsButton.addEventListener('click', toggleAllSkills); // 버튼에 클릭 이벤트 연결
+      toggleSkillsButton.addEventListener('click', toggleAllSkills);
 
       document.addEventListener('keydown', (event) => {
         const activeElement = document.activeElement;
