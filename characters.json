@@ -78,41 +78,25 @@
     "StrategyAptitude": { "Front": "A", "Pace": "E", "Late": "G", "End": "G" },
     "StatBonuses": { "Speed": 10, "Stamina": 0, "Power": 0, "Guts": 0, "Wit": 20 },
     "skills": { "rainbow": ["홍염 기어/LP1211-M"], "pink": ["날아 보자구!", "홍련의 오버 레브"], "yellow": ["기어 체인지", "엑셀 전개!"], "white": ["직선 달인", "기어 시프트", "앞장서기", "엑셀러레이션", "집중력"] },
-    "tags": ["슈퍼카", "틀딱", "마르젠스키", "니게시스", "도주시스터즈"]  
-  },  {
-    "id": 100401, "name": "마루젠스키", "nickname": "포뮬러 오브 루주", "color": "#ea504a",
-    "SurfaceAptitude": { "Turf": "A", "Dirt": "D" },
-    "DistanceAptitude": { "Short": "B", "Mile": "A", "Medium": "B", "Long": "C" }, 
-    "StrategyAptitude": { "Front": "A", "Pace": "E", "Late": "G", "End": "G" },
-    "StatBonuses": { "Speed": 10, "Stamina": 0, "Power": 0, "Guts": 0, "Wit": 20 },
-    "skills": { "rainbow": ["홍염 기어/LP1211-M"], "pink": ["날아 보자구!", "홍련의 오버 레브"], "yellow": ["기어 체인지", "엑셀 전개!"], "white": ["직선 달인", "기어 시프트", "앞장서기", "엑셀러레이션", "집중력"] },
-    "tags": ["슈퍼카", "틀딱", "마르젠스키", "니게시스", "도주시스터즈"]  
-  },  {
-    "id": 100401, "name": "마루젠스키", "nickname": "포뮬러 오브 루주", "color": "#ea504a",
-    "SurfaceAptitude": { "Turf": "A", "Dirt": "D" },
-    "DistanceAptitude": { "Short": "B", "Mile": "A", "Medium": "B", "Long": "C" }, 
-    "StrategyAptitude": { "Front": "A", "Pace": "E", "Late": "G", "End": "G" },
-    "StatBonuses": { "Speed": 10, "Stamina": 0, "Power": 0, "Guts": 0, "Wit": 20 },
-    "skills": { "rainbow": ["홍염 기어/LP1211-M"], "pink": ["날아 보자구!", "홍련의 오버 레브"], "yellow": ["기어 체인지", "엑셀 전개!"], "white": ["직선 달인", "기어 시프트", "앞장서기", "엑셀러레이션", "집중력"] },
-    "tags": ["슈퍼카", "틀딱", "마르젠스키", "니게시스", "도주시스터즈"]  
-  },
+    "tags": ["슈퍼카", "틀딱", "마르젠스키", "니게시스", "도주시스터즈", "Maruzensky", "マルゼンスキー"]  
+  },  
   {
-    "id": 100402, "name": "마루젠스키", "nickname": "날아라☆서머 나이트", "color": "#DC143C",
+    "id": 100402, "name": "마루젠스키", "nickname": "날아라☆서머 나이트", "color": "#ea504a",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "D" },
     "DistanceAptitude": { "Short": "B", "Mile": "A", "Medium": "B", "Long": "C" }, 
     "StrategyAptitude": { "Front": "A", "Pace": "E", "Late": "G", "End": "G" },
     "StatBonuses": { "Speed": 15, "Stamina": 0, "Power": 0, "Guts": 0, "Wit": 15 },
     "skills": { "rainbow": ["뭉클하게♪Chu"], "pink": ["심쿵☆말괄량이 우마무스메!", "단상의 지배자"], "yellow": ["말괄량이 우마무스메", "마일의 지배자"], "white": ["코너 회복○", "적극책", "기세로 밀어붙이기", "스리 세븐", "스피드 이터"] },
-    "tags": ["여름", "수영복", "수루젠", "3대장"]  
+    "tags": ["여름", "수영복", "수루젠", "3대장", "그아이가수영복으로갈아입는다면우마무스메여름이야기", "Maruzensky", "マルゼンスキー"] 
   },
   {
-    "id": 100403, "name": "마루젠스키", "nickname": "祝ひ寿ぐ神速天女", "color": "#DC143C",
+    "id": 100403, "name": "마루젠스키", "nickname": "祝ひ寿ぐ神速天女", "color": "#ea504a",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "D" },
     "DistanceAptitude": { "Short": "B", "Mile": "A", "Medium": "B", "Long": "C" }, 
     "StrategyAptitude": { "Front": "A", "Pace": "E", "Late": "G", "End": "G" },
     "StatBonuses": { "Speed": 15, "Stamina": 0, "Power": 15, "Guts": 0, "Wit": 0 },
     "skills": { "rainbow": ["霊験灼然チョベリグ神託"], "pink": ["天女の羽衣", "神薙ダンス"], "yellow": ["여장부 기질", "傑出"], "white": ["마일 직선○", "적극책", "오기", "抜きん出る一歩", "기어 시프트"] },
-    "tags": ["새해", "신년", "뉴루젠"]  
+    "tags": ["새해", "신년", "선녀", "뉴루젠", "Maruzensky", "マルゼンスキー"]  
   },
   {
     "id": 100501, "name": "후지 키세키", "nickname": "슈팅 스타・레뷔", "color": "#8A2BE2",
