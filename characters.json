@@ -99,88 +99,88 @@
     "tags": ["새해", "신년", "선녀", "뉴루젠", "Maruzensky", "マルゼンスキー"]  
   },
   {
-    "id": 100501, "name": "후지 키세키", "nickname": "슈팅 스타・레뷔", "color": "#8A2BE2",
+    "id": 100501, "name": "후지 키세키", "nickname": "슈팅 스타・레뷔", "color": "#444745",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "F" },
     "DistanceAptitude": { "Short": "B", "Mile": "A", "Medium": "B", "Long": "E" }, 
     "StrategyAptitude": { "Front": "C", "Pace": "A", "Late": "C", "End": "G" },
     "StatBonuses": { "Speed": 0, "Stamina": 20, "Power": 0, "Guts": 0, "Wit": 10 },
     "skills": { "rainbow": ["반짝이는 별의 보드빌"], "pink": ["빛나는 톱스타", "엔터테이너"], "yellow": ["여장부 기질", "레이스 플래너"], "white": ["트릭(앞)", "오기", "좋은 위치 뒤따르기", "기어 시프트", "마일 코너○"] },
-    "tags": ["극장판", "활주로"]  
+    "tags": ["극장판", "활주로", "Fuji Kiseki", "フジキセキ"]  
   },
   {
-    "id": 100502, "name": "후지 키세키", "nickname": "쉭세・에투알", "color": "#8A2BE2",
+    "id": 100502, "name": "후지 키세키", "nickname": "쉭세・에투알", "color": "#444745",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "F" },
     "DistanceAptitude": { "Short": "B", "Mile": "A", "Medium": "B", "Long": "E" }, 
     "StrategyAptitude": { "Front": "C", "Pace": "A", "Late": "C", "End": "G" },
     "StatBonuses": { "Speed": 8, "Stamina": 0, "Power": 14, "Guts": 0, "Wit": 8 },
-    "skills": { "rainbow": ["Ravissant"], "pink": ["압권의 트릭", "마음을 사로잡는 코너링"], "yellow": ["넋이 나가는 트릭", "스피드스터"], "white": ["트릭(앞)", "마일 코너○", "빠져나갈 준비", "교묘한 스텝", "정면 승부"] },
-    "tags": ["무도회", "뉴세키"]  
+    "skills": { "rainbow": ["Ravissant"], "pink": ["압권의 트릭", "마음을 사로잡는 코너링", "반짝이는 톱스타"], "yellow": ["넋이 나가는 트릭", "스피드스터"], "white": ["트릭(앞)", "마일 코너○", "빠져나갈 준비", "교묘한 스텝", "정면 승부"] },
+    "tags": ["무도회", "뉴세키", "Fuji Kiseki", "フジキセキ"]  
   },
   {
-    "id": 100601, "name": "오구리 캡", "nickname": "스타라이트 비트", "color": "#B0C4DE",
+    "id": 100601, "name": "오구리 캡", "nickname": "스타라이트 비트", "color": "#3a7ad2",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "B" },
     "DistanceAptitude": { "Short": "E", "Mile": "A", "Medium": "A", "Long": "B" }, 
     "StrategyAptitude": { "Front": "F", "Pace": "A", "Late": "A", "End": "D" },
     "StatBonuses": { "Speed": 20, "Stamina": 0, "Power": 10, "Guts": 0, "Wit": 0 },
     "skills": { "rainbow": ["승리의 고동"], "pink": ["가사마쓰의 먹보", "굶주린 괴물", "괴물의 코너링"], "yellow": ["먹보", "곡선의 소믈리에"], "white": ["코너 가속○", "엑셀러레이션", "영양 보급", "흐린 날○", "뒤처지기 방지"] },
-    "tags": ["신데렐라그레이", "주인공"]  
+    "tags": ["신데렐라그레이", "주인공", "Oguri Cap", "オグリキャップ"]  
   },
   {
-    "id": 100602, "name": "오구리 캡", "nickname": "기적의 하얀 별", "color": "#B0C4DE",
+    "id": 100602, "name": "오구리 캡", "nickname": "기적의 하얀 별", "color": "#3a7ad2",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "B" },
     "DistanceAptitude": { "Short": "E", "Mile": "A", "Medium": "A", "Long": "B" }, 
     "StrategyAptitude": { "Front": "F", "Pace": "A", "Late": "A", "End": "D" },
     "StatBonuses": { "Speed": 15, "Stamina": 15, "Power": 0, "Guts": 0, "Wit": 0 },
     "skills": { "rainbow": ["크리스마스 이브의 미라클 런!"], "pink": ["폭식 보양", "크리스마스의 기적 체험"], "yellow": ["먹보", "내적 체험"], "white": ["쥐어짜기", "안쪽 코너 여포", "영양 보급", "짧은 휴식", "스리 세븐"] },
-    "tags": ["크리스마스", "클구리", "3대장"]  
+    "tags": ["크리스마스", "클구리", "3대장", "성스러운밤에더해지는 기적", "Oguri Cap", "オグリキャップ"]    
   },
   {
-    "id": 100701, "name": "골드 쉽", "nickname": "레드 스트라이프", "color": "#FFD700",
+    "id": 100701, "name": "골드 쉽", "nickname": "레드 스트라이프", "color": "#da3c57",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "G", "Mile": "C", "Medium": "A", "Long": "A" }, 
     "StrategyAptitude": { "Front": "G", "Pace": "B", "Late": "B", "End": "A" },
     "StatBonuses": { "Speed": 0, "Stamina": 20, "Power": 10, "Guts": 0, "Wit": 0 },
     "skills": { "rainbow": ["불침항, 출항!", "파란주의포!"], "pink": ["564 아이즈, 시야 선명!", "익스트림 하교술"], "yellow": ["시야 양호! 이상 없음!", "하교 후의 스페셜리스트"], "white": ["우마무스메 애호가", "추격", "간파", "하굣길의 즐거움", "후방 대기"] },
-    "tags": ["피스피스스피스피고루시짱", "파카튜브", "주인공"]  
+    "tags": ["피스피스스피스피고루시짱", "파카튜브", "주인공", "Gold Ship", "ゴールドシップ"]  
   },
   {
-    "id": 100702, "name": "골드 쉽", "nickname": "RUN! 럼블! 런처!!", "color": "#FFD700",
+    "id": 100702, "name": "골드 쉽", "nickname": "RUN! 럼블! 런처!!", "color": "#da3c57",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "G", "Mile": "C", "Medium": "A", "Long": "A" }, 
     "StrategyAptitude": { "Front": "G", "Pace": "B", "Late": "B", "End": "A" },
     "StatBonuses": { "Speed": 0, "Stamina": 0, "Power": 20, "Guts": 0, "Wit": 10 },
     "skills": { "rainbow": ["Adventure of 564"], "pink": ["신비 체험! 골쉽 워프", "오징어 튀김, 어떠세요!?", "불타오른다고!!"], "yellow": ["내적 체험", "고양감"], "white": ["럭키 세븐", "안쪽 코너 여포", "하굣길의 즐거움", "앞으로 기우뚱", "수상한 작전"] },
-    "tags": ["여름", "수영복", "수루시"]  
+    "tags": ["여름", "수영복", "수루시", "대난투!?여름빛☆바캉스", "Gold Ship", "ゴールドシップ"]  
   },
   {
-    "id": 100703, "name": "골드 쉽", "nickname": "La Mode 564", "color": "#FFD700",
+    "id": 100703, "name": "골드 쉽", "nickname": "La Mode 564", "color": "#da3c57",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "G", "Mile": "C", "Medium": "A", "Long": "A" }, 
     "StrategyAptitude": { "Front": "G", "Pace": "B", "Late": "B", "End": "A" },
     "StatBonuses": { "Speed": 8, "Stamina": 14, "Power": 8, "Guts": 0, "Wit": 0 },
     "skills": { "rainbow": ["Vive la GOLD"], "pink": ["밀려드는 쥬뗌므", "거친 해안을 선호하는 황금배"], "yellow": ["육박하는 그림자", "진창길의 귀신"], "white": ["직선 주파", "진창길○", "코너 회복○", "뛰어난 작전", "중거리 직선○"] },
-    "tags": ["프로젝트L'Arc", "개선문상"]  
+    "tags": ["ReachforthestarsProjectL'Arc", "개선문상", "Gold Ship", "ゴールドシップ"]  
   },
   {
-    "id": 100801, "name": "보드카", "nickname": "와일드 톱기어", "color": "#008000",
-    "SurfaceAptitude": { "Turf": "A", "Dirt": "D" },
+    "id": 100801, "name": "보드카", "nickname": "와일드 톱기어", "color": "#d4c200",
+    "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "F", "Mile": "A", "Medium": "A", "Long": "F" }, 
     "StrategyAptitude": { "Front": "C", "Pace": "B", "Late": "A", "End": "F" },
     "StatBonuses": { "Speed": 10, "Stamina": 20, "Power": 0, "Guts": 0, "Wit": 0 },
     "skills": { "rainbow": ["커팅×DRIVE!", "엑셀X"], "pink": ["스키틀 브레이크", "뛰어난 다리"], "yellow": ["호전일식", "강인한 다리"], "white": ["직선 회복", "상승기류", "추월 확정 태세", "직선 가속", "마일 직선○"] },
-    "tags": ["우옥까"]  
+    "tags": ["우옥까", "Vodka", "ウオッカ"]  
   },
   {
-    "id": 100802, "name": "보드카", "nickname": "얼지 않는 아쿠아・비타이", "color": "#008000",
+    "id": 100802, "name": "보드카", "nickname": "얼지 않는 아쿠아・비타이", "color": "#d4c200",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "F", "Mile": "A", "Medium": "A", "Long": "E" }, 
     "StrategyAptitude": { "Front": "C", "Pace": "B", "Late": "A", "End": "F" },
     "StatBonuses": { "Speed": 20, "Stamina": 0, "Power": 0, "Guts": 10, "Wit": 0 },
     "skills": { "rainbow": ["Into High Gear!"], "pink": ["앞질러 주겠어!", "최속의 톱기어"], "yellow": ["논스톱 걸", "톱기어"], "white": ["폭발하는 다리", "뒤처지기 방지", "중거리 코너○", "풀 스로틀", "선입 직선○"] },
-    "tags": ["크리스마스"]  
+    "tags": ["크리스마스", "클드카", "IlluminatetheHeart", "Vodka", "ウオッカ"]    
   },
   {
-    "id": 100901, "name": "다이와 스칼렛", "nickname": "톱・오브・블루", "color": "#FF1493",
+    "id": 100901, "name": "다이와 스칼렛", "nickname": "톱・오브・블루", "color": "#4f64d8",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "F", "Mile": "A", "Medium": "A", "Long": "B" }, 
     "StrategyAptitude": { "Front": "A", "Pace": "A", "Late": "E", "End": "G" },
@@ -189,13 +189,13 @@
     "tags": ["다스카"]  
   },
   {
-    "id": 100902, "name": "다이와 스칼렛", "nickname": "다홍색 뉘・에투알레", "color": "#FF1493",
+    "id": 100902, "name": "다이와 스칼렛", "nickname": "다홍색 뉘・에투알레", "color": "#4f64d8",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "F", "Mile": "B", "Medium": "A", "Long": "A" }, 
     "StrategyAptitude": { "Front": "A", "Pace": "A", "Late": "E", "End": "G" },
     "StatBonuses": { "Speed": 20, "Stamina": 0, "Power": 0, "Guts": 0, "Wit": 10 },
     "skills": { "rainbow": ["Queen's Lumination"], "pink": ["결의의 직활강", "지지 않는 에이스"], "yellow": ["직활강", "리드 확보"], "white": ["끈질기게 버티기", "기세로 밀어붙이기", "노력의 결과", "장거리 직선○", "장거리 코너○"] },
-    "tags": ["크리스마스", "클스카"]  
+    "tags": ["크리스마스", "클스카", "IlluminatetheHeart"]  
   },
   {
     "id": 101001, "name": "타이키 셔틀", "nickname": "와일드・프론티어", "color": "#FFA500",
@@ -681,7 +681,7 @@
     "StrategyAptitude": { "Front": "G", "Pace": "B", "Late": "A", "End": "G" },
     "StatBonuses": { "Speed": 0, "Stamina": 15, "Power": 0, "Guts": 0, "Wit": 15 },
     "skills": { "rainbow": ["넘치는 반짝임"], "pink": ["잠복 태세", "노력의 결과"], "yellow": ["조용한 호흡", "노력의 결과"], "white": ["장거리 직선○", "장거리 코너○", "꼬리 올리기", "진가 발휘", "페이스 킵"] },
-    "tags": ["아가씨", "사토이모"]
+    "tags": ["ReachforthestarsProjectL'Arc", "개선문상"]
   },
   {
     "id": 105501, "name": "키타산 블랙", "nickname": "금상・금화가마", "color": "#364147",
