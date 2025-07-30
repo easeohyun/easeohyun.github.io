@@ -1,9 +1,7 @@
-// 즉시 실행 함수(IIFE)로 전체 코드를 감싸서 전역 스코프 오염 방지
 (function() {
   const gradeMap = { 'S': 7, 'A': 6, 'B': 5, 'C': 4, 'D': 3, 'E': 2, 'F': 1, 'G': 0 };
-  let allCharacters = []; // 모든 캐릭터 데이터를 저장할 배열
+  let allCharacters = []; 
 
-  // DOM 요소 가져오기
   const filterForm = document.getElementById('filter-form');
   const characterList = document.getElementById('character-list');
   const resultSummary = document.getElementById('result-summary');
@@ -16,7 +14,6 @@
   const scrollBottomButton = document.getElementById('scroll-bottom');
   const toggleSkillsButton = document.getElementById('toggle-skills-btn');
 
-  // 초성 및 스마트 검색 함수
   function smartIncludes(target, term, mode = 'smart') {
     const targetStr = String(target || '').toLowerCase();
     const termStr = String(term || '').toLowerCase();
@@ -45,13 +42,11 @@
     return false;
   }
 
-  // 등급에 맞는 span 태그 생성
   function getGradeSpan(grade) {
     if (!grade) return '';
     return `<span class="grade-${grade.toLowerCase()}">${grade}</span>`;
   }
 
-  // 캐릭터 카드들을 화면에 렌더링하는 함수 (스킬 렌더링 로직 수정)
   function renderCharacters(charactersToRender, isFiltered) {
     const count = charactersToRender.length;
     characterList.innerHTML = '';
@@ -63,7 +58,7 @@
       return;
     }
 
-    characterList.style.display = ''; // grid 또는 flex는 CSS 미디어쿼리가 담당하므로 JS는 비워줌
+    characterList.style.display = ''; 
     noResultsContainer.style.display = 'none';
 
     let summaryText = '';
@@ -91,9 +86,13 @@
       const isTurfBPlus = gradeMap[char.SurfaceAptitude.Turf] >= gradeMap['B'];
       const isDirtBPlus = gradeMap[char.SurfaceAptitude.Dirt] >= gradeMap['B'];
       let titleBgClass = '';
-      if (isTurfBPlus && isDirtBPlus) titleBgClass = 'title-hybrid-bg';
-      else if (isTurfBPlus) titleBgClass = 'title-light-bg';
-      else if (isDirtBPlus) titleBgClass = 'title-dark-bg';
+      if (isTurfBPlus && isDirtBPlus) {
+        titleBgClass = 'title-hybrid-bg';
+      } else if (isTurfBPlus || (!isDirtBPlus && gradeMap[char.SurfaceAptitude.Turf] > gradeMap[char.SurfaceAptitude.Dirt])) {
+        titleBgClass = `title-turf-${char.SurfaceAptitude.Turf.toLowerCase()}`;
+      } else {
+        titleBgClass = `title-dirt-${char.SurfaceAptitude.Dirt.toLowerCase()}`;
+      }
 
       let statsHTML = '';
       for (const sectionKey in nameMaps) {
@@ -107,22 +106,18 @@
         }
       }
 
-      // --- 스킬 HTML 생성 로직 수정 ---
       let skillHTML = '';
       const skillData = char.skills;
 
-      // 무지개 스킬 (1개 또는 2개)
       if (skillData.rainbow && skillData.rainbow.length > 0) {
         skillHTML += '<div class="skill-row">';
         const flexClass = skillData.rainbow.length === 2 ? 'flex-2' : '';
         skillData.rainbow.forEach(skill => {
-            // 1개일때는 flex-grow가, 2개일때는 flex-2 클래스가 너비를 조절
             skillHTML += `<div class="skill-slot skill-rainbow ${flexClass}">${skill || ''}</div>`;
         });
         skillHTML += '</div>';
       }
 
-      // 핑크 스킬 (2, 3, 4개)
       if (skillData.pink && skillData.pink.length > 0) {
         skillHTML += '<div class="skill-row">';
         let flexClass = '';
@@ -132,23 +127,19 @@
             case 4: flexClass = 'flex-4'; break;
         }
         skillData.pink.forEach(skill => {
-            // 개수에 맞는 flex-* 클래스를 부여하여 너비를 강제
             skillHTML += `<div class="skill-slot skill-pink ${flexClass}">${skill || ''}</div>`;
         });
         skillHTML += '</div>';
       }
 
-      // 노랑 스킬 (2개 고정)
       if (skillData.yellow && skillData.yellow.length > 0) {
         skillHTML += '<div class="skill-row">';
         skillData.yellow.forEach(skill => {
-            // flex-2 클래스로 너비 50% 고정
             skillHTML += `<div class="skill-slot skill-yellow flex-2">${skill || ''}</div>`;
         });
         skillHTML += '</div>';
       }
 
-      // 하얀 스킬 (5개 고정, 2줄)
       if (skillData.white && skillData.white.length > 0) {
           const topSkills = skillData.white.slice(0, 3);
           const bottomSkills = skillData.white.slice(3);
@@ -156,7 +147,6 @@
           if (topSkills.length > 0) {
             skillHTML += '<div class="skill-row">';
             topSkills.forEach(skill => {
-                // flex-3 클래스로 너비 33.3% 고정
                 skillHTML += `<div class="skill-slot skill-white flex-3">${skill || ''}</div>`;
             });
             skillHTML += '</div>';
@@ -164,14 +154,12 @@
           if (bottomSkills.length > 0) {
             skillHTML += '<div class="skill-row">';
             bottomSkills.forEach(skill => {
-                // flex-2 클래스로 너비 50% 고정
                 skillHTML += `<div class="skill-slot skill-white flex-2">${skill || ''}</div>`;
             });
             skillHTML += '</div>';
           }
       }
-      // --- 스킬 HTML 생성 로직 끝 ---
-
+      
       const cardDiv = document.createElement('div');
       cardDiv.className = 'character-card';
       cardDiv.dataset.id = char.id;
@@ -201,7 +189,6 @@
     characterList.appendChild(fragment);
   }
 
-  // 필터, 검색, 정렬을 적용하여 화면을 업데이트하는 메인 함수
   function updateDisplay() {
     const formData = new FormData(filterForm);
     const searchInputValue = searchBox.value;
@@ -271,34 +258,45 @@
     renderCharacters(filteredCharacters, isFiltered);
   }
 
-  // 필터 초기화
   function resetAllFilters() {
     filterForm.reset();
     searchBox.value = '';
     updateDisplay();
   }
   
-  // 모든 스킬 정보 열기/닫기 토글 함수
   function toggleAllSkills() {
     const allDetails = characterList.querySelectorAll('.skill-details');
     if (allDetails.length === 0) return;
     
-    // 첫 번째 스킬 정보의 상태를 기준으로, 모든 스킬 정보의 열림/닫힘 상태를 결정
     const shouldOpen = !allDetails[0].open;
     
     allDetails.forEach(detail => {
       detail.open = shouldOpen;
     });
+
+    if (shouldOpen) {
+      toggleSkillsButton.innerHTML = '🥕';
+      toggleSkillsButton.title = '모든 스킬 접기 (\\)';
+    } else {
+      toggleSkillsButton.innerHTML = '🐴';
+      toggleSkillsButton.title = '모든 스킬 펼치기 (\\)';
+    }
+  }
+  
+  function updateScrollButtonsVisibility() {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight;
+    const windowHeight = window.innerHeight;
+
+    scrollTopButton.classList.toggle('hidden', scrollTop < 20);
+    scrollBottomButton.classList.toggle('hidden', (scrollTop + windowHeight) >= (scrollHeight - 20));
   }
 
-  // 앱 초기화 함수
   async function initializeApp() {
     try {
       const response = await fetch('./characters.json');
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
       allCharacters = await response.json();
-
-      allCharacters = allCharacters.filter(char => char.id !== 'ZZZ' && char.id !== 999999);
 
       filterForm.addEventListener('input', updateDisplay);
       searchBox.addEventListener('input', updateDisplay);
@@ -308,6 +306,9 @@
       scrollTopButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
       scrollBottomButton.addEventListener('click', () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }));
       toggleSkillsButton.addEventListener('click', toggleAllSkills);
+      
+      window.addEventListener('scroll', updateScrollButtonsVisibility);
+      window.addEventListener('resize', updateScrollButtonsVisibility);
 
       document.addEventListener('keydown', (event) => {
         const activeElement = document.activeElement;
@@ -332,7 +333,7 @@
             case ',':
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 break;
-            case '\\': // '\' 키에 대한 단축키 추가
+            case '\\':
                 event.preventDefault();
                 toggleAllSkills();
                 break;
@@ -340,6 +341,7 @@
       });
 
       updateDisplay();
+      updateScrollButtonsVisibility();
 
     } catch (error) {
       console.error("캐릭터 데이터를 불러오는 데 실패했습니다:", error);

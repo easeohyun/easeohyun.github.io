@@ -34,7 +34,6 @@ header h1 a {
   text-decoration: none;
 }
 
-/* ▼▼▼ 경고 문구 스타일 추가 ▼▼▼ */
 @keyframes blink-effect {
   50% {
     opacity: 0;
@@ -102,15 +101,12 @@ input[type="number"] { width: 50px; padding: 5px; border: 1px solid #ccc; border
 #reset-filters:hover { background-color: #c0392b; }
 
 #toggle-skills-btn {
-  width: 38px;
-  height: 38px;
   padding: 0;
   border: 1px solid #ddd;
-  border-radius: 4px;
   cursor: pointer;
   font-size: 1.5em;
   line-height: 1;
-  background: linear-gradient(to right, #ffadad, #ffd6a5, #fdffb6, #caffbf, #9bf6ff, #a0c4ff, #bdb2ff);
+  background: linear-gradient(137.5deg, #ffadad, #ffd6a5, #fdffb6, #caffbf, #9bf6ff, #a0c4ff, #bdb2ff);
   transition: all 0.2s ease;
 }
 
@@ -159,10 +155,6 @@ input[type="number"] { width: 50px; padding: 5px; border: 1px solid #ccc; border
 #no-results-reset { padding: 12px 25px; border: none; background-color: #3498db; color: white; border-radius: 8px; cursor: pointer; font-size: 1.1em; font-weight: bold; transition: all 0.2s ease-in-out; box-shadow: 0 2px 5px rgba(52, 152, 219, 0.4); }
 #no-results-reset:hover { background-color: #2980b9; transform: translateY(-3px); box-shadow: 0 6px 12px rgba(52, 152, 219, 0.5); }
 
-
-/* ================================== */
-/* 캐릭터 카드 기본 스타일 (모바일)     */
-/* ================================== */
 .character-card {
   background-color: #f8f9fa;
   border: 2px solid #dee2e6;
@@ -192,9 +184,6 @@ input[type="number"] { width: 50px; padding: 5px; border: 1px solid #ccc; border
   margin: 0;
   color: #000;
 }
-.title-light-bg { background-color: #d1e7dd; }
-.title-dark-bg { background-color: #e2d8c9; }
-.title-hybrid-bg { background: linear-gradient(137.5deg, #d1e7dd 30%, #e2d8c9 70%); }
 
 .card-nickname {
   text-align: center;
@@ -220,7 +209,7 @@ input[type="number"] { width: 50px; padding: 5px; border: 1px solid #ccc; border
   text-align: center;
   margin-top: 8px;
   padding-top: 8px;
-  border-top: 1px dashed #ced4da;
+  border-top: 1px dashed var(--character-color, #ced4da);
 }
 .stat-item { display: flex; justify-content: space-between; font-size: 0.9em; }
 .stat-item .label { font-weight: 600; color: #495057; }
@@ -230,7 +219,7 @@ input[type="number"] { width: 50px; padding: 5px; border: 1px solid #ccc; border
 .skill-details {
   margin-top: 10px;
   padding-top: 10px;
-  border-top: 1px solid #e0e0e0;
+  border-top: 1px solid var(--character-color, #e0e0e0);
 }
 .skill-summary {
   font-weight: bold;
@@ -250,16 +239,15 @@ input[type="number"] { width: 50px; padding: 5px; border: 1px solid #ccc; border
   transform: rotate(180deg);
 }
 
-/* 스킬 컨테이너 및 슬롯 스타일 수정 */
 .skill-container {
   display: flex;
-  flex-direction: column; /* 행(row)들을 세로로 쌓음 */
+  flex-direction: column;
   gap: 6px;
   padding-top: 10px;
 }
 
 .skill-row {
-  display: flex; /* 슬롯들을 가로로 배열 */
+  display: flex;
   gap: 6px;
   width: 100%;
 }
@@ -273,21 +261,18 @@ input[type="number"] { width: 50px; padding: 5px; border: 1px solid #ccc; border
   justify-content: center;
   font-size: 0.85em;
   font-weight: bold;
-  padding: 2px 8px; /* 상하 패딩 추가 */
+  padding: 2px 8px;
   white-space: nowrap;
   text-align: center;
-  flex-grow: 1; /* 기본적으로 꽉 채움 (1개일 때) */
+  flex-grow: 1;
   flex-shrink: 1;
-  flex-basis: 0; /* flex-grow가 비율대로 작동하도록 */
+  flex-basis: 0;
 }
 
-/* 스킬 개수에 따른 너비 조절 유틸리티 클래스 */
 .skill-row .flex-2 { flex-grow: 1; flex-basis: 50%; }
 .skill-row .flex-3 { flex-grow: 1; flex-basis: 33.33%; }
 .skill-row .flex-4 { flex-grow: 1; flex-basis: 25%; }
 
-
-/* 등급 및 스킬 색상 */
 .stat-item .value .grade-g { color: #6c757d; }
 .stat-item .value .grade-f { color: #0d47a1; }
 .stat-item .value .grade-e { color: #6a1b9a; }
@@ -297,36 +282,27 @@ input[type="number"] { width: 50px; padding: 5px; border: 1px solid #ccc; border
 .stat-item .value .grade-a { color: #ef6c00; }
 .stat-item .value .grade-s { color: #ffc02f; }
 
-.skill-rainbow { background: linear-gradient(to right, #ffadad, #ffd6a5, #fdffb6, #caffbf, #9bf6ff, #a0c4ff, #bdb2ff); }
-.skill-pink { background-color: #ffc8dd; border-color: #ffb3d1; }
-.skill-yellow { background-color: #fff2b2; border-color: #ffec99; }
-.skill-white { background-color: #f8f9fa; border-color: #dee2e6; }
+.skill-rainbow { background: linear-gradient(137.5deg, #ffadad, #ffd6a5, #fdffb6, #caffbf, #9bf6ff, #a0c4ff, #bdb2ff); }
+.skill-pink { background: linear-gradient(137.5deg, #ffc8dd, #ffe4ee); border-color: #ffb3d1; }
+.skill-yellow { background: linear-gradient(137.5deg, #fff2b2, #fff9d6); border-color: #ffec99; }
+.skill-white { background: linear-gradient(137.5deg, #f8f9fa, #ffffff); border-color: #dee2e6; }
 
-/* ======================================================= */
-/* 화면 너비 600px 이상일 때 적용될 스타일 (태블릿/모바일 가로) */
-/* ======================================================= */
 @media (min-width: 600px) {
   #character-list {
     display: grid;
-    /* auto-fit과 minmax를 사용하여 깨짐 방지 및 자동 열 변환 */
-    /* 최소 너비를 400px로 상향하여 1열 전환 시점을 앞당김 */
     grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    align-items: stretch; /* 카드 높이를 동일하게 맞춤 */
+    align-items: stretch;
     gap: 20px;
   }
   .character-card {
-    width: auto; /* #character-list의 grid에 맞춰짐 */
+    width: auto;
     max-width: none;
   }
 }
 
-
-/* ======================================================= */
-/* 화면 너비가 992px 이상일 때 적용될 스타일 (데스크탑)     */
-/* ======================================================= */
 @media (min-width: 992px) {
   #character-list {
-    grid-template-columns: repeat(auto-fit, minmax(550px, 1fr)); /* 데스크톱에서는 더 넓은 최소 너비 적용 */
+    grid-template-columns: repeat(auto-fit, minmax(550px, 1fr));
     gap: 25px;
   }
 
@@ -356,7 +332,7 @@ input[type="number"] { width: 50px; padding: 5px; border: 1px solid #ccc; border
     margin-top: 0;
     padding: 15px;
     border-top: none;
-    border-left: 1px solid #e0e0e0;
+    border-left: 1px solid var(--character-color, #e0e0e0);
     display: flex;
     flex-direction: column;
   }
@@ -370,9 +346,8 @@ input[type="number"] { width: 50px; padding: 5px; border: 1px solid #ccc; border
       overflow-y: auto;
   }
 
-  /* --- 데스크톱 스킬 레이아웃 최종 수정 --- */
   .skill-container {
-    flex-direction: column; /* 스킬 그룹(row)을 세로로 쌓음 */
+    flex-direction: column;
     flex-wrap: nowrap;
     align-content: flex-start;
     flex-grow: 1;
@@ -380,26 +355,41 @@ input[type="number"] { width: 50px; padding: 5px; border: 1px solid #ccc; border
     padding-top: 0;
   }
 
-  /* .skill-row는 모바일/태블릿과 동일한 flex-direction:row 동작을 유지 (별도 선언 불필요) */
   .skill-row {
-     /* display: contents; 제거 */
-     gap: 8px; /* 데스크톱 환경의 더 넓은 간격 적용 */
+     gap: 8px;
   }
 
   .skill-slot {
-    /* JavaScript의 flex 클래스가 모든 화면에서 일관되게 작동하므로 별도 flex 속성 불필요 */
-    /* 데스크톱에서는 긴 스킬 이름이 잘리지 않고 줄바꿈 되도록 설정 */
     white-space: normal;
-    word-break: keep-all; /* 단어 단위로 줄바꿈 */
+    word-break: keep-all;
   }
 }
 
-/* ================================== */
-/* 기타 유틸리티 스타일 (Utilities) */
-/* ================================== */
+.title-turf-a { background-color: #558b2f; color: white; }
+.title-turf-b { background-color: #7cb342; color: white; }
+.title-turf-c { background-color: #9ccc65; color: black; }
+.title-turf-d { background-color: #c5e1a5; color: black; }
+.title-turf-e { background-color: #e6ee9c; color: black; }
+.title-turf-f { background-color: #f1f8e9; color: black; }
+.title-turf-g { background-color: #f9fbe7; color: black; }
+
+.title-dirt-a { background-color: #6d4c41; color: white; }
+.title-dirt-b { background-color: #8d6e63; color: white; }
+.title-dirt-c { background-color: #a1887f; color: white; }
+.title-dirt-d { background-color: #bcaaa4; color: black; }
+.title-dirt-e { background-color: #d7ccc8; color: black; }
+.title-dirt-f { background-color: #efebe9; color: black; }
+.title-dirt-g { background-color: #f5f5f5; color: black; }
+
+.title-hybrid-bg {
+    background: linear-gradient(137.5deg, #7cb342 45%, #8d6e63 55%);
+    color: white;
+}
+
 .scroll-buttons { position: fixed; bottom: 30px; right: 30px; display: flex; flex-direction: column; gap: 10px; z-index: 100; }
-.scroll-buttons button { width: 40px; height: 40px; border-radius: 50%; border: 1px solid #ddd; background-color: white; color: #333; font-size: 1.2em; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.15); transition: background-color 0.2s, transform 0.2s; }
+.scroll-buttons button { width: 40px; height: 40px; border-radius: 50%; border: 1px solid #ddd; background-color: white; color: #333; font-size: 1.2em; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.15); transition: all 0.3s ease-in-out; }
 .scroll-buttons button:hover { background-color: #f0f0f0; transform: scale(1.1); }
+.scroll-buttons button.hidden { opacity: 0; pointer-events: none; transform: scale(0.8); }
 
 footer {
   font-size: 0.8em;
@@ -414,11 +404,6 @@ footer {
 footer p {
   margin: 0.5em 0;
 }
-
-/* ================================== */
-/* 사용자 정의 체크박스 색상 (Custom Checkbox Colors) */
-/* ================================== */
-
 
 input[type="checkbox"][name="Turf"]:checked + label::before {
   background-color: #38761d;
