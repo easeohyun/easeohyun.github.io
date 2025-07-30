@@ -72,7 +72,23 @@
     "tags": ["축제", "무녀", "음이오", "한적한가을엮이는추억", "Tokai Teio", "トウカイテイオー"]  
   },
   {
-    "id": 100401, "name": "마루젠스키", "nickname": "포뮬러 오브 루주", "color": "#DC143C",
+    "id": 100401, "name": "마루젠스키", "nickname": "포뮬러 오브 루주", "color": "#ea504a",
+    "SurfaceAptitude": { "Turf": "A", "Dirt": "D" },
+    "DistanceAptitude": { "Short": "B", "Mile": "A", "Medium": "B", "Long": "C" }, 
+    "StrategyAptitude": { "Front": "A", "Pace": "E", "Late": "G", "End": "G" },
+    "StatBonuses": { "Speed": 10, "Stamina": 0, "Power": 0, "Guts": 0, "Wit": 20 },
+    "skills": { "rainbow": ["홍염 기어/LP1211-M"], "pink": ["날아 보자구!", "홍련의 오버 레브"], "yellow": ["기어 체인지", "엑셀 전개!"], "white": ["직선 달인", "기어 시프트", "앞장서기", "엑셀러레이션", "집중력"] },
+    "tags": ["슈퍼카", "틀딱", "마르젠스키", "니게시스", "도주시스터즈"]  
+  },  {
+    "id": 100401, "name": "마루젠스키", "nickname": "포뮬러 오브 루주", "color": "#ea504a",
+    "SurfaceAptitude": { "Turf": "A", "Dirt": "D" },
+    "DistanceAptitude": { "Short": "B", "Mile": "A", "Medium": "B", "Long": "C" }, 
+    "StrategyAptitude": { "Front": "A", "Pace": "E", "Late": "G", "End": "G" },
+    "StatBonuses": { "Speed": 10, "Stamina": 0, "Power": 0, "Guts": 0, "Wit": 20 },
+    "skills": { "rainbow": ["홍염 기어/LP1211-M"], "pink": ["날아 보자구!", "홍련의 오버 레브"], "yellow": ["기어 체인지", "엑셀 전개!"], "white": ["직선 달인", "기어 시프트", "앞장서기", "엑셀러레이션", "집중력"] },
+    "tags": ["슈퍼카", "틀딱", "마르젠스키", "니게시스", "도주시스터즈"]  
+  },  {
+    "id": 100401, "name": "마루젠스키", "nickname": "포뮬러 오브 루주", "color": "#ea504a",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "D" },
     "DistanceAptitude": { "Short": "B", "Mile": "A", "Medium": "B", "Long": "C" }, 
     "StrategyAptitude": { "Front": "A", "Pace": "E", "Late": "G", "End": "G" },
