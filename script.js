@@ -1,343 +1,338 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap');
+(function() {
+  'use strict';
 
-:root {
-  --font-primary: 'Noto Sans KR', 'Roboto', sans-serif;
+  // --- Constants and Global State ---
+  const gradeMap = { 'S': 7, 'A': 6, 'B': 5, 'C': 4, 'D': 3, 'E': 2, 'F': 1, 'G': 0 };
+  const nameMaps = {
+    SurfaceAptitude: { name: '경기장 적성', map: { Turf: '잔디', Dirt: '더트' } },
+    DistanceAptitude: { name: '거리 적성', map: { Short: '단거리', Mile: '마일', Medium: '중거리', Long: '장거리' } },
+    StrategyAptitude: { name: '각질 적성', map: { Front: '도주', Pace: '선행', Late: '선입', End: '추입' } },
+    StatBonuses: { name: '성장률', map: { Speed: '스피드', Stamina: '스태미나', Power: '파워', Guts: '근성', Wit: '지능' } }
+  };
+  let allCharacters = [];
+
+  // --- DOM Element Cache ---
+  const DOMElements = {
+    filterForm: document.getElementById('filter-form'),
+    characterList: document.getElementById('character-list'),
+    resultSummary: document.getElementById('result-summary'),
+    sortOrder: document.getElementById('sort-order'),
+    searchBox: document.getElementById('search-box'),
+    resetFiltersButton: document.getElementById('reset-filters'),
+    noResultsContainer: document.getElementById('no-results'),
+    noResultsResetButton: document.getElementById('no-results-reset'),
+    scrollTopButton: document.getElementById('scroll-top'),
+    scrollBottomButton: document.getElementById('scroll-bottom'),
+    toggleSkillsButton: document.getElementById('toggle-skills-btn'),
+  };
+
+  /**
+   * Enhanced search function with Korean initialism (Chosung) support.
+   * @param {string} target The string to search within.
+   * @param {string} term The search term.
+   * @returns {boolean} True if the term is found, false otherwise.
+   */
+  function smartIncludes(target, term) {
+    const targetStr = String(target || '').toLowerCase();
+    const termStr = String(term || '').toLowerCase();
+    if (!termStr) return true;
+
+    const sanitize = (str) => str.replace(/[\s\-!@#$%^&*()_+={}\[\]:;"'<>,.?\/\\|`~♪☆・！？—ﾟ∀]/g, "");
+    const sanitizedTerm = sanitize(termStr);
+    const sanitizedTarget = sanitize(targetStr);
+    
+    if (!sanitizedTerm) return true;
+    if (sanitizedTarget.includes(sanitizedTerm)) return true;
+
+    const CHO = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ";
+    const isTermAllChosung = [...sanitizedTerm].every(char => CHO.includes(char));
+    
+    if (isTermAllChosung) {
+      const getChosung = (char) => {
+        const code = char.charCodeAt(0) - 44032;
+        return (code >= 0 && code <= 11171) ? CHO[Math.floor(code / 588)] : char;
+      };
+      const targetChosung = [...sanitizedTarget].map(getChosung).join('');
+      if (targetChosung.includes(sanitizedTerm)) return true;
+    }
+    return false;
+  }
+
+  /**
+   * Creates and returns a DOM element for a single character card.
+   * @param {object} char The character data object.
+   * @returns {HTMLElement} The character card element.
+   */
+  function createCharacterCard(char) {
+    const card = document.createElement('div');
+    card.className = 'character-card';
+    card.dataset.id = char.id;
+    if (char.color) {
+      card.style.setProperty('--character-color', char.color);
+    }
+    
+    const isTurfBPlus = gradeMap[char.SurfaceAptitude.Turf] >= gradeMap['B'];
+    const isDirtBPlus = gradeMap[char.SurfaceAptitude.Dirt] >= gradeMap['B'];
+    let titleBgClass = '';
+    if (isTurfBPlus && isDirtBPlus) {
+      titleBgClass = 'title-hybrid-bg';
+    } else if (isTurfBPlus || (!isDirtBPlus && gradeMap[char.SurfaceAptitude.Turf] > gradeMap[char.SurfaceAptitude.Dirt])) {
+      titleBgClass = `title-turf-${char.SurfaceAptitude.Turf.toLowerCase()}`;
+    } else {
+      titleBgClass = `title-dirt-${char.SurfaceAptitude.Dirt.toLowerCase()}`;
+    }
+
+    const statsList = Object.entries(nameMaps).map(([sectionKey, { name, map }]) => {
+      const items = Object.entries(map).map(([itemKey, displayName]) => {
+        const value = char[sectionKey]?.[itemKey];
+        if (value === undefined) return '';
+        const displayValue = sectionKey === 'StatBonuses'
+          ? `<span>${value}</span><span class="percent">%</span>`
+          : `<span class="grade-${value.toLowerCase()}">${value}</span>`;
+        return `<li class="stat-item"><span class="label">${displayName}</span><span class="value">${displayValue}</span></li>`;
+      }).join('');
+      return `<li class="stat-item stat-category">${name}</li>${items}`;
+    }).join('');
+
+    const createSkillRow = (skills, color, flexClassMap) => {
+      if (!skills || skills.length === 0) return '';
+      const flexClass = flexClassMap[skills.length] || `flex-${skills.length}`;
+      const slots = skills.map(skill => `<div class="skill-slot skill-${color} ${flexClass}">${skill || ''}</div>`).join('');
+      return `<div class="skill-row">${slots}</div>`;
+    };
+    
+    const skillHTML = [
+      createSkillRow(char.skills.rainbow, 'rainbow', { 1: '', 2: 'flex-2'}),
+      createSkillRow(char.skills.pink, 'pink', { 2: 'flex-2', 3: 'flex-3', 4: 'flex-4'}),
+      createSkillRow(char.skills.yellow, 'yellow', { 1: '', 2: 'flex-2'}),
+      createSkillRow(char.skills.white?.slice(0, 3), 'white', { 1: '', 2: 'flex-2', 3: 'flex-3'}),
+      createSkillRow(char.skills.white?.slice(3), 'white', { 1: '', 2: 'flex-2'})
+    ].join('');
+    
+    card.innerHTML = `
+      <div class="card-main-info">
+          <div class="card-identity">
+            <div class="card-nickname">${char.nickname}</div>
+            <div class="card-title ${titleBgClass}">${char.name}</div>
+          </div>
+          <ul class="card-stats">${statsList}</ul>
+      </div>
+      <details class="skill-details">
+        <summary class="skill-summary">스킬 정보</summary>
+        <div class="skill-container">${skillHTML}</div>
+      </details>`;
+      
+    return card;
+  }
   
-  --color-text: #333;
-  --color-text-light: #6c757d;
-  --color-primary: #3498db;
-  --color-primary-dark: #2980b9;
-  --color-secondary: #2c3e50;
-  --color-danger: #c0392b;
-  --color-danger-bg: #e74c3c;
-  --color-background: #f4f4f4;
-  --color-surface: #fff;
-  --color-border: #ddd;
-  --color-border-light: #e0e0e0;
+  /**
+   * Renders the character cards to the list.
+   * @param {Array<object>} charactersToRender The array of characters to display.
+   * @param {boolean} isFiltered Indicates if filters are active.
+   */
+  function renderCharacters(charactersToRender, isFiltered) {
+    const { characterList, noResultsContainer, resultSummary } = DOMElements;
+    const count = charactersToRender.length;
+    
+    characterList.innerHTML = '';
 
-  --stat-speed: #2bb7f1;
-  --stat-stamina: #ff7c67;
-  --stat-power: #f39b17;
-  --stat-guts: #ff6fac;
-  --stat-wit: #22bf7d;
-  --apt-turf: #38761d;
-  --apt-dirt: #744700;
-  --apt-distance: #333333;
-  --apt-strategy: #333333;
+    if (count === 0 && isFiltered) {
+      characterList.style.display = 'none';
+      noResultsContainer.style.display = 'block';
+      resultSummary.textContent = '';
+      return;
+    }
+    
+    characterList.style.display = '';
+    noResultsContainer.style.display = 'none';
+    
+    let summaryText = '';
+    if (!isFiltered) {
+      summaryText = `트레센 학원에 어서오세요, ${count}명의 우마무스메를 만날 수 있답니다!`;
+    } else {
+        if (count === 1) summaryText = "당신이 찾던 그 우마무스메가... 딱 1명 있네요! 찾았어요!";
+        else if (count <= 5) summaryText = `당신이 찾던 그 우마무스메가... ${count}명 있어요!`;
+        else if (count <= 15) summaryText = `당신이 찾는 그 우마무스메가... ${count}명 중에 있을 것 같아요.`;
+        else if (count <= 50) summaryText = `당신이 찾는 그 우마무스메가... ${count}명 중에 있는 것 맞죠?`;
+        else summaryText = `당신이 찾는 그 우마무스메가... ${count}명 중에 있기를 바랍니다!`;
+    }
+    resultSummary.textContent = summaryText;
 
-  --shadow-light: 0 0 10px rgba(0,0,0,0.1);
-  --shadow-medium: 0 4px 6px rgba(0,0,0,0.07);
-  --shadow-hover: 0 8px 12px rgba(0,0,0,0.1);
+    const fragment = document.createDocumentFragment();
+    charactersToRender.forEach(char => fragment.appendChild(createCharacterCard(char)));
+    characterList.appendChild(fragment);
+  }
+
+  /**
+   * Main function to filter, sort, and render characters based on user input.
+   */
+  function updateDisplay() {
+    const { filterForm, searchBox, sortOrder } = DOMElements;
+    const formData = new FormData(filterForm);
+
+    const activeFilters = Array.from(filterForm.elements)
+      .filter(el => el.type === 'checkbox' && el.checked)
+      .map(checkbox => {
+        const key = checkbox.name;
+        const isStatBonus = !!filterForm.querySelector(`input[name="${key}-value"]`);
+        return isStatBonus
+          ? { key, type: 'value', value: parseInt(formData.get(`${key}-value`), 10) }
+          : { key, type: 'grade', value: gradeMap[formData.get(`${key}-grade`)] };
+      });
+      
+    const rawSearchTerms = searchBox.value.split(',').map(term => term.trim()).filter(Boolean);
+    const inclusionTerms = rawSearchTerms.filter(term => !term.startsWith('-'));
+    const exclusionTerms = rawSearchTerms.filter(term => term.startsWith('-')).map(term => term.substring(1)).filter(Boolean);
+
+    const isFiltered = activeFilters.length > 0 || rawSearchTerms.length > 0;
+
+    const filteredCharacters = allCharacters.filter(character => {
+      const passesFilters = activeFilters.every(filter => {
+        for (const sectionName in nameMaps) {
+          if (character[sectionName] && character[sectionName][filter.key] !== undefined) {
+            return filter.type === 'value'
+              ? character[sectionName][filter.key] >= filter.value
+              : gradeMap[character[sectionName][filter.key]] >= filter.value;
+          }
+        }
+        return false;
+      });
+      if (!passesFilters) return false;
+
+      if (rawSearchTerms.length > 0) {
+        const allSkills = Object.values(character.skills).flat().filter(Boolean);
+        const searchTargets = [String(character.id), character.name, character.nickname, ...allSkills, ...character.tags];
+        
+        const passesInclusion = inclusionTerms.every(term => searchTargets.some(target => smartIncludes(target, term)));
+        if (!passesInclusion) return false;
+        
+        const passesExclusion = !exclusionTerms.some(term => searchTargets.some(target => smartIncludes(target, term)));
+        if (!passesExclusion) return false;
+      }
+
+      return true;
+    });
+
+    const sortBy = sortOrder.value;
+    filteredCharacters.sort((a, b) => {
+        switch (sortBy) {
+            case 'name-asc': return a.name.localeCompare(b.name, 'ko') || a.id - b.id;
+            case 'name-desc': return b.name.localeCompare(a.name, 'ko') || a.id - b.id;
+            case 'id-asc': return a.id - b.id;
+            case 'id-desc': return b.id - a.id;
+            default: return 0;
+        }
+    });
+
+    renderCharacters(filteredCharacters, isFiltered);
+  }
   
-  --border-radius-small: 4px;
-  --border-radius-medium: 8px;
-  --border-radius-large: 12px;
-}
-
-/* --- Global & Typography --- */
-body {
-  font-family: var(--font-primary);
-  line-height: 1.5;
-  margin: 0;
-  padding: 20px;
-  background-color: var(--color-background);
-  color: var(--color-text);
-}
-
-h1 { color: var(--color-secondary); }
-
-/* --- Layout --- */
-main {
-  max-width: 1600px;
-  margin: auto;
-  background-color: var(--color-surface);
-  padding: 20px;
-  border-radius: var(--border-radius-medium);
-  box-shadow: var(--shadow-light);
-}
-
-header {
-  text-align: center;
-  border-bottom: 1px solid var(--color-border);
-  margin-bottom: 20px;
-  padding-bottom: 10px;
-}
-
-header h1 a {
-  color: inherit;
-  text-decoration: none;
-}
-
-footer {
-  font-size: 0.8em;
-  color: #808080;
-  text-align: left;
-  padding: 10px;
-  max-width: 1200px;
-  margin: 20px auto 0 auto;
-  border-top: 1px solid #eee;
-  line-height: 1.4;
-}
-footer p { margin: 0.5em 0; }
-
-/* --- Animations --- */
-@keyframes blink-effect { 50% { opacity: 0; } }
-
-/* --- Components --- */
-.warning-banner {
-  margin-top: 15px;
-  padding: 10px;
-  background-color: #fff0f0;
-  border: 1px solid #ff000;
-  border-radius: var(--border-radius-small);
-  color: var(--color-danger);
-  font-weight: bold;
-  animation: blink-effect 2s infinite;
-}
-
-.filter-section fieldset {
-  border: 1px solid var(--color-border);
-  border-radius: var(--border-radius-small);
-  margin-bottom: 15px;
-  padding: 15px;
-}
-
-.filter-section legend {
-  font-weight: bold;
-  color: var(--color-primary);
-  padding: 0 10px;
-  font-size: 1.25em;
-}
-
-.filter-group { display: flex; flex-wrap: wrap; gap: 20px; }
-.filter-item { display: flex; align-items: center; gap: 8px; }
-
-/* Refactored Custom Checkbox */
-.filter-item input[type="checkbox"] { display: none; }
-.filter-item label { position: relative; padding-left: 26px; cursor: pointer; user-select: none; }
-.filter-item label::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 16px;
-  height: 16px;
-  border: 1.5px solid #ccc;
-  border-radius: 3px;
-  background-color: white;
-  transition: all 0.2s ease;
-}
-.filter-item input[type="checkbox"]:checked + label::before {
-  background-color: var(--checkbox-color, var(--color-primary));
-  border-color: var(--checkbox-color, var(--color-primary));
-}
-.filter-item label::after {
-  content: '';
-  position: absolute;
-  left: 5px;
-  top: 50%;
-  width: 6px;
-  height: 10px;
-  border: solid white;
-  border-width: 0 2px 2px 0;
-  transform: translateY(-65%) rotate(45deg);
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-.filter-item input[type="checkbox"]:checked + label::after { opacity: 1; }
-
-/* Dynamic Checkbox Colors using CSS Variables */
-.filter-item[data-color-group="aptitude_ground"] input[type="checkbox"][name="Turf"]:checked + label { --checkbox-color: var(--apt-turf); }
-.filter-item[data-color-group="aptitude_ground"] input[type="checkbox"][name="Dirt"]:checked + label { --checkbox-color: var(--apt-dirt); }
-.filter-item[data-color-group="aptitude_distance"] input[type="checkbox"]:checked + label { --checkbox-color: var(--apt-distance); }
-.filter-item[data-color-group="aptitude_strategy"] input[type="checkbox"]:checked + label { --checkbox-color: var(--apt-strategy); }
-.filter-item[data-color-group="growth"] input[type="checkbox"][name="Speed"]:checked + label { --checkbox-color: var(--stat-speed); }
-.filter-item[data-color-group="growth"] input[type="checkbox"][name="Stamina"]:checked + label { --checkbox-color: var(--stat-stamina); }
-.filter-item[data-color-group="growth"] input[type="checkbox"][name="Power"]:checked + label { --checkbox-color: var(--stat-power); }
-.filter-item[data-color-group="growth"] input[type="checkbox"][name="Guts"]:checked + label { --checkbox-color: var(--stat-guts); }
-.filter-item[data-color-group="growth"] input[type="checkbox"][name="Wit"]:checked + label { --checkbox-color: var(--stat-wit); }
-
-
-/* Form Controls (Inputs, Selects, Buttons) */
-.controls-container { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px; }
-
-input[type="number"] { width: 50px; padding: 5px; border: 1px solid #ccc; border-radius: var(--border-radius-small); }
-
-#search-box, .sort-container select, .filter-item select {
-  padding: 8px 12px;
-  border: 1px solid #ccc;
-  border-radius: var(--border-radius-small);
-  outline: none;
-  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-}
-
-#search-box:hover, .sort-container select:hover, .filter-item select:hover { border-color: #aaa; }
-#search-box:focus, .sort-container select:focus, .filter-item select:focus { border-color: var(--color-primary); box-shadow: 0 0 5px rgba(52, 152, 219, 0.5); }
-
-#search-box { flex-grow: 1; font-size: 1em; min-width: 250px; }
-#search-box::placeholder { color: #aab; font-style: italic; opacity: 1; transition: opacity 0.3s ease; }
-#search-box:focus::placeholder { opacity: 0.5; color: var(--color-primary); }
-
-.sort-container { display: flex; align-items: center; gap: 8px; }
-
-#reset-filters {
-  padding: 8px 15px;
-  border: 1px solid var(--color-danger);
-  background-color: var(--color-danger-bg);
-  color: white;
-  border-radius: var(--border-radius-small);
-  cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.2s;
-  white-space: nowrap;
-}
-#reset-filters:hover { background-color: var(--color-danger); }
-
-/* --- Results Section --- */
-.results-section { padding-top: 10px; }
-#result-summary { text-align: center; font-size: 1.2em; font-weight: bold; margin-bottom: 20px; color: var(--color-primary-dark); }
-
-#character-list { display: flex; flex-direction: column; align-items: center; gap: 20px; }
-#no-results {
-  text-align: center; padding: 50px 40px; margin-top: 20px; background-color: #f7faff; border: 1px solid #dbe9f7;
-  border-radius: var(--border-radius-large); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-}
-.no-results-icon { font-size: 3em; font-weight: bold; color: #a9c5e2; margin-bottom: 15px; }
-#no-results p { font-size: 1.3em; color: #5a7896; margin: 0 0 25px 0; font-weight: 500; }
-#no-results-reset {
-  padding: 12px 25px; border: none; background-color: var(--color-primary); color: white; border-radius: var(--border-radius-medium);
-  cursor: pointer; font-size: 1.1em; font-weight: bold; transition: all 0.2s ease-in-out; box-shadow: 0 2px 5px rgba(52, 152, 219, 0.4);
-}
-#no-results-reset:hover { background-color: var(--color-primary-dark); transform: translateY(-3px); box-shadow: 0 6px 12px rgba(52, 152, 219, 0.5); }
-
-
-/* --- Character Card --- */
-.character-card {
-  background-color: #f8f9fa;
-  border: 2px solid #dee2e6;
-  border-radius: var(--border-radius-large);
-  box-shadow: var(--shadow-medium);
-  width: 95%;
-  max-width: 400px;
-  padding: 13px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  transition: all 0.2s ease-in-out, border-color 0.3s ease;
-  --character-color: var(--color-primary); /* Default character color */
-}
-.character-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); border-color: var(--character-color); }
-
-.card-title { font-size: 1.2em; font-weight: bold; text-align: center; padding: 8px; border-radius: var(--border-radius-medium); margin: 0; color: #000; }
-.card-nickname { text-align: center; font-size: 0.85em; color: var(--color-text-light); margin-bottom: 12px; font-weight: 500; }
-
-.card-stats {
-  list-style: none; padding: 0; margin: 0;
-  display: grid; grid-template-columns: 1fr 1fr; gap: 6px 16px;
-}
-.stat-category {
-  grid-column: 1 / -1; font-weight: bold; color: #343a40; text-align: center;
-  margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--character-color);
-}
-.stat-item { display: flex; justify-content: space-between; font-size: 0.9em; }
-.stat-item .label { font-weight: 600; color: #495057; }
-.stat-item .value { font-weight: bold; }
-.value .percent { font-size: 0.8em; margin-left: 2px; color: var(--color-text-light); }
-
-/* --- Grade & Aptitude Colors --- */
-.stat-item .value .grade-g { color: #6c757d; }
-.stat-item .value .grade-f { color: #0d47a1; }
-.stat-item .value .grade-e { color: #6a1b9a; }
-.stat-item .value .grade-d { color: #1565c0; }
-.stat-item .value .grade-c { color: #558b2f; }
-.stat-item .value .grade-b { color: #c62828; }
-.stat-item .value .grade-a { color: #ef6c00; }
-.stat-item .value .grade-s { color: #ffc02f; }
-
-.title-turf-a { background-color: #558b2f; color: white; } .title-turf-b { background-color: #7cb342; color: white; }
-.title-turf-c { background-color: #9ccc65; color: black; } .title-turf-d { background-color: #c5e1a5; color: black; }
-.title-turf-e { background-color: #e6ee9c; color: black; } .title-turf-f { background-color: #f1f8e9; color: black; }
-.title-turf-g { background-color: #f9fbe7; color: black; }
-
-.title-dirt-a { background-color: #6d4c41; color: white; } .title-dirt-b { background-color: #8d6e63; color: white; }
-.title-dirt-c { background-color: #a1887f; color: white; } .title-dirt-d { background-color: #bcaaa4; color: black; }
-.title-dirt-e { background-color: #d7ccc8; color: black; } .title-dirt-f { background-color: #efebe9; color: black; }
-.title-dirt-g { background-color: #f5f5f5; color: black; }
-
-.title-hybrid-bg { background: linear-gradient(137.5deg, #7cb342 45%, #8d6e63 55%); color: white; }
-
-/* --- Skill Section --- */
-.skill-details { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--character-color); }
-.skill-summary {
-  font-weight: bold; color: #343a40; cursor: pointer; list-style: none;
-  text-align: center; padding: 5px 0;
-}
-.skill-summary::after { content: ' ▼'; font-size: 0.8em; display: inline-block; transition: transform 0.2s ease-in-out; }
-.skill-details[open] > .skill-summary::after { transform: rotate(180deg); }
-
-.skill-container { display: flex; flex-direction: column; gap: 6px; padding-top: 10px; }
-.skill-row { display: flex; gap: 6px; width: 100%; }
-
-.skill-slot {
-  min-height: 22px; border-radius: var(--border-radius-small); border: 1px solid rgba(0, 0, 0, 0.1);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.85em; font-weight: bold; padding: 2px 8px;
-  white-space: nowrap; text-align: center; flex: 1 1 0;
-}
-
-.skill-row .flex-2 { flex-basis: 50%; }
-.skill-row .flex-3 { flex-basis: 33.33%; }
-.skill-row .flex-4 { flex-basis: 25%; }
-
-.skill-rainbow { background: linear-gradient(137.5deg, #ffadad, #ffd6a5, #fdffb6, #caffbf, #9bf6ff, #a0c4ff, #bdb2ff); }
-.skill-pink { background: linear-gradient(137.5deg, #ffc8dd, #ffe4ee); border-color: #ffb3d1; }
-.skill-yellow { background: linear-gradient(137.5deg, #fff2b2, #fff9d6); border-color: #ffec99; }
-.skill-white { background: linear-gradient(137.5deg, #f8f9fa, #ffffff); border-color: #dee2e6; }
-
-/* --- Floating Buttons --- */
-.scroll-buttons { position: fixed; bottom: 30px; right: 30px; display: flex; flex-direction: column; gap: 10px; z-index: 100; }
-.scroll-buttons button {
-  width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--color-border); background-color: white;
-  color: var(--color-text); font-size: 1.2em; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.15);
-  transition: all 0.3s ease-in-out; display: flex; align-items: center; justify-content: center;
-}
-.scroll-buttons button:hover { background-color: #f0f0f0; transform: scale(1.1); }
-#toggle-skills-btn {
-  font-size: 1.5em; line-height: 1;
-  background: linear-gradient(137.5deg, #ffadad, #ffd6a5, #fdffb6, #caffbf, #9bf6ff, #a0c4ff, #bdb2ff);
-}
-#toggle-skills-btn:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
-.scroll-buttons button.hidden { opacity: 0; pointer-events: none; transform: scale(0.8); }
-
-/* --- Responsive Design --- */
-@media (min-width: 600px) {
-  #character-list {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    align-items: stretch; gap: 20px;
+  // --- Utility and Event Handler Functions ---
+  
+  function resetAllFilters() {
+    DOMElements.filterForm.reset();
+    DOMElements.searchBox.value = '';
+    updateDisplay();
   }
-  .character-card { width: auto; max-width: none; }
-}
+  
+  function toggleAllSkills(e) {
+    const { characterList, toggleSkillsButton } = DOMElements;
+    const allDetails = characterList.querySelectorAll('.skill-details');
+    if (allDetails.length === 0) return;
+    
+    const shouldOpen = !allDetails[0].open;
+    allDetails.forEach(detail => detail.open = shouldOpen);
 
-@media (min-width: 992px) {
-  #character-list { grid-template-columns: repeat(auto-fit, minmax(550px, 1fr)); gap: 25px; }
-
-  .character-card { flex-direction: row; align-items: stretch; gap: 20px; padding: 18px; }
-  .character-card:hover { transform: scale(1.02); }
-
-  .card-main-info { flex: 2 1 300px; display: flex; flex-direction: column; min-width: 0; }
-  .card-stats { flex-grow: 1; }
-
-  .skill-details {
-    flex: 1 1 220px; margin-top: 0; padding: 15px; border-top: none;
-    border-left: 1px solid var(--character-color); display: flex; flex-direction: column;
+    toggleSkillsButton.innerHTML = shouldOpen ? '🥕' : '🐴';
+    toggleSkillsButton.title = shouldOpen ? '모든 스킬 접기 (\\)' : '모든 스킬 펼치기 (\\)';
   }
-  .skill-summary { text-align: center; padding: 0 0 10px 0; }
-  .skill-details[open] { overflow-y: auto; }
-  .skill-container {
-    flex-direction: column; flex-wrap: nowrap; align-content: flex-start;
-    flex-grow: 1; gap: 8px; padding-top: 0;
+  
+  function updateScrollButtonsVisibility() {
+    const { scrollTopButton, scrollBottomButton } = DOMElements;
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight;
+    const windowHeight = window.innerHeight;
+
+    scrollTopButton.classList.toggle('hidden', scrollTop < 200);
+    scrollBottomButton.classList.toggle('hidden', (scrollTop + windowHeight) >= (scrollHeight - 20));
   }
-  .skill-row { gap: 8px; }
-  .skill-slot { white-space: normal; word-break: keep-all; }
-}
+  
+  function handleKeyboardShortcuts(event) {
+    const { searchBox } = DOMElements;
+    const activeElement = document.activeElement;
+    if (activeElement && (activeElement.tagName === 'INPUT' || activeElement.tagName === 'SELECT')) {
+        if (event.key === 'Escape') resetAllFilters();
+        return;
+    }
+
+    switch (event.key) {
+        case '/': event.preventDefault(); searchBox.focus(); break;
+        case 'Escape': resetAllFilters(); break;
+        case '.': window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }); break;
+        case ',': window.scrollTo({ top: 0, behavior: 'smooth' }); break;
+        case '\\': event.preventDefault(); toggleAllSkills(); break;
+    }
+  }
+
+  /**
+   * NEW: Sets the --checkbox-color CSS variable on filter items for dynamic styling.
+   * This avoids needing to modify the HTML.
+   */
+  function setupDynamicCheckboxColors() {
+    const colorMap = {
+      Turf: 'var(--color-apt-turf)', Dirt: 'var(--color-apt-dirt)',
+      Short: 'var(--color-apt-distance)', Mile: 'var(--color-apt-distance)', Medium: 'var(--color-apt-distance)', Long: 'var(--color-apt-distance)',
+      Front: 'var(--color-apt-strategy)', Pace: 'var(--color-apt-strategy)', Late: 'var(--color-apt-strategy)', End: 'var(--color-apt-strategy)',
+      Speed: 'var(--color-stat-speed)', Stamina: 'var(--color-stat-stamina)', Power: 'var(--color-stat-power)',
+      Guts: 'var(--color-stat-guts)', Wit: 'var(--color-stat-wit)'
+    };
+
+    DOMElements.filterForm.querySelectorAll('.filter-item').forEach(item => {
+      const checkbox = item.querySelector('input[type="checkbox"]');
+      if (checkbox && colorMap[checkbox.name]) {
+        item.style.setProperty('--checkbox-color', colorMap[checkbox.name]);
+      }
+    });
+  }
+
+  /**
+   * Initializes the application: fetches data, sets up event listeners.
+   */
+  async function initializeApp() {
+    try {
+      // Setup dynamic styles first
+      setupDynamicCheckboxColors();
+
+      const response = await fetch('./characters.json');
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      allCharacters = await response.json();
+
+      const { filterForm, searchBox, sortOrder, resetFiltersButton, noResultsResetButton, 
+              scrollTopButton, scrollBottomButton, toggleSkillsButton } = DOMElements;
+
+      filterForm.addEventListener('input', updateDisplay);
+      searchBox.addEventListener('input', updateDisplay);
+      sortOrder.addEventListener('change', updateDisplay);
+      resetFiltersButton.addEventListener('click', resetAllFilters);
+      noResultsResetButton.addEventListener('click', resetAllFilters);
+      scrollTopButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+      scrollBottomButton.addEventListener('click', () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }));
+      toggleSkillsButton.addEventListener('click', toggleAllSkills);
+      
+      window.addEventListener('scroll', updateScrollButtonsVisibility);
+      window.addEventListener('resize', updateScrollButtonsVisibility);
+      document.addEventListener('keydown', handleKeyboardShortcuts);
+
+      updateDisplay();
+      updateScrollButtonsVisibility();
+
+    } catch (error) {
+      console.error("캐릭터 데이터를 불러오는 데 실패했습니다:", error);
+      DOMElements.characterList.innerHTML = `<p style="text-align:center; color:red;">캐릭터 정보를 불러오지 못했습니다. characters.json 파일이 올바른 위치에 있는지 확인해 주세요.<br>사이트 관리자에게 문의하여 주세요.</p>`;
+    }
+  }
+
+  // --- App Entry Point ---
+  document.addEventListener('DOMContentLoaded', initializeApp);
+
+})();
