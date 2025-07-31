@@ -392,19 +392,16 @@ initializeApp();
 // --- Power Checkbox Icon Randomization Start ---
 const powerCheckbox = document.getElementById('Power');
 if (powerCheckbox) {
+  const powerLabel = powerCheckbox.nextElementSibling;
   powerCheckbox.addEventListener('change', function() {
-    const label = this.nextElementSibling;
     if (this.checked) {
-      const icon = Math.random() < 0.5 ? 'humerus_alt' : 'ulna_radius_alt';
-      const style = document.createElement('style');
-      style.id = 'power-icon-style';
-      style.innerHTML = `#Power:checked + label::after { content: '${icon}'; }`;
-      document.head.appendChild(style);
+      // 체크 시 50% 확률로 아이콘 결정 후 data-icon 속성 설정
+      // Google Fonts의 공식 아이콘 이름은 'humerus', 'ulna_radius' 입니다.
+      const icon = Math.random() < 0.5 ? 'humerus' : 'ulna_radius';
+      powerLabel.dataset.icon = icon;
     } else {
-      const style = document.getElementById('power-icon-style');
-      if (style) {
-        style.remove();
-      }
+      // 체크 해제 시 data-icon 속성 제거
+      delete powerLabel.dataset.icon;
     }
   });
 }
