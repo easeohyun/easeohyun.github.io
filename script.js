@@ -311,11 +311,11 @@ function applyTheme(theme) {
     if (theme === 'dark') {
         html.dataset.theme = 'dark';
         icon.textContent = 'light_mode';
-        darkModeToggleButton.title = '라이트 모드 전환';
+        darkModeToggleButton.title = '밝은 테마로 전환 (])';
     } else {
         html.dataset.theme = 'light';
         icon.textContent = 'dark_mode';
-        darkModeToggleButton.title = '다크 모드 전환';
+        darkModeToggleButton.title = '어두운 테마로 전환 (])';
     }
 }
 
