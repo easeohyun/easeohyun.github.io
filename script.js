@@ -408,3 +408,41 @@ if (powerCheckbox) {
   });
 }
 // --- Power Checkbox Icon Randomization End ---
+
+// --- 확률적 아이콘 체크박스 설정 함수 ---
+function setupRandomIconCheckbox(checkboxId) {
+  const checkbox = document.getElementById(checkboxId);
+  if (!checkbox) return; // 해당 ID의 체크박스가 없으면 함수 종료
+
+  const label = checkbox.nextElementSibling;
+
+  checkbox.addEventListener('change', function() {
+    if (this.checked) {
+      // 체크 시 확률에 따라 아이콘 결정
+      const rand = Math.random(); // 0.0과 1.0 사이의 난수 생성
+      let icon;
+
+      if (rand < 0.05) { // 5% 확률
+        icon = 'directions_walk';
+      } else if (rand < 0.30) { // 25% 확률 (0.05 + 0.25)
+        icon = 'directions_run';
+      } else { // 70% 확률
+        icon = 'sprint';
+      }
+      
+      label.dataset.icon = icon;
+    } else {
+      // 체크 해제 시 아이콘 속성 제거
+      delete label.dataset.icon;
+    }
+  });
+}
+
+// 설정할 체크박스 ID 목록
+const targetCheckboxIds = [
+  'Short', 'Mile', 'Medium', 'Long', 
+  'Front', 'Pace', 'Late', 'End'
+];
+
+// 목록에 있는 모든 체크박스에 대하여 설정 함수 실행
+targetCheckboxIds.forEach(id => setupRandomIconCheckbox(id));
