@@ -267,7 +267,7 @@ function toggleAllSkills() {
 
   const icon = DOMElements.toggleSkillsButton.querySelector('.material-symbols-outlined');
   icon.textContent = shouldOpen ? 'visibility_off' : 'visibility';
-  DOMElements.toggleSkillsButton.title = shouldOpen ? '모든 스킬 접기 (\\)' : '모든 스킬 펼치기 (\\)';
+  DOMElements.toggleSkillsButton.title = shouldOpen ? '모든 스킬 접기 ([)' : '모든 스킬 펼치기 ([)';
 }
   
 function updateScrollButtonsVisibility() {
