@@ -173,7 +173,7 @@ footer p { margin: 0.5em 0; }
   font-size: 1.25em;
 }
 
-.filter-group { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+.filter-group { display: flex; flex-wrap: wrap; gap: 20px; }
 .filter-item { display: flex; align-items: center; gap: var(--spacing-sm); }
 
 /* Custom Checkbox */
@@ -196,44 +196,20 @@ footer p { margin: 0.5em 0; }
   background-color: var(--checkbox-color, var(--color-primary));
   border-color: var(--checkbox-color, var(--color-primary));
 }
-/* --- Checkbox Icon Customization Start --- */
-
 .filter-item label::after {
-    font-family: 'Material Symbols Outlined';
-    font-weight: normal;
-    font-style: normal;
-    font-size: 16px;
-    line-height: 1;
-    position: absolute;
-    content: 'check';
-    color: white;
-
-
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    
-    opacity: 0;
-    transition: opacity 0.2s ease;
-    
-
-    width: auto;
-    height: auto;
-    border: none;
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 50%;
+  width: 6px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: translateY(-65%) rotate(45deg);
+  opacity: 0;
+  transition: opacity 0.2s ease;
 }
-
-.filter-item input[type="checkbox"]:checked + label::after {
-    opacity: 1;
-}
-
-#Turf:checked + label::after { content: 'grass'; }
-#Dirt:checked + label::after { content: 'landslide'; }
-#Speed:checked + label::after { content: 'podiatry'; }
-#Stamina:checked + label::after { content: 'favorite'; }
-#Guts:checked + label::after { content: 'mode_heat'; }
-#Wit:checked + label::after { content: 'school'; }
-
-/* --- Checkbox Icon Customization End --- */
+.filter-item input[type="checkbox"]:checked + label::after { opacity: 1; }
 
 /* Form Controls (Inputs, Selects, Buttons) */
 .controls-container {
