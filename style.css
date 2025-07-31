@@ -173,7 +173,7 @@ footer p { margin: 0.5em 0; }
   font-size: 1.25em;
 }
 
-.filter-group { display: flex; flex-wrap: wrap; gap: 20px; }
+.filter-group { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
 .filter-item { display: flex; align-items: center; gap: var(--spacing-sm); }
 
 /* Custom Checkbox */
@@ -207,13 +207,16 @@ footer p { margin: 0.5em 0; }
     position: absolute;
     content: 'check';
     color: white;
-    left: 8px;
+
+
+    left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+    
     opacity: 0;
     transition: opacity 0.2s ease;
+    
 
-    /* 기존 체크 모양을 만드는 속성들을 완전히 제거합니다 */
     width: auto;
     height: auto;
     border: none;
