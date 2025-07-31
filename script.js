@@ -397,7 +397,7 @@ if (powerCheckbox) {
   powerCheckbox.addEventListener('change', function() {
     if (this.checked) {
       // 체크가 되면 50% 확률로 공식 아이콘 이름('humerus' 또는 'ulna_radius')을 선택합니다.
-      const icon = Math.random() < 0.5 ? 'humerus' : 'ulna_radius';
+      const icon = Math.random() < 0.5 ? 'Humerus_Alt' : 'Ulna_Radius_Alt';
       
       // label 요소의 data-icon 속성에 선택된 아이콘 이름을 할당합니다.
       powerLabel.dataset.icon = icon;
