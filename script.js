@@ -292,7 +292,7 @@ function handleKeyboardShortcuts(event) {
       case 'Escape': resetAllFilters(); break;
       case '.': window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }); break;
       case ',': window.scrollTo({ top: 0, behavior: 'smooth' }); break;
-      case '\\': event.preventDefault(); toggleAllSkills(); break;
+      case '[': event.preventDefault(); toggleAllSkills(); break;
   }
 }
 
