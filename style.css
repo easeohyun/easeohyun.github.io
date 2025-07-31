@@ -297,7 +297,17 @@ input[type="number"] { width: 50px; padding: 5px; border: 1px solid var(--color-
 }
 .character-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); border-color: var(--character-color); }
 
-.card-title { font-size: 1.2em; font-weight: bold; text-align: center; padding: var(--spacing-sm); border-radius: var(--radius-md); margin: 0; color: #000; }
+.card-title { 
+    font-size: 1.2em; 
+    font-weight: bold; 
+    text-align: center; 
+    padding: var(--spacing-sm); 
+    border-radius: var(--radius-md); 
+    margin: 0; 
+    color: var(--color-secondary); /* 흰색 배경 대신 텍스트 색상 강조 */
+    background-color: var(--color-background); /* 카드 배경보다 한 톤 어두운/밝은 배경 */
+    border-bottom: 2px solid var(--character-color); /* 캐릭터 컬러로 하단에 포인트를 줍니다. */
+}
 .card-nickname { text-align: center; font-size: 0.85em; color: var(--color-text-light); margin-bottom: 12px; font-weight: 500; }
 
 .card-stats {
@@ -323,17 +333,6 @@ input[type="number"] { width: 50px; padding: 5px; border: 1px solid var(--color-
 .stat-item .value .grade-b { color: #c62828; }
 .stat-item .value .grade-a { color: #ef6c00; }
 .stat-item .value .grade-s { color: #ffc02f; }
-
-/* Title BG Colors */
-.title-turf-a { background-color: #558b2f; color: white; } .title-turf-b { background-color: #7cb342; color: white; }
-.title-turf-c { background-color: #9ccc65; color: black; } .title-turf-d { background-color: #c5e1a5; color: black; }
-.title-turf-e { background-color: #e6ee9c; color: black; } .title-turf-f { background-color: #f1f8e9; color: black; }
-.title-turf-g { background-color: #f9fbe7; color: black; }
-.title-dirt-a { background-color: #6d4c41; color: white; } .title-dirt-b { background-color: #8d6e63; color: white; }
-.title-dirt-c { background-color: #a1887f; color: white; } .title-dirt-d { background-color: #bcaaa4; color: black; }
-.title-dirt-e { background-color: #d7ccc8; color: black; } .title-dirt-f { background-color: #efebe9; color: black; }
-.title-dirt-g { background-color: #f5f5f5; color: black; }
-.title-hybrid-bg { background: linear-gradient(137.5deg, #7cb342 45%, #8d6e63 55%); color: white; }
 
 /* Skill Section */
 .skill-details { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--character-color); }
