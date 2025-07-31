@@ -388,17 +388,21 @@ async function initializeApp() {
 
 // --- App Entry Point ---
 initializeApp();
-
 // --- Power Checkbox Icon Randomization Start ---
 const powerCheckbox = document.getElementById('Power');
 if (powerCheckbox) {
+  // 'Power' 체크박스 옆에 있는 <label> 요소를 한 번만 찾아둡니다.
   const powerLabel = powerCheckbox.nextElementSibling;
+
   powerCheckbox.addEventListener('change', function() {
     if (this.checked) {
-      const icon = Math.random() < 0.5 ? 'Humerus Alt' : 'Ulna Radius Alt';
+      // 체크가 되면 50% 확률로 공식 아이콘 이름('humerus' 또는 'ulna_radius')을 선택합니다.
+      const icon = Math.random() < 0.5 ? 'humerus' : 'ulna_radius';
+      
+      // label 요소의 data-icon 속성에 선택된 아이콘 이름을 할당합니다.
       powerLabel.dataset.icon = icon;
     } else {
-      // 체크 해제 시 data-icon 속성 제거
+      // 체크가 해제되면 data-icon 속성을 제거합니다.
       delete powerLabel.dataset.icon;
     }
   });
