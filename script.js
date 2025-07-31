@@ -395,9 +395,7 @@ if (powerCheckbox) {
   const powerLabel = powerCheckbox.nextElementSibling;
   powerCheckbox.addEventListener('change', function() {
     if (this.checked) {
-      // 체크 시 50% 확률로 아이콘 결정 후 data-icon 속성 설정
-      // Google Fonts의 공식 아이콘 이름은 'humerus', 'ulna_radius' 입니다.
-      const icon = Math.random() < 0.5 ? 'humerus' : 'ulna_radius';
+      const icon = Math.random() < 0.5 ? 'Humerus Alt' : 'Ulna Radius Alt';
       powerLabel.dataset.icon = icon;
     } else {
       // 체크 해제 시 data-icon 속성 제거
