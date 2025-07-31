@@ -436,3 +436,15 @@ input[type="number"] { width: 50px; padding: 5px; border: 1px solid var(--color-
   .skill-row { gap: var(--spacing-sm); }
   .skill-slot { white-space: normal; word-break: keep-all; }
 }
+
+/* 거리 및 각질 적성 체크박스 아이콘 */
+#Short:checked + label[data-icon]::after,
+#Mile:checked + label[data-icon]::after,
+#Medium:checked + label[data-icon]::after,
+#Long:checked + label[data-icon]::after,
+#Front:checked + label[data-icon]::after,
+#Pace:checked + label[data-icon]::after,
+#Late:checked + label[data-icon]::after,
+#End:checked + label[data-icon]::after {
+  content: attr(data-icon);
+}
