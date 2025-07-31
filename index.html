@@ -4,7 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>우마무스메 프리티 더비 캐릭터 교집합 검색기</title>
+  
+  <meta name="description" content="우마무스메 프리티 더비의 캐릭터를 경기장, 거리, 각질, 성장률 등 다양한 조건으로 필터링하고 검색하여 원하는 캐릭터를 쉽게 찾아보세요.">
+  <meta name="keywords" content="우마무스메, 프리티 더비, 캐릭터, 검색, 필터, 공략, Umamusume, Pretty Derby">
+  <meta name="author" content="Your Name or Project Name">
+  
+  <meta property="og:title" content="우마무스메 캐릭터 교집합 검색기">
+  <meta property="og:description" content="다양한 조건으로 원하는 우마무스메를 찾아보세요.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://your-website-url.com">
   <link rel="stylesheet" href="style.css">
+  <script type="module" src="script.js" defer></script>
 </head>
 <body>
 
@@ -20,7 +30,7 @@
             이 사이트는 25년 07월 27일에 만들어졌으며, 정보를 계속해서 수정하고 추가하며 삭제하고 있습니다. <br>불확실한 정보가 있을 수 있으며, 사이트가 불안정할 수 있습니다.
         </div>
 		<p>	<br> 현재 대부분의 우마무스메의 정보가 일치하지 않습니다. <br> 공식 홈페이지 기준으로 <b><font color="#ee6dcb">스페셜 위크</font></b>(001)부터 <b><font color="da3c57">골드 쉽</font></b>(007)까지 보정했습니다. </br> </p>
-        </header>
+    </header>
 
     <section class="filter-section">
       <form id="filter-form">
@@ -31,14 +41,14 @@
               <input type="checkbox" id="Turf" name="Turf">
               <label for="Turf">잔디</label>
               <select name="Turf-grade">
-                <option value="A">A</option><option value="B" selected>B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option>
+                <option value="S">S</option><option value="A">A</option><option value="B" selected>B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option>
               </select>
             </div>
             <div class="filter-item">
               <input type="checkbox" id="Dirt" name="Dirt">
               <label for="Dirt">더트</label>
               <select name="Dirt-grade">
-                <option value="A">A</option><option value="B" selected>B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option>
+                <option value="S">S</option><option value="A">A</option><option value="B" selected>B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option>
               </select>
             </div>
           </div>
@@ -46,19 +56,19 @@
         <fieldset>
           <legend>거리 적성</legend>
           <div class="filter-group">
-            <div class="filter-item"><input type="checkbox" id="Short" name="Short"><label for="Short">단거리</label><select name="Short-grade"><option value="A">A</option><option value="B" selected>B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option></select></div>
-            <div class="filter-item"><input type="checkbox" id="Mile" name="Mile"><label for="Mile">마일</label><select name="Mile-grade"><option value="A">A</option><option value="B" selected>B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option></select></div>
-            <div class="filter-item"><input type="checkbox" id="Medium" name="Medium"><label for="Medium">중거리</label><select name="Medium-grade"><option value="A">A</option><option value="B" selected>B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option></select></div>
-            <div class="filter-item"><input type="checkbox" id="Long" name="Long"><label for="Long">장거리</label><select name="Long-grade"><option value="A">A</option><option value="B" selected>B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option></select></div>
+            <div class="filter-item"><input type="checkbox" id="Short" name="Short"><label for="Short">단거리</label><select name="Short-grade"><option value="S">S</option><option value="A">A</option><option value="B" selected>B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option></select></div>
+            <div class="filter-item"><input type="checkbox" id="Mile" name="Mile"><label for="Mile">마일</label><select name="Mile-grade"><option value="S">S</option><option value="A">A</option><option value="B" selected>B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option></select></div>
+            <div class="filter-item"><input type="checkbox" id="Medium" name="Medium"><label for="Medium">중거리</label><select name="Medium-grade"><option value="S">S</option><option value="A">A</option><option value="B" selected>B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option></select></div>
+            <div class="filter-item"><input type="checkbox" id="Long" name="Long"><label for="Long">장거리</label><select name="Long-grade"><option value="S">S</option><option value="A">A</option><option value="B" selected>B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option></select></div>
           </div>
         </fieldset>
         <fieldset>
             <legend>각질 적성</legend>
             <div class="filter-group">
-              <div class="filter-item"><input type="checkbox" id="Front" name="Front"><label for="Front">도주</label><select name="Front-grade"><option value="A">A</option><option value="B" selected>B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option></select></div>
-              <div class="filter-item"><input type="checkbox" id="Pace" name="Pace"><label for="Pace">선행</label><select name="Pace-grade"><option value="A">A</option><option value="B" selected>B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option></select></div>
-              <div class="filter-item"><input type="checkbox" id="Late" name="Late"><label for="Late">선입</label><select name="Late-grade"><option value="A">A</option><option value="B" selected>B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option></select></div>
-              <div class="filter-item"><input type="checkbox" id="End" name="End"><label for="End">추입</label><select name="End-grade"><option value="A">A</option><option value="B" selected>B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option></select></div>
+              <div class="filter-item"><input type="checkbox" id="Front" name="Front"><label for="Front">도주</label><select name="Front-grade"><option value="S">S</option><option value="A">A</option><option value="B" selected>B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option></select></div>
+              <div class="filter-item"><input type="checkbox" id="Pace" name="Pace"><label for="Pace">선행</label><select name="Pace-grade"><option value="S">S</option><option value="A">A</option><option value="B" selected>B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option></select></div>
+              <div class="filter-item"><input type="checkbox" id="Late" name="Late"><label for="Late">선입</label><select name="Late-grade"><option value="S">S</option><option value="A">A</option><option value="B" selected>B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option></select></div>
+              <div class="filter-item"><input type="checkbox" id="End" name="End"><label for="End">추입</label><select name="End-grade"><option value="S">S</option><option value="A">A</option><option value="B" selected>B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option></select></div>
             </div>
         </fieldset>
         <fieldset>
@@ -97,7 +107,8 @@
         <button id="no-results-reset">학생 명부 다시 찾기</button>
       </div>
       
-      <div id="character-list"></div>
+      <div id="character-list">
+        </div>
     </section>
 </main>
 
@@ -107,7 +118,41 @@
   <button id="scroll-bottom" title="맨 아래로">▼</button>
 </div>
 
-<script src="script.js"></script>
+<template id="character-card-template">
+  <div class="character-card">
+    <div class="card-main-info">
+        <div class="card-identity">
+          <div class="card-nickname"></div>
+          <div class="card-title"></div>
+        </div>
+        <ul class="card-stats"></ul>
+    </div>
+    <details class="skill-details">
+      <summary class="skill-summary">스킬 정보</summary>
+      <div class="skill-container"></div>
+    </details>
+  </div>
+</template>
+
+<template id="skeleton-card-template">
+    <div class="character-card skeleton">
+        <div class="card-main-info">
+            <div class="card-identity">
+                <div class="skeleton-text skeleton-nick"></div>
+                <div class="skeleton-text skeleton-title"></div>
+            </div>
+            <div class="skeleton-stats">
+                <div class="skeleton-text"></div>
+                <div class="skeleton-text"></div>
+                <div class="skeleton-text"></div>
+                <div class="skeleton-text"></div>
+            </div>
+        </div>
+        <div class="skill-details">
+            <div class="skeleton-text skeleton-skills"></div>
+        </div>
+    </div>
+</template>
 
 <footer>
     <p>본 웹페이지는 모바일 게임, '우마무스메 프리티 더비'에 관한 정보를 제공하는 비공식 팬사이트입니다.</p>
