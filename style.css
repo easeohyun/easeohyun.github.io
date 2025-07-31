@@ -15,15 +15,16 @@
   --color-border: #ddd;
   --color-border-light: #e0e0e0;
 
-  --stat-speed: #2bb7f1;
-  --stat-stamina: #ff7c67;
-  --stat-power: #f39b17;
-  --stat-guts: #ff6fac;
-  --stat-wit: #22bf7d;
-  --apt-turf: #38761d;
-  --apt-dirt: #744700;
-  --apt-distance: #333333;
-  --apt-strategy: #333333;
+  /* Color Palette for JS Injection */
+  --color-apt-turf: #38761d;
+  --color-apt-dirt: #744700;
+  --color-apt-distance: #333333;
+  --color-apt-strategy: #333333;
+  --color-stat-speed: #2bb7f1;
+  --color-stat-stamina: #ff7c67;
+  --color-stat-power: #f39b17;
+  --color-stat-guts: #ff6fac;
+  --color-stat-wit: #22bf7d;
 
   --shadow-light: 0 0 10px rgba(0,0,0,0.1);
   --shadow-medium: 0 4px 6px rgba(0,0,0,0.07);
@@ -112,7 +113,7 @@ footer p { margin: 0.5em 0; }
 .filter-group { display: flex; flex-wrap: wrap; gap: 20px; }
 .filter-item { display: flex; align-items: center; gap: 8px; }
 
-/* Refactored Custom Checkbox */
+/* Refactored Custom Checkbox - Now simpler */
 .filter-item input[type="checkbox"] { display: none; }
 .filter-item label { position: relative; padding-left: 26px; cursor: pointer; user-select: none; }
 .filter-item label::before {
@@ -128,6 +129,7 @@ footer p { margin: 0.5em 0; }
   background-color: white;
   transition: all 0.2s ease;
 }
+/* The magic happens here: use the --checkbox-color variable set by JS */
 .filter-item input[type="checkbox"]:checked + label::before {
   background-color: var(--checkbox-color, var(--color-primary));
   border-color: var(--checkbox-color, var(--color-primary));
@@ -146,18 +148,6 @@ footer p { margin: 0.5em 0; }
   transition: opacity 0.2s ease;
 }
 .filter-item input[type="checkbox"]:checked + label::after { opacity: 1; }
-
-/* Dynamic Checkbox Colors using CSS Variables */
-.filter-item[data-color-group="aptitude_ground"] input[type="checkbox"][name="Turf"]:checked + label { --checkbox-color: var(--apt-turf); }
-.filter-item[data-color-group="aptitude_ground"] input[type="checkbox"][name="Dirt"]:checked + label { --checkbox-color: var(--apt-dirt); }
-.filter-item[data-color-group="aptitude_distance"] input[type="checkbox"]:checked + label { --checkbox-color: var(--apt-distance); }
-.filter-item[data-color-group="aptitude_strategy"] input[type="checkbox"]:checked + label { --checkbox-color: var(--apt-strategy); }
-.filter-item[data-color-group="growth"] input[type="checkbox"][name="Speed"]:checked + label { --checkbox-color: var(--stat-speed); }
-.filter-item[data-color-group="growth"] input[type="checkbox"][name="Stamina"]:checked + label { --checkbox-color: var(--stat-stamina); }
-.filter-item[data-color-group="growth"] input[type="checkbox"][name="Power"]:checked + label { --checkbox-color: var(--stat-power); }
-.filter-item[data-color-group="growth"] input[type="checkbox"][name="Guts"]:checked + label { --checkbox-color: var(--stat-guts); }
-.filter-item[data-color-group="growth"] input[type="checkbox"][name="Wit"]:checked + label { --checkbox-color: var(--stat-wit); }
-
 
 /* Form Controls (Inputs, Selects, Buttons) */
 .controls-container { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px; }
