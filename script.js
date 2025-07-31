@@ -11,6 +11,7 @@ const CHARACTERS_JSON_PATH = './characters.json';
 
 // --- DOM Element Cache ---
 const DOMElements = {
+  html: document.documentElement,
   filterForm: document.getElementById('filter-form'),
   characterList: document.getElementById('character-list'),
   resultSummary: document.getElementById('result-summary'),
@@ -22,6 +23,7 @@ const DOMElements = {
   scrollTopButton: document.getElementById('scroll-top'),
   scrollBottomButton: document.getElementById('scroll-bottom'),
   toggleSkillsButton: document.getElementById('toggle-skills-btn'),
+  darkModeToggleButton: document.getElementById('dark-mode-toggle'),
   cardTemplate: document.getElementById('character-card-template'),
   skeletonTemplate: document.getElementById('skeleton-card-template')
 };
@@ -257,10 +259,14 @@ function toggleAllSkills() {
   const allDetails = DOMElements.characterList.querySelectorAll('.skill-details');
   if (allDetails.length === 0) return;
   
-  const shouldOpen = !allDetails[0].open;
-  allDetails.forEach(detail => detail.open = shouldOpen);
+  const shouldOpen = !allDetails[0].hasAttribute('open');
+  allDetails.forEach(detail => {
+    if (shouldOpen) detail.setAttribute('open', '');
+    else detail.removeAttribute('open');
+  });
 
-  DOMElements.toggleSkillsButton.innerHTML = shouldOpen ? '🥕' : '🐴';
+  const icon = DOMElements.toggleSkillsButton.querySelector('.material-symbols-outlined');
+  icon.textContent = shouldOpen ? 'visibility_off' : 'visibility';
   DOMElements.toggleSkillsButton.title = shouldOpen ? '모든 스킬 접기 (\\)' : '모든 스킬 펼치기 (\\)';
 }
   
@@ -310,14 +316,49 @@ function setupDynamicCheckboxColors() {
   });
 }
 
+// --- Dark Mode Functionality ---
+function applyTheme(theme) {
+    const { html, darkModeToggleButton } = DOMElements;
+    const icon = darkModeToggleButton.querySelector('.material-symbols-outlined');
+    if (theme === 'dark') {
+        html.dataset.theme = 'dark';
+        icon.textContent = 'light_mode';
+        darkModeToggleButton.title = '라이트 모드 전환';
+    } else {
+        html.dataset.theme = 'light';
+        icon.textContent = 'dark_mode';
+        darkModeToggleButton.title = '다크 모드 전환';
+    }
+}
+
+function toggleTheme() {
+    const currentTheme = DOMElements.html.dataset.theme || 'light';
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    localStorage.setItem('theme', newTheme);
+    applyTheme(newTheme);
+}
+
+function initializeTheme() {
+    const savedTheme = localStorage.getItem('theme');
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    if (savedTheme) {
+        applyTheme(savedTheme);
+    } else {
+        applyTheme(systemPrefersDark ? 'dark' : 'light');
+    }
+}
+
 // --- App Initialization ---
 async function initializeApp() {
     setLoadingState(true);
+    initializeTheme();
     setupDynamicCheckboxColors();
 
     // Attach listeners immediately
     const { filterForm, searchBox, sortOrder, resetFiltersButton, noResultsResetButton, 
-            scrollTopButton, scrollBottomButton, toggleSkillsButton } = DOMElements;
+            scrollTopButton, scrollBottomButton, toggleSkillsButton, darkModeToggleButton } = DOMElements;
+    
     const updateHandler = () => window.requestAnimationFrame(updateDisplay);
 
     filterForm.addEventListener('input', updateHandler);
@@ -328,6 +369,7 @@ async function initializeApp() {
     scrollTopButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
     scrollBottomButton.addEventListener('click', () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }));
     toggleSkillsButton.addEventListener('click', toggleAllSkills);
+    darkModeToggleButton.addEventListener('click', toggleTheme);
     
     window.addEventListener('scroll', updateScrollButtonsVisibility);
     window.addEventListener('resize', updateScrollButtonsVisibility);
@@ -340,12 +382,20 @@ async function initializeApp() {
         allCharacters = await response.json();
     } catch (error) {
         console.error("캐릭터 데이터를 불러오는 데 실패했습니다:", error);
-        DOMElements.characterList.innerHTML = `<p style="text-align:center; color:red;">캐릭터 정보를 불러오지 못했습니다. ${CHARACTERS_JSON_PATH} 파일이 올바른 위치에 있는지 확인해 주세요.<br>사이트 관리자에게 문의하여 주세요.</p>`;
+        DOMElements.characterList.innerHTML = `
+            <div id="data-error-container" style="text-align:center; color:red; padding: 20px;">
+                <p>캐릭터 정보를 불러오지 못했습니다. ${CHARACTERS_JSON_PATH} 파일이 올바른 위치에 있는지 확인해 주세요.</p>
+                <p>문제가 지속되면 사이트 관리자에게 문의하여 주십시오.</p>
+                <button id="reload-button" class="button button-primary">새로고침</button>
+            </div>
+        `;
+        document.getElementById('reload-button').addEventListener('click', () => location.reload());
         DOMElements.resultSummary.textContent = '오류 발생';
-    } finally {
-        updateDisplay();
-        updateScrollButtonsVisibility();
-    }
+        return; // Stop further execution on error
+    } 
+    
+    updateDisplay();
+    updateScrollButtonsVisibility();
 }
 
 // --- App Entry Point ---
