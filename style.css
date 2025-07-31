@@ -82,38 +82,40 @@ html[data-theme='dark'] {
 }
 
 /* --- Checkbox Icon Customization Start --- */
+.filter-item label::after {
+    font-family: 'Material Symbols Outlined';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 16px; /* 아이콘 크기 */
+    line-height: 1;
+    position: absolute;
+    content: 'check'; /* 기본 아이콘 (체크되지 않았을 때) */
+    color: white;
+    left: 8px; /* 16px 너비의 상자 안에서 수평 중앙 정렬 */
+    top: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0; /* 기본적으로 숨김 */
+    transition: opacity 0.2s ease;
+    
+    /* 기존 CSS 체크 모양을 만드는 속성 제거 */
+    width: auto;
+    height: auto;
+    border: none;
+}
+
 .filter-item input[type="checkbox"]:checked + label::after {
-  content: 'check'; /* 기본 체크 아이콘 */
-  font-family: 'Material Symbols Outlined';
-  font-weight: normal;
-  font-style: normal;
-  font-size: 16px;
-  line-height: 1;
-  letter-spacing: normal;
-  text-transform: none;
-  display: inline-block;
-  white-space: nowrap;
-  word-wrap: normal;
-  direction: ltr;
-  -webkit-font-feature-settings: 'liga';
-  -webkit-font-smoothing: antialiased;
-  color: white;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  opacity: 1;
+    opacity: 1; /* 체크 시 아이콘 표시 */
 }
 
 #Turf:checked + label::after { content: 'grass'; }
 #Dirt:checked + label::after { content: 'landslide'; }
 #Speed:checked + label::after { content: 'podiatry'; }
-#Power:checked + label::after { content: 'humerus_alt'; } /* 기본적으로 'humerus_alt'로 설정 */
 #Stamina:checked + label::after { content: 'favorite'; }
 #Guts:checked + label::after { content: 'mode_heat'; }
 #Wit:checked + label::after { content: 'school'; }
-/* --- Checkbox Icon Customization End --- */
+/* #Power 속성 아이콘은 script.js에서 동적으로 처리됩니다. */
 
+/* --- Checkbox Icon Customization End --- */
 /* --- Global & Typography --- */
 body {
   font-family: var(--font-primary);
