@@ -388,3 +388,24 @@ async function initializeApp() {
 
 // --- App Entry Point ---
 initializeApp();
+
+// --- Power Checkbox Icon Randomization Start ---
+const powerCheckbox = document.getElementById('Power');
+if (powerCheckbox) {
+  powerCheckbox.addEventListener('change', function() {
+    const label = this.nextElementSibling;
+    if (this.checked) {
+      const icon = Math.random() < 0.5 ? 'humerus_alt' : 'ulna_radius_alt';
+      const style = document.createElement('style');
+      style.id = 'power-icon-style';
+      style.innerHTML = `#Power:checked + label::after { content: '${icon}'; }`;
+      document.head.appendChild(style);
+    } else {
+      const style = document.getElementById('power-icon-style');
+      if (style) {
+        style.remove();
+      }
+    }
+  });
+}
+// --- Power Checkbox Icon Randomization End ---
