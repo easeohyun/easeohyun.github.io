@@ -97,7 +97,7 @@ html[data-theme='dark'] {
     opacity: 0; /* 기본적으로 숨김 */
     transition: opacity 0.2s ease;
     
-    /* 기존 CSS 체크 모양을 만드는 속성 제거 */
+    /* 기존 CSS 체크 모양을 만드는 속성 제거 (중요) */
     width: auto;
     height: auto;
     border: none;
@@ -116,6 +116,7 @@ html[data-theme='dark'] {
 /* #Power 속성 아이콘은 script.js에서 동적으로 처리됩니다. */
 
 /* --- Checkbox Icon Customization End --- */
+
 /* --- Global & Typography --- */
 body {
   font-family: var(--font-primary);
