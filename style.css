@@ -209,6 +209,7 @@ footer p { margin: 0.5em 0; }
   color: white; /* 체크박스 배경색과 대비되는 아이콘 색상 */
   opacity: 0;
   transition: opacity 0.2s ease-in-out;
+  font-variation-settings: 'FILL' 1; /* 아이콘을 채움 스타일로 설정 */
 }
 .filter-item input[type="checkbox"]:checked + label::after { opacity: 1; }
 
