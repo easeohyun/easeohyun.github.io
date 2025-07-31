@@ -232,20 +232,42 @@ footer p { margin: 0.5em 0; }
   background-color: var(--checkbox-color, var(--color-primary));
   border-color: var(--checkbox-color, var(--color-primary));
 }
+/* --- Checkbox Icon Customization Start --- */
+
 .filter-item label::after {
-  content: '';
-  position: absolute;
-  left: 5px;
-  top: 50%;
-  width: 6px;
-  height: 10px;
-  border: solid white;
-  border-width: 0 2px 2px 0;
-  transform: translateY(-65%) rotate(45deg);
-  opacity: 0;
-  transition: opacity 0.2s ease;
+    font-family: 'Material Symbols Outlined';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 16px;
+    line-height: 1;
+    position: absolute;
+    content: 'check';
+    color: white;
+    left: 8px;
+    top: 50%;
+    /* 기울기(rotate)를 제거하고 중앙에 배치합니다 */
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+
+    /* 기존 체크 모양을 만드는 속성들을 완전히 제거합니다 */
+    width: auto;
+    height: auto;
+    border: none;
 }
-.filter-item input[type="checkbox"]:checked + label::after { opacity: 1; }
+
+.filter-item input[type="checkbox"]:checked + label::after {
+    opacity: 1;
+}
+
+#Turf:checked + label::after { content: 'grass'; }
+#Dirt:checked + label::after { content: 'landslide'; }
+#Speed:checked + label::after { content: 'podiatry'; }
+#Stamina:checked + label::after { content: 'favorite'; }
+#Guts:checked + label::after { content: 'mode_heat'; }
+#Wit:checked + label::after { content: 'school'; }
+
+/* --- Checkbox Icon Customization End --- */
 
 /* Form Controls (Inputs, Selects, Buttons) */
 .controls-container {
