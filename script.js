@@ -82,19 +82,6 @@ function createCharacterCard(char) {
 
   cardNickname.textContent = char.nickname;
   cardTitle.textContent = char.name;
-
-  // Set title background class
-  const isTurfBPlus = GRADE_MAP[char.SurfaceAptitude.Turf] >= GRADE_MAP['B'];
-  const isDirtBPlus = GRADE_MAP[char.SurfaceAptitude.Dirt] >= GRADE_MAP['B'];
-  let titleBgClass = '';
-  if (isTurfBPlus && isDirtBPlus) {
-    titleBgClass = 'title-hybrid-bg';
-  } else if (isTurfBPlus || (!isDirtBPlus && GRADE_MAP[char.SurfaceAptitude.Turf] > GRADE_MAP[char.SurfaceAptitude.Dirt])) {
-    titleBgClass = `title-turf-${char.SurfaceAptitude.Turf.toLowerCase()}`;
-  } else {
-    titleBgClass = `title-dirt-${char.SurfaceAptitude.Dirt.toLowerCase()}`;
-  }
-  cardTitle.classList.add(titleBgClass);
   
   // Build stats HTML
   const statsHTML = Object.entries(NAME_MAPS).map(([sectionKey, { name, map }]) => {
