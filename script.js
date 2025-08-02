@@ -446,3 +446,22 @@ const targetCheckboxIds = [
 
 // 목록에 있는 모든 체크박스에 대하여 설정 함수 실행
 targetCheckboxIds.forEach(id => setupRandomIconCheckbox(id));
+
+const modal = document.getElementById('modal');
+
+modal.addEventListener('click', (e) => {
+  const rect = modal.getBoundingClientRect();
+  const isInDialog = (
+    rect.top <= e.clientY && e.clientY <= rect.bottom &&
+    rect.left <= e.clientX && e.clientX <= rect.right
+  );
+  if (!isInDialog) modal.close();
+});
+
+document.querySelector('footer button').addEventListener('click', () => {
+  document.getElementById('modal').showModal();
+});
+
+document.querySelector('#modal button').addEventListener('click', () => {
+  document.getElementById('modal').close();
+});
