@@ -1,10 +1,10 @@
 // --- Constants and Configuration ---
 const GRADE_MAP = { 'S': 8, 'A': 7, 'B': 6, 'C': 5, 'D': 4, 'E': 3, 'F': 2, 'G': 1 };
 const NAME_MAPS = {
-  SurfaceAptitude: { name: '경기장 적성', map: { Turf: '잔디', Dirt: '더트' } },
-  DistanceAptitude: { name: '거리 적성', map: { Short: '단거리', Mile: '마일', Medium: '중거리', Long: '장거리' } },
-  StrategyAptitude: { name: '각질 적성', map: { Front: '도주', Pace: '선행', Late: '선입', End: '추입' } },
-  StatBonuses: { name: '성장률', map: { Speed: '스피드', Stamina: '스태미나', Power: '파워', Guts: '근성', Wit: '지능' } }
+  SurfaceAptitude: { name: ' [ 경기장 적성 ] ', map: { Turf: '잔디', Dirt: '더트' } },
+  DistanceAptitude: { name: ' [ 거리 적성 ] ', map: { Short: '단거리', Mile: '마일', Medium: '중거리', Long: '장거리' } },
+  StrategyAptitude: { name: ' [ 각질 적성 ] ', map: { Front: '도주', Pace: '선행', Late: '선입', End: '추입' } },
+  StatBonuses: { name: '[ 성장률 ] ', map: { Speed: '스피드', Stamina: '스태미나', Power: '파워', Guts: '근성', Wit: '지능' } }
 };
 const CHO_SUNG = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ";
 const CHARACTERS_JSON_PATH = './characters.json';
@@ -523,3 +523,4 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
