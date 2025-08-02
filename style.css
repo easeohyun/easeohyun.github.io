@@ -211,7 +211,7 @@ footer p {
     position: absolute;
     top: calc(50% + 1pt); 
     left: calc(8px + 1pt); 
-    transform: translate(-50%, -50%) scale(1.2); 
+    transform: translate(-50%, -50%) scale(1.1); 
     font-size: 18px; 
     line-height: 1;
     color: white;
@@ -953,6 +953,7 @@ input[type="number"] {
 #contact-email-link:hover {
     background-color: var(--color-border-light);
 }
+
 
 
 
