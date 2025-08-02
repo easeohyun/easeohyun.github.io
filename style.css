@@ -657,5 +657,26 @@ color: var(--color-text-light);
     color: var(--color-text-light);
 }
 
+/* 나중에 아래 전부 삭제해야 할까? */
 
+/* 화면 폭이 767px 이하일 때 (모바일 및 작은 화면) 적용되는 최종 규칙 */
+@media (max-width: 767px) {
+  .sort-reset-wrapper {
+    /* 오른쪽으로 밀어내던 margin을 제거하고, 너비를 100%로 설정합니다. */
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .sort-container {
+    /* 이 규칙은 그대로 유지하거나, 명확성을 위해 여기에 다시 선언합니다. */
+    /* 정렬 컨테이너가 남는 공간을 모두 차지하도록 합니다. */
+    flex-grow: 1;
+  }
+
+  #sort-order {
+    /* 이 규칙도 마찬가지로 유지 또는 재선언합니다. */
+    /* 드롭박스가 라벨을 제외한 나머지 공간을 모두 차지하도록 합니다. */
+    flex-grow: 1;
+  }
+}
 
