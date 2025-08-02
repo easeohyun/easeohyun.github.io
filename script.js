@@ -457,11 +457,3 @@ modal.addEventListener('click', (e) => {
   );
   if (!isInDialog) modal.close();
 });
-
-document.querySelector('footer button').addEventListener('click', () => {
-  document.getElementById('modal').showModal();
-});
-
-document.querySelector('#modal button').addEventListener('click', () => {
-  document.getElementById('modal').close();
-});
