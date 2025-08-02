@@ -476,28 +476,34 @@ document.addEventListener("DOMContentLoaded", () => {
     const modalContainer = document.getElementById("contact-modal");
     const modalOverlay = document.querySelector(".modal-overlay");
 
+    const mainContent = document.querySelector('main');
+    const footerContent = document.querySelector('footer');
+
     let lastFocusedElement;
 
     const openModal = (e) => {
         lastFocusedElement = document.activeElement;
+        
+        mainContent.inert = true;
+        footerContent.inert = true;
 
         modalContainer.removeAttribute("hidden");
-
         requestAnimationFrame(() => {
             modalContainer.classList.add("active");
         });
-
         closeModalBtn.focus();
     };
 
     const closeModal = () => {
         modalContainer.classList.remove("active");
 
+        mainContent.inert = false;
+        footerContent.inert = false;
+
         modalContainer.addEventListener(
             "transitionend",
             function onTransitionEnd() {
                 modalContainer.setAttribute("hidden", true);
-
                 modalContainer.removeEventListener("transitionend", onTransitionEnd);
             },
             { once: true }
@@ -517,13 +523,3 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
-
-function debounce(func, delay) {
-    let timeoutId;
-    return function(...args) {
-        clearTimeout(timeoutId);
-        timeoutId = setTimeout(() => {
-            func.apply(this, args);
-        }, delay);
-    };
-}
