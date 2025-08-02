@@ -155,7 +155,7 @@ footer p {
     color: var(--color-danger);
     font-weight: 500;
     max-width: 800px;
-    animation: glow-effect 3s infinite ease-in-out;
+    animation: glow-effect 2.5s ease-in-out 3;
     transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 }
 
@@ -958,6 +958,7 @@ input[type="number"] {
 #contact-email-link:hover {
     background-color: var(--color-border-light);
 }
+
 
 
 
