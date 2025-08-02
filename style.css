@@ -207,12 +207,12 @@ footer p {
 }
 .filter-item label::after {
     font-family: "Material Symbols Outlined";
-    content: ""; 
+    content: "";
     position: absolute;
-    top: 50%; 
-    left: 8px; 
-    transform: translate(-50%, -50%);
-    font-size: 16px; 
+    top: calc(50% + 2pt); 
+    left: calc(8px + 2pt); 
+    transform: translate(-50%, -50%) scale(1.2); 
+    font-size: 18px; 
     line-height: 1;
     color: white;
     opacity: 0;
@@ -567,9 +567,7 @@ input[type="number"] {
 .skill-details[open] > .skill-summary::after {
     transform: rotate(180deg);
 }
-.skill-details[open] > .skill-summary::after {
-  transform: rotate(180deg);
-}
+
 .skill-container {
     display: flex;
     flex-direction: column;
@@ -700,7 +698,9 @@ input[type="number"] {
 #toggle-skills-btn {
     background: linear-gradient(137.5deg, #caffbf, #9bf6ff, #a0c4ff, #bdb2ff, #ffadad, #ffd6a5, #fdffb6);
     background-size: 200% 200%;
-    animation: gradient-scroll 5s ease infinite;
+}
+#toggle-skills-btn:hover {
+    animation: gradient-scroll 5s ease infinite; 
 }
 @keyframes gradient-scroll {
     0% {
@@ -953,3 +953,4 @@ input[type="number"] {
 #contact-email-link:hover {
     background-color: var(--color-border-light);
 }
+
