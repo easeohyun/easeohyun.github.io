@@ -277,6 +277,21 @@ input[type="number"] { width: 50px; padding: 5px; border: 1px solid var(--color-
 }
 .button-secondary:hover { background-color: var(--color-button-secondary-hover-bg); }
 
+/* 초기화 버튼을 위한 'danger' 스타일 버튼 */
+.button-danger {
+    background-color: var(--color-danger-bg);
+    border-color: var(--color-danger-border);
+    color: var(--color-danger);
+    font-weight: bold;
+}
+
+.button-danger:hover {
+    background-color: var(--color-danger);
+    border-color: var(--color-danger);
+    color: #fff; /* 호버 시 텍스트는 흰색으로 변경하여 가독성 확보 */
+    box-shadow: 0 2px 8px rgba(192, 57, 43, 0.4);
+}
+
 /* --- Results Section --- */
 .results-section { padding-top: 10px; }
 #result-summary { text-align: center; font-size: 1.2em; font-weight: bold; margin-bottom: var(--spacing-lg); color: var(--color-primary-dark); }
@@ -622,8 +637,3 @@ color: var(--color-text-light);
     font-size: 12px;
     color: var(--color-text-light);
 }
-
-
-
-
-
