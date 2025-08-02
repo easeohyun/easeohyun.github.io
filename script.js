@@ -80,49 +80,114 @@ function createCharacterCard(char) {
         card.style.setProperty("--character-color", char.color);
     }
 
-    const cardTitle = card.querySelector(".card-title");
-    const cardNickname = card.querySelector(".card-nickname");
-    const cardStats = card.querySelector(".card-stats");
-    const skillContainer = card.querySelector(".skill-container");
-    const skillDetails = card.querySelector('.skill-details');
-    const skillSummary = card.querySelector('.skill-summary');
-    skillDetails.addEventListener('toggle', () => {
-        const isOpen = skillDetails.open;
-        skillSummary.setAttribute('aria-expanded', isOpen);
-        skillSummary.firstChild.textContent = isOpen ? '스킬 정보 닫기' : '스킬 정보 보기'; 
+// ↓↓↓↓↓↓ 이 코드를 붙여넣으세요. ↓↓↓↓↓↓
+const cardTitle = card.querySelector(".card-title");
+const cardNickname = card.querySelector(".card-nickname");
+const cardStats = card.querySelector(".card-stats");
+const skillContainer = card.querySelector(".skill-container");
+const skillDetails = card.querySelector('.skill-details');
+const skillSummary = card.querySelector('.skill-summary');
+
+// --- 토글 버튼 설정 (이 부분은 원래 코드와 동일합니다) ---
+skillDetails.addEventListener('toggle', () => {
+    const isOpen = skillDetails.open;
+    skillSummary.setAttribute('aria-expanded', isOpen);
+    // skillSummary의 첫번째 자식 노드(텍스트 노드)의 내용을 변경합니다.
+    skillSummary.childNodes[0].nodeValue = isOpen ? '스킬 정보 닫기 ' : '스킬 정보 보기 ';
+});
+
+// --- 이름과 닉네임 설정 (textContent를 사용해 안전하게 삽입합니다) ---
+cardNickname.textContent = char.nickname;
+cardTitle.textContent = char.name;
+
+// --- 스탯 목록을 안전하게 생성하는 코드 ---
+cardStats.innerHTML = ''; // 카드 내용을 비워서 중복을 방지합니다.
+
+// NAME_MAPS 객체를 순회하며 적성, 성장률 등 모든 스탯을 처리합니다.
+Object.entries(NAME_MAPS).forEach(([sectionKey, { name, map }]) => {
+    // 1. 카테고리 제목(<li>) 요소를 만듭니다. (예: [ 경기장 적성 ])
+    const categoryLi = document.createElement('li');
+    categoryLi.className = 'stat-item stat-category';
+    categoryLi.textContent = name; // textContent는 데이터를 스크립트로 해석하지 않습니다.
+    cardStats.appendChild(categoryLi); // 완성된 요소를 목록에 추가합니다.
+
+    // 2. 카테고리 내의 각 항목(<li>)을 만듭니다. (예: 잔디 A)
+    Object.entries(map).forEach(([itemKey, displayName]) => {
+        const value = char[sectionKey]?.[itemKey];
+        if (value === undefined) return; // 데이터가 없으면 건너뜁니다.
+
+        const itemLi = document.createElement('li');
+        itemLi.className = 'stat-item';
+        
+        // 항목의 이름 (예: '잔디')
+        const labelSpan = document.createElement('span');
+        labelSpan.className = 'label';
+        labelSpan.textContent = displayName;
+
+        // 항목의 값 (예: 'A' 또는 '20%')
+        const valueSpan = document.createElement('span');
+        valueSpan.className = 'value';
+        
+        // 값의 종류에 따라 다르게 처리합니다.
+        if (sectionKey === "StatBonuses") {
+            // 성장률: 숫자와 '%' 기호를 각각 span으로 감쌉니다.
+            valueSpan.innerHTML = `<span>${value}</span><span class="percent">%</span>`;
+        } else {
+            // 적성 등급: 등급에 맞는 클래스를 부여합니다.
+            valueSpan.innerHTML = `<span class="grade-${String(value).toLowerCase()}">${value}</span>`;
+        }
+
+        // 완성된 이름과 값 span을 li에 추가합니다.
+        itemLi.appendChild(labelSpan);
+        itemLi.appendChild(valueSpan);
+        
+        // 완성된 li를 전체 목록에 추가합니다.
+        cardStats.appendChild(itemLi);
     });
-    cardNickname.textContent = char.nickname;
-    cardTitle.textContent = char.name;
+});
+// ↑↑↑↑↑↑ 여기까지 붙여넣으세요. ↑↑↑↑↑↑
 
-    const statsHTML = Object.entries(NAME_MAPS)
-        .map(([sectionKey, { name, map }]) => {
-            const items = Object.entries(map)
-                .map(([itemKey, displayName]) => {
-                    const value = char[sectionKey]?.[itemKey];
-                    if (value === undefined) return "";
-                    const displayValue = sectionKey === "StatBonuses" ? `<span>${value}</span><span class="percent">%</span>` : `<span class="grade-${value.toLowerCase()}">${value}</span>`;
-                    return `<li class="stat-item"><span class="label">${displayName}</span><span class="value">${displayValue}</span></li>`;
-                })
-                .join("");
-            return `<li class="stat-item stat-category">${name}</li>${items}`;
-        })
-        .join("");
-    cardStats.innerHTML = statsHTML;
+// ↓↓↓↓↓↓ 이 코드로 교체하세요. ↓↓↓↓↓↓
+// --- 스킬 목록을 안전하게 생성하는 코드 ---
+skillContainer.innerHTML = ''; // 기존 스킬 내용을 비웁니다.
 
-    const createSkillRow = (skills, color, flexClassMap) => {
-        if (!skills || skills.length === 0) return "";
-        const flexClass = flexClassMap[skills.length] || `flex-${skills.length}`;
-        const slots = skills.map((skill) => `<div class="skill-slot skill-${color} ${flexClass}"><div>${skill || ""}</div></div>`).join("");
-        return `<div class="skill-row">${slots}</div>`;
-    };
-    skillContainer.innerHTML = [
-        createSkillRow(char.skills.rainbow, "rainbow", { 1: "", 2: "flex-2" }),
-        createSkillRow(char.skills.pink, "pink", { 2: "flex-2", 3: "flex-3", 4: "flex-4" }),
-        createSkillRow(char.skills.yellow, "yellow", { 1: "", 2: "flex-2" }),
-        createSkillRow(char.skills.white?.slice(0, 3), "white", { 1: "", 2: "flex-2", 3: "flex-3" }),
-        createSkillRow(char.skills.white?.slice(3), "white", { 1: "", 2: "flex-2" }),
-    ].join("");
+// 스킬 행(Row) 하나를 생성하고 페이지에 직접 추가하는 함수
+const createSkillRowAndAppend = (skills, color, flexClassMap) => {
+    // 스킬 데이터가 없으면 아무 작업도 하지 않습니다.
+    if (!skills || skills.length === 0) return;
 
+    // 행(row) 역할을 할 <div> 요소를 만듭니다.
+    const rowDiv = document.createElement('div');
+    rowDiv.className = 'skill-row';
+
+    const flexClass = flexClassMap[skills.length] || `flex-${skills.length}`;
+
+    // 각 스킬에 대해 슬롯(slot) <div>를 만듭니다.
+    skills.forEach(skill => {
+        const slotDiv = document.createElement('div');
+        slotDiv.className = `skill-slot skill-${color} ${flexClass}`;
+        
+        // 스킬 이름이 들어갈 내부 <div>를 만듭니다.
+        const innerDiv = document.createElement('div');
+        // textContent를 사용해 악성 스크립트 실행을 방지합니다.
+        innerDiv.textContent = skill || ""; 
+
+        // 조립합니다: innerDiv -> slotDiv -> rowDiv
+        slotDiv.appendChild(innerDiv);
+        rowDiv.appendChild(slotDiv);
+    });
+    
+    // 최종적으로 완성된 행(row)을 skillContainer에 추가합니다.
+    skillContainer.appendChild(rowDiv);
+};
+
+// 위에서 만든 함수를 사용해 각 등급의 스킬을 순서대로 생성합니다.
+createSkillRowAndAppend(char.skills.rainbow, "rainbow", { 1: "", 2: "flex-2" });
+createSkillRowAndAppend(char.skills.pink, "pink", { 2: "flex-2", 3: "flex-3", 4: "flex-4" });
+createSkillRowAndAppend(char.skills.yellow, "yellow", { 1: "", 2: "flex-2" });
+createSkillRowAndAppend(char.skills.white?.slice(0, 3), "white", { 1: "", 2: "flex-2", 3: "flex-3" });
+createSkillRowAndAppend(char.skills.white?.slice(3), "white", { 1: "", 2: "flex-2" });
+// ↑↑↑↑↑↑ 여기까지 교체하세요. ↑↑↑↑↑↑
     return card;
 }
 
@@ -518,4 +583,5 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
 
