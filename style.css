@@ -134,6 +134,35 @@ footer {
 }
 footer p { margin: 0.5em 0; }
 
+/* --- 모달 버튼 --- */
+
+dialog#modal {
+  border: none;
+  border-radius: 10px;
+  padding: 2rem;
+  max-width: 400px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.3s ease-out;
+}
+
+dialog::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+footer button {
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  background-color: #0078D4;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
 /* --- Animations --- */
 @keyframes glow-effect {
   0%, 100% { box-shadow: 0 0 5px var(--color-danger-border); }
@@ -448,3 +477,4 @@ input[type="number"] { width: 50px; padding: 5px; border: 1px solid var(--color-
 #End:checked + label[data-icon]::after {
   content: attr(data-icon);
 }
+
