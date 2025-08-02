@@ -367,6 +367,7 @@ input[type="number"] { width: 50px; padding: 5px; border: 1px solid var(--color-
   white-space: normal; /* 'nowrap'에서 'normal'로 변경해야 word-break가 동작합니다 */
   text-align: center; flex: 1 1 0;
   word-break: break-all; /* 이 규칙을 추가합니다 */
+  min-width: 0; /* 이 규칙을 추가하여 Flexbox의 기본 동작을 변경합니다 */
 }
 .skill-row .flex-2 { flex-basis: 50%; } .skill-row .flex-3 { flex-basis: 33.33%; } .skill-row .flex-4 { flex-basis: 25%; }
 .skill-rainbow { background: linear-gradient(137.5deg, #ffadad, #ffd6a5, #fdffb6, #caffbf, #9bf6ff, #a0c4ff, #bdb2ff); color: #333;}
@@ -607,5 +608,6 @@ color: var(--color-text-light);
     font-size: 12px;
     color: var(--color-text-light);
 }
+
 
 
