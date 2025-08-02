@@ -695,9 +695,12 @@ input[type="number"] {
     align-items: center;
     justify-content: center;
 }
-.scroll-buttons button:hover {
+.scroll-buttons button:hover,
+.scroll-buttons button:focus-visible { 
     background-color: var(--color-background);
     transform: scale(1.1) rotate(5deg);
+    outline: 2px solid var(--color-primary); 
+    outline-offset: 2px; 
 }
 #toggle-skills-btn {
     background: linear-gradient(137.5deg, #caffbf, #9bf6ff, #a0c4ff, #bdb2ff, #ffadad, #ffd6a5, #fdffb6);
@@ -966,4 +969,5 @@ footer {
 #contact-email-link:hover {
     background-color: var(--color-border-light);
 }
+
 
