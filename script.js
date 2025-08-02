@@ -84,7 +84,13 @@ function createCharacterCard(char) {
     const cardNickname = card.querySelector(".card-nickname");
     const cardStats = card.querySelector(".card-stats");
     const skillContainer = card.querySelector(".skill-container");
-
+    const skillDetails = card.querySelector('.skill-details');
+    const skillSummary = card.querySelector('.skill-summary');
+    skillDetails.addEventListener('toggle', () => {
+        const isOpen = skillDetails.open;
+        skillSummary.setAttribute('aria-expanded', isOpen);
+        skillSummary.firstChild.textContent = isOpen ? '스킬 정보 닫기' : '스킬 정보 보기'; 
+    });
     cardNickname.textContent = char.nickname;
     cardTitle.textContent = char.name;
 
@@ -240,11 +246,14 @@ function resetAllFilters() {
 function toggleAllSkills() {
     const allDetails = DOMElements.characterList.querySelectorAll(".skill-details");
     if (allDetails.length === 0) return;
-
+    
     const shouldOpen = !allDetails[0].hasAttribute("open");
     allDetails.forEach((detail) => {
-        if (shouldOpen) detail.setAttribute("open", "");
-        else detail.removeAttribute("open");
+        if (shouldOpen) {
+            detail.open = true;
+        } else {
+            detail.open = false;
+        }
     });
 
     const icon = DOMElements.toggleSkillsButton.querySelector(".material-symbols-outlined");
@@ -509,3 +518,4 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
