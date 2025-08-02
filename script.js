@@ -369,11 +369,10 @@ async function initializeApp() {
 
     const { filterForm, searchBox, sortOrder, resetFiltersButton, noResultsResetButton, scrollTopButton, scrollBottomButton, toggleSkillsButton, darkModeToggleButton } = DOMElements;
 
-    const updateHandler = () => window.requestAnimationFrame(updateDisplay);
-
-    filterForm.addEventListener("input", updateHandler);
-    searchBox.addEventListener("input", updateHandler);
-    sortOrder.addEventListener("change", updateHandler);
+const debouncedUpdateHandler = debounce(() => window.requestAnimationFrame(updateDisplay), 300);
+    filterForm.addEventListener("input", debouncedUpdateHandler); 
+    searchBox.addEventListener("input", debouncedUpdateHandler); 
+    sortOrder.addEventListener("change", updateDisplay); 
     resetFiltersButton.addEventListener("click", resetAllFilters);
     noResultsResetButton.addEventListener("click", resetAllFilters);
     scrollTopButton.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
@@ -519,3 +518,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+function debounce(func, delay) {
+    let timeoutId;
+    return function(...args) {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+            func.apply(this, args);
+        }, delay);
+    };
+}
