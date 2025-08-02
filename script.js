@@ -1,3 +1,11 @@
+function debounce(func, delay) {
+    let timeout;
+    return function(...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), delay);
+    };
+}
+
 function escapeHTML(str) {
     if (str === null || str === undefined) {
         return "";
@@ -425,9 +433,13 @@ async function initializeApp() {
     const { filterForm, searchBox, sortOrder, resetFiltersButton, noResultsResetButton, scrollTopButton, scrollBottomButton, toggleSkillsButton, darkModeToggleButton } = DOMElements;
 
     const updateHandler = () => window.requestAnimationFrame(updateDisplay);
-
-    filterForm.addEventListener("input", updateHandler);
-    searchBox.addEventListener("input", updateHandler);
+    const debouncedSearchHandler = debounce(updateHandler, 250);
+    filterForm.addEventListener("input", (e) => {
+                if (e.target.id !== 'search-box') {
+                                updateHandler();
+                            }
+    });
+    searchBox.addEventListener("input", debouncedSearchHandler);
     sortOrder.addEventListener("change", updateHandler);
     resetFiltersButton.addEventListener("click", resetAllFilters);
     noResultsResetButton.addEventListener("click", resetAllFilters);
@@ -573,3 +585,4 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
