@@ -479,6 +479,26 @@ targetCheckboxIds.forEach(id => setupRandomIconCheckbox(id));
 // 이는 script 태그가 head에 위치하더라도 오류 없이 동작하게 합니다.
 document.addEventListener('DOMContentLoaded', () => {
 
+    // ▼▼▼ 이메일 보호 로직 추가 ▼▼▼
+    const emailLink = document.getElementById('contact-email-link');
+    if (emailLink) {
+        emailLink.addEventListener('click', function(e) {
+            e.preventDefault(); // 링크의 기본 동작(페이지 이동)을 막음
+
+            // 이메일 주소가 아직 공개되지 않았을 때만 실행 (한 번만 실행되도록)
+            if (this.dataset.revealed !== 'true') {
+                const user = 'easeohyun';
+                const domain = 'google.com';
+                const email = `${user}@${domain}`;
+                
+                this.href = `mailto:${email}`; // mailto: 링크 설정
+                this.textContent = email;     // 버튼의 텍스트를 실제 이메일 주소로 변경
+                this.dataset.revealed = 'true'; // 공개되었음을 표시
+            }
+        }, { once: false }); // once: true로 설정하면 단 한번만 실행되고 리스너가 자동 제거됨
+    }
+    // ▲▲▲ 이메일 보호 로직 추가 ▲▲▲
+  
     // 필요한 DOM 요소들을 상수로 선언하여 재사용성과 가독성을 높입니다.
     const openModalBtn = document.getElementById('open-modal-btn');
     const closeModalBtn = document.getElementById('close-modal-btn');
@@ -549,6 +569,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
 
 
 
