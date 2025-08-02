@@ -392,8 +392,9 @@ const debouncedUpdateHandler = debounce(() => window.requestAnimationFrame(updat
         console.error("캐릭터 데이터를 불러오는 데 실패했습니다:", error);
         DOMElements.characterList.innerHTML = `
             <div id="data-error-container" style="text-align:center; color:red; padding: 20px;">
-                <p>캐릭터 정보를 불러오지 못했습니다. ${CHARACTERS_JSON_PATH} 파일이 올바른 위치에 있는지 확인해 주세요.</p>
-                <p>문제가 지속되면 사이트 관리자에게 문의하여 주십시오.</p>
+                <p>캐릭터 정보를 불러오지 못했어요. ${CHARACTERS_JSON_PATH} 파일이 올바른 위치에 있는지 확인해 주세요.</p>
+                <p>문제가 고쳐지지 않는다면 사이트 관리자에게 문의하여 주세요.</p>
+                <p>사이트 관리자는, 하단 [ 알려드릴 내용이 있어요! ]에 연락처를 써 놨습니다.</p>
                 <button id="reload-button" class="button button-primary">새로고침</button>
             </div>
         `;
@@ -523,3 +524,4 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
