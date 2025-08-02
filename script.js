@@ -101,7 +101,7 @@ function createCharacterCard(char) {
   const createSkillRow = (skills, color, flexClassMap) => {
     if (!skills || skills.length === 0) return '';
     const flexClass = flexClassMap[skills.length] || `flex-${skills.length}`;
-    const slots = skills.map(skill => `<div class="skill-slot skill-${color} ${flexClass}">${skill || ''}</div>`).join('');
+    const slots = skills.map(skill => `<div class="skill-slot skill-${color} ${flexClass}"><div>${skill || ''}</div></div>`).join('');
     return `<div class="skill-row">${slots}</div>`;
   };
   skillContainer.innerHTML = [
@@ -523,4 +523,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
 
