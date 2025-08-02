@@ -797,14 +797,7 @@ input[type="number"] {
     }
 }
 
-#Short:checked + label[data-icon]::after,
-#Mile:checked + label[data-icon]::after,
-#Medium:checked + label[data-icon]::after,
-#Long:checked + label[data-icon]::after,
-#Front:checked + label[data-icon]::after,
-#Pace:checked + label[data-icon]::after,
-#Late:checked + label[data-icon]::after,
-#End:checked + label[data-icon]::after {
+.filter-item input[type="checkbox"]:checked + label.icon-label::after {
     content: attr(data-icon);
 }
 
@@ -954,10 +947,3 @@ input[type="number"] {
 #contact-email-link:hover {
     background-color: var(--color-border-light);
 }
-
-
-
-
-
-
-
