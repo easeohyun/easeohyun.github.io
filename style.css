@@ -361,13 +361,21 @@ input[type="number"] { width: 50px; padding: 5px; border: 1px solid var(--color-
 .skill-container { display: flex; flex-direction: column; gap: 6px; padding-top: 10px; }
 .skill-row { display: flex; gap: 6px; width: 100%; }
 .skill-slot {
-  min-height: 22px; border-radius: var(--radius-sm); border: 1px solid rgba(0, 0, 0, 0.1);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.85em; font-weight: bold; padding: 2px 8px;
-  white-space: normal; /* 'nowrap'에서 'normal'로 변경해야 word-break가 동작합니다 */
-  text-align: center; flex: 1 1 0;
-  word-break: break-all; /* 이 규칙을 추가합니다 */
-  min-width: 0; /* 이 규칙을 추가하여 Flexbox의 기본 동작을 변경합니다 */
+  min-height: 22px; 
+  border-radius: var(--radius-sm); 
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  font-size: 0.85em; 
+  font-weight: bold; 
+  padding: 2px 8px;
+  text-align: center; 
+  flex: 1 1 0;
+  white-space: normal;
+  word-break: break-all;
+  min-width: 0;
+  
+  /* --- 이 부분이 핵심적인 변경점입니다 --- */
+  display: grid;
+  place-items: center;
 }
 .skill-row .flex-2 { flex-basis: 50%; } .skill-row .flex-3 { flex-basis: 33.33%; } .skill-row .flex-4 { flex-basis: 25%; }
 .skill-rainbow { background: linear-gradient(137.5deg, #ffadad, #ffd6a5, #fdffb6, #caffbf, #9bf6ff, #a0c4ff, #bdb2ff); color: #333;}
@@ -608,6 +616,7 @@ color: var(--color-text-light);
     font-size: 12px;
     color: var(--color-text-light);
 }
+
 
 
 
