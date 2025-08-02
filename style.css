@@ -544,23 +544,37 @@ input[type="number"] {
     border-top: 1px solid var(--character-color);
 }
 .skill-summary {
-    font-weight: bold;
-    color: var(--color-text);
-    cursor: pointer;
-    list-style: none;
-    text-align: center;
-    padding: 5px 0;
+  font-weight: bold;
+  color: var(--color-text);
+  cursor: pointer;
+  list-style: none; 
+  padding: 10px 15px; 
+  border-radius: var(--radius-sm); 
+  background-color: var(--color-background); 
+  transition: background-color 0.2s ease-in-out;
+  display: flex; 
+  align-items: center;
+  justify-content: center; 
+  gap: var(--spacing-sm); 
+  margin-top: 5px; 
+}
+.skill-summary:hover {
+  background-color: var(--color-border-light);
 }
 .skill-summary::after {
-    content: " ▼";
-    font-size: 0.8em;
-    display: inline-block;
-    transition: transform 0.2s ease-in-out;
+  content: 'expand_more'; 
+  font-family: 'Material Symbols Outlined'; 
+  font-weight: normal; 
+  font-size: 1.2em; 
+  line-height: 1;
+  transition: transform 0.2s ease-in-out;
 }
 .skill-details[open] > .skill-summary::after {
     transform: rotate(180deg);
 }
-
+.skill-details[open] > .skill-summary::after {
+  transform: rotate(180deg);
+}
 .skill-container {
     display: flex;
     flex-direction: column;
@@ -572,24 +586,21 @@ input[type="number"] {
     gap: 6px;
     width: 100%;
 }
-/* style.css 약 289행의 .skill-slot 규칙을 아래 내용으로 교체합니다. */
 
 .skill-slot {
     min-height: 22px;
     border-radius: var(--radius-sm);
     border: 1px solid rgba(0, 0, 0, 0.1);
-    /* flex를 이용해 내부 div를 수직/수평 중앙 정렬합니다. */
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 0.85em;
     font-weight: bold;
-    padding: 2px 4px; /* 좌우 패딩을 조금 줄여 공간을 확보합니다. */
+    padding: 2px 4px; 
     flex: 1 1 0;
     min-width: 0;
 }
 
-/* 새로 추가된 내부 div에 대한 스타일 규칙입니다. */
 .skill-slot > div {
     text-align: center;
     white-space: normal;
@@ -955,3 +966,4 @@ footer {
 #contact-email-link:hover {
     background-color: var(--color-border-light);
 }
+
