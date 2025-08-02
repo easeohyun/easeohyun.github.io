@@ -259,7 +259,12 @@ input[type="number"] { width: 50px; padding: 5px; border: 1px solid var(--color-
 #search-box::placeholder { color: var(--color-placeholder); font-style: italic; opacity: 1; transition: opacity 0.3s ease; }
 #search-box:focus::placeholder { opacity: 0.5; color: var(--color-primary); }
 
-.sort-reset-wrapper { display: flex; align-items: center; gap: var(--spacing-md); }
+.sort-reset-wrapper { 
+    display: flex; 
+    align-items: center; 
+    gap: var(--spacing-md);
+    margin-left: auto; /* 이 규칙을 추가합니다 */
+}
 .sort-container { display: flex; align-items: center; gap: var(--spacing-sm); }
 .button {
     padding: var(--spacing-sm) 15px;
@@ -637,3 +642,4 @@ color: var(--color-text-light);
     font-size: 12px;
     color: var(--color-text-light);
 }
+
