@@ -680,3 +680,14 @@ color: var(--color-text-light);
   }
 }
 
+
+/* style.css 파일 하단에 추가 */
+#contact-email-link {
+    text-decoration: none; /* 링크의 밑줄 제거 */
+    cursor: pointer;       /* 마우스를 올렸을 때 손가락 모양으로 변경 */
+    transition: background-color 0.2s, color 0.2s;
+}
+
+#contact-email-link:hover {
+    background-color: var(--color-border-light);
+}
