@@ -461,7 +461,7 @@ async function initializeApp() {
         DOMElements.characterList.innerHTML = `
             <div id="data-error-container" style="text-align:center; color:red; padding: 20px;">
                 <p>캐릭터 정보를 불러오지 못했습니다. ${CHARACTERS_JSON_PATH} 파일이 올바른 위치에 있는지 확인해 주세요.</p>
-                <p>문제가 지속되면 사이트 관리자에게 문의하여 주십시오.</p>
+                <p>문제가 지속되면 사이트 관리자에게 요청이 필요합니다. 사이트 관리자의 이메일은 하단을 확인해 주세요.</p>
                 <button id="reload-button" class="button button-primary">새로고침</button>
             </div>
         `;
@@ -483,8 +483,10 @@ if (powerCheckbox) {
         if (this.checked) {
             const icon = Math.random() < 0.5 ? "Humerus_Alt" : "Ulna_Radius_Alt";
             powerLabel.dataset.icon = icon;
+            powerLabel.classList.add("icon-label"); 
         } else {
             delete powerLabel.dataset.icon;
+            powerLabel.classList.remove("icon-label"); 
         }
     });
 }
@@ -508,8 +510,10 @@ function setupRandomIconCheckbox(checkboxId) {
             }
 
             label.dataset.icon = icon;
+            label.classList.add("icon-label"); 
         } else {
             delete label.dataset.icon;
+            label.classList.remove("icon-label"); 
         }
     });
 }
@@ -585,4 +589,5 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
 
