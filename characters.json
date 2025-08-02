@@ -558,13 +558,13 @@
     "tags": ["엄마", "마망"]
   },
   {
-    "id": 104001, "name": "스윕 토쇼", "nickname": "리틀 위치", "color": "#8B008B",
+    "id": 104401, "name": "스윕 토쇼", "nickname": "플라타너스・위치", "color": "#8B008B",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "F", "Mile": "A", "Medium": "C", "Long": "E" },
     "StrategyAptitude": { "Front": "G", "Pace": "E", "Late": "A", "End": "A" },
     "StatBonuses": { "Speed": 10, "Stamina": 0, "Power": 0, "Guts": 20, "Wit": 0 },
-    "skills": { "rainbow": ["서몬・구르・아브"], "pink": ["애로우・오브・앳모스피어", "서번트・프라이드"], "yellow": ["육박하는 그림자", "꼬리 올리기"], "white": ["추입 직선○", "추입 코너○", "가을 우마무스메○", "진가 발휘", "물고 늘어지기"] },
-    "tags": ["마법소녀", "스이삐"]
+    "skills": { "rainbow": ["받아 갈게☆스트렐리치아!"], "pink": ["방과 후 마법 소녀", "참 매직", "샐비어☆스플렌데스"], "yellow": ["하교 후의 스페셜리스트", "뜨거운 시선"], "white": ["추입 직선○", "추입 코너○", "가을 우마무스메○", "진가 발휘", "물고 늘어지기"] },
+    "tags": ["마법소녀", "스위삐", "야다드래곤"]
   },
   {
     "id": 104101, "name": "젠노 롭 로이", "nickname": "리딩・사이언티스트", "color": "#228B22",
@@ -581,7 +581,7 @@
     "DistanceAptitude": { "Short": "F", "Mile": "A", "Medium": "A", "Long": "D" },
     "StrategyAptitude": { "Front": "F", "Pace": "B", "Late": "A", "End": "C" },
     "StatBonuses": { "Speed": 10, "Stamina": 0, "Power": 10, "Guts": 10, "Wit": 0 },
-    "skills": { "rainbow": ["결정타! JK 어퍼!"], "pink": ["필살! 왼쪽 스트레이트!", "힘내자구요~!"], "yellow": ["전심전력", "템포 업"], "white": ["가을 우마무스메○", "양호한 경기장○", "외곽 추월 준비", "꼬리 올리기", "선입의 요령○"] },
+    "skills": { "rainbow": ["결정타! JK 어퍼!"], "pink": ["필살! 왼쪽 스트레이트!", "힘내자구요~!"], "yellow": ["전심전력", "템포 업"], "white": ["트릭(뒤)", "하굣길의 즐거움", "원 찬스", "시선", "직선 주파"] },
     "tags": ["갸루", "인싸"]
   },
   {
@@ -828,3 +828,4 @@
     "tags": ["프로젝트L'Arc", "개선문상"]
   }
 ]
+
