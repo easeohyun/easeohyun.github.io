@@ -1,3 +1,29 @@
+// --- script.js 파일 상단, DOMElements 선언 위에 추가 ---
+
+/**
+ * XSS 공격을 방지하기 위해 HTML 특수 문자를 이스케이프(escape) 처리합니다.
+ * @param {string} str - 이스케이프 처리할 원본 문자열.
+ * @returns {string} HTML 엔티티로 변환된 안전한 문자열.
+ */
+function escapeHTML(str) {
+  // null이나 undefined가 들어올 경우를 대비해 빈 문자열로 처리
+  if (str === null || str === undefined) {
+    return '';
+  }
+  // 문자열 타입이 아니면 문자열로 변환
+  const text = String(str);
+  
+  const map = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;' // 또는 &apos;
+  };
+
+  return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+}
+
 // --- Constants and Configuration ---
 const GRADE_MAP = { 'S': 8, 'A': 7, 'B': 6, 'C': 5, 'D': 4, 'E': 3, 'F': 2, 'G': 1 };
 const NAME_MAPS = {
@@ -523,5 +549,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
 
 
