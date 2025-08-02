@@ -447,13 +447,79 @@ const targetCheckboxIds = [
 // 목록에 있는 모든 체크박스에 대하여 설정 함수 실행
 targetCheckboxIds.forEach(id => setupRandomIconCheckbox(id));
 
-const modal = document.getElementById('modal');
+// 모달 버튼 만드는 방법
 
-modal.addEventListener('click', (e) => {
-  const rect = modal.getBoundingClientRect();
-  const isInDialog = (
-    rect.top <= e.clientY && e.clientY <= rect.bottom &&
-    rect.left <= e.clientX && e.clientX <= rect.right
-  );
-  if (!isInDialog) modal.close();
+// DOM이 완전히 로드된 후에 스크립트가 실행되도록 보장합니다.
+// 이는 script 태그가 head에 위치하더라도 오류 없이 동작하게 합니다.
+document.addEventListener('DOMContentLoaded', () => {
+
+    // 필요한 DOM 요소들을 상수로 선언하여 재사용성과 가독성을 높입니다.
+    const openModalBtn = document.getElementById('open-modal-btn');
+    const closeModalBtn = document.getElementById('close-modal-btn');
+    const modalContainer = document.getElementById('contact-modal');
+    const modalOverlay = document.querySelector('.modal-overlay');
+
+    // 모달이 열리기 전 마지막으로 포커스되었던 요소를 저장할 변수
+    let lastFocusedElement;
+
+    /**
+     * 모달을 여는 함수
+     * @param {Event} e - 이벤트 객체
+     */
+    const openModal = (e) => {
+        // 마지막 포커스 요소 저장 (웹 접근성 향상)
+        lastFocusedElement = document.activeElement;
+
+        // 모달을 화면에 표시
+        modalContainer.removeAttribute('hidden');
+        // 애니메이션을 위해 강제로 리플로우(reflow)를 발생시킨 후 active 클래스를 추가합니다.
+        // 이 작은 지연이 없으면 CSS transition이 제대로 동작하지 않을 수 있습니다.
+        requestAnimationFrame(() => {
+            modalContainer.classList.add('active');
+        });
+
+        // 모달이 열리면 닫기 버튼에 포커스를 줍니다. (키보드 사용자를 위함)
+        closeModalBtn.focus();
+    };
+
+    /**
+     * 모달을 닫는 함수
+     */
+    const closeModal = () => {
+        modalContainer.classList.remove('active');
+        
+        // CSS transition이 끝난 후에 hidden 속성을 추가하여
+        // 스크린 리더에서 완전히 사라지도록 합니다.
+        modalContainer.addEventListener('transitionend', function onTransitionEnd() {
+            modalContainer.setAttribute('hidden', true);
+            // 이벤트 리스너가 중복해서 쌓이지 않도록 한 번 실행 후 제거합니다.
+            modalContainer.removeEventListener('transitionend', onTransitionEnd);
+        }, { once: true });
+
+
+        // 모달을 열었던 버튼으로 포커스를 되돌려줍니다.
+        if (lastFocusedElement) {
+            lastFocusedElement.focus();
+        }
+    };
+
+    // --- 이벤트 리스너 등록 ---
+    // 이벤트 리스너를 사용하면 HTML과 JS 코드가 분리되어 유지보수가 매우 편리해집니다.
+
+    // [도움말 & 연락처] 버튼 클릭 시 모달 열기
+    openModalBtn.addEventListener('click', openModal);
+
+    // 모달 내부의 [X] 버튼 클릭 시 모달 닫기
+    closeModalBtn.addEventListener('click', closeModal);
+
+    // 모달 바깥의 어두운 영역 클릭 시 모달 닫기
+    modalOverlay.addEventListener('click', closeModal);
+
+    // 'Escape' 키를 눌렀을 때 모달 닫기 (사용자 편의성 극대화)
+    document.addEventListener('keydown', (e) => {
+        // 모달이 활성화된 상태이고, 누른 키가 'Escape'일 때만 동작
+        if (e.key === 'Escape' && modalContainer.classList.contains('active')) {
+            closeModal();
+        }
+    });
 });
