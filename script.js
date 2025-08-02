@@ -369,10 +369,11 @@ async function initializeApp() {
 
     const { filterForm, searchBox, sortOrder, resetFiltersButton, noResultsResetButton, scrollTopButton, scrollBottomButton, toggleSkillsButton, darkModeToggleButton } = DOMElements;
 
-const debouncedUpdateHandler = debounce(() => window.requestAnimationFrame(updateDisplay), 300);
-    filterForm.addEventListener("input", debouncedUpdateHandler); 
-    searchBox.addEventListener("input", debouncedUpdateHandler); 
-    sortOrder.addEventListener("change", updateDisplay); 
+    const updateHandler = () => window.requestAnimationFrame(updateDisplay);
+
+    filterForm.addEventListener("input", updateHandler);
+    searchBox.addEventListener("input", updateHandler);
+    sortOrder.addEventListener("change", updateHandler);
     resetFiltersButton.addEventListener("click", resetAllFilters);
     noResultsResetButton.addEventListener("click", resetAllFilters);
     scrollTopButton.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
@@ -392,9 +393,8 @@ const debouncedUpdateHandler = debounce(() => window.requestAnimationFrame(updat
         console.error("캐릭터 데이터를 불러오는 데 실패했습니다:", error);
         DOMElements.characterList.innerHTML = `
             <div id="data-error-container" style="text-align:center; color:red; padding: 20px;">
-                <p>캐릭터 정보를 불러오지 못했어요. ${CHARACTERS_JSON_PATH} 파일이 올바른 위치에 있는지 확인해 주세요.</p>
-                <p>문제가 고쳐지지 않는다면 사이트 관리자에게 문의하여 주세요.</p>
-                <p>사이트 관리자는, 하단 [ 알려드릴 내용이 있어요! ]에 연락처를 써 놨습니다.</p>
+                <p>캐릭터 정보를 불러오지 못했습니다. ${CHARACTERS_JSON_PATH} 파일이 올바른 위치에 있는지 확인해 주세요.</p>
+                <p>문제가 지속되면 사이트 관리자에게 문의하여 주십시오.</p>
                 <button id="reload-button" class="button button-primary">새로고침</button>
             </div>
         `;
@@ -477,34 +477,28 @@ document.addEventListener("DOMContentLoaded", () => {
     const modalContainer = document.getElementById("contact-modal");
     const modalOverlay = document.querySelector(".modal-overlay");
 
-    const mainContent = document.querySelector('main');
-    const footerContent = document.querySelector('footer');
-
     let lastFocusedElement;
 
     const openModal = (e) => {
         lastFocusedElement = document.activeElement;
-        
-        mainContent.inert = true;
-        footerContent.inert = true;
 
         modalContainer.removeAttribute("hidden");
+
         requestAnimationFrame(() => {
             modalContainer.classList.add("active");
         });
+
         closeModalBtn.focus();
     };
 
     const closeModal = () => {
         modalContainer.classList.remove("active");
 
-        mainContent.inert = false;
-        footerContent.inert = false;
-
         modalContainer.addEventListener(
             "transitionend",
             function onTransitionEnd() {
                 modalContainer.setAttribute("hidden", true);
+
                 modalContainer.removeEventListener("transitionend", onTransitionEnd);
             },
             { once: true }
