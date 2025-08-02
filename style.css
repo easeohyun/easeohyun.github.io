@@ -1,6 +1,5 @@
 :root {
     --font-primary: "Noto Sans KR", sans-serif;
-
     --color-text: #333;
     --color-text-light: #6c757d;
     --color-primary: #3498db;
@@ -28,21 +27,17 @@
     --color-stat-power: #f39b17;
     --color-stat-guts: #ff6fac;
     --color-stat-wit: #22bf7d;
-
     --spacing-xs: 4px;
     --spacing-sm: 8px;
     --spacing-md: 16px;
     --spacing-lg: 20px;
     --spacing-xl: 30px;
-
     --radius-sm: 4px;
     --radius-md: 8px;
     --radius-lg: 12px;
-
     --shadow-light: 0 0 10px rgba(0, 0, 0, 0.05);
     --shadow-medium: 0 4px 6px rgba(0, 0, 0, 0.07);
     --shadow-hover: 0 8px 12px rgba(0, 0, 0, 0.1);
-
     --transition-fast: all 0.2s ease-in-out;
     --transition-normal: all 0.3s ease-in-out;
 }
@@ -212,12 +207,12 @@ footer p {
 }
 .filter-item label::after {
     font-family: "Material Symbols Outlined";
-    content: "";
+    content: ""; 
     position: absolute;
-    left: -1px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 19px;
+    top: 50%; 
+    left: 8px; 
+    transform: translate(-50%, -50%);
+    font-size: 16px; 
     line-height: 1;
     color: white;
     opacity: 0;
@@ -958,6 +953,7 @@ input[type="number"] {
 #contact-email-link:hover {
     background-color: var(--color-border-light);
 }
+
 
 
 
