@@ -209,7 +209,7 @@ footer p {
     font-family: "Material Symbols Outlined";
     content: "";
     position: absolute;
-    top: calc(50% + 1.05pt); 
+    top: calc(50% + 1.1pt); 
     left: calc(8px + 1.05pt); 
     transform: translate(-50%, -50%) scale(1.05); 
     font-size: 18.5px; 
@@ -953,6 +953,7 @@ input[type="number"] {
 #contact-email-link:hover {
     background-color: var(--color-border-light);
 }
+
 
 
 
