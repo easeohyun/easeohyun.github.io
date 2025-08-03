@@ -426,7 +426,6 @@ function initializeTheme() {
         applyTheme(systemPrefersDark ? "dark" : "light");
     }
 }
-
 async function initializeApp() {
     setLoadingState(true);
     initializeTheme();
@@ -434,40 +433,29 @@ async function initializeApp() {
 
     const { filterForm, searchBox, sortOrder, resetFiltersButton, noResultsResetButton, scrollTopButton, scrollBottomButton, toggleSkillsButton, darkModeToggleButton } = DOMElements;
 
-    
     // 1. 웹 워커를 생성합니다.
-worker = new Worker('./workers/filterWorker.js');
+    worker = new Worker('./workers/filterWorker.js');
 
-// 2. 워커 에러 핸들러를 추가합니다.
-worker.onerror = (error) => {
-    console.error(`Worker error: ${error.message}`, error);
-    // 사용자에게 문제가 발생했음을 알립니다.
-    DOMElements.resultSummary.textContent = "오류가 발생했습니다. 페이지를 새로고침 해주세요.";
-    // 필요하다면, 여기서 워커를 재시작하거나 다른 복구 로직을 수행할 수 있습니다.
-};
-
-// 3. 워커로부터 메시지를 받았을 때 처리할 로직을 정의합니다. (기존 코드)
-worker.onmessage = (e) => {
-        const filteredCharacters = e.data; // 워커가 보낸 처리 결과
-        
-        // 필터링이 적용되었는지 여부를 판단합니다.
+    // 2. 워커 에러 핸들러를 추가합니다.
+    worker.onerror = (error) => {
+        console.error(`Worker error: ${error.message}`, error);
+        DOMElements.resultSummary.textContent = "오류가 발생했습니다. 페이지를 새로고침 해주세요.";
+    };
+    
+    worker.onmessage = (e) => {
+        const filteredCharacters = e.data;
         const isFiltered = (
-            Array.from(DOMElements.filterForm.elements).some(el => el.type === "checkbox" && el.checked) || 
+            Array.from(DOMElements.filterForm.elements).some(el => el.type === "checkbox" && el.checked) ||
             DOMElements.searchBox.value.trim() !== ""
         );
-
-        // 결과를 화면에 렌더링합니다.
         renderCharacters(filteredCharacters, isFiltered);
     };
 
-
-    // 3. 캐릭터 데이터를 불러와 메인 스레드와 워커 양쪽에 모두 전달합니다.
     try {
         const response = await fetch(CHARACTERS_JSON_PATH);
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         allCharacters = await response.json();
 
-        // 워커에게 최초 캐릭터 데이터를 보내 초기화시킵니다.
         worker.postMessage({
             type: 'init',
             payload: { characters: allCharacters }
@@ -475,24 +463,29 @@ worker.onmessage = (e) => {
 
     } catch (error) {
         console.error("캐릭터 데이터를 불러오는 데 실패했습니다:", error);
-        // ... (기존 에러 처리 로직) ...
+        DOMElements.resultSummary.textContent = "오류 발생";
+        DOMElements.characterList.innerHTML = `
+            <div id="data-error-container" style="text-align:center; color:red; padding: 20px;">
+                <p>캐릭터 정보를 불러오지 못했습니다. ${CHARACTERS_JSON_PATH} 파일이 올바른 위치에 있는지 확인해 주세요.</p>
+                <p>문제가 지속되면 사이트 관리자에게 요청이 필요합니다. 사이트 관리자의 이메일은 하단을 확인해 주세요.</p>
+                <button id="reload-button" class="button button-primary">새로고침</button>
+            </div>
+        `;
+        document.getElementById("reload-button").addEventListener("click", () => location.reload());
         return;
     }
-
-    // 4. 초기 화면을 렌더링합니다.
-    renderCharacters(allCharacters, false); // 처음에는 필터링되지 않은 전체 목록을 보여줍니다.
-    updateScrollButtonsVisibility();
     
-const updateHandler = () => {
-    window.requestAnimationFrame(updateDisplay);
-};
-const debouncedSearchHandler = debounce(updateHandler, 250);
+    // 5. 이벤트 리스너를 설정하고 초기 화면을 렌더링합니다.
+    const updateHandler = () => {
+        window.requestAnimationFrame(updateDisplay);
+    };
+    const debouncedSearchHandler = debounce(updateHandler, 250);
 
-filterForm.addEventListener("input", (e) => {
-    if (e.target.id !== 'search-box') {
-        updateHandler(); // 디바운스 없이 즉시 반응
-    }
-});
+    filterForm.addEventListener("input", (e) => {
+        if (e.target.id !== 'search-box') {
+            updateHandler();
+        }
+    });
     searchBox.addEventListener("input", debouncedSearchHandler);
     sortOrder.addEventListener("change", updateHandler);
     resetFiltersButton.addEventListener("click", resetAllFilters);
@@ -505,27 +498,11 @@ filterForm.addEventListener("input", (e) => {
     window.addEventListener("scroll", updateScrollButtonsVisibility);
     window.addEventListener("resize", updateScrollButtonsVisibility);
     document.addEventListener("keydown", handleKeyboardShortcuts);
-
-    try {
-        const response = await fetch(CHARACTERS_JSON_PATH);
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        allCharacters = await response.json();
-    } catch (error) {
-        console.error("캐릭터 데이터를 불러오는 데 실패했습니다:", error);
-        DOMElements.characterList.innerHTML = `
-            <div id="data-error-container" style="text-align:center; color:red; padding: 20px;">
-                <p>캐릭터 정보를 불러오지 못했습니다. ${CHARACTERS_JSON_PATH} 파일이 올바른 위치에 있는지 확인해 주세요.</p>
-                <p>문제가 지속되면 사이트 관리자에게 요청이 필요합니다. 사이트 관리자의 이메일은 하단을 확인해 주세요.</p>
-                <button id="reload-button" class="button button-primary">새로고침</button>
-            </div>
-        `;
-        document.getElementById("reload-button").addEventListener("click", () => location.reload());
-        DOMElements.resultSummary.textContent = "오류 발생";
-        return;
-    }
-
-    updateDisplay();
+    
+    // 초기 렌더링 및 상태 업데이트
+    renderCharacters(allCharacters, false);
     updateScrollButtonsVisibility();
+
     // 서비스 워커 등록 코드
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
@@ -694,4 +671,5 @@ document.addEventListener("DOMContentLoaded", () => {
     // 브라우저의 '뒤로 가기', '앞으로 가기' 동작을 감지합니다.
     window.addEventListener('hashchange', handleHashChange);
 });
+
 
