@@ -159,11 +159,11 @@ const createSkillRowAndAppend = (skills, color, flexClassMap) => {
     skillContainer.appendChild(rowDiv);
 };
 
-createSkillRowAndAppend(char.skills.rainbow, "rainbow", { 1: "", 2: "flex-2" });
-createSkillRowAndAppend(char.skills.pink, "pink", { 2: "flex-2", 3: "flex-3", 4: "flex-4" });
-createSkillRowAndAppend(char.skills.yellow, "yellow", { 1: "", 2: "flex-2" });
-createSkillRowAndAppend(char.skills.white?.slice(0, 3), "white", { 1: "", 2: "flex-2", 3: "flex-3" });
-createSkillRowAndAppend(char.skills.white?.slice(3), "white", { 1: "", 2: "flex-2" });
+createSkillRowAndAppend(char.skills?.rainbow ?? [], "rainbow", { 1: "", 2: "flex-2" });
+createSkillRowAndAppend(char.skills?.pink ?? [], "pink", { 2: "flex-2", 3: "flex-3", 4: "flex-4" });
+createSkillRowAndAppend(char.skills?.yellow ?? [], "yellow", { 1: "", 2: "flex-2" });
+createSkillRowAndAppend(char.skills?.white?.slice(0, 3) ?? [], "white", { 1: "", 2: "flex-2", 3: "flex-3" });
+createSkillRowAndAppend(char.skills?.white?.slice(3) ?? [], "white", { 1: "", 2: "flex-2" });
 
     return card;
 }
@@ -640,6 +640,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
 
 
 
