@@ -557,21 +557,19 @@ input[type="number"] {
     border-top: 1px solid var(--character-color);
 }
 .skill-summary {
-    font-weight: bold;
-    color: var(--color-text);
-    cursor: pointer;
-    list-style: none; 
-    padding: 10px 15px; 
-    border-radius: var(--radius-sm); 
-    background-color: var(--color-background); 
-    transition: background-color 0.2s ease-in-out;
-    display: flex; 
-    align-items: center;
-    justify-content: center; 
-    gap: var(--spacing-sx); 
-    margin-top: 5px; 
-    text-align: center;
-    padding: 0 0 10px 0;
+  font-weight: bold;
+  color: var(--color-text);
+  cursor: pointer;
+  list-style: none;
+  padding: 15px 15px 10px 15px; 
+  border-radius: var(--radius-sm);
+  background-color: var(--color-background);
+  transition: background-color 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  margin-top: 5px;
 }
 
 .skill-summary:hover {
@@ -983,3 +981,4 @@ input[type="number"] {
 details[open] > .skill-container {
     animation: slide-down-fade-in 0.3s ease-in-out;
 }
+
