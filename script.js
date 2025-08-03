@@ -436,8 +436,9 @@ function setupEventListeners() {
     toggleSkillsButton.addEventListener("click", toggleAllSkills);
     darkModeToggleButton.addEventListener("click", toggleTheme);
 
-    window.addEventListener("scroll", updateScrollButtonsVisibility);
-    window.addEventListener("resize", updateScrollButtonsVisibility);
+    ['scroll', 'resize'].forEach(event => {
+        window.addEventListener(event, updateScrollButtonsVisibility, { passive: true });
+    });
     document.addEventListener("keydown", handleKeyboardShortcuts);
 }
 
@@ -617,4 +618,5 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
 
