@@ -299,19 +299,20 @@ function resetAllFilters() {
 function toggleAllSkills() {
     const allDetails = DOMElements.characterList.querySelectorAll(".skill-details");
     if (allDetails.length === 0) return;
-    
-    const shouldOpen = !allDetails[0].hasAttribute("open");
+
+    // 첫 번째 카드의 상태를 기준으로 열지 닫을지 결정
+    const shouldOpen = !allDetails[0].open;
+
     allDetails.forEach((detail) => {
-        if (shouldOpen) {
-            detail.open = true;
-        } else {
-            detail.open = false;
+        // 현재 상태와 목표 상태가 다를 경우에만 summary를 클릭하여 애니메이션을 트리거
+        if (detail.open !== shouldOpen) {
+            detail.querySelector('.skill-summary').click();
         }
     });
 
     const icon = DOMElements.toggleSkillsButton.querySelector(".material-symbols-outlined");
     icon.textContent = shouldOpen ? "unfold_less" : "unfold_more";
-    DOMElements.toggleSkillsButton.title = shouldOpen ? "모든 스킬 접기 ([)" : "모든 스킬 펼치기 ([)";
+    DOMElements.toggleSkillsButton.title = shouldOpen ? "모든 스킬 접기 (E)" : "모든 스킬 펼치기 (E)";
 }
 
 function updateScrollButtonsVisibility() {
@@ -339,33 +340,32 @@ function handleKeyboardShortcuts(event) {
         }
         return; // 추가 단축키 동작 방지
     }
-
-    switch (event.key) {
-        case "/":
-            event.preventDefault();
-            DOMElements.searchBox.focus();
-            break;
-        case "Escape":
-            // 모달이 닫혀 있을 때만 필터 초기화
-            if (!isModalActive) {
-                resetAllFilters();
-            }
-            break;
-        case ".":
-            window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
-            break;
-        case ",":
-            window.scrollTo({ top: 0, behavior: "smooth" });
-            break;
-        case "[":
-            event.preventDefault();
-            toggleAllSkills();
-            break;
-        case "]":
-            event.preventDefault();
-            toggleTheme();
-            break;
-    }
+switch (event.key.toLowerCase()) { // 대소문자 구분 없이 동작하도록 .toLowerCase() 추가
+    case "/":
+        event.preventDefault();
+        DOMElements.searchBox.focus();
+        break;
+    case "escape": // 'Escape' -> 'escape'
+        // 모달이 닫혀 있을 때만 필터 초기화
+        if (!isModalActive) {
+            resetAllFilters();
+        }
+        break;
+    case "w":
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        break;
+    case "s":
+        window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+        break;
+    case "e":
+        event.preventDefault();
+        toggleAllSkills();
+        break;
+    case "f":
+        event.preventDefault();
+        toggleTheme();
+        break;
+}
 }
 
 function setupDynamicCheckboxColors() {
@@ -489,6 +489,47 @@ async function initializeApp() {
     searchBox.addEventListener("input", debouncedSearchHandler);
     sortOrder.addEventListener("change", updateHandler);
     resetFiltersButton.addEventListener("click", resetAllFilters);
+
+
+
+
+
+    
+    DOMElements.characterList.addEventListener('click', e => {
+    const details = e.target.closest('.skill-details');
+    if (!details || !e.target.matches('.skill-summary')) return;
+
+    e.preventDefault(); // 기본 동작(즉시 열고 닫기)을 막습니다.
+
+    if (details.open) {
+        // 닫힐 때
+        details.classList.add('animating-close');
+        details.classList.remove('animating-open');
+
+        details.addEventListener('animationend', () => {
+            details.open = false;
+            details.classList.remove('animating-close');
+        }, { once: true });
+
+    } else {
+        // 열릴 때
+        details.open = true;
+        details.classList.add('animating-open');
+        details.classList.remove('animating-close');
+
+        details.addEventListener('animationend', () => {
+             // 열기 애니메이션 후에는 클래스를 굳이 지울 필요는 없으나,
+             // 일관성을 위해 지우거나, 혹은 그냥 두어도 무방합니다.
+             // details.classList.remove('animating-open');
+        }, { once: true });
+    }
+});
+
+
+
+
+
+    
     noResultsResetButton.addEventListener("click", resetAllFilters);
     scrollTopButton.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
     scrollBottomButton.addEventListener("click", () => window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" }));
@@ -671,5 +712,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // 브라우저의 '뒤로 가기', '앞으로 가기' 동작을 감지합니다.
     window.addEventListener('hashchange', handleHashChange);
 });
+
 
 
