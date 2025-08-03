@@ -503,6 +503,18 @@ async function initializeApp() {
 
     updateDisplay();
     updateScrollButtonsVisibility();
+    // 서비스 워커 등록 코드
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+                .then(registration => {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                })
+                .catch(err => {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+        });
+    }
 }
 
 initializeApp();
@@ -620,6 +632,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
 
 
 
