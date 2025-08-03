@@ -38,21 +38,36 @@ self.addEventListener('activate', (event) => {
 
 
 self.addEventListener('fetch', (event) => {
+    // 'characters.json'에 대해 Stale-While-Revalidate 전략 적용
     if (event.request.url.includes('characters.json')) {
         event.respondWith(
             caches.open(CACHE_NAME).then((cache) => {
-                return fetch(event.request).then((networkResponse) => {
-                    cache.put(event.request, networkResponse.clone());
-                    return networkResponse;
-                }).catch(() => {
-                    return cache.match(event.request);
+                return cache.match(event.request).then((cachedResponse) => {
+                    const fetchPromise = fetch(event.request).then((networkResponse) => {
+                        cache.put(event.request, networkResponse.clone());
+                        return networkResponse;
+                    });
+                    return cachedResponse || fetchPromise;
                 });
             })
         );
-    } else {
+    } else if (ASSETS_TO_CACHE.includes(event.request.url) || event.request.destination) {
         event.respondWith(
             caches.match(event.request).then((response) => {
-                return response || fetch(event.request);
+                return response || fetch(event.request).then(networkResponse => {
+                    // 동적으로 로드되는 자원도 캐싱되도록 개선
+                    if (networkResponse.ok) {
+                       const cacheControl = networkResponse.headers.get('Cache-Control');
+                       // 브라우저 확장 프로그램 등에 의한 요청은 캐시하지 않음
+                       if (!cacheControl || !cacheControl.includes('no-store')) {
+                            return caches.open(CACHE_NAME).then(cache => {
+                                cache.put(event.request, networkResponse.clone());
+                                return networkResponse;
+                            });
+                       }
+                    }
+                    return networkResponse;
+                });
             })
         );
     }
