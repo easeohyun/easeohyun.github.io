@@ -22,13 +22,26 @@ self.addEventListener('install', (event) => {
     );
 });
 
-// 2. 요청 처리 단계: 네트워크 요청을 가로채 캐시된 자원을 우선 반환합니다.
 self.addEventListener('fetch', (event) => {
-    event.respondWith(
-        caches.match(event.request)
-            .then((response) => {
-                // 캐시에 응답이 있으면 그것을 반환하고, 없으면 네트워크로 요청을 보냅니다.
+    // characters.json 파일에만 다른 전략 적용
+    if (event.request.url.includes('characters.json')) {
+        event.respondWith(
+            caches.open(CACHE_NAME).then((cache) => {
+                return cache.match(event.request).then((cachedResponse) => {
+                    const fetchedResponsePromise = fetch(event.request).then((networkResponse) => {
+                        cache.put(event.request, networkResponse.clone());
+                        return networkResponse;
+                    });
+                    return cachedResponse || fetchedResponsePromise;
+                });
+            })
+        );
+    } else {
+        // 나머지 자산은 기존 Cache First 전략 유지
+        event.respondWith(
+            caches.match(event.request).then((response) => {
                 return response || fetch(event.request);
             })
-    );
+        );
+    }
 });
