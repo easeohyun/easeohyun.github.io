@@ -56,31 +56,9 @@ const DOMElements = {
 
 let allCharacters = [];
 let observer; //
+let worker;
 
-function smartIncludes(target, term) {
-    const targetStr = String(target || "").toLowerCase();
-    const termStr = String(term || "").toLowerCase();
-    if (!termStr) return true;
-
-    const sanitize = (str) => str.replace(/[\s\-!@#$%^&*()_+={}\[\]:;"'<>,.?\/\\|`~♪☆・！？—ﾟ∀]/g, "");
-    const sanitizedTerm = sanitize(termStr);
-    const sanitizedTarget = sanitize(targetStr);
-
-    if (!sanitizedTerm) return true;
-    if (sanitizedTarget.includes(sanitizedTerm)) return true;
-
-    const isTermAllChosung = [...sanitizedTerm].every((char) => CHO_SUNG.includes(char));
-
-    if (isTermAllChosung) {
-        const getChosung = (char) => {
-            const code = char.charCodeAt(0) - 44032;
-            return code >= 0 && code <= 11171 ? CHO_SUNG[Math.floor(code / 588)] : char;
-        };
-        const targetChosung = [...sanitizedTarget].map(getChosung).join("");
-        if (targetChosung.includes(sanitizedTerm)) return true;
-    }
-    return false;
-}
+function smartIncludes(target, term) {}
 
 function createCharacterCard(char) {
     const card = DOMElements.cardTemplate.content.cloneNode(true).firstElementChild;
@@ -272,6 +250,10 @@ function renderCharacters(charactersToRender, isFiltered) {
 }
 
 function updateDisplay() {
+    // 워커가 초기화되기 전이라면 함수를 종료합니다.
+    if (!worker) return;
+
+    // 1. 사용자 입력 값 (필터 조건)을 모두 수집합니다.
     const formData = new FormData(DOMElements.filterForm);
     const activeFilters = Array.from(DOMElements.filterForm.elements)
         .filter((el) => el.type === "checkbox" && el.checked)
@@ -291,50 +273,21 @@ function updateDisplay() {
         .map((term) => term.substring(1))
         .filter(Boolean);
 
-    const isFiltered = activeFilters.length > 0 || rawSearchTerms.length > 0;
-
-    const filteredCharacters = allCharacters.filter((character) => {
-        const passesFilters = activeFilters.every((filter) => {
-            for (const sectionName in NAME_MAPS) {
-                if (character[sectionName] && character[sectionName][filter.key] !== undefined) {
-                    return filter.type === "value" ? character[sectionName][filter.key] >= filter.value : GRADE_MAP[character[sectionName][filter.key]] >= filter.value;
-                }
-            }
-            return false;
-        });
-        if (!passesFilters) return false;
-
-        if (rawSearchTerms.length > 0) {
-            const allSkills = Object.values(character.skills).flat().filter(Boolean);
-            const searchTargets = [String(character.id), character.name, character.nickname, ...allSkills, ...character.tags];
-
-            const passesInclusion = inclusionTerms.every((term) => searchTargets.some((target) => smartIncludes(target, term)));
-            if (!passesInclusion) return false;
-
-            const passesExclusion = !exclusionTerms.some((term) => searchTargets.some((target) => smartIncludes(target, term)));
-            if (!passesExclusion) return false;
-        }
-
-        return true;
-    });
-
     const sortBy = DOMElements.sortOrder.value;
-    filteredCharacters.sort((a, b) => {
-        switch (sortBy) {
-            case "name-asc":
-                return a.name.localeCompare(b.name, "ko") || a.id - b.id;
-            case "name-desc":
-                return b.name.localeCompare(a.name, "ko") || a.id - b.id;
-            case "id-asc":
-                return a.id - b.id;
-            case "id-desc":
-                return b.id - a.id;
-            default:
-                return 0;
+
+    // 처리 중임을 사용자에게 알립니다.
+    DOMElements.characterList.innerHTML = ""; // 목록을 비웁니다.
+    DOMElements.resultSummary.textContent = "조건에 맞는 우마무스메를 찾고 있습니다...";
+
+    // 2. 수집한 필터 조건을 객체에 담아 워커에게 메시지로 보냅니다.
+    worker.postMessage({
+        type: 'filter',
+        payload: {
+            activeFilters,
+            searchTerms: { inclusionTerms, exclusionTerms },
+            sortBy
         }
     });
-
-    renderCharacters(filteredCharacters, isFiltered);
 }
 
 function resetAllFilters() {
@@ -667,6 +620,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
 
 
 
