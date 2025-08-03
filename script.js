@@ -169,14 +169,14 @@ createSkillRowAndAppend(char.skills?.white?.slice(3) ?? [], "white", { 1: "", 2:
 }
 
 function setLoadingState(isLoading) {
-    DOMElements.characterList.innerHTML = "";
+    const { characterList, resultSummary, skeletonTemplate } = DOMElements;
+    characterList.innerHTML = "";
     if (isLoading) {
-        const fragment = document.createDocumentFragment();
-        for (let i = 0; i < 9; i++) {
-            fragment.appendChild(DOMElements.skeletonTemplate.content.cloneNode(true));
-        }
-        DOMElements.characterList.appendChild(fragment);
-        DOMElements.resultSummary.textContent = "학생 명부를 불러오는 중...";
+        resultSummary.setAttribute('aria-live', 'assertive'); // 중요 메시지 즉시 전달
+        resultSummary.textContent = "학생 명부를 불러오는 중...";
+        // ... 스켈레톤 UI 생성 코드 ...
+    } else {
+        resultSummary.setAttribute('aria-live', 'polite'); // 일반적인 상태 변경 전달
     }
 }
 
