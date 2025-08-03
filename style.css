@@ -974,43 +974,24 @@ input[type="number"] {
     background-color: var(--color-border-light);
 }
 
-@keyframes slide-down-fade-in {
-    from {
-        opacity: 0;
-        transform: translateY(-10px); 
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+/* --- Skill Details Animation --- */
+
+.skill-container {
+
+    overflow: hidden;
+
+    transition: max-height 0.35s ease-in-out,
+                opacity 0.25s ease-in,
+                padding-top 0.35s ease-in-out;
+
+    max-height: 0;
+    opacity: 0;
+    padding-top: 0;
 }
 
-@keyframes slide-down-fade-in {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes slide-up-fade-out {
-    from {
-        opacity: 1;
-        transform: translateY(0);
-    }
-    to {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-}
-
-.skill-details.animating-open > .skill-container {
-    animation: slide-down-fade-in 0.3s ease-out forwards;
-}
-
-.skill-details.animating-close > .skill-container {
-    animation: slide-up-fade-out 0.3s ease-out forwards;
+details[open] > .skill-container {
+    /* 열렸을 때의 최종 상태 */
+    max-height: 1000px; /* 내용이 잘리지 않을 만큼 충분히 큰 값 */
+    opacity: 1;
+    padding-top: 10px; /* 원래 가지고 있던 상단 여백 */
 }
