@@ -223,6 +223,13 @@ footer p {
     opacity: 1;
 }
 
+.filter-item:has(input[type="checkbox"]:checked) select,
+.filter-item:has(input[type="checkbox"]:checked) input[type="number"] {
+    border-color: var(--color-primary);
+    background-color: color-mix(in srgb, var(--color-primary) 5%, var(--color-surface));
+    box-shadow: 0 0 5px color-mix(in srgb, var(--color-primary) 50%, transparent);
+}
+
 #Turf:checked + label::after {
     content: "grass";
 }
@@ -288,6 +295,11 @@ input[type="number"] {
 .filter-item select:focus {
     border-color: var(--color-primary);
     box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+
+.filter-item select,
+.filter-item input[type="number"] {
+    transition: border-color 0.2s, background-color 0.2s, box-shadow 0.2s;
 }
 
 .search-wrapper {
