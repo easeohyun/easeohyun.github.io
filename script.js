@@ -325,10 +325,19 @@ function updateScrollButtonsVisibility() {
 }
 
 function handleKeyboardShortcuts(event) {
-    const activeElement = document.activeElement;
-    if (activeElement && (activeElement.tagName === "INPUT" || activeElement.tagName === "SELECT")) {
-        if (event.key === "Escape") activeElement.blur();
+    // 모달이 활성화 상태일 경우, Escape 키 외의 단축키는 동작하지 않도록 함
+    const isModalActive = !DOMElements.modalContainer.hidden;
+    if (isModalActive && event.key !== "Escape") {
         return;
+    }
+
+    const activeElement = document.activeElement;
+    // activeElement가 존재하고, 그것이 'INPUT' 또는 'SELECT' 태그일 때
+    if (activeElement && (activeElement.tagName === "INPUT" || activeElement.tagName === "SELECT")) {
+        if (event.key === "Escape") {
+            activeElement.blur(); // 포커스 해제
+        }
+        return; // 추가 단축키 동작 방지
     }
 
     switch (event.key) {
@@ -337,7 +346,10 @@ function handleKeyboardShortcuts(event) {
             DOMElements.searchBox.focus();
             break;
         case "Escape":
-            resetAllFilters();
+            // 모달이 닫혀 있을 때만 필터 초기화
+            if (!isModalActive) {
+                resetAllFilters();
+            }
             break;
         case ".":
             window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
@@ -682,3 +694,4 @@ document.addEventListener("DOMContentLoaded", () => {
     // 브라우저의 '뒤로 가기', '앞으로 가기' 동작을 감지합니다.
     window.addEventListener('hashchange', handleHashChange);
 });
+
