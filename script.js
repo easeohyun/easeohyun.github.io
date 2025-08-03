@@ -60,84 +60,110 @@ let worker;
 
 function smartIncludes(target, term) {}
 
-// script.js (After)
-
-// XSS 방지를 위한 HTML 이스케이프 함수를 상단에 배치합니다.
-function escapeHTML(str) {
-    if (str === null || str === undefined) return "";
-    const p = document.createElement("p");
-    p.textContent = str;
-    return p.innerHTML;
-}
-
-// ... (다른 함수들) ...
-
 function createCharacterCard(char) {
-    const statsHTML = Object.entries(NAME_MAPS).map(([sectionKey, { name, map }]) => {
-        const itemsHTML = Object.entries(map).map(([itemKey, displayName]) => {
-            const value = char[sectionKey]?.[itemKey];
-            if (value === undefined) return '';
-
-            const valueDisplay = sectionKey === "StatBonuses"
-                ? `<span>${value}</span><span class="percent">%</span>`
-                : `<span class="grade-${String(value).toLowerCase()}">${value}</span>`;
-
-            return `<li class="stat-item">
-                        <span class="label">${escapeHTML(displayName)}</span>
-                        <span class="value">${valueDisplay}</span>
-                    </li>`;
-        }).join('');
-
-        return `<li class="stat-item stat-category">${escapeHTML(name)}</li>${itemsHTML}`;
-    }).join('');
-
-    const createSkillRowHTML = (skills, color, flexClassMap) => {
-        if (!skills || skills.length === 0) return '';
-        const flexClass = flexClassMap[skills.length] || `flex-${skills.length}`;
-        const skillsHTML = skills.map(skill =>
-            `<div class="skill-slot skill-${color} ${flexClass}">
-                <div>${escapeHTML(skill)}</div>
-            </div>`
-        ).join('');
-        return `<div class="skill-row">${skillsHTML}</div>`;
-    };
-
-    const skillsHTML = `
-        ${createSkillRowHTML(char.skills?.rainbow ?? [], "rainbow", { 1: "", 2: "flex-2" })}
-        ${createSkillRowHTML(char.skills?.pink ?? [], "pink", { 2: "flex-2", 3: "flex-3", 4: "flex-4" })}
-        ${createSkillRowHTML(char.skills?.yellow ?? [], "yellow", { 1: "", 2: "flex-2" })}
-        ${createSkillRowHTML(char.skills?.white?.slice(0, 3) ?? [], "white", { 1: "", 2: "flex-2", 3: "flex-3" })}
-        ${createSkillRowHTML(char.skills?.white?.slice(3) ?? [], "white", { 1: "", 2: "flex-2" })}
-    `;
-
     const card = DOMElements.cardTemplate.content.cloneNode(true).firstElementChild;
-
     card.dataset.id = char.id;
     if (char.color) {
         card.style.setProperty("--character-color", char.color);
     }
-    
-    card.innerHTML = `
-        <div class="card-main-info">
-            <div class="card-identity">
-                <div class="card-nickname">${escapeHTML(char.nickname)}</div>
-                <div class="card-title">${escapeHTML(char.name)}</div>
-            </div>
-            <ul class="card-stats">${statsHTML}</ul>
-        </div>
-        <details class="skill-details">
-            <summary class="skill-summary" role="button" aria-expanded="false"> 스킬 정보 </summary>
-            <div class="skill-container">${skillsHTML}</div>
-        </details>
-    `;
 
-    // 5. 동적인 이벤트 리스너를 다시 연결합니다.
-    const skillDetails = card.querySelector('.skill-details');
-    const skillSummary = card.querySelector('.skill-summary');
-    skillDetails.addEventListener('toggle', () => {
-        const isOpen = skillDetails.open;
-        skillSummary.setAttribute('aria-expanded', isOpen);
+const cardTitle = card.querySelector(".card-title");
+const cardNickname = card.querySelector(".card-nickname");
+const cardStats = card.querySelector(".card-stats");
+const skillContainer = card.querySelector(".skill-container");
+const skillDetails = card.querySelector('.skill-details');
+const skillSummary = card.querySelector('.skill-summary');
+
+skillDetails.addEventListener('toggle', () => {
+    const isOpen = skillDetails.open;
+    skillSummary.setAttribute('aria-expanded', isOpen);
+    skillSummary.childNodes[0].nodeValue = isOpen ? ' 스킬 정보 ' : ' 스킬 정보 ';
+});
+
+cardNickname.textContent = char.nickname;
+cardTitle.textContent = char.name;
+
+cardStats.innerHTML = ''; 
+
+
+Object.entries(NAME_MAPS).forEach(([sectionKey, { name, map }]) => {
+
+    const categoryLi = document.createElement('li');
+    categoryLi.className = 'stat-item stat-category';
+    categoryLi.textContent = name; 
+    cardStats.appendChild(categoryLi); 
+
+    Object.entries(map).forEach(([itemKey, displayName]) => {
+        const value = char[sectionKey]?.[itemKey];
+        if (value === undefined) return; 
+
+        const itemLi = document.createElement('li');
+        itemLi.className = 'stat-item';
+        
+        const labelSpan = document.createElement('span');
+        labelSpan.className = 'label';
+        labelSpan.textContent = displayName;
+
+        const valueSpan = document.createElement('span');
+        valueSpan.className = 'value';
+
+        if (sectionKey === "StatBonuses") {
+
+    const valueTextSpan = document.createElement('span');
+    valueTextSpan.textContent = value;
+
+    const percentSpan = document.createElement('span');
+    percentSpan.className = 'percent';
+    percentSpan.textContent = '%';
+
+    valueSpan.appendChild(valueTextSpan);
+    valueSpan.appendChild(percentSpan);
+} else {
+
+    const gradeSpan = document.createElement('span');
+    gradeSpan.className = `grade-${String(value).toLowerCase()}`;
+    gradeSpan.textContent = value;
+    valueSpan.appendChild(gradeSpan);
+}
+
+        itemLi.appendChild(labelSpan);
+        itemLi.appendChild(valueSpan);
+
+        cardStats.appendChild(itemLi);
     });
+});
+
+skillContainer.innerHTML = ''; 
+
+const createSkillRowAndAppend = (skills, color, flexClassMap) => {
+    
+    if (!skills || skills.length === 0) return;
+
+    const rowDiv = document.createElement('div');
+    rowDiv.className = 'skill-row';
+
+    const flexClass = flexClassMap[skills.length] || `flex-${skills.length}`;
+
+    skills.forEach(skill => {
+        const slotDiv = document.createElement('div');
+        slotDiv.className = `skill-slot skill-${color} ${flexClass}`;
+
+        const innerDiv = document.createElement('div');
+
+        innerDiv.textContent = skill || ""; 
+
+        slotDiv.appendChild(innerDiv);
+        rowDiv.appendChild(slotDiv);
+    });
+
+    skillContainer.appendChild(rowDiv);
+};
+
+createSkillRowAndAppend(char.skills?.rainbow ?? [], "rainbow", { 1: "", 2: "flex-2" });
+createSkillRowAndAppend(char.skills?.pink ?? [], "pink", { 2: "flex-2", 3: "flex-3", 4: "flex-4" });
+createSkillRowAndAppend(char.skills?.yellow ?? [], "yellow", { 1: "", 2: "flex-2" });
+createSkillRowAndAppend(char.skills?.white?.slice(0, 3) ?? [], "white", { 1: "", 2: "flex-2", 3: "flex-3" });
+createSkillRowAndAppend(char.skills?.white?.slice(3) ?? [], "white", { 1: "", 2: "flex-2" });
 
     return card;
 }
@@ -146,11 +172,11 @@ function setLoadingState(isLoading) {
     const { characterList, resultSummary, skeletonTemplate } = DOMElements;
     characterList.innerHTML = "";
     if (isLoading) {
-        resultSummary.setAttribute('aria-live', 'assertive'); 
+        resultSummary.setAttribute('aria-live', 'assertive'); // 중요 메시지 즉시 전달
         resultSummary.textContent = "학생 명부를 불러오는 중...";
         // ... 스켈레톤 UI 생성 코드 ...
     } else {
-        resultSummary.setAttribute('aria-live', 'polite'); 
+        resultSummary.setAttribute('aria-live', 'polite'); // 일반적인 상태 변경 전달
     }
 }
 
@@ -645,6 +671,5 @@ document.addEventListener("DOMContentLoaded", () => {
     // 브라우저의 '뒤로 가기', '앞으로 가기' 동작을 감지합니다.
     window.addEventListener('hashchange', handleHashChange);
 });
-
 
 
