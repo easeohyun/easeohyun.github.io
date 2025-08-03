@@ -86,12 +86,12 @@ cardTitle.textContent = char.name;
 cardStats.innerHTML = ''; 
 
 
+const statsFragment = document.createDocumentFragment();
 Object.entries(NAME_MAPS).forEach(([sectionKey, { name, map }]) => {
-
     const categoryLi = document.createElement('li');
     categoryLi.className = 'stat-item stat-category';
     categoryLi.textContent = name; 
-    cardStats.appendChild(categoryLi); 
+    statsFragment.appendChild(categoryLi); 
 
     Object.entries(map).forEach(([itemKey, displayName]) => {
         const value = char[sectionKey]?.[itemKey];
@@ -108,55 +108,44 @@ Object.entries(NAME_MAPS).forEach(([sectionKey, { name, map }]) => {
         valueSpan.className = 'value';
 
         if (sectionKey === "StatBonuses") {
-
-    const valueTextSpan = document.createElement('span');
-    valueTextSpan.textContent = value;
-
-    const percentSpan = document.createElement('span');
-    percentSpan.className = 'percent';
-    percentSpan.textContent = '%';
-
-    valueSpan.appendChild(valueTextSpan);
-    valueSpan.appendChild(percentSpan);
-} else {
-
-    const gradeSpan = document.createElement('span');
-    gradeSpan.className = `grade-${String(value).toLowerCase()}`;
-    gradeSpan.textContent = value;
-    valueSpan.appendChild(gradeSpan);
-}
+            const valueTextSpan = document.createElement('span');
+            valueTextSpan.textContent = value;
+            const percentSpan = document.createElement('span');
+            percentSpan.className = 'percent';
+            percentSpan.textContent = '%';
+            valueSpan.appendChild(valueTextSpan);
+            valueSpan.appendChild(percentSpan);
+        } else {
+            const gradeSpan = document.createElement('span');
+            gradeSpan.className = `grade-${String(value).toLowerCase()}`;
+            gradeSpan.textContent = value;
+            valueSpan.appendChild(gradeSpan);
+        }
 
         itemLi.appendChild(labelSpan);
         itemLi.appendChild(valueSpan);
-
-        cardStats.appendChild(itemLi);
+        statsFragment.appendChild(itemLi);
     });
 });
+cardStats.appendChild(statsFragment);
 
-skillContainer.innerHTML = ''; 
-
+const skillsFragment = document.createDocumentFragment();
 const createSkillRowAndAppend = (skills, color, flexClassMap) => {
-    
     if (!skills || skills.length === 0) return;
 
     const rowDiv = document.createElement('div');
     rowDiv.className = 'skill-row';
-
     const flexClass = flexClassMap[skills.length] || `flex-${skills.length}`;
 
     skills.forEach(skill => {
         const slotDiv = document.createElement('div');
         slotDiv.className = `skill-slot skill-${color} ${flexClass}`;
-
         const innerDiv = document.createElement('div');
-
         innerDiv.textContent = skill || ""; 
-
         slotDiv.appendChild(innerDiv);
         rowDiv.appendChild(slotDiv);
     });
-
-    skillContainer.appendChild(rowDiv);
+    skillsFragment.appendChild(rowDiv);
 };
 
 createSkillRowAndAppend(char.skills?.rainbow ?? [], "rainbow", { 1: "", 2: "flex-2" });
@@ -165,8 +154,9 @@ createSkillRowAndAppend(char.skills?.yellow ?? [], "yellow", { 1: "", 2: "flex-2
 createSkillRowAndAppend(char.skills?.white?.slice(0, 3) ?? [], "white", { 1: "", 2: "flex-2", 3: "flex-3" });
 createSkillRowAndAppend(char.skills?.white?.slice(3) ?? [], "white", { 1: "", 2: "flex-2" });
 
-    return card;
-}
+skillContainer.appendChild(skillsFragment);
+
+return card;
 
 function setLoadingState(isLoading) {
     const { characterList, resultSummary, skeletonTemplate } = DOMElements;
@@ -325,9 +315,16 @@ function updateScrollButtonsVisibility() {
 }
 
 function handleKeyboardShortcuts(event) {
+    const isModalActive = !DOMElements.modalContainer.hidden;
+    if (isModalActive && event.key !== "Escape") {
+        return;
+    }
+
     const activeElement = document.activeElement;
     if (activeElement && (activeElement.tagName === "INPUT" || activeElement.tagName === "SELECT")) {
-        if (event.key === "Escape") activeElement.blur();
+        if (event.key === "Escape") {
+            activeElement.blur(); // 포커스 해제
+        }
         return;
     }
 
@@ -337,7 +334,10 @@ function handleKeyboardShortcuts(event) {
             DOMElements.searchBox.focus();
             break;
         case "Escape":
-            resetAllFilters();
+            // 모달이 닫혀 있을 때만 필터 초기화
+            if (!isModalActive) {
+                resetAllFilters();
+            }
             break;
         case ".":
             window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
@@ -618,5 +618,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
 
 
