@@ -469,6 +469,47 @@ async function initializeApp() {
 
     const { filterForm, searchBox, sortOrder, resetFiltersButton, noResultsResetButton, scrollTopButton, scrollBottomButton, toggleSkillsButton, darkModeToggleButton } = DOMElements;
 
+    
+    // 1. 웹 워커를 생성합니다.
+    worker = new Worker('./workers/filterWorker.js');
+
+    // 2. 워커로부터 메시지를 받았을 때 처리할 로직을 정의합니다.
+    worker.onmessage = (e) => {
+        const filteredCharacters = e.data; // 워커가 보낸 처리 결과
+        
+        // 필터링이 적용되었는지 여부를 판단합니다.
+        const isFiltered = (
+            Array.from(DOMElements.filterForm.elements).some(el => el.type === "checkbox" && el.checked) || 
+            DOMElements.searchBox.value.trim() !== ""
+        );
+
+        // 결과를 화면에 렌더링합니다.
+        renderCharacters(filteredCharacters, isFiltered);
+    };
+
+
+    // 3. 캐릭터 데이터를 불러와 메인 스레드와 워커 양쪽에 모두 전달합니다.
+    try {
+        const response = await fetch(CHARACTERS_JSON_PATH);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        allCharacters = await response.json();
+
+        // 워커에게 최초 캐릭터 데이터를 보내 초기화시킵니다.
+        worker.postMessage({
+            type: 'init',
+            payload: { characters: allCharacters }
+        });
+
+    } catch (error) {
+        console.error("캐릭터 데이터를 불러오는 데 실패했습니다:", error);
+        // ... (기존 에러 처리 로직) ...
+        return;
+    }
+
+    // 4. 초기 화면을 렌더링합니다.
+    renderCharacters(allCharacters, false); // 처음에는 필터링되지 않은 전체 목록을 보여줍니다.
+    updateScrollButtonsVisibility();
+    
     const updateHandler = () => window.requestAnimationFrame(updateDisplay);
     const debouncedSearchHandler = debounce(updateHandler, 250);
     filterForm.addEventListener("input", (e) => {
@@ -626,6 +667,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
 
 
 
