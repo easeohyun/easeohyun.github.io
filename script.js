@@ -356,6 +356,7 @@ function handleKeyboardShortcuts(event) {
 		return;
 	}
 	switch (event.key.toLowerCase()) {
+		case "q":	
 		case "/":
 			event.preventDefault();
 			DOMElements.searchBox.focus();
@@ -673,3 +674,4 @@ document.addEventListener("DOMContentLoaded", () => {
 	handleHashChange();
 	window.addEventListener('hashchange', handleHashChange);
 });
+
