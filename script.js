@@ -87,6 +87,7 @@ const DOMElements = {
 	darkModeToggleButton: document.getElementById("dark-mode-toggle"),
 	cardTemplate: document.getElementById("character-card-template"),
 	skeletonTemplate: document.getElementById("skeleton-card-template"),
+	modalContainer: document.getElementById("contact-modal"),
 };
 let allCharacters = [];
 let observer;
@@ -311,15 +312,23 @@ function resetAllFilters() {
 function toggleAllSkills() {
 	const allDetails = DOMElements.characterList.querySelectorAll(".skill-details");
 	if (allDetails.length === 0) return;
-	const shouldOpen = !allDetails[0].open;
+
+	const openCount = Array.from(allDetails).filter(d => d.open).length;
+	const shouldOpen = openCount <= allDetails.length / 2;
+
 	allDetails.forEach((detail) => {
 		if (detail.open !== shouldOpen) {
-			detail.querySelector('.skill-summary').click();
+			if (shouldOpen) {
+				detail.open = true;
+			} else {
+				detail.open = false;
+			}
 		}
 	});
+
 	const icon = DOMElements.toggleSkillsButton.querySelector(".material-symbols-outlined");
 	icon.textContent = shouldOpen ? "unfold_less" : "unfold_more";
-	DOMElements.toggleSkillsButton.title = shouldOpen ? "모든 스킬 접기 (E)" : "모든 스킬 펼치기 (E)";
+	DOMElements.toggleSkillsButton.title = `모든 스킬 ${shouldOpen ? '접기' : '펼치기'} (E)`;
 }
 
 function updateScrollButtonsVisibility() {
@@ -335,7 +344,7 @@ function updateScrollButtonsVisibility() {
 }
 
 function handleKeyboardShortcuts(event) {
-	const isModalActive = !DOMElements.modalContainer.hidden;
+	const isModalActive = DOMElements.modalContainer && !DOMElements.modalContainer.hidden;
 	if (isModalActive && event.key !== "Escape") {
 		return;
 	}
@@ -351,7 +360,7 @@ function handleKeyboardShortcuts(event) {
 			event.preventDefault();
 			DOMElements.searchBox.focus();
 			break;
-		case "escape": // 'Escape' -> 'escape'
+		case "escape":
 			if (!isModalActive) {
 				resetAllFilters();
 			}
@@ -414,11 +423,11 @@ function applyTheme(theme) {
 	if (theme === "dark") {
 		html.dataset.theme = "dark";
 		icon.textContent = "light_mode";
-		darkModeToggleButton.title = "밝은 테마로 전환 (])";
+		darkModeToggleButton.title = "밝은 테마로 전환 (F)";
 	} else {
 		html.dataset.theme = "light";
 		icon.textContent = "dark_mode";
-		darkModeToggleButton.title = "어두운 테마로 전환 (])";
+		darkModeToggleButton.title = "어두운 테마로 전환 (F)";
 	}
 }
 
@@ -453,6 +462,13 @@ async function initializeApp() {
 		toggleSkillsButton,
 		darkModeToggleButton
 	} = DOMElements;
+
+	scrollTopButton.title = "맨 위로 (W)";
+	scrollBottomButton.title = "맨 아래로 (S)";
+	toggleSkillsButton.title = "모든 스킬 펼치기 (E)";
+	darkModeToggleButton.title = "어두운 테마로 전환 (F)";
+	resetFiltersButton.title = "모든 조건과 검색어를 초기화해요. (ESC)";
+
 	worker = new Worker('./workers/filterWorker.js');
 	worker.onerror = (error) => {
 		console.error(`Worker error: ${error.message}`, error);
@@ -503,7 +519,6 @@ async function initializeApp() {
 		if (!details || !e.target.matches('.skill-summary')) return;
 		e.preventDefault();
 		if (details.open) {
-			// 닫힐 때
 			details.classList.add('animating-close');
 			details.classList.remove('animating-open');
 			details.addEventListener('animationend', () => {
@@ -605,7 +620,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			once: false
 		});
 	}
-	const modalContainer = document.getElementById("contact-modal");
+	const modalContainer = DOMElements.modalContainer;
 	const openModalBtn = document.getElementById("open-modal-btn");
 	const closeModalBtn = document.getElementById("close-modal-btn");
 	const modalOverlay = document.querySelector(".modal-overlay");
