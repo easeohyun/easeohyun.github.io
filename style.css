@@ -290,11 +290,12 @@ input[type="number"] {
 .filter-item select:hover {
     border-color: #aaa;
 }
-.search-input:focus,
-.sort-select:focus,
-.filter-item select:focus {
+.search-input:focus-visible,
+.sort-select:focus-visible,
+.filter-item select:focus-visible {
     border-color: var(--color-primary);
     box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+    outline: none; 
 }
 
 .filter-item select,
@@ -358,6 +359,11 @@ input[type="number"] {
     transition: background-color 0.2s, border-color 0.2s, color 0.2s;
     white-space: nowrap;
 }
+.button:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
 .button-secondary {
     background-color: var(--color-button-secondary-bg);
     border-color: var(--color-border);
@@ -959,3 +965,4 @@ input[type="number"] {
 #contact-email-link:hover {
     background-color: var(--color-border-light);
 }
+
