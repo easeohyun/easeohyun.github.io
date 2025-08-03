@@ -186,7 +186,7 @@
     "StrategyAptitude": { "Front": "A", "Pace": "A", "Late": "E", "End": "G" },
     "StatBonuses": { "Speed": 10, "Stamina": 0, "Power": 0, "Guts": 20, "Wit": 0 },
     "skills": { "rainbow": ["브릴리언트 레드 에이스", "레드 에이스"], "pink": ["퍼펙트 튠", "내가 이길 거야!"], "yellow": ["킬러 튠", "레이스 플래너"], "white": ["대항 의식○", "템포 업", "좋은 위치 뒤따르기", "스태미나 킵", "빠져나갈 준비"] },
-    "tags": ["다스카", "중학생"]  
+    "tags": ["다스카", "중학생", "Daiwa Scarlet", "ダイワスカーレット"]  
   },
   {
     "id": 100902, "name": "다이와 스칼렛", "nickname": "다홍색 뉘・에투알레", "color": "#4f64d8",
@@ -195,73 +195,73 @@
     "StrategyAptitude": { "Front": "A", "Pace": "A", "Late": "E", "End": "G" },
     "StatBonuses": { "Speed": 20, "Stamina": 0, "Power": 0, "Guts": 0, "Wit": 10 },
     "skills": { "rainbow": ["Queen's Lumination"], "pink": ["말괄량이 여왕", "열리는 꿈의 문"], "yellow": ["말괄량이 우마무스메", "밟을 수 없는 그림자"], "white": ["끈질기게 버티기", "기세로 밀어붙이기", "노력의 결과", "장거리 직선○", "장거리 코너○"] },
-    "tags": ["다스카", "크리스마스", "클스카", "IlluminatetheHeart"]  
+    "tags": ["다스카", "크리스마스", "클스카", "IlluminatetheHeart", "Daiwa Scarlet", "ダイワスカーレット"]  
   },
   {
-    "id": 101001, "name": "타이키 셔틀", "nickname": "와일드・프론티어", "color": "#FFA500",
+    "id": 101001, "name": "타이키 셔틀", "nickname": "와일드・프론티어", "color": "#73c032",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "B" },
     "DistanceAptitude": { "Short": "A", "Mile": "A", "Medium": "E", "Long": "G" }, 
     "StrategyAptitude": { "Front": "C", "Pace": "A", "Late": "E", "End": "G" },
     "StatBonuses": { "Speed": 20, "Stamina": 0, "Power": 0, "Guts": 0, "Wit": 10 },
     "skills": { "rainbow": ["빅토리 샷!"], "pink": ["조준 사격입니다!", "Frontier Spirit"], "yellow": ["기어 체인지", "마일의 지배자"], "white": ["직선 달인", "기어 시프트", "선행의 요령○", "적극책", "마일 직선○"] },
-    "tags": ["빅샷"]  
+    "tags": ["빅샷", "열사", "Taiki Shuttle" ,"タイキシャトル"]  
   },
   {
-    "id": 101002, "name": "타이키 셔틀", "nickname": "Bubblegum☆Memories", "color": "#FFA500",
+    "id": 101002, "name": "타이키 셔틀", "nickname": "Bubblegum☆Memories", "color": "#73c032",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "B" },
     "DistanceAptitude": { "Short": "A", "Mile": "A", "Medium": "E", "Long": "G" }, 
     "StrategyAptitude": { "Front": "C", "Pace": "A", "Late": "E", "End": "G" },
     "StatBonuses": { "Speed": 0, "Stamina": 0, "Power": 30, "Guts": 0, "Wit": 0 },
     "skills": { "rainbow": ["Joyful Voyage!"], "pink": ["Adventure의 선도자", "진검승부입니다!"], "yellow": ["마일의 지배자", "치열한 승부"], "white": ["진창길○", "적극책", "정면 승부", "마일 코너○", "선행 코너○"] },
-    "tags": ["캠핑", "캠핑키"]  
+    "tags": ["캠핑", "캠핑키", "시크솔브서머워크", "Taiki Shuttle" ,"タイキシャトル"]  
   },
   {
-    "id": 101101, "name": "그래스 원더", "nickname": "바위 뚫는 파랑", "color": "#000080",
+    "id": 101101, "name": "그래스 원더", "nickname": "바위 뚫는 파랑", "color": "#3a34ac",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "G", "Mile": "A", "Medium": "B", "Long": "A" }, 
     "StrategyAptitude": { "Front": "F", "Pace": "A", "Late": "A", "End": "F" },
     "StatBonuses": { "Speed": 20, "Stamina": 0, "Power": 10, "Guts": 0, "Wit": 0 },
     "skills": { "rainbow": ["정신일도 하사불성", "정신일도"], "pink": ["요조숙녀", "불퇴전의 의지"], "yellow": ["독점력", "능숙한 환승"], "white": ["선행 긴장", "속박", "추월 확정 태세", "뒷심", "위치 선정 밀어붙이기"] },
-    "tags": ["그라스", "유리스", "민들레"]  
+    "tags": ["그라스", "유리스", "민들레", "창찌", "황금세대", "Grass Wonder", "グラスワンダー"]  
   },
   {
-    "id": 101102, "name": "그래스 원더", "nickname": "세인트 제이드・힐러", "color": "#000080",
+    "id": 101102, "name": "그래스 원더", "nickname": "세인트 제이드・힐러", "color": "#3a34ac",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "G", "Mile": "A", "Medium": "B", "Long": "A" }, 
     "StrategyAptitude": { "Front": "F", "Pace": "A", "Late": "A", "End": "F" },
     "StatBonuses": { "Speed": 0, "Stamina": 15, "Power": 0, "Guts": 0, "Wit": 15 },
     "skills": { "rainbow": ["게인 힐・슈피리어"], "pink": ["큐어리 힐", "용기의 마법"], "yellow": ["쿨다운", "릴랙스"], "white": ["페이스 킵", "심호흡", "짧은 휴식", "트릭(앞)", "선입의 요령○"] },
-    "tags": ["환상세계우마네스트", "힐라스"]  
+    "tags": ["환상세계우마네스트", "힐라스", "판타지", "Grass Wonder", "グラスワンダー"]  
   },
   {
-    "id": 101103, "name": "그래스 원더", "nickname": "蒼炎の誉", "color": "#000080",
+    "id": 101103, "name": "그래스 원더", "nickname": "蒼炎の誉", "color": "#3a34ac",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "G", "Mile": "B", "Medium": "A", "Long": "A" }, 
     "StrategyAptitude": { "Front": "F", "Pace": "A", "Late": "A", "End": "F" },
     "StatBonuses": { "Speed": 0, "Stamina": 0, "Power": 0, "Guts": 20, "Wit": 10 },
     "skills": { "rainbow": ["演舞・撫子大薙刀"], "pink": ["射貫く蒼", "勝機到来"], "yellow": ["용왕매진", "後の先"], "white": ["풀 스로틀", "겨울 우마무스메○", "切り返し", "선입 직선○", "선입 코너○"] },
-    "tags": ["새해", "신년", "창라스"]  
+    "tags": ["새해", "신년", "창라스", "Grass Wonder", "グラスワンダー"]  
   },
   {
-    "id": 101201, "name": "히시 아마존", "nickname": "아마조네스・라피스", "color": "#4B0082",
+    "id": 101201, "name": "히시 아마존", "nickname": "아마조네스・라피스", "color": "#2185d0",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "E" },
     "DistanceAptitude": { "Short": "D", "Mile": "A", "Medium": "A", "Long": "B" }, 
     "StrategyAptitude": { "Front": "G", "Pace": "B", "Late": "C", "End": "A" },
     "StatBonuses": { "Speed": 0, "Stamina": 0, "Power": 20, "Guts": 10, "Wit": 0 },
-    "skills": { "rainbow": ["맞짱! 데드히트!"], "pink": ["승리를 향한 포효", "맞짱에 거는 집념"], "yellow": ["승리를 향한 집념", "질풍노도"], "white": ["임기응변", "뛰어난 작전", "물고 늘어지기", "추입 직선○", "추입 코너○"] },
-    "tags": ["히시아마네상"]  
+    "skills": { "rainbow": ["맞짱! 데드히트!"], "pink": ["승리를 향한 포효", "맞짱에 거는 집념", "노도의 포로로카"], "yellow": ["승리를 향한 집념", "질풍노도"], "white": ["임기응변", "뛰어난 작전", "물고 늘어지기", "추입 직선○", "추입 코너○"] },
+    "tags": ["타이만다", "히시아마네상", "Hishi Amazon", "ヒシアマゾン"]  
   },
   {
-    "id": 101202, "name": "히시 아마존", "nickname": "Hungry Veil", "color": "#4B0082",
+    "id": 101202, "name": "히시 아마존", "nickname": "Hungry Veil", "color": "#2185d0",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "E" },
     "DistanceAptitude": { "Short": "D", "Mile": "A", "Medium": "A", "Long": "B" }, 
     "StrategyAptitude": { "Front": "G", "Pace": "B", "Late": "C", "End": "A" },
     "StatBonuses": { "Speed": 10, "Stamina": 0, "Power": 10, "Guts": 0, "Wit": 10 },
     "skills": { "rainbow": ["곱빼기! 퍼스트 바이트!"], "pink": ["열렬한 인게이지!", "투혼입도!"], "yellow": ["강공책", "뛰어난 추입력"], "white": ["이른 작전", "속박", "추입력", "뛰어난 작전", "직선 주파"] },
-    "tags": ["웨딩", "신부", "결혼", "아침차려주는예쁜누나"]  
+    "tags": ["선서싸우는그대를향한프러포즈", "웨딩", "신부", "결혼", "아침차려주는예쁜누나", "Hishi Amazon", "ヒシアマゾン"]  
   },
   {
-    "id": 101301, "name": "메지로 맥퀸", "nickname": "엘레강스・라인", "color": "#D3D3D3",
+    "id": 101301, "name": "메지로 맥퀸", "nickname": "엘레강스・라인", "color": "#00b5be",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "E" },
     "DistanceAptitude": { "Short": "G", "Mile": "F", "Medium": "A", "Long": "A" }, 
     "StrategyAptitude": { "Front": "B", "Pace": "A", "Late": "D", "End": "F" },
@@ -270,7 +270,7 @@
     "tags": ["파쿠파쿠데스와"]  
   },
   {
-    "id": 101302, "name": "메지로 맥퀸", "nickname": "엔드・오브・스카이", "color": "#D3D3D3",
+    "id": 101302, "name": "메지로 맥퀸", "nickname": "엔드・오브・스카이", "color": "#00b5be",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "E" },
     "DistanceAptitude": { "Short": "G", "Mile": "F", "Medium": "A", "Long": "A" }, 
     "StrategyAptitude": { "Front": "B", "Pace": "A", "Late": "D", "End": "F" },
@@ -279,7 +279,7 @@
     "tags": ["애니 콜라보", "빙닭", "명배우"]  
   },
   {
-    "id": 101303, "name": "메지로 맥퀸", "nickname": "잔물결 페어 레이디", "color": "#D3D3D3",
+    "id": 101303, "name": "메지로 맥퀸", "nickname": "잔물결 페어 레이디", "color": "#00b5be",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "E" },
     "DistanceAptitude": { "Short": "G", "Mile": "F", "Medium": "A", "Long": "A" }, 
     "StrategyAptitude": { "Front": "B", "Pace": "A", "Late": "D", "End": "F" },
@@ -828,6 +828,7 @@
     "tags": ["프로젝트L'Arc", "개선문상"]
   }
 ]
+
 
 
 
