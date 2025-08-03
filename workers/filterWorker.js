@@ -4,7 +4,7 @@ const CHO_SUNG = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ";
 
 function smartIncludes(searchableString, term) {
     const termStr = String(term || "").toLowerCase().replace(/[\s\-!@#$%^&*()_+={}\[\]:;"'<>,.?\/\\|`~♪☆・！？—ﾟ∀]/g, "");
-    if (!termStr) return true;
+    if (!termStr) return true; 
     
     return searchableString.includes(termStr);
 }
@@ -82,3 +82,4 @@ onmessage = function(e) {
         postMessage(filteredCharacters);
     }
 };
+
