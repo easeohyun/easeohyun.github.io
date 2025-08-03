@@ -150,7 +150,7 @@
     "StrategyAptitude": { "Front": "G", "Pace": "B", "Late": "B", "End": "A" },
     "StatBonuses": { "Speed": 0, "Stamina": 0, "Power": 20, "Guts": 0, "Wit": 10 },
     "skills": { "rainbow": ["Adventure of 564"], "pink": ["신비 체험! 골쉽 워프", "오징어 튀김, 어떠세요!?", "불타오른다고!!"], "yellow": ["내적 체험", "고양감"], "white": ["럭키 세븐", "안쪽 코너 여포", "하굣길의 즐거움", "앞으로 기우뚱", "수상한 작전"] },
-    "tags": ["여름", "수영복", "수루시", "대난투!?여름빛☆바캉스", "Gold Ship", "ゴールドシップ"]  
+    "tags": ["여름", "수영복", "수루시", "대난투여름빛바캉스", "Gold Ship", "ゴールドシップ"]  
   },
   {
     "id": 100703, "name": "골드 쉽", "nickname": "La Mode 564", "color": "#da3c57",
@@ -166,7 +166,7 @@
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "F", "Mile": "A", "Medium": "A", "Long": "F" }, 
     "StrategyAptitude": { "Front": "C", "Pace": "B", "Late": "A", "End": "F" },
-    "StatBonuses": { "Speed": 10, "Stamina": 20, "Power": 0, "Guts": 0, "Wit": 0 },
+    "StatBonuses": { "Speed": 10, "Stamina": 0, "Power": 20, "Guts": 0, "Wit": 0 },
     "skills": { "rainbow": ["커팅×DRIVE!", "엑셀X"], "pink": ["스키틀 브레이크", "뛰어난 다리"], "yellow": ["호전일식", "강인한 다리"], "white": ["직선 회복", "상승기류", "추월 확정 태세", "직선 가속", "마일 직선○"] },
     "tags": ["우옥까", "Vodka", "ウオッカ"]  
   },
@@ -177,7 +177,7 @@
     "StrategyAptitude": { "Front": "C", "Pace": "B", "Late": "A", "End": "F" },
     "StatBonuses": { "Speed": 20, "Stamina": 0, "Power": 0, "Guts": 10, "Wit": 0 },
     "skills": { "rainbow": ["Into High Gear!"], "pink": ["앞질러 주겠어!", "최속의 톱기어"], "yellow": ["논스톱 걸", "톱기어"], "white": ["폭발하는 다리", "뒤처지기 방지", "중거리 코너○", "풀 스로틀", "선입 직선○"] },
-    "tags": ["크리스마스", "클드카", "IlluminatetheHeart", "Vodka", "ウオッカ"]    
+    "tags": ["우옥까", "크리스마스", "클드카", "IlluminatetheHeart", "Vodka", "ウオッカ"]    
   },
   {
     "id": 100901, "name": "다이와 스칼렛", "nickname": "톱・오브・블루", "color": "#4f64d8",
@@ -186,7 +186,7 @@
     "StrategyAptitude": { "Front": "A", "Pace": "A", "Late": "E", "End": "G" },
     "StatBonuses": { "Speed": 10, "Stamina": 0, "Power": 0, "Guts": 20, "Wit": 0 },
     "skills": { "rainbow": ["브릴리언트 레드 에이스", "레드 에이스"], "pink": ["퍼펙트 튠", "내가 이길 거야!"], "yellow": ["킬러 튠", "레이스 플래너"], "white": ["대항 의식○", "템포 업", "좋은 위치 뒤따르기", "스태미나 킵", "빠져나갈 준비"] },
-    "tags": ["다스카"]  
+    "tags": ["다스카", "중학생"]  
   },
   {
     "id": 100902, "name": "다이와 스칼렛", "nickname": "다홍색 뉘・에투알레", "color": "#4f64d8",
@@ -194,8 +194,8 @@
     "DistanceAptitude": { "Short": "F", "Mile": "B", "Medium": "A", "Long": "A" }, 
     "StrategyAptitude": { "Front": "A", "Pace": "A", "Late": "E", "End": "G" },
     "StatBonuses": { "Speed": 20, "Stamina": 0, "Power": 0, "Guts": 0, "Wit": 10 },
-    "skills": { "rainbow": ["Queen's Lumination"], "pink": ["결의의 직활강", "지지 않는 에이스"], "yellow": ["직활강", "리드 확보"], "white": ["끈질기게 버티기", "기세로 밀어붙이기", "노력의 결과", "장거리 직선○", "장거리 코너○"] },
-    "tags": ["크리스마스", "클스카", "IlluminatetheHeart"]  
+    "skills": { "rainbow": ["Queen's Lumination"], "pink": ["말괄량이 여왕", "열리는 꿈의 문"], "yellow": ["말괄량이 우마무스메", "밟을 수 없는 그림자"], "white": ["끈질기게 버티기", "기세로 밀어붙이기", "노력의 결과", "장거리 직선○", "장거리 코너○"] },
+    "tags": ["다스카", "크리스마스", "클스카", "IlluminatetheHeart"]  
   },
   {
     "id": 101001, "name": "타이키 셔틀", "nickname": "와일드・프론티어", "color": "#FFA500",
@@ -222,7 +222,7 @@
     "StrategyAptitude": { "Front": "F", "Pace": "A", "Late": "A", "End": "F" },
     "StatBonuses": { "Speed": 20, "Stamina": 0, "Power": 10, "Guts": 0, "Wit": 0 },
     "skills": { "rainbow": ["정신일도 하사불성", "정신일도"], "pink": ["요조숙녀", "불퇴전의 의지"], "yellow": ["독점력", "능숙한 환승"], "white": ["선행 긴장", "속박", "추월 확정 태세", "뒷심", "위치 선정 밀어붙이기"] },
-    "tags": ["그라스", "유리스"]  
+    "tags": ["그라스", "유리스", "민들레"]  
   },
   {
     "id": 101102, "name": "그래스 원더", "nickname": "세인트 제이드・힐러", "color": "#000080",
@@ -828,5 +828,6 @@
     "tags": ["프로젝트L'Arc", "개선문상"]
   }
 ]
+
 
 
