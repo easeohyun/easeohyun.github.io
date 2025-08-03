@@ -99,7 +99,7 @@ const skillSummary = card.querySelector('.skill-summary');
 skillDetails.addEventListener('toggle', () => {
     const isOpen = skillDetails.open;
     skillSummary.setAttribute('aria-expanded', isOpen);
-    skillSummary.childNodes[0].nodeValue = isOpen ? '스킬 정보 닫기 ' : '스킬 정보 보기 ';
+    skillSummary.childNodes[0].nodeValue = isOpen ? ' 스킬 정보 ' : ' 스킬 정보 ';
 });
 
 cardNickname.textContent = char.nickname;
@@ -626,6 +626,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
 
 
 
