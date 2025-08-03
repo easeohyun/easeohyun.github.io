@@ -1,3 +1,4 @@
+// sw.js
 const CACHE_NAME = 'umamusume-filter-cache-v1';
 const ASSETS_TO_CACHE = [
     '/',
@@ -10,6 +11,7 @@ const ASSETS_TO_CACHE = [
     'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200'
 ];
 
+// 1. 설치 단계: 캐시할 자원을 저장합니다.
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME)
@@ -21,6 +23,7 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
+    // characters.json 파일에만 다른 전략 적용
     if (event.request.url.includes('characters.json')) {
         event.respondWith(
             caches.open(CACHE_NAME).then((cache) => {
@@ -34,27 +37,11 @@ self.addEventListener('fetch', (event) => {
             })
         );
     } else {
+        // 나머지 자산은 기존 Cache First 전략 유지
         event.respondWith(
             caches.match(event.request).then((response) => {
                 return response || fetch(event.request);
             })
         );
     }
-
-});
-
-// easeohyun/easeohyun.github.io/easeohyun.github.io-c797474ccf32da24c77138af7034a88498f84d2f/sw.js
-self.addEventListener('activate', (event) => {
-    const cacheWhitelist = [CACHE_NAME];
-    event.waitUntil(
-        caches.keys().then((cacheNames) => {
-            return Promise.all(
-                cacheNames.map((cacheName) => {
-                    if (cacheWhitelist.indexOf(cacheName) === -1) {
-                        return caches.delete(cacheName);
-                    }
-                })
-            );
-        })
-    );
 });

@@ -427,40 +427,48 @@ async function initializeApp() {
 worker = new Worker('./workers/filterWorker.js');
 
 // 2. 워커 에러 핸들러를 추가합니다.
-        worker.onerror = (error) => {
-            console.error(`Worker error: ${error.message}`, error);
-            DOMElements.resultSummary.textContent = "오류가 발생했습니다. 페이지를 새로고침 해주세요.";
-        };
+worker.onerror = (error) => {
+    console.error(`Worker error: ${error.message}`, error);
+    // 사용자에게 문제가 발생했음을 알립니다.
+    DOMElements.resultSummary.textContent = "오류가 발생했습니다. 페이지를 새로고침 해주세요.";
+    // 필요하다면, 여기서 워커를 재시작하거나 다른 복구 로직을 수행할 수 있습니다.
+};
 
+// 3. 워커로부터 메시지를 받았을 때 처리할 로직을 정의합니다. (기존 코드)
 worker.onmessage = (e) => {
-        const filteredCharacters = e.data; 
+        const filteredCharacters = e.data; // 워커가 보낸 처리 결과
         
         // 필터링이 적용되었는지 여부를 판단합니다.
-const filteredCharacters = e.data;
-            const isFiltered = (
-                Array.from(DOMElements.filterForm.elements).some(el => el.type === "checkbox" && el.checked) || 
-                DOMElements.searchBox.value.trim() !== ""
-            );
-            renderCharacters(filteredCharacters, isFiltered);
-        };
+        const isFiltered = (
+            Array.from(DOMElements.filterForm.elements).some(el => el.type === "checkbox" && el.checked) || 
+            DOMElements.searchBox.value.trim() !== ""
+        );
 
+        // 결과를 화면에 렌더링합니다.
+        renderCharacters(filteredCharacters, isFiltered);
+    };
+
+
+    // 3. 캐릭터 데이터를 불러와 메인 스레드와 워커 양쪽에 모두 전달합니다.
     try {
         const response = await fetch(CHARACTERS_JSON_PATH);
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         allCharacters = await response.json();
 
+        // 워커에게 최초 캐릭터 데이터를 보내 초기화시킵니다.
         worker.postMessage({
             type: 'init',
             payload: { characters: allCharacters }
         });
 
     } catch (error) {
-        console.error("웹 워커 생성에 실패했습니다:", error);
-        DOMElements.resultSummary.textContent = "페이지 기능에 문제가 발생했습니다. 브라우저를 업데이트하거나 다른 브라우저를 이용해 주세요.";
-        return; 
+        console.error("캐릭터 데이터를 불러오는 데 실패했습니다:", error);
+        // ... (기존 에러 처리 로직) ...
+        return;
     }
-    
-    renderCharacters(allCharacters, false); 
+
+    // 4. 초기 화면을 렌더링합니다.
+    renderCharacters(allCharacters, false); // 처음에는 필터링되지 않은 전체 목록을 보여줍니다.
     updateScrollButtonsVisibility();
     
 const updateHandler = () => {
@@ -470,7 +478,7 @@ const debouncedSearchHandler = debounce(updateHandler, 250);
 
 filterForm.addEventListener("input", (e) => {
     if (e.target.id !== 'search-box') {
-        updateHandler(); 
+        updateHandler(); // 디바운스 없이 즉시 반응
     }
 });
     searchBox.addEventListener("input", debouncedSearchHandler);

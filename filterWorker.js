@@ -1,3 +1,11 @@
+// workers/filterWorker.js
+
+/**
+ * ----------------------------------------------------------------
+ * Helper Constants & Functions
+ * - 메인 스레드에서 필요한 상수와 함수를 워커 스코프로 가져옵니다.
+ * ----------------------------------------------------------------
+ */
 const GRADE_MAP = { S: 8, A: 7, B: 6, C: 5, D: 4, E: 3, F: 2, G: 1 };
 const CHO_SUNG = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ";
 
@@ -26,35 +34,22 @@ function smartIncludes(target, term) {
     return false;
 }
 
+/**
+ * ----------------------------------------------------------------
+ * Worker State & Logic
+ * ----------------------------------------------------------------
+ */
 let allCharacters = [];
 
+// 메인 스레드로부터 메시지를 수신 대기합니다.
 onmessage = function(e) {
     const { type, payload } = e.data;
 
     if (type === 'init') {
-
-        const getChosung = (char) => {
-            const code = char.charCodeAt(0) - 44032;
-            return code >= 0 && code <= 11171 ? CHO_SUNG[Math.floor(code / 588)] : char;
-        };
-
+        const getChosung = (char) => { /*...*/ };
         allCharacters = payload.characters.map(char => {
-            const searchTargets = [
-                char.name, 
-                char.nickname, 
-                ...Object.values(char.skills).flat(), 
-                ...char.tags
-            ];
-            char._searchableChosung = searchTargets
-                .filter(Boolean) 
-                .map(t => 
-                    String(t)
-                    .replace(/[\s\W]/g, "") 
-                    .split('')
-                    .map(getChosung)
-                    .join("")
-                )
-                .join('|'); 
+            const searchTargets = [char.name, char.nickname, ...Object.values(char.skills).flat(), ...char.tags];
+            char._searchableChosung = searchTargets.map(t => String(t || "").replace(/[\s\W]/g, "").split('').map(getChosung).join("")).join('|');
             return char;
         });
         return;
@@ -64,11 +59,11 @@ onmessage = function(e) {
         const { activeFilters, searchTerms, sortBy } = payload;
         const { inclusionTerms, exclusionTerms } = searchTerms;
 
-
+        // 1. 필터링 로직 (기존 updateDisplay 함수에서 가져옴)
         const filteredCharacters = allCharacters.filter((character) => {
             const passesFilters = activeFilters.every((filter) => {
                 for (const sectionName in character) {
-
+                    // NAME_MAPS 객체는 워커에 없으므로, character 객체를 직접 순회합니다.
                     if (character[sectionName] && typeof character[sectionName] === 'object' && character[sectionName][filter.key] !== undefined) {
                         return filter.type === "value" ? character[sectionName][filter.key] >= filter.value : GRADE_MAP[character[sectionName][filter.key]] >= filter.value;
                     }
@@ -91,6 +86,7 @@ onmessage = function(e) {
             return true;
         });
 
+        // 2. 정렬 로직 (기존 updateDisplay 함수에서 가져옴)
         filteredCharacters.sort((a, b) => {
             switch (sortBy) {
                 case "name-asc":
@@ -105,7 +101,8 @@ onmessage = function(e) {
                     return 0;
             }
         });
+
+        // 3. 처리된 결과를 메인 스레드로 다시 보냅니다.
         postMessage(filteredCharacters);
     }
-
 };
