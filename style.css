@@ -558,7 +558,6 @@ input[type="number"] {
 }
 
 .skill-summary {
-    font-size: 1.2em; 
     font-weight: bold;
     color: var(--color-secondary); 
     padding: var(--spacing-sm); 
@@ -984,6 +983,7 @@ input[type="number"] {
 details[open] > .skill-container {
     animation: slide-down-fade-in 0.3s ease-in-out;
 }
+
 
 
 
