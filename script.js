@@ -627,6 +627,41 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+function setupDetailsAnimation() {
+    const characterList = DOMElements.characterList;
+
+    characterList.addEventListener("click", (event) => {
+        const summary = event.target.closest(".skill-summary");
+        if (!summary) return; 
+
+        const details = summary.parentElement;
+        if (details.tagName !== "DETAILS") return;
+
+        if (details.hasAttribute("open")) {
+            event.preventDefault(); 
+
+            if (details.hasAttribute("closing")) return;
+
+            details.setAttribute("closing", "");
+
+            const container = details.querySelector(".skill-container");
+            container.addEventListener(
+                "animationend",
+                () => {
+                    details.removeAttribute("open");
+                    details.removeAttribute("closing");
+                },
+                { once: true } 
+            );
+        }
+    });
+}
+async function initializeApp() {
+
+    updateDisplay();
+    updateScrollButtonsVisibility();
+    setupDetailsAnimation(); 
+}
 
 
 
