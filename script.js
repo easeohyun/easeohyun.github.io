@@ -471,13 +471,16 @@ worker.onmessage = (e) => {
     renderCharacters(allCharacters, false); // 처음에는 필터링되지 않은 전체 목록을 보여줍니다.
     updateScrollButtonsVisibility();
     
-    const updateHandler = () => window.requestAnimationFrame(updateDisplay);
-    const debouncedSearchHandler = debounce(updateHandler, 250);
-    filterForm.addEventListener("input", (e) => {
-                if (e.target.id !== 'search-box') {
-                                updateHandler();
-                            }
-    });
+const updateHandler = () => {
+    window.requestAnimationFrame(updateDisplay);
+};
+const debouncedSearchHandler = debounce(updateHandler, 250);
+
+filterForm.addEventListener("input", (e) => {
+    if (e.target.id !== 'search-box') {
+        updateHandler(); // 디바운스 없이 즉시 반응
+    }
+});
     searchBox.addEventListener("input", debouncedSearchHandler);
     sortOrder.addEventListener("change", updateHandler);
     resetFiltersButton.addEventListener("click", resetAllFilters);
