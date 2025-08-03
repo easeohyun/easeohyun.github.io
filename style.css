@@ -911,6 +911,12 @@ input[type="number"] {
     color: var(--color-text);
 }
 
+.modal-body {
+    max-height: 60vh; 
+    overflow-y: auto; 
+    padding-right: 15px; 
+}
+
 .modal-body p {
     line-height: 1.6;
 }
@@ -982,4 +988,5 @@ input[type="number"] {
 details[open] > .skill-container {
     animation: slide-down-fade-in 0.3s ease-in-out;
 }
+
 
