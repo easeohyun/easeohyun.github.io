@@ -1,4 +1,3 @@
-// sw.js
 const CACHE_NAME = 'umamusume-filter-cache-v1';
 const ASSETS_TO_CACHE = [
     '/',
@@ -11,7 +10,6 @@ const ASSETS_TO_CACHE = [
     'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200'
 ];
 
-// 1. 설치 단계: 캐시할 자원을 저장합니다.
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME)
@@ -22,22 +20,36 @@ self.addEventListener('install', (event) => {
     );
 });
 
+// Activate 이벤트를 추가하여 오래된 캐시를 정리합니다.
+self.addEventListener('activate', (event) => {
+    event.waitUntil(
+        caches.keys().then((cacheNames) => {
+            return Promise.all(
+                cacheNames.map((cacheName) => {
+                    if (cacheName !== CACHE_NAME) {
+                        console.log('Deleting old cache:', cacheName);
+                        return caches.delete(cacheName);
+                    }
+                })
+            );
+        })
+    );
+});
+
+
 self.addEventListener('fetch', (event) => {
-    // characters.json 파일에만 다른 전략 적용
     if (event.request.url.includes('characters.json')) {
         event.respondWith(
             caches.open(CACHE_NAME).then((cache) => {
-                return cache.match(event.request).then((cachedResponse) => {
-                    const fetchedResponsePromise = fetch(event.request).then((networkResponse) => {
-                        cache.put(event.request, networkResponse.clone());
-                        return networkResponse;
-                    });
-                    return cachedResponse || fetchedResponsePromise;
+                return fetch(event.request).then((networkResponse) => {
+                    cache.put(event.request, networkResponse.clone());
+                    return networkResponse;
+                }).catch(() => {
+                    return cache.match(event.request);
                 });
             })
         );
     } else {
-        // 나머지 자산은 기존 Cache First 전략 유지
         event.respondWith(
             caches.match(event.request).then((response) => {
                 return response || fetch(event.request);
