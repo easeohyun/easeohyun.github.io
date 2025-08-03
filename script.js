@@ -86,12 +86,12 @@ cardTitle.textContent = char.name;
 cardStats.innerHTML = ''; 
 
 
-const statsFragment = document.createDocumentFragment();
 Object.entries(NAME_MAPS).forEach(([sectionKey, { name, map }]) => {
+
     const categoryLi = document.createElement('li');
     categoryLi.className = 'stat-item stat-category';
     categoryLi.textContent = name; 
-    statsFragment.appendChild(categoryLi); 
+    cardStats.appendChild(categoryLi); 
 
     Object.entries(map).forEach(([itemKey, displayName]) => {
         const value = char[sectionKey]?.[itemKey];
@@ -108,44 +108,55 @@ Object.entries(NAME_MAPS).forEach(([sectionKey, { name, map }]) => {
         valueSpan.className = 'value';
 
         if (sectionKey === "StatBonuses") {
-            const valueTextSpan = document.createElement('span');
-            valueTextSpan.textContent = value;
-            const percentSpan = document.createElement('span');
-            percentSpan.className = 'percent';
-            percentSpan.textContent = '%';
-            valueSpan.appendChild(valueTextSpan);
-            valueSpan.appendChild(percentSpan);
-        } else {
-            const gradeSpan = document.createElement('span');
-            gradeSpan.className = `grade-${String(value).toLowerCase()}`;
-            gradeSpan.textContent = value;
-            valueSpan.appendChild(gradeSpan);
-        }
+
+    const valueTextSpan = document.createElement('span');
+    valueTextSpan.textContent = value;
+
+    const percentSpan = document.createElement('span');
+    percentSpan.className = 'percent';
+    percentSpan.textContent = '%';
+
+    valueSpan.appendChild(valueTextSpan);
+    valueSpan.appendChild(percentSpan);
+} else {
+
+    const gradeSpan = document.createElement('span');
+    gradeSpan.className = `grade-${String(value).toLowerCase()}`;
+    gradeSpan.textContent = value;
+    valueSpan.appendChild(gradeSpan);
+}
 
         itemLi.appendChild(labelSpan);
         itemLi.appendChild(valueSpan);
-        statsFragment.appendChild(itemLi);
+
+        cardStats.appendChild(itemLi);
     });
 });
-cardStats.appendChild(statsFragment);
 
-const skillsFragment = document.createDocumentFragment();
+skillContainer.innerHTML = ''; 
+
 const createSkillRowAndAppend = (skills, color, flexClassMap) => {
+    
     if (!skills || skills.length === 0) return;
 
     const rowDiv = document.createElement('div');
     rowDiv.className = 'skill-row';
+
     const flexClass = flexClassMap[skills.length] || `flex-${skills.length}`;
 
     skills.forEach(skill => {
         const slotDiv = document.createElement('div');
         slotDiv.className = `skill-slot skill-${color} ${flexClass}`;
+
         const innerDiv = document.createElement('div');
+
         innerDiv.textContent = skill || ""; 
+
         slotDiv.appendChild(innerDiv);
         rowDiv.appendChild(slotDiv);
     });
-    skillsFragment.appendChild(rowDiv);
+
+    skillContainer.appendChild(rowDiv);
 };
 
 createSkillRowAndAppend(char.skills?.rainbow ?? [], "rainbow", { 1: "", 2: "flex-2" });
@@ -154,9 +165,8 @@ createSkillRowAndAppend(char.skills?.yellow ?? [], "yellow", { 1: "", 2: "flex-2
 createSkillRowAndAppend(char.skills?.white?.slice(0, 3) ?? [], "white", { 1: "", 2: "flex-2", 3: "flex-3" });
 createSkillRowAndAppend(char.skills?.white?.slice(3) ?? [], "white", { 1: "", 2: "flex-2" });
 
-skillContainer.appendChild(skillsFragment);
-
-return card;
+    return card;
+}
 
 function setLoadingState(isLoading) {
     const { characterList, resultSummary, skeletonTemplate } = DOMElements;
@@ -315,16 +325,9 @@ function updateScrollButtonsVisibility() {
 }
 
 function handleKeyboardShortcuts(event) {
-    const isModalActive = !DOMElements.modalContainer.hidden;
-    if (isModalActive && event.key !== "Escape") {
-        return;
-    }
-
     const activeElement = document.activeElement;
     if (activeElement && (activeElement.tagName === "INPUT" || activeElement.tagName === "SELECT")) {
-        if (event.key === "Escape") {
-            activeElement.blur(); // 포커스 해제
-        }
+        if (event.key === "Escape") activeElement.blur();
         return;
     }
 
@@ -334,10 +337,7 @@ function handleKeyboardShortcuts(event) {
             DOMElements.searchBox.focus();
             break;
         case "Escape":
-            // 모달이 닫혀 있을 때만 필터 초기화
-            if (!isModalActive) {
-                resetAllFilters();
-            }
+            resetAllFilters();
             break;
         case ".":
             window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
@@ -415,18 +415,72 @@ function initializeTheme() {
     }
 }
 
-function setupEventListeners() {
+async function initializeApp() {
+    setLoadingState(true);
+    initializeTheme();
+    setupDynamicCheckboxColors();
+
     const { filterForm, searchBox, sortOrder, resetFiltersButton, noResultsResetButton, scrollTopButton, scrollBottomButton, toggleSkillsButton, darkModeToggleButton } = DOMElements;
 
-    const updateHandler = () => window.requestAnimationFrame(updateDisplay);
-    const debouncedSearchHandler = debounce(updateHandler, 250);
+    
+    // 1. 웹 워커를 생성합니다.
+worker = new Worker('./workers/filterWorker.js');
 
-    filterForm.addEventListener("input", (e) => {
-        if (e.target.id !== 'search-box') {
-            updateHandler();
-        }
-    });
+// 2. 워커 에러 핸들러를 추가합니다.
+worker.onerror = (error) => {
+    console.error(`Worker error: ${error.message}`, error);
+    // 사용자에게 문제가 발생했음을 알립니다.
+    DOMElements.resultSummary.textContent = "오류가 발생했습니다. 페이지를 새로고침 해주세요.";
+    // 필요하다면, 여기서 워커를 재시작하거나 다른 복구 로직을 수행할 수 있습니다.
+};
 
+// 3. 워커로부터 메시지를 받았을 때 처리할 로직을 정의합니다. (기존 코드)
+worker.onmessage = (e) => {
+        const filteredCharacters = e.data; // 워커가 보낸 처리 결과
+        
+        // 필터링이 적용되었는지 여부를 판단합니다.
+        const isFiltered = (
+            Array.from(DOMElements.filterForm.elements).some(el => el.type === "checkbox" && el.checked) || 
+            DOMElements.searchBox.value.trim() !== ""
+        );
+
+        // 결과를 화면에 렌더링합니다.
+        renderCharacters(filteredCharacters, isFiltered);
+    };
+
+
+    // 3. 캐릭터 데이터를 불러와 메인 스레드와 워커 양쪽에 모두 전달합니다.
+    try {
+        const response = await fetch(CHARACTERS_JSON_PATH);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        allCharacters = await response.json();
+
+        // 워커에게 최초 캐릭터 데이터를 보내 초기화시킵니다.
+        worker.postMessage({
+            type: 'init',
+            payload: { characters: allCharacters }
+        });
+
+    } catch (error) {
+        console.error("캐릭터 데이터를 불러오는 데 실패했습니다:", error);
+        // ... (기존 에러 처리 로직) ...
+        return;
+    }
+
+    // 4. 초기 화면을 렌더링합니다.
+    renderCharacters(allCharacters, false); // 처음에는 필터링되지 않은 전체 목록을 보여줍니다.
+    updateScrollButtonsVisibility();
+    
+const updateHandler = () => {
+    window.requestAnimationFrame(updateDisplay);
+};
+const debouncedSearchHandler = debounce(updateHandler, 250);
+
+filterForm.addEventListener("input", (e) => {
+    if (e.target.id !== 'search-box') {
+        updateHandler(); // 디바운스 없이 즉시 반응
+    }
+});
     searchBox.addEventListener("input", debouncedSearchHandler);
     sortOrder.addEventListener("change", updateHandler);
     resetFiltersButton.addEventListener("click", resetAllFilters);
@@ -436,64 +490,31 @@ function setupEventListeners() {
     toggleSkillsButton.addEventListener("click", toggleAllSkills);
     darkModeToggleButton.addEventListener("click", toggleTheme);
 
-    ['scroll', 'resize'].forEach(event => {
-        window.addEventListener(event, updateScrollButtonsVisibility, { passive: true });
-    });
+    window.addEventListener("scroll", updateScrollButtonsVisibility);
+    window.addEventListener("resize", updateScrollButtonsVisibility);
     document.addEventListener("keydown", handleKeyboardShortcuts);
-}
-
-function initializeWorker() {
-    worker = new Worker('./workers/filterWorker.js');
-
-    worker.onerror = (error) => {
-        console.error(`Worker error: ${error.message}`, error);
-        DOMElements.resultSummary.textContent = "오류가 발생했습니다. 페이지를 새로고침 해주세요.";
-    };
-
-    worker.onmessage = (e) => {
-        const filteredCharacters = e.data;
-        const isFiltered = (
-            Array.from(DOMElements.filterForm.elements).some(el => el.type === "checkbox" && el.checked) ||
-            DOMElements.searchBox.value.trim() !== ""
-        );
-        renderCharacters(filteredCharacters, isFiltered);
-    };
-}
-
-async function initializeApp() {
-    setLoadingState(true);
-    initializeTheme();
-    setupDynamicCheckboxColors();
-    initializeWorker();
-    setupEventListeners();
 
     try {
         const response = await fetch(CHARACTERS_JSON_PATH);
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         allCharacters = await response.json();
-
-        worker.postMessage({
-            type: 'init',
-            payload: { characters: allCharacters }
-        });
-
-        renderCharacters(allCharacters, false);
     } catch (error) {
         console.error("캐릭터 데이터를 불러오는 데 실패했습니다:", error);
         DOMElements.characterList.innerHTML = `
-            <div id="data-error-container" style="text-align:center; color:var(--color-danger); padding: 20px;">
+            <div id="data-error-container" style="text-align:center; color:red; padding: 20px;">
                 <p>캐릭터 정보를 불러오지 못했습니다. ${CHARACTERS_JSON_PATH} 파일이 올바른 위치에 있는지 확인해 주세요.</p>
-                <p>문제가 지속되면 사이트 관리자에게 문의해 주세요. 이메일 주소는 하단에서 확인할 수 있습니다.</p>
+                <p>문제가 지속되면 사이트 관리자에게 요청이 필요합니다. 사이트 관리자의 이메일은 하단을 확인해 주세요.</p>
                 <button id="reload-button" class="button button-primary">새로고침</button>
             </div>
         `;
         document.getElementById("reload-button").addEventListener("click", () => location.reload());
         DOMElements.resultSummary.textContent = "오류 발생";
-        setLoadingState(false); // 로딩 상태 해제
+        return;
     }
 
+    updateDisplay();
     updateScrollButtonsVisibility();
-
+    // 서비스 워커 등록 코드
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('/sw.js')
@@ -582,42 +603,82 @@ document.addEventListener("DOMContentLoaded", () => {
     const modalOverlay = document.querySelector(".modal-overlay");
     let lastFocusedElement;
 
-    const openModal = () => {
+    /**
+     * [UI 제어 함수] 오직 모달을 시각적으로 여는 역할만 담당합니다.
+     */
+    const openModalUI = () => {
+        // 이미 열려있으면 중복 실행 방지
+        if (modalContainer.hidden === false) return; 
+
         lastFocusedElement = document.activeElement;
-        modalContainer.hidden = false;
-        // 한 프레임 늦춰서 transition이 적용되도록 합니다.
+        modalContainer.removeAttribute("hidden");
         requestAnimationFrame(() => {
             modalContainer.classList.add("active");
         });
-        document.body.style.overflow = "hidden"; // 스크롤바 제거
         closeModalBtn.focus();
     };
 
-    const closeModal = () => {
+    /**
+     * [UI 제어 함수] 오직 모달을 시각적으로 닫는 역할만 담당합니다.
+     */
+    const closeModalUI = () => {
+        // 이미 닫혀있으면 중복 실행 방지
+        if (modalContainer.hidden === true) return; 
+
         modalContainer.classList.remove("active");
-        document.body.style.overflow = ""; // 스크롤바 복원
+        modalContainer.addEventListener("transitionend", function onTransitionEnd() {
+            modalContainer.setAttribute("hidden", true);
+            modalContainer.removeEventListener("transitionend", onTransitionEnd);
+        }, { once: true });
+
+        if (lastFocusedElement) {
+            lastFocusedElement.focus();
+        }
+    };
+    
+    /**
+     * [상태 변경 감지] URL 해시 변경을 감지하여 UI를 제어하는 핵심 핸들러입니다.
+     */
+    const handleHashChange = () => {
+        if (location.hash === '#modal') {
+            openModalUI();
+        } else {
+            closeModalUI();
+        }
     };
 
-    // Transition 종료 시점에 hidden 속성 추가
-    modalContainer.addEventListener("transitionend", (event) => {
-        if (event.target === modalContainer && !modalContainer.classList.contains("active")) {
-            modalContainer.hidden = true;
-            if (lastFocusedElement) {
-                lastFocusedElement.focus();
-            }
-        }
+    // --- 이벤트 리스너 설정 ---
+
+    // '알려드릴 내용' 버튼 클릭: URL 해시를 추가하여 모달 열기를 요청합니다.
+    openModalBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        location.hash = 'modal';
     });
 
-    openModalBtn.addEventListener("click", openModal);
-    closeModalBtn.addEventListener("click", closeModal);
-    modalOverlay.addEventListener("click", closeModal);
+    // '닫기(X)' 버튼 클릭: '뒤로 가기'를 실행하여 해시를 제거합니다.
+    closeModalBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        history.back();
+    });
 
+    // 모달 바깥 영역 클릭: '뒤로 가기'를 실행하여 해시를 제거합니다.
+    modalOverlay.addEventListener("click", () => {
+        history.back();
+    });
+
+    // ESC 키 입력 감지: 열려있을 때 '뒤로 가기'를 실행합니다.
     document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape" && !modalContainer.hidden) {
-            closeModal();
+        if (e.key === "Escape" && location.hash === '#modal') {
+            history.back();
         }
     });
+
+    // --- 초기화 및 리스너 등록 ---
+
+    // 페이지가 처음 로드될 때 URL에 #modal이 있는지 확인하여 모달을 엽니다.
+    // (예: 링크 공유, 새로고침 시 상태 유지)
+    handleHashChange();
+
+    // 브라우저의 '뒤로 가기', '앞으로 가기' 동작을 감지합니다.
+    window.addEventListener('hashchange', handleHashChange);
 });
-
-
-
