@@ -38,8 +38,8 @@
     --shadow-light: 0 0 10px rgba(0, 0, 0, 0.05);
     --shadow-medium: 0 4px 6px rgba(0, 0, 0, 0.07);
     --shadow-hover: 0 8px 12px rgba(0, 0, 0, 0.1);
-    --transition-fast: all 0.2s ease-in-out;
-    --transition-normal: all 0.3s ease-in-out;
+    --transition-fast: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, border-color 0.2s ease-in-out;
+    --transition-normal: background-color 0.3s ease-in-out, color 0.3s ease-in-out, border-color 0.3s ease-in-out;
 }
 
 html[data-theme="dark"] {
@@ -979,11 +979,7 @@ input[type="number"] {
     }
 }
 
-/* <details> 
 details[open] > .skill-container {
     animation: slide-down-fade-in 0.3s ease-in-out;
 }
-
-
-
 
