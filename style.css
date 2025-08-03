@@ -17,7 +17,6 @@
     --color-skeleton-highlight: #f5f5f5;
     --color-button-secondary-bg: #e9ecef;
     --color-button-secondary-hover-bg: #dee2e6;
-
     --color-apt-turf: #38761d;
     --color-apt-dirt: #744700;
     --color-apt-distance: #333333;
@@ -602,6 +601,21 @@ input[type="number"] {
     }
 }
 
+.skill-details[closing] > .skill-summary + .skill-container {
+    animation: slide-up-fade-out 0.3s ease-out forwards;
+}
+
+@keyframes slide-up-fade-out {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
+
 .skill-container {
     display: flex;
     flex-direction: column;
@@ -994,6 +1008,7 @@ input[type="number"] {
 details[open] > .skill-container {
     animation: slide-down-fade-in 0.3s ease-in-out;
 }
+
 
 
 
