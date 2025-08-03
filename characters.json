@@ -450,12 +450,12 @@
     "tags": ["근육"]
   },
   {
-    "id": 102801, "name": "히시 아케보노", "nickname": "먹보・딜리셔스", "color": "#FFFF00",
-    "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
-    "DistanceAptitude": { "Short": "A", "Mile": "D", "Medium": "G", "Long": "G" },
+    "id": 102801, "name": "히시 아케보노", "nickname": "보노☆알라모다", "color": "#FFFF00",
+    "SurfaceAptitude": { "Turf": "A", "Dirt": "F" },
+    "DistanceAptitude": { "Short": "A", "Mile": "B", "Medium": "F", "Long": "G" },
     "StrategyAptitude": { "Front": "A", "Pace": "A", "Late": "G", "End": "G" },
-    "StatBonuses": { "Speed": 0, "Stamina": 0, "Power": 30, "Guts": 0, "Wit": 0 },
-    "skills": { "rainbow": ["몸도 마음도 BIG하게!"], "pink": ["파워풀 대작전!", "먹어도 OK!"], "yellow": ["먹보", "기어 체인지"], "white": ["단거리 직선○", "단거리 코너○", "선행 직선○", "리드 킵", "기세로 밀어붙이기"] },
+    "StatBonuses": { "Speed": 0, "Stamina": 0, "Power": 20, "Guts": 10, "Wit": 0 },
+    "skills": { "rainbow": ["I'M☆FULL☆SPEED!!"], "pink": ["사전 준비 완료!", "보노한 대식가", "붙어 보자!"], "yellow": ["준비 와뇰!", "먹보"], "white": ["단거리 직선○", "단거리 코너○", "선행 직선○", "리드 킵", "기세로 밀어붙이기"] },
     "tags": ["보노", "거인"]
   },
   {
@@ -828,4 +828,5 @@
     "tags": ["프로젝트L'Arc", "개선문상"]
   }
 ]
+
 
