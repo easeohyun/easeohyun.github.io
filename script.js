@@ -300,14 +300,12 @@ function toggleAllSkills() {
     const allDetails = DOMElements.characterList.querySelectorAll(".skill-details");
     if (allDetails.length === 0) return;
 
-    // 첫 번째 카드의 상태를 기준으로 열지 닫을지 결정
-    const shouldOpen = !allDetails[0].open;
+    // 첫 번째 카드의 현재 상태를 기준으로 모든 카드를 열지, 닫을지 결정
+    const shouldOpen = !allDetails[0].hasAttribute("open");
 
     allDetails.forEach((detail) => {
-        // 현재 상태와 목표 상태가 다를 경우에만 summary를 클릭하여 애니메이션을 트리거
-        if (detail.open !== shouldOpen) {
-            detail.querySelector('.skill-summary').click();
-        }
+        // 각 카드의 open 속성을 직접 설정
+        detail.open = shouldOpen;
     });
 
     const icon = DOMElements.toggleSkillsButton.querySelector(".material-symbols-outlined");
@@ -488,48 +486,7 @@ async function initializeApp() {
     });
     searchBox.addEventListener("input", debouncedSearchHandler);
     sortOrder.addEventListener("change", updateHandler);
-    resetFiltersButton.addEventListener("click", resetAllFilters);
-
-
-
-
-
-    
-    DOMElements.characterList.addEventListener('click', e => {
-    const details = e.target.closest('.skill-details');
-    if (!details || !e.target.matches('.skill-summary')) return;
-
-    e.preventDefault(); // 기본 동작(즉시 열고 닫기)을 막습니다.
-
-    if (details.open) {
-        // 닫힐 때
-        details.classList.add('animating-close');
-        details.classList.remove('animating-open');
-
-        details.addEventListener('animationend', () => {
-            details.open = false;
-            details.classList.remove('animating-close');
-        }, { once: true });
-
-    } else {
-        // 열릴 때
-        details.open = true;
-        details.classList.add('animating-open');
-        details.classList.remove('animating-close');
-
-        details.addEventListener('animationend', () => {
-             // 열기 애니메이션 후에는 클래스를 굳이 지울 필요는 없으나,
-             // 일관성을 위해 지우거나, 혹은 그냥 두어도 무방합니다.
-             // details.classList.remove('animating-open');
-        }, { once: true });
-    }
-});
-
-
-
-
-
-    
+    resetFiltersButton.addEventListener("click", resetAllFilters);    
     noResultsResetButton.addEventListener("click", resetAllFilters);
     scrollTopButton.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
     scrollBottomButton.addEventListener("click", () => window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" }));
@@ -712,6 +669,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 브라우저의 '뒤로 가기', '앞으로 가기' 동작을 감지합니다.
     window.addEventListener('hashchange', handleHashChange);
 });
+
 
 
 
