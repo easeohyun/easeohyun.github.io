@@ -375,7 +375,7 @@ function toggleAllSkills() {
     });
 
     const icon = DOMElements.toggleSkillsButton.querySelector(".material-symbols-outlined");
-    icon.textContent = shouldOpen ? "visibility_off" : "visibility";
+    icon.textContent = shouldOpen ? "unfold_less" : "unfold_more";
     DOMElements.toggleSkillsButton.title = shouldOpen ? "모든 스킬 접기 ([)" : "모든 스킬 펼치기 ([)";
 }
 
@@ -644,6 +644,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
 
 
 
