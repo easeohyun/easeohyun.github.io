@@ -441,13 +441,13 @@
     "tags": ["사이보그", "초코봉"]
   },
   {
-    "id": 102701, "name": "메지로 라이언", "nickname": "브라이트・제너럴", "color": "#4682B4",
+    "id": 102602, "name": "미호노 부르봉", "nickname": "CODE: 글라사주", "color": "#4682B4",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
-    "DistanceAptitude": { "Short": "F", "Mile": "E", "Medium": "A", "Long": "A" },
-    "StrategyAptitude": { "Front": "G", "Pace": "C", "Late": "A", "End": "B" },
+    "DistanceAptitude": { "Short": "C", "Mile": "B", "Medium": "A", "Long": "B" },
+    "StrategyAptitude": { "Front": "A", "Pace": "E", "Late": "G", "End": "G" },
     "StatBonuses": { "Speed": 0, "Stamina": 0, "Power": 20, "Guts": 10, "Wit": 0 },
-    "skills": { "rainbow": ["근육 활성화! 아나볼릭・러브!"], "pink": ["정면근육!", "근육 발레"], "yellow": ["치열한 승부", "전심전력"], "white": ["뒷심", "직선 가속", "추월 확정 태세", "외곽 추월 준비", "안쪽 그룹 능숙○"] },
-    "tags": ["근육"]
+    "skills": { "rainbow": ["오퍼레이션・Cacao"], "pink": ["완벽한 에러 대처술", "퍼펙트 부트"], "yellow": ["탈출술", "컨센트레이션"], "white": ["집중력", "빠른 걸음", "외장 탱크", "도주의 요령○", "터다지기"] },
+    "tags": ["3대장, 초코봉"]
   },
   {
     "id": 102801, "name": "히시 아케보노", "nickname": "보노☆알라모다", "color": "#FFFF00",
@@ -828,5 +828,6 @@
     "tags": ["프로젝트L'Arc", "개선문상"]
   }
 ]
+
 
 
