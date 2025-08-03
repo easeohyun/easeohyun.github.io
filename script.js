@@ -594,60 +594,88 @@ document.addEventListener("DOMContentLoaded", () => {
         );
     }
 
+    const modalContainer = document.getElementById("contact-modal");
     const openModalBtn = document.getElementById("open-modal-btn");
     const closeModalBtn = document.getElementById("close-modal-btn");
-    const modalContainer = document.getElementById("contact-modal");
     const modalOverlay = document.querySelector(".modal-overlay");
-
     let lastFocusedElement;
 
-    const openModal = (e) => {
+    /**
+     * [UI 제어 함수] 오직 모달을 시각적으로 여는 역할만 담당합니다.
+     */
+    const openModalUI = () => {
+        // 이미 열려있으면 중복 실행 방지
+        if (modalContainer.hidden === false) return; 
+
         lastFocusedElement = document.activeElement;
-
         modalContainer.removeAttribute("hidden");
-
         requestAnimationFrame(() => {
             modalContainer.classList.add("active");
         });
-
         closeModalBtn.focus();
     };
 
-    const closeModal = () => {
+    /**
+     * [UI 제어 함수] 오직 모달을 시각적으로 닫는 역할만 담당합니다.
+     */
+    const closeModalUI = () => {
+        // 이미 닫혀있으면 중복 실행 방지
+        if (modalContainer.hidden === true) return; 
+
         modalContainer.classList.remove("active");
-
-        modalContainer.addEventListener(
-            "transitionend",
-            function onTransitionEnd() {
-                modalContainer.setAttribute("hidden", true);
-
-                modalContainer.removeEventListener("transitionend", onTransitionEnd);
-            },
-            { once: true }
-        );
+        modalContainer.addEventListener("transitionend", function onTransitionEnd() {
+            modalContainer.setAttribute("hidden", true);
+            modalContainer.removeEventListener("transitionend", onTransitionEnd);
+        }, { once: true });
 
         if (lastFocusedElement) {
             lastFocusedElement.focus();
         }
     };
+    
+    /**
+     * [상태 변경 감지] URL 해시 변경을 감지하여 UI를 제어하는 핵심 핸들러입니다.
+     */
+    const handleHashChange = () => {
+        if (location.hash === '#modal') {
+            openModalUI();
+        } else {
+            closeModalUI();
+        }
+    };
 
-    openModalBtn.addEventListener("click", openModal);
-    closeModalBtn.addEventListener("click", closeModal);
-    modalOverlay.addEventListener("click", closeModal);
+    // --- 이벤트 리스너 설정 ---
+
+    // '알려드릴 내용' 버튼 클릭: URL 해시를 추가하여 모달 열기를 요청합니다.
+    openModalBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        location.hash = 'modal';
+    });
+
+    // '닫기(X)' 버튼 클릭: '뒤로 가기'를 실행하여 해시를 제거합니다.
+    closeModalBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        history.back();
+    });
+
+    // 모달 바깥 영역 클릭: '뒤로 가기'를 실행하여 해시를 제거합니다.
+    modalOverlay.addEventListener("click", () => {
+        history.back();
+    });
+
+    // ESC 키 입력 감지: 열려있을 때 '뒤로 가기'를 실행합니다.
     document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape" && modalContainer.classList.contains("active")) {
-            closeModal();
+        if (e.key === "Escape" && location.hash === '#modal') {
+            history.back();
         }
     });
+
+    // --- 초기화 및 리스너 등록 ---
+
+    // 페이지가 처음 로드될 때 URL에 #modal이 있는지 확인하여 모달을 엽니다.
+    // (예: 링크 공유, 새로고침 시 상태 유지)
+    handleHashChange();
+
+    // 브라우저의 '뒤로 가기', '앞으로 가기' 동작을 감지합니다.
+    window.addEventListener('hashchange', handleHashChange);
 });
-
-
-
-
-
-
-
-
-
-
-
