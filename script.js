@@ -424,10 +424,18 @@ async function initializeApp() {
 
     
     // 1. 웹 워커를 생성합니다.
-    worker = new Worker('./workers/filterWorker.js');
+worker = new Worker('./workers/filterWorker.js');
 
-    // 2. 워커로부터 메시지를 받았을 때 처리할 로직을 정의합니다.
-    worker.onmessage = (e) => {
+// 2. 워커 에러 핸들러를 추가합니다.
+worker.onerror = (error) => {
+    console.error(`Worker error: ${error.message}`, error);
+    // 사용자에게 문제가 발생했음을 알립니다.
+    DOMElements.resultSummary.textContent = "오류가 발생했습니다. 페이지를 새로고침 해주세요.";
+    // 필요하다면, 여기서 워커를 재시작하거나 다른 복구 로직을 수행할 수 있습니다.
+};
+
+// 3. 워커로부터 메시지를 받았을 때 처리할 로직을 정의합니다. (기존 코드)
+worker.onmessage = (e) => {
         const filteredCharacters = e.data; // 워커가 보낸 처리 결과
         
         // 필터링이 적용되었는지 여부를 판단합니다.
@@ -632,6 +640,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
 
 
 
