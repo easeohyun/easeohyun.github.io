@@ -55,6 +55,7 @@ const DOMElements = {
 };
 
 let allCharacters = [];
+let observer; //
 
 function smartIncludes(target, term) {
     const targetStr = String(target || "").toLowerCase();
@@ -202,10 +203,16 @@ function setLoadingState(isLoading) {
 }
 
 function renderCharacters(charactersToRender, isFiltered) {
-    const { characterList, noResultsContainer, resultSummary } = DOMElements;
+    const { characterList, noResultsContainer, resultSummary, skeletonTemplate } = DOMElements;
     const count = charactersToRender.length;
 
-    characterList.innerHTML = "";
+    // 1. 기존 옵저버 정리: 새로운 렌더링이 시작되기 전, 이전에 실행되던 observer의 모든 관찰을 중단합니다.
+    //    필터나 정렬이 바뀌면 이전 관찰 대상은 의미가 없기 때문입니다.
+    if (observer) {
+        observer.disconnect();
+    }
+
+    characterList.innerHTML = ""; // 리스트를 비웁니다.
 
     if (count === 0 && isFiltered) {
         characterList.style.display = "none";
@@ -214,9 +221,10 @@ function renderCharacters(charactersToRender, isFiltered) {
         return;
     }
 
-    characterList.style.display = "";
+    characterList.style.display = ""; // grid나 flex로 복원
     noResultsContainer.style.display = "none";
-
+    
+    // ... [기존 요약 텍스트 설정 로직] ... (이 부분은 그대로 두시면 됩니다)
     let summaryText = "";
     if (!isFiltered) {
         summaryText = `트레센 학원에 어서오세요, ${allCharacters.length}명의 우마무스메를 만날 수 있답니다!`;
@@ -229,8 +237,55 @@ function renderCharacters(charactersToRender, isFiltered) {
     }
     resultSummary.textContent = summaryText;
 
+
+    // 2. IntersectionObserver 콜백 함수 정의
+    //    관찰 대상(스켈레톤 카드)이 화면에 나타났을 때 실행될 로직입니다.
+    const createAndObserveCharacter = (entries, obs) => {
+        entries.forEach(entry => {
+            // isIntersecting 속성으로 화면에 들어왔는지 확인합니다.
+            if (entry.isIntersecting) {
+                const skeletonCard = entry.target; // 화면에 나타난 스켈레톤 카드
+                const charId = skeletonCard.dataset.id; // 스켈레톤 카드에 저장해둔 캐릭터 ID
+                
+                // ID를 이용해 전체 데이터에서 해당 캐릭터 정보를 찾습니다.
+                const characterData = allCharacters.find(c => String(c.id) === charId);
+
+                if (characterData) {
+                    // 실제 캐릭터 카드를 생성합니다. (기존 함수 재활용)
+                    const realCard = createCharacterCard(characterData);
+                    // 스켈레톤 카드를 실제 완성된 카드로 교체합니다.
+                    skeletonCard.replaceWith(realCard);
+                }
+                
+                // 3. 관찰 중단: 한번 실제 카드로 교체된 요소는 더 이상 관찰할 필요가 없으므로
+                //    옵저버에서 제거하여 불필요한 리소스 낭비를 막습니다.
+                obs.unobserve(skeletonCard);
+            }
+        });
+    };
+
+    // 4. IntersectionObserver 인스턴스 생성 및 설정
+    observer = new IntersectionObserver(createAndObserveCharacter, {
+        root: null, // null이면 뷰포트(화면 전체)를 기준으로 합니다.
+        rootMargin: '0px 0px 400px 0px', // 화면 하단 400px 영역에 들어오면 미리 로딩을 시작합니다.
+        threshold: 0, // 대상 요소가 1px이라도 보이면 콜백을 실행합니다.
+    });
+
+    // 5. 실제 카드가 아닌 '스켈레톤 카드'를 먼저 렌더링합니다.
     const fragment = document.createDocumentFragment();
-    charactersToRender.forEach((char) => fragment.appendChild(createCharacterCard(char)));
+    charactersToRender.forEach(char => {
+        // 스켈레톤 템플릿을 복제하여 '자리표'로 사용합니다.
+        const skeletonCard = skeletonTemplate.content.cloneNode(true).firstElementChild;
+        
+        // 나중에 실제 데이터를 찾을 수 있도록 캐릭터 ID를 dataset에 저장합니다.
+        skeletonCard.dataset.id = char.id;
+
+        fragment.appendChild(skeletonCard);
+        
+        // 6. 생성된 스켈레톤 카드를 관찰 대상으로 등록합니다.
+        observer.observe(skeletonCard);
+    });
+
     characterList.appendChild(fragment);
 }
 
@@ -589,5 +644,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
 
 
