@@ -326,11 +326,15 @@
         DOM.closeModalBtn.addEventListener("click", closeModal);
         DOM.modalOverlay.addEventListener("click", closeModal);
         
-        DOM.contactEmailLink.addEventListener("click", function() {
+        DOM.contactEmailLink.addEventListener("click", function(e) {
+            e.preventDefault();
             if (this.dataset.revealed !== "true") {
-                this.href = `mailto:easeohyun@google.com`;
-                this.textContent = `easeohyun@google.com`;
+                const user = "easeohyun";
+                const domain = "google.com";
+                this.href = `mailto:${user}@${domain}`;
+                this.textContent = `${user}@${domain}`;
                 this.dataset.revealed = "true";
+                window.location.href = this.href;
             }
         });
 
@@ -379,6 +383,18 @@
 
         try {
             state.worker = await initWorker();
+        } catch (error) {
+            console.error("Web Worker 초기화에 실패했습니다:", error);
+            setLoadingState(false);
+            DOM.resultSummary.innerHTML = `
+                <div style="color:var(--color-danger); text-align:center;">
+                    <p><strong>오류:</strong> 페이지의 핵심 기능을 불러오는 데 실패했습니다.</p>
+                    <p>브라우저 호환성을 확인하거나, 페이지를 새로고침 해주세요.</p>
+                </div>`;
+            return;
+        }
+
+        try {
             const characters = await fetchCharacters();
             state.allCharacters = characters;
             
@@ -386,7 +402,7 @@
             renderCharacters(state.allCharacters, false);
 
         } catch (error) {
-            console.error("애플리케이션 초기화에 실패했습니다:", error);
+            console.error("캐릭터 정보 로딩에 실패했습니다:", error);
             setLoadingState(false);
             DOM.resultSummary.innerHTML = `
                 <div style="color:var(--color-danger); text-align:center;">
