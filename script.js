@@ -319,13 +319,17 @@
             const el = document.querySelector(id);
             if (!el) return;
             const rand = Math.random();
-            if (rand < 0.05) el.classList.add('icon-walk');
-            else if (rand < 0.25) el.classList.add('icon-run');
-            else el.classList.add('icon-sprint');
+            if (rand < 0.05) {
+                el.classList.add('icon-walk');
+            } else if (rand < 0.25) {
+                el.classList.add('icon-run');
+            } else {
+                el.classList.add('icon-sprint');
+            }
         });
 
         const powerEl = document.querySelector('#filter-power');
-        if(powerEl) {
+        if (powerEl) {
              powerEl.classList.add(Math.random() < 0.5 ? 'icon-humerus' : 'icon-ulna');
         }
     };
