@@ -93,8 +93,6 @@ let allCharacters = [];
 let observer;
 let worker;
 
-function smartIncludes(target, term) {}
-
 function createCharacterCard(char) {
 	const card = DOMElements.cardTemplate.content.cloneNode(true).firstElementChild;
 	card.dataset.id = char.id;
@@ -674,4 +672,5 @@ document.addEventListener("DOMContentLoaded", () => {
 	handleHashChange();
 	window.addEventListener('hashchange', handleHashChange);
 });
+
 
