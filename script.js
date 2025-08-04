@@ -342,6 +342,12 @@ function updateScrollButtonsVisibility() {
 }
 
 function handleKeyboardShortcuts(event) {
+    // Ctrl, Alt, Meta(Cmd) 키가 눌렸을 때는 우리의 단축키가 동작하지 않도록 합니다.
+    // 이를 통해 브라우저의 기본 단축키(Ctrl+F, Ctrl+R 등)가 정상적으로 작동합니다.
+    if (event.ctrlKey || event.altKey || event.metaKey) {
+        return;
+    }
+
 	const isModalActive = DOMElements.modalContainer && !DOMElements.modalContainer.hidden;
 	if (isModalActive && event.key !== "Escape") {
 		return;
@@ -359,6 +365,7 @@ function handleKeyboardShortcuts(event) {
 			event.preventDefault();
 			DOMElements.searchBox.focus();
 			break;
+		case "r": 
 		case "escape":
 			if (!isModalActive) {
 				resetAllFilters();
@@ -376,11 +383,11 @@ function handleKeyboardShortcuts(event) {
 				behavior: "smooth"
 			});
 			break;
-		case "e":
+		case "a": 
 			event.preventDefault();
 			toggleAllSkills();
 			break;
-		case "f":
+		case "d": 
 			event.preventDefault();
 			toggleTheme();
 			break;
@@ -464,9 +471,9 @@ async function initializeApp() {
 
 	scrollTopButton.title = "맨 위로 (W)";
 	scrollBottomButton.title = "맨 아래로 (S)";
-	toggleSkillsButton.title = "모든 스킬 펼치기 (E)";
-	darkModeToggleButton.title = "어두운 테마로 전환 (F)";
-	resetFiltersButton.title = "모든 조건과 검색어를 초기화해요. (ESC)";
+	toggleSkillsButton.title = "모든 스킬 펼치기 (A)"; 
+	darkModeToggleButton.title = "어두운 테마로 전환 (D)"; 
+	resetFiltersButton.title = "모든 조건과 검색어를 초기화해요. (ESC, R)"; 
 
 	worker = new Worker('./workers/filterWorker.js');
 	worker.onerror = (error) => {
@@ -672,5 +679,6 @@ document.addEventListener("DOMContentLoaded", () => {
 	handleHashChange();
 	window.addEventListener('hashchange', handleHashChange);
 });
+
 
 
