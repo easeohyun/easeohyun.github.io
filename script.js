@@ -117,9 +117,11 @@
     };
     
     const setLoadingState = (isLoading, message = "") => {
-        DOM.characterList.innerHTML = isLoading ? "" : DOM.characterList.innerHTML;
         DOM.resultSummary.setAttribute('aria-live', isLoading ? 'assertive' : 'polite');
         DOM.resultSummary.textContent = message;
+        if (isLoading) {
+            DOM.characterList.innerHTML = "";
+        }
     };
     
     const renderCharacters = (charactersToRender, isFiltered) => {
@@ -130,10 +132,10 @@
         const hasActiveFilters = isFiltered || DOM.searchBox.value.trim() !== "" || Array.from(DOM.filterForm.elements).some(el => el.type === "checkbox" && el.checked);
         const showNoResults = count === 0 && hasActiveFilters;
         
-        characterList.style.display = showNoResults ? "none" : "";
+        characterList.style.display = showNoResults ? "none" : "grid";
         noResultsContainer.style.display = showNoResults ? "block" : "none";
         resultSummary.textContent = showNoResults ? "" : (hasActiveFilters
-            ? `총 ${count}명의 우마무S스메를 찾았습니다.`
+            ? `총 ${count}명의 우마무스메를 찾았습니다.`
             : `트레센 학원에 어서오세요, ${state.allCharacters.length}명의 우마무스메를 만날 수 있답니다!`);
 
         if (showNoResults) return;
@@ -187,7 +189,7 @@
     const resetAllFilters = () => {
         DOM.filterForm.reset();
         DOM.searchBox.value = "";
-        document.querySelectorAll('#filter-form label').forEach(label => label.removeAttribute('data-icon'));
+        document.querySelectorAll('#filter-form label[data-icon]').forEach(label => label.removeAttribute('data-icon'));
         updateDisplay();
     };
     
@@ -263,26 +265,15 @@
     const iconConfig = {
         'distance': {
             ids: ['Short', 'Mile', 'Medium', 'Long'],
-            icons: [
-                { value: 'directions_walk', weight: 5 },
-                { value: 'directions_run', weight: 20 },
-                { value: 'sprint', weight: 75 }
-            ]
+            icons: [ { value: 'directions_walk', weight: 5 }, { value: 'directions_run', weight: 20 }, { value: 'sprint', weight: 75 } ]
         },
         'strategy': {
             ids: ['Front', 'Pace', 'Late', 'End'],
-            icons: [
-                { value: 'directions_walk', weight: 5 },
-                { value: 'directions_run', weight: 20 },
-                { value: 'sprint', weight: 75 }
-            ]
+            icons: [ { value: 'directions_walk', weight: 5 }, { value: 'directions_run', weight: 20 }, { value: 'sprint', weight: 75 } ]
         },
         'power': {
             ids: ['Power'],
-            icons: [
-                { value: 'humerus_alt', weight: 50 },
-                { value: 'ulna_radius_alt', weight: 50 }
-            ]
+            icons: [ { value: 'humerus_alt', weight: 50 }, { value: 'ulna_radius_alt', weight: 50 } ]
         }
     };
 
@@ -291,13 +282,9 @@
         if (!label) return;
 
         if (checkbox.checked) {
-            let configGroup = null;
-            if (iconConfig.distance.ids.includes(checkbox.id)) configGroup = 'distance';
-            else if (iconConfig.strategy.ids.includes(checkbox.id)) configGroup = 'strategy';
-            else if (iconConfig.power.ids.includes(checkbox.id)) configGroup = 'power';
-            
-            if (configGroup) {
-                const iconName = getWeightedRandom(iconConfig[configGroup].icons);
+            const configGroupKey = Object.keys(iconConfig).find(key => iconConfig[key].ids.includes(checkbox.id));
+            if (configGroupKey) {
+                const iconName = getWeightedRandom(iconConfig[configGroupKey].icons);
                 label.dataset.icon = iconName;
             }
         } else {
@@ -307,12 +294,20 @@
     
     const setupEventListeners = () => {
         const debouncedUpdate = debounce(updateDisplay, DEBOUNCE_DELAY);
-        DOM.filterForm.addEventListener("input", (e) => {
+        
+        DOM.filterForm.addEventListener("change", (e) => {
             if (e.target.type === 'checkbox') {
                 updateCheckboxIcon(e.target);
             }
             updateDisplay();
         });
+
+        DOM.filterForm.addEventListener("input", (e) => {
+            if (e.target.type !== 'checkbox' && e.target.type !== 'select-one') {
+                debouncedUpdate();
+            }
+        });
+
         DOM.searchBox.addEventListener("input", debouncedUpdate);
         DOM.sortOrder.addEventListener("change", updateDisplay);
 
@@ -349,8 +344,7 @@
     const initWorker = () => {
         return new Promise((resolve, reject) => {
             if (!window.Worker) {
-                reject(new Error("Web Workers are not supported by this browser."));
-                return;
+                return reject(new Error("Web Workers are not supported by this browser."));
             }
             const worker = new Worker('./workers/filterWorker.js');
             worker.onmessage = e => renderCharacters(e.data, true);
@@ -382,10 +376,8 @@
             const userMessage = error.message.includes("Worker") 
                 ? "페이지의 핵심 기능을 불러오는 데 실패했습니다. 브라우저 호환성을 확인하거나, 페이지를 새로고침 해주세요."
                 : "캐릭터 정보를 불러올 수 없습니다. 네트워크 연결을 확인하거나, 페이지를 새로고침 해주세요.";
-            DOM.resultSummary.innerHTML = `<div style="color:var(--color-danger); text-align:center;"><p><strong>오류:</strong></p><p>${userMessage}</p></div>`;
-        } finally {
             setLoadingState(false);
-            updateScrollButtonsVisibility();
+            DOM.resultSummary.innerHTML = `<div style="color:var(--color-danger); text-align:center;"><p><strong>오류:</strong></p><p>${userMessage}</p></div>`;
         }
     };
     
