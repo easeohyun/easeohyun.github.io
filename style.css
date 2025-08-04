@@ -217,28 +217,29 @@ footer div { margin-top: 1rem; }
 .filter-item input[type="checkbox"]:checked + label::before {
     content: "check_box";
 }
+.filter-item input[type="checkbox"]:checked + label { color: var(--color-primary-deep); font-weight: 500; }
 
 #filter-turf input:checked + label::before { color: #38761d; content: 'grass'; }
 #filter-dirt input:checked + label::before { color: #744700; content: 'landslide'; }
 
-.icon-walk input:checked + label::before { content: 'directions_walk'; }
-.icon-run input:checked + label::before { content: 'directions_run'; }
-.icon-sprint input:checked + label::before { content: 'sprint'; }
-#filter-short input:checked + label::before, #filter-mile input:checked + label::before, #filter-medium input:checked + label::before, #filter-long input:checked + label::before,
-#filter-front input:checked + label::before, #filter-pace input:checked + label::before, #filter-late input:checked + label::before, #filter-end input:checked + label::before { color: #000; }
+.icon-walk input:checked + label::before { content: 'directions_walk'; color: #000000; }
+.icon-run input:checked + label::before { content: 'directions_run'; color: #000000; }
+.icon-sprint input:checked + label::before { content: 'sprint'; color: #000000; }
 html[data-theme="dark"] .icon-walk input:checked + label::before,
 html[data-theme="dark"] .icon-run input:checked + label::before,
-html[data-theme="dark"] .icon-sprint input:checked + label::before { color: #fff; }
+html[data-theme="dark"] .icon-sprint input:checked + label::before {
+    color: #ffffff;
+}
 
 #filter-speed input:checked + label::before { color: #2bb7f1; content: 'podiatry'; }
 #filter-stamina input:checked + label::before { color: #ff7c67; content: 'favorite'; }
-#filter-power.icon-humerus input:checked + label::before { content: 'humerus_alt'; }
-#filter-power.icon-ulna input:checked + label::before { content: 'ulna_radius_alt'; }
-#filter-power input:checked + label::before { color: #f39b17; }
+
+#filter-power.icon-humerus input:checked + label::before { content: 'humerus_alt'; color: #f39b17; }
+#filter-power.icon-ulna input:checked + label::before { content: 'ulna_radius_alt'; color: #f39b17; }
+
 #filter-guts input:checked + label::before { color: #ff6fac; content: 'mode_heat'; }
 #filter-wit input:checked + label::before { color: #22bf7d; content: 'school'; }
 
-.filter-item input[type="checkbox"]:checked + label { color: var(--color-primary-deep); font-weight: 500; }
 .filter-item-interactive { height: 32px; border: 1px solid var(--color-border-hover); border-radius: var(--radius-md); background-color: var(--color-surface-2); color: var(--color-text-primary); padding: 0 0.5rem; transition: border-color var(--transition-fast), box-shadow var(--transition-fast); }
 .filter-item input[type="checkbox"]:checked ~ .filter-item-interactive { border-color: var(--color-primary); box-shadow: var(--shadow-focus); }
 input[type="number"].filter-item-interactive { width: 60px; }
