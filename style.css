@@ -148,6 +148,7 @@ footer {
     border-top: 1px solid var(--color-border);
 }
 footer p { margin: var(--spacing-sm, 8px) 0; }
+footer div { margin-top: 1rem; }
 
 .button {
     display: inline-flex;
@@ -200,6 +201,7 @@ footer p { margin: var(--spacing-sm, 8px) 0; }
     direction: ltr;
     -webkit-font-feature-settings: 'liga';
     -webkit-font-smoothing: antialiased;
+    font-variation-settings: 'FILL' 1;
     content: "check_box_outline_blank";
     position: absolute;
     left: 0;
@@ -218,25 +220,23 @@ footer p { margin: var(--spacing-sm, 8px) 0; }
 
 #filter-turf input:checked + label::before { color: #38761d; content: 'grass'; }
 #filter-dirt input:checked + label::before { color: #744700; content: 'landslide'; }
-#filter-short input:checked + label::before, #filter-mile input:checked + label::before, #filter-medium input:checked + label::before, #filter-long input:checked + label::before { color: #000; content: 'sprint'; }
-#filter-front input:checked + label::before, #filter-pace input:checked + label::before, #filter-late input:checked + label::before, #filter-end input:checked + label::before { color: #000; content: 'directions_run'; }
+
+.icon-walk input:checked + label::before { content: 'directions_walk'; }
+.icon-run input:checked + label::before { content: 'directions_run'; }
+.icon-sprint input:checked + label::before { content: 'sprint'; }
+#filter-short input:checked + label::before, #filter-mile input:checked + label::before, #filter-medium input:checked + label::before, #filter-long input:checked + label::before,
+#filter-front input:checked + label::before, #filter-pace input:checked + label::before, #filter-late input:checked + label::before, #filter-end input:checked + label::before { color: #000; }
+html[data-theme="dark"] .icon-walk input:checked + label::before,
+html[data-theme="dark"] .icon-run input:checked + label::before,
+html[data-theme="dark"] .icon-sprint input:checked + label::before { color: #fff; }
+
 #filter-speed input:checked + label::before { color: #2bb7f1; content: 'podiatry'; }
 #filter-stamina input:checked + label::before { color: #ff7c67; content: 'favorite'; }
-#filter-power input:checked + label::before { color: #f39b17; content: 'humerus_alt'; }
+#filter-power.icon-humerus input:checked + label::before { content: 'humerus_alt'; }
+#filter-power.icon-ulna input:checked + label::before { content: 'ulna_radius_alt'; }
+#filter-power input:checked + label::before { color: #f39b17; }
 #filter-guts input:checked + label::before { color: #ff6fac; content: 'mode_heat'; }
 #filter-wit input:checked + label::before { color: #22bf7d; content: 'school'; }
-
-html[data-theme="dark"] #filter-short input:checked + label::before,
-html[data-theme="dark"] #filter-mile input:checked + label::before,
-html[data-theme="dark"] #filter-medium input:checked + label::before,
-html[data-theme="dark"] #filter-long input:checked + label::before,
-html[data-theme="dark"] #filter-front input:checked + label::before,
-html[data-theme="dark"] #filter-pace input:checked + label::before,
-html[data-theme="dark"] #filter-late input:checked + label::before,
-html[data-theme="dark"] #filter-end input:checked + label::before {
-    color: #fff;
-}
-
 
 .filter-item input[type="checkbox"]:checked + label { color: var(--color-primary-deep); font-weight: 500; }
 .filter-item-interactive { height: 32px; border: 1px solid var(--color-border-hover); border-radius: var(--radius-md); background-color: var(--color-surface-2); color: var(--color-text-primary); padding: 0 0.5rem; transition: border-color var(--transition-fast), box-shadow var(--transition-fast); }
@@ -364,7 +364,6 @@ html[data-theme="dark"] .skeleton .skeleton-text { background-color: hsl(var(--c
 #toggle-skills-btn:hover > .material-symbols-outlined {
     transform: rotate(-180deg);
 }
-
 
 .modal-container { position: fixed; inset: 0; z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 1rem; opacity: 0; visibility: hidden; transition: opacity var(--transition-normal), visibility var(--transition-normal); }
 .modal-container.active { opacity: 1; visibility: visible; }
