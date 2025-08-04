@@ -3,6 +3,7 @@
 <head>
 <meta charset=UTF-8 />
 <meta name=viewport content="width=device-width, initial-scale=1.0" />
+<meta name=theme-color content=#3498db /> <link rel=preconnect href=https://fonts.gstatic.com crossorigin />
 <title>우마무스메 프리티 더비 캐릭터 교집합 검색기</title>
 <meta name=description content="우마무스메 프리티 더비의 캐릭터를 경기장, 거리, 각질, 성장률 등 다양한 조건으로 필터링하고 검색하여 원하는 캐릭터를 쉽게 찾아보세요." />
 <meta name=keywords content="우마무스메, 프리티 더비, 캐릭터, 검색, 필터, 교집합" />
@@ -219,10 +220,10 @@
 </section>
 </main>
 <div class=scroll-buttons>
-<button id=scroll-top title="맨 위로 (,)"><span class=material-symbols-outlined>keyboard_arrow_up</span></button>
-<button id=toggle-skills-btn title="모든 스킬 펼치기 ([)"><span class=material-symbols-outlined>unfold_more</span></button>
-<button id=dark-mode-toggle title="다크 모드 전환 (])"><span class=material-symbols-outlined>dark_mode</span></button>
-<button id=scroll-bottom title="맨 아래로 (.)"><span class=material-symbols-outlined>keyboard_arrow_down</span></button>
+        <button id=scroll-top title="맨 위로 (W)" aria-label="맨 위로 스크롤"><span class=material-symbols-outlined>keyboard_arrow_up</span></button>
+        <button id=toggle-skills-btn title="모든 스킬 펼치기 (E)" aria-label="모든 스킬 정보 펼치기/접기"><span class=material-symbols-outlined>unfold_more</span></button>
+        <button id=dark-mode-toggle title="어두운 테마로 전환 (F)" aria-label="다크/라이트 모드 전환"><span class=material-symbols-outlined>dark_mode</span></button>
+        <button id=scroll-bottom title="맨 아래로 (S)" aria-label="맨 아래로 스크롤"><span class=material-symbols-outlined>keyboard_arrow_down</span></button>
 </div>
 <template id=character-card-template>
 <div class=character-card>
@@ -336,6 +337,7 @@ All rights reserved. 이 페이지를 만든 저는, 저작권에 의해 소유�
 <script type=module src=script.js defer></script>
 </body>
 </html>
+
 
 
 
