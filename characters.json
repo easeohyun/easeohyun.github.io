@@ -787,9 +787,9 @@
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "F", "Mile": "D", "Medium": "A", "Long": "A" },
     "StrategyAptitude": { "Front": "A", "Pace": "A", "Late": "G", "End": "G" },
-    "StatBonuses": { "Speed": 10, "Power": 10, "Guts": 0, "Wit": 10 },
+    "StatBonuses": { "Speed": 10, "Stamina": 0, "Power": 0, "Guts": 20, "Wit": 0 },
     "skills": { "rainbow": ["맑고 상서로운 춤, 복을 부르는 소리"], "pink": ["탈출술", "위험 회피"], "yellow": ["탈출술", "빠른 걸음"], "white": ["선수 필승", "터다지기", "앞장서기", "전도유망", "중거리 직선○"] },
-    "tags": ["새해", "신년", "뉴키타"]
+    "tags": ["새해", "신년", "떡타산"]
    },
    {
     "id": 106803, "name": "키타산 블랙", "nickname": "결원의 마지막 꽃", "color": "#364147",
@@ -828,6 +828,7 @@
     "tags": ["프로젝트L'Arc", "개선문상"]
   }
 ]
+
 
 
 
