@@ -21,7 +21,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://easeohyun.github.io">
     <meta property="article:published_time" content="2025-07-27T00:00:00+09:00">
-    <meta property="article:modified_time" content="2025-08-03T12:00:00+09:00">
+    <meta property="article:modified_time" content="2025-08-05T12:00:00+09:00">
 
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" href="./characters.json" as="fetch" crossorigin="anonymous">
@@ -56,14 +56,14 @@
                 <fieldset>
                     <legend><strong>[ 경기장 적성 ]</strong></legend>
                     <div class="filter-group">
-                        <div class="filter-item">
+                        <div class="filter-item" id="filter-turf">
                             <input type="checkbox" id="Turf" name="Turf">
                             <label for="Turf">잔디</label>
                             <select name="Turf-grade" class="filter-item-interactive">
                                 <option value="A">A</option><option value="B" selected>B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option>
                             </select>
                         </div>
-                        <div class="filter-item">
+                        <div class="filter-item" id="filter-dirt">
                             <input type="checkbox" id="Dirt" name="Dirt">
                             <label for="Dirt">더트</label>
                             <select name="Dirt-grade" class="filter-item-interactive">
@@ -75,25 +75,25 @@
                 <fieldset>
                     <legend><strong>[ 거리 적성 ]</strong></legend>
                     <div class="filter-group">
-                        <div class="filter-item">
+                        <div class="filter-item" id="filter-short">
                             <input type="checkbox" id="Short" name="Short"><label for="Short">단거리</label>
                             <select name="Short-grade" class="filter-item-interactive">
                                 <option value="A">A</option><option value="B" selected>B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option>
                             </select>
                         </div>
-                        <div class="filter-item">
+                        <div class="filter-item" id="filter-mile">
                             <input type="checkbox" id="Mile" name="Mile"><label for="Mile">마일</label>
                             <select name="Mile-grade" class="filter-item-interactive">
                                 <option value="A">A</option><option value="B" selected>B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option>
                             </select>
                         </div>
-                        <div class="filter-item">
+                        <div class="filter-item" id="filter-medium">
                             <input type="checkbox" id="Medium" name="Medium"><label for="Medium">중거리</label>
                             <select name="Medium-grade" class="filter-item-interactive">
                                 <option value="A">A</option><option value="B" selected>B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option>
                             </select>
                         </div>
-                        <div class="filter-item">
+                        <div class="filter-item" id="filter-long">
                             <input type="checkbox" id="Long" name="Long"><label for="Long">장거리</label>
                             <select name="Long-grade" class="filter-item-interactive">
                                 <option value="A">A</option><option value="B" selected>B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option>
@@ -104,25 +104,25 @@
                 <fieldset>
                     <legend><strong>[ 각질 적성 ]</strong></legend>
                     <div class="filter-group">
-                        <div class="filter-item">
+                        <div class="filter-item" id="filter-front">
                             <input type="checkbox" id="Front" name="Front"><label for="Front">도주</label>
                             <select name="Front-grade" class="filter-item-interactive">
                                 <option value="A">A</option><option value="B" selected>B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option>
                             </select>
                         </div>
-                        <div class="filter-item">
+                        <div class="filter-item" id="filter-pace">
                             <input type="checkbox" id="Pace" name="Pace"><label for="Pace">선행</label>
                             <select name="Pace-grade" class="filter-item-interactive">
                                 <option value="A">A</option><option value="B" selected>B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option>
                             </select>
                         </div>
-                        <div class="filter-item">
+                        <div class="filter-item" id="filter-late">
                             <input type="checkbox" id="Late" name="Late"><label for="Late">선입</label>
                             <select name="Late-grade" class="filter-item-interactive">
                                 <option value="A">A</option><option value="B" selected>B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option>
                             </select>
                         </div>
-                        <div class="filter-item">
+                        <div class="filter-item" id="filter-end">
                             <input type="checkbox" id="End" name="End"><label for="End">추입</label>
                             <select name="End-grade" class="filter-item-interactive">
                                 <option value="A">A</option><option value="B" selected>B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option>
@@ -133,11 +133,11 @@
                 <fieldset>
                     <legend><strong>[ 성장률 ]</strong></legend>
                     <div class="filter-group">
-                        <div class="filter-item"><input type="checkbox" id="Speed" name="Speed"><label for="Speed">스피드</label><input type="number" name="Speed-value" value="7" min="0" max="30" step="1"> %</div>
-                        <div class="filter-item"><input type="checkbox" id="Stamina" name="Stamina"><label for="Stamina">스태미나</label><input type="number" name="Stamina-value" value="7" min="0" max="30" step="1"> %</div>
-                        <div class="filter-item"><input type="checkbox" id="Power" name="Power"><label for="Power">파워</label><input type="number" name="Power-value" value="7" min="0" max="30" step="1"> %</div>
-                        <div class="filter-item"><input type="checkbox" id="Guts" name="Guts"><label for="Guts">근성</label><input type="number" name="Guts-value" value="7" min="0" max="30" step="1"> %</div>
-                        <div class="filter-item"><input type="checkbox" id="Wit" name="Wit"><label for="Wit">지능</label><input type="number" name="Wit-value" value="7" min="0" max="30" step="1"> %</div>
+                        <div class="filter-item" id="filter-speed"><input type="checkbox" id="Speed" name="Speed"><label for="Speed">스피드</label><input type="number" name="Speed-value" value="7" min="0" max="30" step="1"> %</div>
+                        <div class="filter-item" id="filter-stamina"><input type="checkbox" id="Stamina" name="Stamina"><label for="Stamina">스태미나</label><input type="number" name="Stamina-value" value="7" min="0" max="30" step="1"> %</div>
+                        <div class="filter-item" id="filter-power"><input type="checkbox" id="Power" name="Power"><label for="Power">파워</label><input type="number" name="Power-value" value="7" min="0" max="30" step="1"> %</div>
+                        <div class="filter-item" id="filter-guts"><input type="checkbox" id="Guts" name="Guts"><label for="Guts">근성</label><input type="number" name="Guts-value" value="7" min="0" max="30" step="1"> %</div>
+                        <div class="filter-item" id="filter-wit"><input type="checkbox" id="Wit" name="Wit"><label for="Wit">지능</label><input type="number" name="Wit-value" value="7" min="0" max="30" step="1"> %</div>
                     </div>
                 </fieldset>
             </form>
@@ -165,7 +165,7 @@
             <div id="no-results" style="display:none">
                 <div class="no-results-icon">이런...</div>
                 <p>당신이 찾던 그 우마무스메는, </p><p>아직 입학하지 않았어요...</p>
-                <button id="no-results-reset">학생 명부 다시 찾기</button>
+                <button id="no-results-reset" class="button">학생 명부 다시 찾기</button>
             </div>
             <div id="character-list"></div>
         </section>
@@ -253,8 +253,6 @@
             </main>
         </div>
     </div>
-    <script type="module" src="script.js" defer></script>
+    <script type="module" src="script.js"></script>
 </body>
 </html>
-
-
