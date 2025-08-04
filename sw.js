@@ -37,22 +37,25 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  if (event.request.url.includes('characters.json')) {
+  const { request } = event;
+  const url = new URL(request.url);
+  if (url.pathname.endsWith('/characters.json')) {
     event.respondWith(
-      caches.open(CURRENT_CACHE_NAME).then((cache) => { 
-        return cache.match(event.request).then((cachedResponse) => {
-          const fetchedResponsePromise = fetch(event.request).then((networkResponse) => {
-            cache.put(event.request, networkResponse.clone());
+      caches.open(CURRENT_CACHE_NAME).then(cache => {
+        return cache.match(request).then(cachedResponse => {
+          const fetchPromise = fetch(request).then(networkResponse => {
+            cache.put(request, networkResponse.clone());
             return networkResponse;
           });
-          return cachedResponse || fetchedResponsePromise;
+          return cachedResponse || fetchPromise;
         });
       })
     );
-  } else {
+  } 
+  else if (ASSETS_TO_CACHE.some(asset => url.pathname.endsWith(asset))) {
     event.respondWith(
-      caches.match(event.request).then((response) => {
-        return response || fetch(event.request);
+      caches.match(request).then(response => {
+        return response || fetch(request);
       })
     );
   }
