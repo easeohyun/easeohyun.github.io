@@ -1,4 +1,5 @@
-const CACHE_NAME = 'umamusume-filter-cache-v1';
+const CACHE_VERSION = 2; 
+const CURRENT_CACHE_NAME = `umamusume-filter-cache-v${CACHE_VERSION}`;
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -12,7 +13,7 @@ const ASSETS_TO_CACHE = [
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
+    caches.open(CURRENT_CACHE_NAME)
     .then((cache) => {
       console.log('Opened cache');
       return cache.addAll(ASSETS_TO_CACHE);
@@ -20,10 +21,25 @@ self.addEventListener('install', (event) => {
   );
 });
 
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cacheName) => {
+          if (cacheName !== CURRENT_CACHE_NAME) {
+            console.log('Deleting old cache:', cacheName);
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
+  );
+});
+
 self.addEventListener('fetch', (event) => {
   if (event.request.url.includes('characters.json')) {
     event.respondWith(
-      caches.open(CACHE_NAME).then((cache) => {
+      caches.open(CURRENT_CACHE_NAME).then((cache) => { 
         return cache.match(event.request).then((cachedResponse) => {
           const fetchedResponsePromise = fetch(event.request).then((networkResponse) => {
             cache.put(event.request, networkResponse.clone());
