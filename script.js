@@ -116,12 +116,6 @@
             if (row) skillContainer.appendChild(row);
         }
         
-        const skillDetails = card.querySelector('.skill-details');
-        const skillSummary = card.querySelector('.skill-summary');
-        skillDetails.addEventListener('toggle', () => {
-             skillSummary.setAttribute('aria-expanded', skillDetails.open);
-        });
-
         return card;
     };
     
@@ -153,9 +147,18 @@
 
         characterList.style.display = "";
         noResultsContainer.style.display = "none";
-        resultSummary.textContent = hasActiveFilters
-            ? `총 ${count}명의 우마무스메를 찾았습니다.`
-            : `트레센 학원에 어서오세요, ${state.allCharacters.length}명의 우마무스메를 만날 수 있답니다!`;
+        
+        let summaryText;
+        if (!hasActiveFilters) {
+            summaryText = `트레센 학원에 어서오세요, ${state.allCharacters.length}명의 우마무스메를 만날 수 있답니다!`;
+        } else {
+            if (count === 1) summaryText = "당신이 찾던 그 우마무스메가... 딱 1명 있네요! 찾았어요!";
+            else if (count > 1 && count <= 5) summaryText = `당신이 찾던 그 우마무스메가... ${count}명 있어요!`;
+            else if (count > 5 && count <= 15) summaryText = `당신이 찾는 그 우마무스메가... ${count}명 중에 있을 것 같아요.`;
+            else if (count > 15 && count <= 50) summaryText = `당신이 찾는 그 우마무스메가... ${count}명 중에 있는 것 맞죠?`;
+            else summaryText = `당신이 찾는 그 우마무스메가... ${count}명 중에 있기를 바랍니다!`;
+        }
+        resultSummary.textContent = summaryText;
         
         state.observer = new IntersectionObserver((entries, obs) => {
             entries.forEach(entry => {
@@ -306,6 +309,27 @@
         }, { once: true });
     };
 
+    const setRandomizedIcons = () => {
+        const distanceAndStrategyIds = [
+            '#filter-short', '#filter-mile', '#filter-medium', '#filter-long',
+            '#filter-front', '#filter-pace', '#filter-late', '#filter-end'
+        ];
+
+        distanceAndStrategyIds.forEach(id => {
+            const el = document.querySelector(id);
+            if (!el) return;
+            const rand = Math.random();
+            if (rand < 0.05) el.classList.add('icon-walk');
+            else if (rand < 0.25) el.classList.add('icon-run');
+            else el.classList.add('icon-sprint');
+        });
+
+        const powerEl = document.querySelector('#filter-power');
+        if(powerEl) {
+             powerEl.classList.add(Math.random() < 0.5 ? 'icon-humerus' : 'icon-ulna');
+        }
+    };
+
     const setupEventListeners = () => {
         const debouncedUpdate = debounce(updateDisplay, DEBOUNCE_DELAY);
         
@@ -325,6 +349,16 @@
         DOM.openModalBtn.addEventListener("click", openModal);
         DOM.closeModalBtn.addEventListener("click", closeModal);
         DOM.modalOverlay.addEventListener("click", closeModal);
+        
+        DOM.characterList.addEventListener('toggle', (event) => {
+            if (event.target.classList.contains('skill-details')) {
+                const skillDetails = event.target;
+                const skillSummary = skillDetails.querySelector('.skill-summary');
+                if (skillSummary) {
+                    skillSummary.setAttribute('aria-expanded', skillDetails.open);
+                }
+            }
+        }, true);
         
         DOM.contactEmailLink.addEventListener("click", function(e) {
             e.preventDefault();
@@ -374,6 +408,7 @@
 
     const initializeApp = async () => {
         setupEventListeners();
+        setRandomizedIcons();
 
         const savedTheme = localStorage.getItem("theme");
         const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
