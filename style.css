@@ -150,6 +150,7 @@ footer p { margin: var(--spacing-sm, 8px) 0; }
     letter-spacing: normal; text-transform: none; display: inline-block;
     white-space: nowrap; word-wrap: normal; direction: ltr;
     font-variation-settings: 'FILL' 1;
+    -webkit-font-smoothing: antialiased;
     content: "check_box_outline_blank";
     position: absolute; left: 0; top: 50%;
     transform: translateY(-50%);
@@ -165,23 +166,23 @@ footer p { margin: var(--spacing-sm, 8px) 0; }
 #filter-guts input:checked + label::before { color: #ff6fac; content: 'mode_heat'; }
 #filter-wit input:checked + label::before { color: #22bf7d; content: 'school'; }
 
-#filter-short input:checked + label::before, #filter-mile input:checked + label::before,
-#filter-medium input:checked + label::before, #filter-long input:checked + label::before,
-#filter-front input:checked + label::before, #filter-pace input:checked + label::before,
-#filter-late input:checked + label::before, #filter-end input:checked + label::before,
-#filter-power input:checked + label::before { color: #000000; }
+#filter-short input:checked + label, #filter-mile input:checked + label,
+#filter-medium input:checked + label, #filter-long input:checked + label,
+#filter-front input:checked + label, #filter-pace input:checked + label,
+#filter-late input:checked + label, #filter-end input:checked + label,
+#filter-power input:checked + label { color: #000000; }
 
-html[data-theme="dark"] #filter-short input:checked + label::before,
-html[data-theme="dark"] #filter-mile input:checked + label::before,
-html[data-theme="dark"] #filter-medium input:checked + label::before,
-html[data-theme="dark"] #filter-long input:checked + label::before,
-html[data-theme="dark"] #filter-front input:checked + label::before,
-html[data-theme="dark"] #filter-pace input:checked + label::before,
-html[data-theme="dark"] #filter-late input:checked + label::before,
-html[data-theme="dark"] #filter-end input:checked + label::before,
-html[data-theme="dark"] #filter-power input:checked + label::before { color: #ffffff; }
+html[data-theme="dark"] #filter-short input:checked + label,
+html[data-theme="dark"] #filter-mile input:checked + label,
+html[data-theme="dark"] #filter-medium input:checked + label,
+html[data-theme="dark"] #filter-long input:checked + label,
+html[data-theme="dark"] #filter-front input:checked + label,
+html[data-theme="dark"] #filter-pace input:checked + label,
+html[data-theme="dark"] #filter-late input:checked + label,
+html[data-theme="dark"] #filter-end input:checked + label,
+html[data-theme="dark"] #filter-power input:checked + label { color: #ffffff; }
 
-#filter-power input:checked + label::before { color: #f39b17; }
+#filter-power input:checked + label { color: #f39b17; }
 .filter-item input[type="checkbox"]:checked + label { color: var(--color-primary-deep); font-weight: 500; }
 .filter-item-interactive { height: 32px; border: 1px solid var(--color-border-hover); border-radius: var(--radius-md); background-color: var(--color-surface-2); color: var(--color-text-primary); padding: 0 0.5rem; transition: border-color var(--transition-fast), box-shadow var(--transition-fast); }
 .filter-item input[type="checkbox"]:checked ~ .filter-item-interactive { border-color: var(--color-primary); box-shadow: var(--shadow-focus); }
