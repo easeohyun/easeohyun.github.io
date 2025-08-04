@@ -329,13 +329,13 @@
         DOM.contactEmailLink.addEventListener("click", function(e) {
             e.preventDefault();
             if (this.dataset.revealed !== "true") {
-                const user = "easeohyun";
-                const domain = "google.com";
-                this.href = `mailto:${user}@${domain}`;
-                this.textContent = `${user}@${domain}`;
+                const encoded = "ZWFzZW9oeXVuQGdvb2dsZS5jb20="; 
+                const decoded = atob(encoded);
+                this.href = `mailto:${decoded}`;
+                this.textContent = decoded;
                 this.dataset.revealed = "true";
-                window.location.href = this.href;
             }
+            window.location.href = this.href;
         });
 
         document.addEventListener("keydown", handleKeyboardShortcuts);
