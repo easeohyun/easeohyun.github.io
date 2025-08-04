@@ -36,7 +36,7 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-sself.addEventListener('fetch', (event) => {
+self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
   if (url.pathname.endsWith('/characters.json')) {
@@ -60,3 +60,4 @@ sself.addEventListener('fetch', (event) => {
     );
   }
 });
+
