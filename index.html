@@ -133,11 +133,11 @@
                 <fieldset>
                     <legend><strong>[ 성장률 ]</strong></legend>
                     <div class="filter-group">
-                        <div class="filter-item" id="filter-speed"><input type="checkbox" id="Speed" name="Speed"><label for="Speed">스피드</label><input type="number" name="Speed-value" value="7" min="0" max="30" step="1"> %</div>
-                        <div class="filter-item" id="filter-stamina"><input type="checkbox" id="Stamina" name="Stamina"><label for="Stamina">스태미나</label><input type="number" name="Stamina-value" value="7" min="0" max="30" step="1"> %</div>
-                        <div class="filter-item" id="filter-power"><input type="checkbox" id="Power" name="Power"><label for="Power">파워</label><input type="number" name="Power-value" value="7" min="0" max="30" step="1"> %</div>
-                        <div class="filter-item" id="filter-guts"><input type="checkbox" id="Guts" name="Guts"><label for="Guts">근성</label><input type="number" name="Guts-value" value="7" min="0" max="30" step="1"> %</div>
-                        <div class="filter-item" id="filter-wit"><input type="checkbox" id="Wit" name="Wit"><label for="Wit">지능</label><input type="number" name="Wit-value" value="7" min="0" max="30" step="1"> %</div>
+                        <div class="filter-item" id="filter-speed"><input type="checkbox" id="Speed" name="Speed"><label for="Speed">스피드</label><input type="number" name="Speed-value" value="7" min="0" max="30" step="1" class="filter-item-interactive"> %</div>
+                        <div class="filter-item" id="filter-stamina"><input type="checkbox" id="Stamina" name="Stamina"><label for="Stamina">스태미나</label><input type="number" name="Stamina-value" value="7" min="0" max="30" step="1" class="filter-item-interactive"> %</div>
+                        <div class="filter-item" id="filter-power"><input type="checkbox" id="Power" name="Power"><label for="Power">파워</label><input type="number" name="Power-value" value="7" min="0" max="30" step="1" class="filter-item-interactive"> %</div>
+                        <div class="filter-item" id="filter-guts"><input type="checkbox" id="Guts" name="Guts"><label for="Guts">근성</label><input type="number" name="Guts-value" value="7" min="0" max="30" step="1" class="filter-item-interactive"> %</div>
+                        <div class="filter-item" id="filter-wit"><input type="checkbox" id="Wit" name="Wit"><label for="Wit">지능</label><input type="number" name="Wit-value" value="7" min="0" max="30" step="1" class="filter-item-interactive"> %</div>
                     </div>
                 </fieldset>
             </form>
@@ -211,7 +211,7 @@
         <p>
             모든 데이터 및 저작권은 원 개발사인 <a href="https://umamusume.jp" title="umamusume project, Cygames" target="_blank" rel="noopener noreferrer">Cygames</a>와 국내 서비스사인
             <a href="https://umamusume.kakaogames.com" title="누구보다 빠르게 달리고 싶어 우마무스메 프리티 더비, 카카오게임즈" target="_blank" rel="noopener noreferrer">Kakao Games</a>에 있어요. ⓒ Cygames, Inc. ⓒ Kakao Games Corp.
-            All rights reserved. 이 페이지를 만든 저는, 저작권에 의해 소유권을 주장할 수 없어요!
+            All rights reserved.
         </p>
         <p>
             <a href="https://gametora.com/umamusume" title="Uma Musume on GameTora" target="_blank" rel="noopener noreferrer">GameTora</a>,
@@ -223,7 +223,7 @@
         </p>
         <p>다른 동료 트레이너에게 도움을 주고 싶어서 만든 이 페이지는 Google의 LLM AI, 'Gemini'와 Microsoft의 LLM AI, 'Copilot'에게 HTML과 JavaScript에 대해 물어보고 만들었어요!</p>
         <p>Github를 통해 호스팅하고 있으며, 저는 방문자의 정보를 수집하지 않아요. 그리고 구글 크롬(Google Chrome)에서 최적화가 제일 잘 되어 있어요!</p>
-        <p><button id="open-modal-btn" class="modal-trigger-button">[ 알려드릴 내용이 있어요! ]</button></p>
+        <div><button id="open-modal-btn" class="modal-trigger-button">[ 알려드릴 내용이 있어요! ]</button></div>
     </footer>
     <div id="contact-modal" class="modal-container" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
         <div class="modal-overlay"></div>
