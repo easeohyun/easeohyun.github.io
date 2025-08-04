@@ -1,105 +1,111 @@
-const GRADE_MAP = {
-  S: 8,
-  A: 7,
-  B: 6,
-  C: 5,
-  D: 4,
-  E: 3,
-  F: 2,
-  G: 1
-};
+const GRADE_MAP = { S: 8, A: 7, B: 6, C: 5, D: 4, E: 3, F: 2, G: 1 };
 const CHO_SUNG = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ";
-
-function smartIncludes(target, term) {
-  const targetStr = String(target || "").toLowerCase();
-  const termStr = String(term || "").toLowerCase();
-  if (!termStr) return true;
-
-  const sanitize = (str) => str.replace(/[\s\-!@#$%^&*()_+={}\[\]:;"'<>,.?\/\\|`~♪☆・！？—ﾟ∀]/g, "");
-  const sanitizedTerm = sanitize(termStr);
-  const sanitizedTarget = sanitize(targetStr);
-
-  if (!sanitizedTerm) return true;
-  if (sanitizedTarget.includes(sanitizedTerm)) return true;
-
-  const isTermAllChosung = [...sanitizedTerm].every((char) => CHO_SUNG.includes(char));
-
-  if (isTermAllChosung) {
-    const getChosung = (char) => {
-      const code = char.charCodeAt(0) - 44032;
-      return code >= 0 && code <= 11171 ? CHO_SUNG[Math.floor(code / 588)] : char;
-    };
-    const targetChosung = [...sanitizedTarget].map(getChosung).join("");
-    if (targetChosung.includes(sanitizedTerm)) return true;
-  }
-  return false;
-}
+const SANITIZE_REGEX = /[\s\-!@#$%^&*()_+={}\[\]:;"'<>,.?\/\\|`~♪☆・！？—ﾟ∀]/g;
 
 let allCharacters = [];
 
-onmessage = function (e) {
-  const {
-    type,
-    payload
-  } = e.data;
+const getChosung = (char) => {
+    const code = char.charCodeAt(0) - 44032;
+    if (code < 0 || code > 11171) return char;
+    return CHO_SUNG[Math.floor(code / 588)];
+};
 
-  if (type === 'init') {
-    allCharacters = payload.characters;
-    return;
-  }
+const smartIncludes = (target, term, targetChosung) => {
+    if (!term) return true;
+    const sanitizedTerm = term.toLowerCase().replace(SANITIZE_REGEX, "");
+    if (!sanitizedTerm) return true;
+    
+    if (target.includes(sanitizedTerm)) return true;
 
-  if (type === 'filter') {
-    const {
-      activeFilters,
-      searchTerms,
-      sortBy
-    } = payload;
-    const {
-      inclusionTerms,
-      exclusionTerms
-    } = searchTerms;
+    const isTermAllChosung = [...sanitizedTerm].every(char => CHO_SUNG.includes(char));
+    if (isTermAllChosung && targetChosung.includes(sanitizedTerm)) {
+        return true;
+    }
+    
+    return false;
+};
 
-    const filteredCharacters = allCharacters.filter((character) => {
-      const passesFilters = activeFilters.every((filter) => {
+const preProcessCharacters = (characters) => {
+    return characters.map(character => {
+        const searchCorpus = [
+            character.id,
+            character.name,
+            character.nickname,
+            ...Object.values(character.skills).flat(),
+            ...(character.tags || [])
+        ].filter(Boolean).join(' ').toLowerCase().replace(SANITIZE_REGEX, "");
+        
+        const chosungCorpus = [...searchCorpus].map(getChosung).join("");
+
+        return {
+            ...character,
+            _searchCorpus: searchCorpus,
+            _chosungCorpus: chosungCorpus
+        };
+    });
+};
+
+const filterCharacter = (character, { activeFilters, searchTerms }) => {
+    for (const filter of activeFilters) {
+        let passes = false;
         for (const sectionName in character) {
-          if (character[sectionName] && typeof character[sectionName] === 'object' && character[sectionName][filter.key] !== undefined) {
-            return filter.type === "value" ? character[sectionName][filter.key] >= filter.value : GRADE_MAP[character[sectionName][filter.key]] >= filter.value;
-          }
+            if (character[sectionName] && typeof character[sectionName] === 'object' && character[sectionName][filter.key] !== undefined) {
+                const value = character[sectionName][filter.key];
+                const check = filter.type === "value" ? value >= filter.value : GRADE_MAP[value] >= filter.value;
+                if (check) {
+                    passes = true;
+                    break;
+                }
+            }
         }
-        return false;
-      });
-      if (!passesFilters) return false;
+        if (!passes) return false;
+    }
 
-      if (searchTerms.inclusionTerms.length > 0 || searchTerms.exclusionTerms.length > 0) {
-        const allSkills = Object.values(character.skills).flat().filter(Boolean);
-        const searchTargets = [String(character.id), character.name, character.nickname, ...allSkills, ...character.tags];
+    const { inclusionTerms, exclusionTerms } = searchTerms;
 
-        const passesInclusion = inclusionTerms.every((term) => searchTargets.some((target) => smartIncludes(target, term)));
-        if (!passesInclusion) return false;
+    if (inclusionTerms.length > 0) {
+        if (!inclusionTerms.every(term => smartIncludes(character._searchCorpus, term, character._chosungCorpus))) {
+            return false;
+        }
+    }
+    
+    if (exclusionTerms.length > 0) {
+        if (exclusionTerms.some(term => smartIncludes(character._searchCorpus, term, character._chosungCorpus))) {
+            return false;
+        }
+    }
 
-        const passesExclusion = !exclusionTerms.some((term) => searchTargets.some((target) => smartIncludes(target, term)));
-        if (!passesExclusion) return false;
-      }
+    return true;
+};
 
-      return true;
+const sortCharacters = (characters, sortBy) => {
+    characters.sort((a, b) => {
+        switch (sortBy) {
+            case "name-asc":
+                return a.name.localeCompare(b.name, "ko") || a.id - b.id;
+            case "name-desc":
+                return b.name.localeCompare(a.name, "ko") || a.id - b.id;
+            case "id-asc":
+                return a.id - b.id;
+            case "id-desc":
+                return b.id - a.id;
+            default:
+                return 0;
+        }
     });
+};
 
-    filteredCharacters.sort((a, b) => {
-      switch (sortBy) {
-        case "name-asc":
-          return a.name.localeCompare(b.name, "ko") || a.id - b.id;
-        case "name-desc":
-          return b.name.localeCompare(a.name, "ko") || a.id - b.id;
-        case "id-asc":
-          return a.id - b.id;
-        case "id-desc":
-          return b.id - a.id;
-        default:
-          return 0;
-      }
-    });
+onmessage = function (e) {
+    const { type, payload } = e.data;
 
-    postMessage(filteredCharacters);
-  }
+    if (type === 'init') {
+        allCharacters = preProcessCharacters(payload.characters);
+        return;
+    }
 
+    if (type === 'filter') {
+        const filtered = allCharacters.filter(char => filterCharacter(char, payload));
+        sortCharacters(filtered, payload.sortBy);
+        postMessage(filtered);
+    }
 };
