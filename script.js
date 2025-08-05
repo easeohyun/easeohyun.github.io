@@ -416,6 +416,31 @@
         document.addEventListener("keydown", handleKeyboardShortcuts);
         window.addEventListener("scroll", debounce(updateScrollButtonsVisibility, 150));
         window.addEventListener("resize", debounce(updateScrollButtonsVisibility, 150));
+        
+        DOM.filterForm.addEventListener("click", e => {
+            if (!e.target.classList.contains("spinner-btn")) return;
+            
+            const wrapper = e.target.closest(".number-input-wrapper");
+            if (!wrapper) return;
+
+            const input = wrapper.querySelector('input[type="number"]');
+            if (!input) return;
+
+            e.preventDefault();
+            const step = parseFloat(input.step) || 1;
+            let value = parseFloat(input.value) || 0;
+
+            if (e.target.classList.contains("up")) {
+                value = Math.min(parseFloat(input.max) || 30, value + step);
+            } else if (e.target.classList.contains("down")) {
+                value = Math.max(parseFloat(input.min) || 0, value - step);
+            }
+            
+            input.value = value;
+            
+            const inputEvent = new Event('input', { bubbles: true, cancelable: true });
+            input.dispatchEvent(inputEvent);
+        });
     };
 
     const initWorker = () => {
