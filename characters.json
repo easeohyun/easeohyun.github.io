@@ -68,7 +68,7 @@
     "DistanceAptitude": { "Short": "F", "Mile": "E", "Medium": "A", "Long": "A" }, 
     "StrategyAptitude": { "Front": "D", "Pace": "A", "Late": "C", "End": "E" },
     "StatBonuses": { "Speed": 10, "Stamina": 10, "Power": 0, "Guts": 0, "Wit": 10 },
-    "skills": { "rainbow": ["가무환락이여, 아아 즐겁도다"], "pink": ["천부적인 움직임", "반락유희"], "yellow": ["치열한 승부", "여유만만"], "white": ["정면 승부", "스태미나 킵", "진가 발휘", "꼬리 올기기", "선행 직선○"] },
+    "skills": { "rainbow": ["가무환락이여, 아아 즐겁도다"], "pink": ["천부적인 움직임", "반락유희"], "yellow": ["치열한 승부", "여유만만"], "white": ["정면 승부", "스태미나 킵", "진가 발휘", "꼬리 올리기", "선행 직선○"] },
     "tags": ["축제", "무녀", "음이오", "한적한가을엮이는추억", "Tokai Teio", "トウカイテイオー"]  
   },
   {
@@ -828,6 +828,7 @@
     "tags": ["프로젝트L'Arc", "개선문상"]
   }
 ]
+
 
 
 
