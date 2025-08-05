@@ -43,36 +43,31 @@
         };
     };
 
-    const setRandomizedIcons = () => {
-        const setIcon = (selector, iconsWithProbs) => {
-            const element = document.querySelector(selector);
-            if (!element) return;
-
-            const rand = Math.random();
-            let cumulativeProb = 0;
-            for (const { icon, prob } of iconsWithProbs) {
-                cumulativeProb += prob;
-                if (rand < cumulativeProb) {
-                    element.style.setProperty('--icon-content', `'${icon}'`);
-                    break;
-                }
-            }
+    const setCheckboxIcons = () => {
+        const iconMap = {
+            'filter-turf': 'grass',
+            'filter-dirt': 'landslide',
+            'filter-speed': 'podiatry',
+            'filter-stamina': 'favorite',
+            'filter-power': 'humerus_alt',
+            'filter-guts': 'mode_heat',
+            'filter-wit': 'school',
+            'filter-short': 'sprint',
+            'filter-mile': 'sprint',
+            'filter-medium': 'sprint',
+            'filter-long': 'sprint',
+            'filter-front': 'directions_run',
+            'filter-pace': 'directions_run',
+            'filter-late': 'directions_run',
+            'filter-end': 'directions_run'
         };
 
-        const genericIcons = [
-            { icon: 'sprint', prob: 0.75 },
-            { icon: 'directions_run', prob: 0.20 },
-            { icon: 'directions_walk', prob: 0.05 }
-        ];
-        const powerIcons = [
-            { icon: 'humerus_alt', prob: 0.50 },
-            { icon: 'ulna_radius_alt', prob: 0.50 }
-        ];
-
-        ['#filter-short', '#filter-mile', '#filter-medium', '#filter-long', '#filter-front', '#filter-pace', '#filter-late', '#filter-end']
-            .forEach(id => setIcon(`${id} label`, genericIcons));
-        
-        setIcon('#filter-power label', powerIcons);
+        for (const [id, icon] of Object.entries(iconMap)) {
+            const element = document.querySelector(`#${id} label`);
+            if (element) {
+                element.style.setProperty('--icon-content', `'${icon}'`);
+            }
+        }
     };
 
     const createStatItem = (displayName, value, isBonus = false) => {
@@ -188,7 +183,7 @@
         characterList.innerHTML = "";
 
         const hasActiveFilters = isFiltered || DOM.searchBox.value.trim() !== "" || Array.from(DOM.filterForm.elements).some(el => el.type === "checkbox" && el.checked);
-
+        
         if (count === 0 && hasActiveFilters) {
             characterList.style.display = "none";
             noResultsContainer.style.display = "block";
@@ -196,11 +191,26 @@
             return;
         }
 
-        characterList.style.display = "";
+        characterList.style.display = "grid";
         noResultsContainer.style.display = "none";
-        resultSummary.textContent = hasActiveFilters
-            ? `총 ${count}명의 우마무스메를 찾았습니다.`
-            : `트레센 학원에 어서오세요, ${state.allCharacters.length}명의 우마무스메를 만날 수 있답니다!`;
+
+        let summaryText = "";
+        if (!hasActiveFilters) {
+            summaryText = `트레센 학원에 어서오세요, ${state.allCharacters.length}명의 우마무스메를 만날 수 있답니다!`;
+        } else {
+            if (count === 1) {
+                summaryText = "당신이 찾던 그 우마무스메가... 딱 1명 있네요! 찾았어요!";
+            } else if (count > 1 && count <= 5) {
+                summaryText = `당신이 찾던 그 우마무스메가... ${count}명 있어요!`;
+            } else if (count > 5 && count <= 15) {
+                summaryText = `당신이 찾는 그 우마무스메가... ${count}명 중에 있을 것 같아요.`;
+            } else if (count > 15 && count <= 50) {
+                summaryText = `당신이 찾는 그 우마무스메가... ${count}명 중에 있는 것 맞죠?`;
+            } else {
+                summaryText = `당신이 찾는 그 우마무스메가... ${count}명 중에 있기를 바랍니다!`;
+            }
+        }
+        resultSummary.textContent = summaryText;
         
         state.observer = new IntersectionObserver((entries, obs) => {
             entries.forEach(entry => {
@@ -263,7 +273,6 @@
     const resetAllFilters = () => {
         DOM.filterForm.reset();
         DOM.searchBox.value = "";
-        setRandomizedIcons();
         updateDisplay();
     };
     
@@ -399,8 +408,10 @@
         return new Promise((resolve, reject) => {
             const worker = new Worker('./workers/filterWorker.js');
             worker.onmessage = e => {
-                const filteredCharacters = e.data;
-                renderCharacters(filteredCharacters, true);
+                const { type, payload } = e.data;
+                if (type === 'filtered') {
+                    renderCharacters(payload, true);
+                }
             };
             worker.onerror = error => {
                 console.error(`Web Worker 오류: ${error.message}`, error);
@@ -426,7 +437,7 @@
 
     const initializeApp = async () => {
         setupEventListeners();
-        setRandomizedIcons();
+        setCheckboxIcons();
 
         const savedTheme = localStorage.getItem("theme");
         const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
