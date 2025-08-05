@@ -33,6 +33,7 @@
         observer: null,
         worker: null,
         isBulkToggling: false,
+        themeTransitionTimeout: null,
     };
 
     const debounce = (func, delay) => {
@@ -52,10 +53,10 @@
             'filter-power': 'humerus_alt',
             'filter-guts': 'mode_heat',
             'filter-wit': 'school',
-            'filter-short': 'sprint',
-            'filter-mile': 'sprint',
-            'filter-medium': 'sprint',
-            'filter-long': 'sprint',
+            'filter-short': 'directions_run',
+            'filter-mile': 'directions_run',
+            'filter-medium': 'directions_run',
+            'filter-long': 'directions_run',
             'filter-front': 'directions_run',
             'filter-pace': 'directions_run',
             'filter-late': 'directions_run',
@@ -246,7 +247,7 @@
         for (const el of DOM.filterForm.elements) {
             if (el.type === "checkbox" && el.checked) {
                 const key = el.name;
-                const isStatBonus = DOM.filterForm.querySelector(`input[name="${key}-value"]`);
+                const isStatBonus = el.id.match(/Speed|Stamina|Power|Guts|Wit/);
                 const filter = isStatBonus
                     ? { key, type: "value", value: parseInt(formData.get(`${key}-value`), 10) || 0 }
                     : { key, type: "grade", value: GRADE_MAP[formData.get(`${key}-grade`)] };
@@ -341,10 +342,16 @@
         const { html, darkModeToggleButton } = DOM;
         const icon = darkModeToggleButton.querySelector(".material-symbols-outlined");
         
+        clearTimeout(state.themeTransitionTimeout);
+        html.classList.add('theme-transition');
         html.dataset.theme = theme;
         icon.textContent = theme === 'dark' ? 'light_mode' : 'dark_mode';
         darkModeToggleButton.title = theme === 'dark' ? '밝은 테마로 전환 (D)' : '어두운 테마로 전환 (D)';
         localStorage.setItem("theme", theme);
+        
+        state.themeTransitionTimeout = setTimeout(() => {
+            html.classList.remove('theme-transition');
+        }, 150);
     };
 
     const toggleTheme = () => {
@@ -370,7 +377,14 @@
     const setupEventListeners = () => {
         const debouncedUpdate = debounce(updateDisplay, DEBOUNCE_DELAY);
         
-        DOM.filterForm.addEventListener("input", updateDisplay);
+        DOM.filterForm.addEventListener("input", e => {
+            if(e.target.type === 'checkbox' || e.target.type === 'select-one') {
+                updateDisplay();
+            } else if (e.target.type === 'number') {
+                debouncedUpdate();
+            }
+        });
+
         DOM.searchBox.addEventListener("input", debouncedUpdate);
         DOM.sortOrder.addEventListener("change", updateDisplay);
 
@@ -406,6 +420,10 @@
 
     const initWorker = () => {
         return new Promise((resolve, reject) => {
+            if (!'Worker' in window) {
+                reject(new Error("Web Workers are not supported in this browser."));
+                return;
+            }
             const worker = new Worker('./workers/filterWorker.js');
             worker.onmessage = e => {
                 const { type, payload } = e.data;
@@ -414,12 +432,12 @@
                 }
             };
             worker.onerror = error => {
-                console.error(`Web Worker 오류: ${error.message}`, error);
+                console.error(`Web Worker error: ${error.message}`, error);
                 setLoadingState(false);
                 DOM.resultSummary.innerHTML = `
                     <div style="color:red; text-align:center;">
-                        <p><strong>오류:</strong> 데이터 처리 중 오류가 발생했습니다.</p>
-                        <p>페이지를 새로고침 해주세요.</p>
+                        <p><strong>Error:</strong> An error occurred while processing data.</p>
+                        <p>Please refresh the page.</p>
                     </div>`;
                 reject(error);
             };
@@ -428,7 +446,7 @@
     };
     
     const fetchCharacters = async () => {
-        const response = await fetch(CHARACTERS_JSON_PATH);
+        const response = await fetch(CHARACTERS_JSON_PATH, { cache: 'no-cache' });
         if (!response.ok) {
             throw new Error(`HTTP ${response.status} - ${response.statusText}`);
         }
@@ -436,6 +454,14 @@
     };
 
     const initializeApp = async () => {
+        const style = document.createElement('style');
+        style.textContent = `
+            .theme-transition, .theme-transition *, .theme-transition *::before, .theme-transition *::after {
+                transition: background-color 150ms ease-out, color 150ms ease-out, border-color 150ms ease-out !important;
+            }
+        `;
+        document.head.appendChild(style);
+
         setupEventListeners();
         setCheckboxIcons();
 
@@ -448,12 +474,12 @@
         try {
             state.worker = await initWorker();
         } catch (error) {
-            console.error("Web Worker 초기화에 실패했습니다:", error);
+            console.error("Failed to initialize Web Worker:", error);
             setLoadingState(false);
             DOM.resultSummary.innerHTML = `
                 <div style="color:var(--color-danger); text-align:center;">
-                    <p><strong>오류:</strong> 페이지의 핵심 기능을 불러오는 데 실패했습니다.</p>
-                    <p>브라우저 호환성을 확인하거나, 페이지를 새로고침 해주세요.</p>
+                    <p><strong>Error:</strong> Failed to load a core feature of the page.</p>
+                    <p>Please check browser compatibility or refresh the page.</p>
                 </div>`;
             return;
         }
@@ -466,12 +492,12 @@
             renderCharacters(state.allCharacters, false);
 
         } catch (error) {
-            console.error("캐릭터 정보 로딩에 실패했습니다:", error);
+            console.error("Failed to load character data:", error);
             setLoadingState(false);
             DOM.resultSummary.innerHTML = `
                 <div style="color:var(--color-danger); text-align:center;">
-                    <p><strong>오류:</strong> 캐릭터 정보를 불러올 수 없습니다.</p>
-                    <p>네트워크 연결을 확인하거나, 페이지를 새로고침 해주세요.</p>
+                    <p><strong>Error:</strong> Could not load character data.</p>
+                    <p>Please check your network connection or refresh the page.</p>
                 </div>`;
         } finally {
             updateScrollButtonsVisibility();
