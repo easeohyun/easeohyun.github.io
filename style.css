@@ -3,9 +3,9 @@
     
     --ease-in-out-quad: cubic-bezier(0.45, 0, 0.55, 1);
     --ease-out-cubic: cubic-bezier(0.33, 1, 0.68, 1);
-    --transition-fast: 200ms var(--ease-in-out-quad);
-    --transition-normal: 400ms var(--ease-in-out-quad);
-    --transition-slow: 600ms var(--ease-in-out-quad);
+    --transition-fast: 150ms var(--ease-out-cubic);
+    --transition-normal: 150ms var(--ease-out-cubic);
+    --transition-slow: 400ms var(--ease-in-out-quad);
 
     --radius-sm: 4px;
     --radius-md: 8px;
@@ -27,6 +27,7 @@
         5px 10px 12.6px -2.5px hsl(var(--shadow-color) / 0.22);
     
     --toggle-shadow: 2px 2px 4px hsl(var(--shadow-color) / 0.2);
+    --toggle-shadow-hover: 4px 4px 8px hsl(var(--shadow-color) / 0.3);
 
     --rainbow-gradient: linear-gradient(137.5deg, #eaffd4, #a7f5f5, #a5c8ff, #d3bfff, #ffc3f2);
 }
@@ -183,7 +184,7 @@ footer p { margin: var(--spacing-sm, 8px) 0; }
     font-family: 'Material Symbols Outlined';
     font-weight: normal;
     font-style: normal;
-    font-size: 20px;
+    font-size: 21px;
     line-height: 1;
     letter-spacing: normal;
     text-transform: none;
@@ -193,23 +194,23 @@ footer p { margin: var(--spacing-sm, 8px) 0; }
     direction: ltr;
     -webkit-font-feature-settings: 'liga';
     -webkit-font-smoothing: antialiased;
-    content: var(--icon-content, "check_box_outline_blank");
+    content: var(--icon-content);
     position: absolute;
     left: 0;
     top: 50%;
     transform: translateY(-50%);
-    width: 20px;
-    height: 20px;
+    width: 21px;
+    height: 21px;
     border: none;
     color: var(--icon-color, var(--color-border-hover));
     transition: all var(--transition-fast);
     font-variation-settings: 'FILL' 0;
 }
-
 .filter-item input[type="checkbox"]:checked + label::before {
     font-variation-settings: 'FILL' 1;
     color: var(--icon-color);
 }
+
 #filter-turf label { --icon-content: 'grass'; }
 #filter-dirt label { --icon-content: 'landslide'; }
 #filter-speed label { --icon-content: 'podiatry'; }
@@ -217,7 +218,7 @@ footer p { margin: var(--spacing-sm, 8px) 0; }
 #filter-power label { --icon-content: 'humerus_alt'; }
 #filter-guts label { --icon-content: 'mode_heat'; }
 #filter-wit label { --icon-content: 'school'; }
-#filter-short label, #filter-mile label, #filter-medium label, #filter-long label { --icon-content: 'sprint'; }
+#filter-short label, #filter-mile label, #filter-medium label, #filter-long label { --icon-content: 'directions_run'; }
 #filter-front label, #filter-pace label, #filter-late label, #filter-end label { --icon-content: 'directions_run'; }
 
 #filter-turf input:checked + label { --icon-color: #38761d; }
@@ -228,15 +229,17 @@ footer p { margin: var(--spacing-sm, 8px) 0; }
 #filter-guts input:checked + label { --icon-color: #ff6fac; }
 #filter-wit input:checked + label { --icon-color: #22bf7d; }
 
-#filter-short input:checked + label,
-#filter-mile input:checked + label,
-#filter-medium input:checked + label,
-#filter-long input:checked + label,
-#filter-front input:checked + label,
-#filter-pace input:checked + label,
-#filter-late input:checked + label,
-#filter-end input:checked + label {
-    --icon-color: var(--color-text-primary);
+#filter-power input:checked + label::before { --icon-content: 'ulna_radius_alt'; }
+#filter-short input:checked + label::before,
+#filter-mile input:checked + label::before,
+#filter-medium input:checked + label::before,
+#filter-long input:checked + label::before,
+#filter-front input:checked + label::before,
+#filter-pace input:checked + label::before,
+#filter-late input:checked + label::before,
+#filter-end input:checked + label::before {
+    --icon-content: 'sprint';
+    color: #000;
 }
 
 .filter-item input[type="checkbox"]:checked + label { color: var(--color-primary-deep); font-weight: 500; }
@@ -327,19 +330,24 @@ input[type="number"].filter-item-interactive:focus-visible, select.filter-item-i
 
 .skill-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 0.5rem; }
 .skill-slot { 
-    min-height: 2.2rem; 
+    min-height: 3.3rem; 
     border-radius: var(--radius-md); 
     border: none;
     display: flex; 
     align-items: center; 
     justify-content: center; 
-    font-size: 0.85rem;
+    font-size: 0.935rem;
     font-weight: 700;
     padding: 0.25rem 0.5rem; 
     text-align: center; 
     line-height: 1.3; 
     color: #794016;
-    text-shadow: 0 0 0.4px #FFFFFF, 0.4px 0.4px 0.4px #FFFFFF, -0.4px -0.4px 0.4px #FFFFFF, 0.4px -0.4px 0.4px #FFFFFF, -0.4px 0.4px 0.4px #FFFFFF;
+    text-shadow: 
+        0 0 0.7px #FFFFFF, 
+        0.7px 0.7px 0.7px #FFFFFF, 
+        -0.7px -0.7px 0.7px #FFFFFF, 
+        0.7px -0.7px 0.7px #FFFFFF, 
+        -0.7px 0.7px 0.7px #FFFFFF;
 }
 
 .skill-rainbow { 
@@ -382,7 +390,7 @@ html[data-theme="dark"] .skeleton .skeleton-text { background-color: hsl(var(--c
 }
 .scroll-buttons button:hover { 
     transform: scale(1.1); 
-    box-shadow: var(--toggle-shadow);
+    box-shadow: var(--toggle-shadow-hover);
 }
 .scroll-buttons button.hidden { 
     opacity: 0; 
@@ -393,6 +401,9 @@ html[data-theme="dark"] .skeleton .skeleton-text { background-color: hsl(var(--c
     background-color: var(--color-primary); 
     border-color: var(--color-primary); 
     color: white; 
+}
+#dark-mode-toggle:hover {
+    background-color: var(--color-border-hover);
 }
 
 #dark-mode-toggle:hover .material-symbols-outlined {
@@ -407,12 +418,13 @@ html[data-theme="dark"] #dark-mode-toggle:hover .material-symbols-outlined {
 
 #toggle-skills-btn {
     background: var(--rainbow-gradient);
-    background-size: 200% 200%;
-    transition: background-position var(--transition-slow) ease-in-out, transform var(--transition-fast), box-shadow var(--transition-fast);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
 }
 #toggle-skills-btn:hover {
+    background-size: 200% 200%;
     background-position: 100% 100%;
     transform: scale(1.1) rotate(180deg);
+    transition: background-position var(--transition-slow) ease-in-out, transform var(--transition-fast), box-shadow var(--transition-fast);
 }
 #toggle-skills-btn > .material-symbols-outlined {
     color: #000;
@@ -466,7 +478,6 @@ html[data-theme="dark"] #dark-mode-toggle:hover .material-symbols-outlined {
     transform: translateY(-2px);
     box-shadow: var(--shadow-elevation-low);
 }
-
 
 @media (min-width: 1024px) {
     .character-card { flex-direction: row; align-items: flex-start; }
