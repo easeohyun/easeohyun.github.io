@@ -32,6 +32,7 @@
         allCharacters: [],
         observer: null,
         worker: null,
+        isBulkToggling: false,
     };
 
     const debounce = (func, delay) => {
@@ -40,6 +41,38 @@
             clearTimeout(timeout);
             timeout = setTimeout(() => func.apply(this, args), delay);
         };
+    };
+
+    const setRandomizedIcons = () => {
+        const setIcon = (selector, iconsWithProbs) => {
+            const element = document.querySelector(selector);
+            if (!element) return;
+
+            const rand = Math.random();
+            let cumulativeProb = 0;
+            for (const { icon, prob } of iconsWithProbs) {
+                cumulativeProb += prob;
+                if (rand < cumulativeProb) {
+                    element.style.setProperty('--icon-content', `'${icon}'`);
+                    break;
+                }
+            }
+        };
+
+        const genericIcons = [
+            { icon: 'sprint', prob: 0.75 },
+            { icon: 'directions_run', prob: 0.20 },
+            { icon: 'directions_walk', prob: 0.05 }
+        ];
+        const powerIcons = [
+            { icon: 'humerus_alt', prob: 0.50 },
+            { icon: 'ulna_radius_alt', prob: 0.50 }
+        ];
+
+        ['#filter-short', '#filter-mile', '#filter-medium', '#filter-long', '#filter-front', '#filter-pace', '#filter-late', '#filter-end']
+            .forEach(id => setIcon(`${id} label`, genericIcons));
+        
+        setIcon('#filter-power label', powerIcons);
     };
 
     const createStatItem = (displayName, value, isBonus = false) => {
@@ -118,8 +151,20 @@
         
         const skillDetails = card.querySelector('.skill-details');
         const skillSummary = card.querySelector('.skill-summary');
+        
         skillDetails.addEventListener('toggle', () => {
              skillSummary.setAttribute('aria-expanded', skillDetails.open);
+             if (state.isBulkToggling) return;
+
+             const container = skillDetails.querySelector('.skill-container');
+             if (skillDetails.open) {
+                container.style.animation = 'none';
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                         container.style.animation = '';
+                    });
+                });
+             }
         });
 
         return card;
@@ -218,12 +263,17 @@
     const resetAllFilters = () => {
         DOM.filterForm.reset();
         DOM.searchBox.value = "";
+        setRandomizedIcons();
         updateDisplay();
     };
     
     const toggleAllSkills = () => {
+        state.isBulkToggling = true;
         const allDetails = DOM.characterList.querySelectorAll(".skill-details");
-        if (allDetails.length === 0) return;
+        if (allDetails.length === 0) {
+            state.isBulkToggling = false;
+            return;
+        }
 
         const shouldOpen = Array.from(allDetails).some(d => !d.open);
         allDetails.forEach(detail => detail.open = shouldOpen);
@@ -231,6 +281,8 @@
         const icon = DOM.toggleSkillsButton.querySelector(".material-symbols-outlined");
         icon.textContent = shouldOpen ? "unfold_less" : "unfold_more";
         DOM.toggleSkillsButton.title = `모든 스킬 ${shouldOpen ? '접기' : '펼치기'} (A)`;
+        
+        setTimeout(() => { state.isBulkToggling = false; }, 0);
     };
 
     const updateScrollButtonsVisibility = () => {
@@ -374,6 +426,7 @@
 
     const initializeApp = async () => {
         setupEventListeners();
+        setRandomizedIcons();
 
         const savedTheme = localStorage.getItem("theme");
         const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
