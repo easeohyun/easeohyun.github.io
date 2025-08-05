@@ -348,11 +348,9 @@ input[type="number"].filter-item-interactive:focus-visible, select.filter-item-i
     color: #794016;
     text-shadow: 0.5px 0.5px 0 #fff, -0.5px -0.5px 0 #fff, 0.5px -0.5px 0 #fff, -0.5px 0.5px 0 #fff, 0.5px 0 0 #fff, -0.5px 0 0 #fff, 0 0.5px 0 #fff, 0 -0.5px 0 #fff;
 }
-}
 html[data-theme="dark"] .skill-slot {
-    text-shadow: 1px 1px 0 #333, -1px -1px 0 #333, 1px -1px 0 #333, -1px 1px 0 #333, 1px 0 0 #333, -1px 0 0 #333, 0 1px 0 #333, 0 -1px 0 #333;
+    text-shadow: 0.5px 0.5px 0 #333, -0.5px -0.5px 0 #333, 0.5px -0.5px 0 #333, -0.5px 0.5px 0 #333, 0.5px 0 0 #333, -0.5px 0 0 #333, 0 0.5px 0 #333, 0 -0.5px 0 #333;
 }
-
 
 .skill-rainbow { 
     background: var(--rainbow-gradient); 
@@ -492,4 +490,3 @@ html[data-theme="dark"] .skeleton .skeleton-text { background-color: hsl(var(--c
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
   .button:hover, .scroll-buttons button:hover, .character-card:hover { transform: none; }
 }
-
