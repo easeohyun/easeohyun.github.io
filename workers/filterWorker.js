@@ -10,39 +10,49 @@ const getChosung = (char) => {
     return CHO_SUNG[Math.floor(code / 588)];
 };
 
-const smartIncludes = (target, term, targetChosung) => {
-    if (!term) return true;
+const preProcessCharacters = (characters) => {
+    return characters.map(character => {
+        const searchableFields = {
+            name: (character.name || "").toLowerCase().replace(SANITIZE_REGEX, ""),
+            nickname: (character.nickname || "").toLowerCase().replace(SANITIZE_REGEX, ""),
+            skills: Object.values(character.skills || {}).flat().map(s => (s || "").toLowerCase().replace(SANITIZE_REGEX, "")),
+            tags: (character.tags || []).map(t => (t || "").toLowerCase().replace(SANITIZE_REGEX, "")),
+        };
+
+        const chosungFields = {
+            name: [...searchableFields.name].map(getChosung).join(""),
+            nickname: [...searchableFields.nickname].map(getChosung).join(""),
+            skills: searchableFields.skills.map(s => [...s].map(getChosung).join("")),
+            tags: searchableFields.tags.map(t => [...t].map(getChosung).join("")),
+        };
+
+        return {
+            ...character,
+            _searchableFields: searchableFields,
+            _chosungFields: chosungFields
+        };
+    });
+};
+
+const smartIncludes = (term, character) => {
     const sanitizedTerm = term.toLowerCase().replace(SANITIZE_REGEX, "");
     if (!sanitizedTerm) return true;
     
-    if (target.includes(sanitizedTerm)) return true;
-
     const isTermAllChosung = [...sanitizedTerm].every(char => CHO_SUNG.includes(char));
-    if (isTermAllChosung && targetChosung.includes(sanitizedTerm)) {
+
+    const fields = isTermAllChosung ? character._chosungFields : character._searchableFields;
+
+    if (fields.name.includes(sanitizedTerm) || fields.nickname.includes(sanitizedTerm)) {
+        return true;
+    }
+    if (fields.skills.some(skill => skill.includes(sanitizedTerm))) {
+        return true;
+    }
+    if (fields.tags.some(tag => tag.includes(sanitizedTerm))) {
         return true;
     }
     
     return false;
-};
-
-const preProcessCharacters = (characters) => {
-    return characters.map(character => {
-        const searchCorpus = [
-            character.id,
-            character.name,
-            character.nickname,
-            ...Object.values(character.skills).flat(),
-            ...(character.tags || [])
-        ].filter(Boolean).join(' ').toLowerCase().replace(SANITIZE_REGEX, "");
-        
-        const chosungCorpus = [...searchCorpus].map(getChosung).join("");
-
-        return {
-            ...character,
-            _searchCorpus: searchCorpus,
-            _chosungCorpus: chosungCorpus
-        };
-    });
 };
 
 const filterCharacter = (character, { activeFilters, searchTerms }) => {
@@ -63,16 +73,12 @@ const filterCharacter = (character, { activeFilters, searchTerms }) => {
 
     const { inclusionTerms, exclusionTerms } = searchTerms;
 
-    if (inclusionTerms.length > 0) {
-        if (!inclusionTerms.every(term => smartIncludes(character._searchCorpus, term, character._chosungCorpus))) {
-            return false;
-        }
+    if (inclusionTerms.length > 0 && !inclusionTerms.every(term => smartIncludes(term, character))) {
+        return false;
     }
     
-    if (exclusionTerms.length > 0) {
-        if (exclusionTerms.some(term => smartIncludes(character._searchCorpus, term, character._chosungCorpus))) {
-            return false;
-        }
+    if (exclusionTerms.length > 0 && exclusionTerms.some(term => smartIncludes(term, character))) {
+        return false;
     }
 
     return true;
@@ -106,6 +112,6 @@ onmessage = function (e) {
     if (type === 'filter') {
         const filtered = allCharacters.filter(char => filterCharacter(char, payload));
         sortCharacters(filtered, payload.sortBy);
-        postMessage(filtered);
+        postMessage({ type: 'filtered', payload: filtered });
     }
 };
