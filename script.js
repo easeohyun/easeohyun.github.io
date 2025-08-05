@@ -116,6 +116,12 @@
             if (row) skillContainer.appendChild(row);
         }
         
+        const skillDetails = card.querySelector('.skill-details');
+        const skillSummary = card.querySelector('.skill-summary');
+        skillDetails.addEventListener('toggle', () => {
+             skillSummary.setAttribute('aria-expanded', skillDetails.open);
+        });
+
         return card;
     };
     
@@ -147,18 +153,9 @@
 
         characterList.style.display = "";
         noResultsContainer.style.display = "none";
-        
-        let summaryText;
-        if (!hasActiveFilters) {
-            summaryText = `트레센 학원에 어서오세요, ${state.allCharacters.length}명의 우마무스메를 만날 수 있답니다!`;
-        } else {
-            if (count === 1) summaryText = "당신이 찾던 그 우마무스메가... 딱 1명 있네요! 찾았어요!";
-            else if (count > 1 && count <= 5) summaryText = `당신이 찾던 그 우마무스메가... ${count}명 있어요!`;
-            else if (count > 5 && count <= 15) summaryText = `당신이 찾는 그 우마무스메가... ${count}명 중에 있을 것 같아요.`;
-            else if (count > 15 && count <= 50) summaryText = `당신이 찾는 그 우마무스메가... ${count}명 중에 있는 것 맞죠?`;
-            else summaryText = `당신이 찾는 그 우마무스메가... ${count}명 중에 있기를 바랍니다!`;
-        }
-        resultSummary.textContent = summaryText;
+        resultSummary.textContent = hasActiveFilters
+            ? `총 ${count}명의 우마무스메를 찾았습니다.`
+            : `트레센 학원에 어서오세요, ${state.allCharacters.length}명의 우마무스메를 만날 수 있답니다!`;
         
         state.observer = new IntersectionObserver((entries, obs) => {
             entries.forEach(entry => {
@@ -227,25 +224,10 @@
     const toggleAllSkills = () => {
         const allDetails = DOM.characterList.querySelectorAll(".skill-details");
         if (allDetails.length === 0) return;
-    
+
         const shouldOpen = Array.from(allDetails).some(d => !d.open);
-        
-        DOM.characterList.dataset.isTogglingAll = 'true';
-    
-        allDetails.forEach(detail => {
-            if (detail.open !== shouldOpen) {
-                detail.open = shouldOpen;
-                const card = detail.closest('.character-card');
-                if (card) {
-                    card.dataset.skillsOpen = shouldOpen;
-                }
-            }
-        });
-        
-        setTimeout(() => {
-            delete DOM.characterList.dataset.isTogglingAll;
-        }, 0);
-    
+        allDetails.forEach(detail => detail.open = shouldOpen);
+
         const icon = DOM.toggleSkillsButton.querySelector(".material-symbols-outlined");
         icon.textContent = shouldOpen ? "unfold_less" : "unfold_more";
         DOM.toggleSkillsButton.title = `모든 스킬 ${shouldOpen ? '접기' : '펼치기'} (A)`;
@@ -319,45 +301,9 @@
     
     const closeModal = () => {
         DOM.modalContainer.classList.remove("active");
-        const transitionDuration = 400;
-
-        const hideModal = () => {
+        DOM.modalContainer.addEventListener("transitionend", () => {
             DOM.modalContainer.hidden = true;
-            DOM.modalContainer.removeEventListener("transitionend", hideModal);
-        };
-    
-        DOM.modalContainer.addEventListener("transitionend", hideModal, { once: true });
-    
-        setTimeout(() => {
-            if (!DOM.modalContainer.hidden) {
-                hideModal();
-            }
-        }, transitionDuration);
-    };
-
-    const setRandomizedIcons = () => {
-        const distanceAndStrategyIds = [
-            '#filter-short', '#filter-mile', '#filter-medium', '#filter-long',
-            '#filter-front', '#filter-pace', '#filter-late', '#filter-end'
-        ];
-
-        distanceAndStrategyIds.forEach(id => {
-            const el = document.querySelector(id);
-            if (!el) return;
-            const rand = Math.random();
-            if (rand < 0.05) {
-                el.classList.add('icon-walk');
-            } else if (rand < 0.25) {
-                el.classList.add('icon-run');
-            } else {
-                el.classList.add('icon-sprint');
-            }
-        });
-
-        const powerEl = document.querySelector('#filter-power');
-        if (powerEl) {
-             powerEl.classList.add(Math.random() < 0.5 ? 'icon-humerus-alt' : 'icon-ulna-radius-alt');
-        }
+        }, { once: true });
     };
 
     const setupEventListeners = () => {
@@ -380,41 +326,16 @@
         DOM.closeModalBtn.addEventListener("click", closeModal);
         DOM.modalOverlay.addEventListener("click", closeModal);
         
-        DOM.characterList.addEventListener('click', (event) => {
-            const summary = event.target.closest('.skill-summary');
-            if (!summary) return;
-        
-            const detail = summary.parentElement;
-            if (!detail || !detail.matches('details.skill-details')) return;
-        
-            if (DOM.characterList.dataset.isTogglingAll === 'true') return;
-        
-            event.preventDefault();
-        
-            const card = detail.closest('.character-card');
-        
-            if (detail.open) {
-                if (card) card.dataset.skillsOpen = 'false';
-                detail.classList.add('closing');
-                detail.addEventListener('animationend', () => {
-                    detail.open = false;
-                    detail.classList.remove('closing');
-                }, { once: true });
-            } else {
-                if (card) card.dataset.skillsOpen = 'true';
-                detail.open = true;
-            }
-        });
-        
         DOM.contactEmailLink.addEventListener("click", function(e) {
             e.preventDefault();
-            const email = this.href.startsWith('mailto:') ? this.href : `mailto:${atob("ZWFzZW9oeXVuQGdvb2dsZS5jb20=")}`;
             if (this.dataset.revealed !== "true") {
-                this.href = email;
-                this.textContent = email.replace('mailto:', '');
+                const encoded = "ZWFzZW9oeXVuQGdvb2dsZS5jb20="; 
+                const decoded = atob(encoded);
+                this.href = `mailto:${decoded}`;
+                this.textContent = decoded;
                 this.dataset.revealed = "true";
             }
-            window.location.href = email;
+            window.location.href = this.href;
         });
 
         document.addEventListener("keydown", handleKeyboardShortcuts);
@@ -424,19 +345,19 @@
 
     const initWorker = () => {
         return new Promise((resolve, reject) => {
-            if (!window.Worker) {
-                reject(new Error("Web Workers are not supported by this browser."));
-                return;
-            }
             const worker = new Worker('./workers/filterWorker.js');
             worker.onmessage = e => {
                 const filteredCharacters = e.data;
                 renderCharacters(filteredCharacters, true);
             };
             worker.onerror = error => {
-                console.error(`Web Worker error: ${error.message}`, error);
+                console.error(`Web Worker 오류: ${error.message}`, error);
                 setLoadingState(false);
-                DOM.resultSummary.innerHTML = `<div style="color:red; text-align:center;"><p><strong>Error:</strong> An error occurred while processing data.</p><p>Please refresh the page.</p></div>`;
+                DOM.resultSummary.innerHTML = `
+                    <div style="color:red; text-align:center;">
+                        <p><strong>오류:</strong> 데이터 처리 중 오류가 발생했습니다.</p>
+                        <p>페이지를 새로고침 해주세요.</p>
+                    </div>`;
                 reject(error);
             };
             resolve(worker);
@@ -453,7 +374,6 @@
 
     const initializeApp = async () => {
         setupEventListeners();
-        setRandomizedIcons();
 
         const savedTheme = localStorage.getItem("theme");
         const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -464,9 +384,13 @@
         try {
             state.worker = await initWorker();
         } catch (error) {
-            console.error("Failed to initialize Web Worker:", error);
+            console.error("Web Worker 초기화에 실패했습니다:", error);
             setLoadingState(false);
-            DOM.resultSummary.innerHTML = `<div style="color:var(--color-danger); text-align:center;"><p><strong>Error:</strong> Failed to load a core feature of the page.</p><p>Please check browser compatibility or refresh the page.</p></div>`;
+            DOM.resultSummary.innerHTML = `
+                <div style="color:var(--color-danger); text-align:center;">
+                    <p><strong>오류:</strong> 페이지의 핵심 기능을 불러오는 데 실패했습니다.</p>
+                    <p>브라우저 호환성을 확인하거나, 페이지를 새로고침 해주세요.</p>
+                </div>`;
             return;
         }
 
@@ -478,9 +402,13 @@
             renderCharacters(state.allCharacters, false);
 
         } catch (error) {
-            console.error("Failed to load character data:", error);
+            console.error("캐릭터 정보 로딩에 실패했습니다:", error);
             setLoadingState(false);
-            DOM.resultSummary.innerHTML = `<div style="color:var(--color-danger); text-align:center;"><p><strong>Error:</strong> Could not load character information.</p><p>Please check your network connection or refresh the page.</p></div>`;
+            DOM.resultSummary.innerHTML = `
+                <div style="color:var(--color-danger); text-align:center;">
+                    <p><strong>오류:</strong> 캐릭터 정보를 불러올 수 없습니다.</p>
+                    <p>네트워크 연결을 확인하거나, 페이지를 새로고침 해주세요.</p>
+                </div>`;
         } finally {
             updateScrollButtonsVisibility();
         }
