@@ -267,7 +267,7 @@
     "StrategyAptitude": { "Front": "B", "Pace": "A", "Late": "D", "End": "F" },
     "StatBonuses": { "Speed": 0, "Stamina": 20, "Power": 0, "Guts": 0, "Wit": 10 },
     "skills": { "rainbow": ["존귀한 사명을 완수하기 위하여"], "pink": ["메지로의 마음가짐", "명배우의 여유"], "yellow": ["선봉의 마음가짐", "여유만만"], "white": ["봄 우마무스메○", "스태미나 킵", "리드 킵", "장거리 코너○", "영양 보급"] },
-    "tags": ["파쿠파쿠데스와"]  
+    "tags": ["파쿠파쿠데스와", "마꾸잉", "영애"]  
   },
   {
     "id": 101302, "name": "메지로 맥퀸", "nickname": "엔드・오브・스카이", "color": "#00b5be",
@@ -447,7 +447,7 @@
     "StrategyAptitude": { "Front": "G", "Pace": "C", "Late": "A", "End": "B" },
     "StatBonuses": { "Speed": 0, "Stamina": 0, "Power": 20, "Guts": 10, "Wit": 0 },
     "skills": { "rainbow": ["근육 활성화! 아나볼릭・러브!"], "pink": ["정면근육!", "근육 발레"], "yellow": ["치열한 승부", "전심전력"], "white": ["뒷심", "직선 가속", "추월 확정 태세", "외곽 추월 준비", "안쪽 그룹 능숙○"] },
-    "tags": ["근육"]
+    "tags": ["근육", "두리안"]
   },
   {
     "id": 102801, "name": "히시 아케보노", "nickname": "보노☆알라모다", "color": "#FFFF00",
@@ -828,6 +828,7 @@
     "tags": ["프로젝트L'Arc", "개선문상"]
   }
 ]
+
 
 
 
