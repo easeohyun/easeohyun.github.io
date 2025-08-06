@@ -34,6 +34,8 @@
         worker: null,
         isBulkToggling: false,
         themeTransitionTimeout: null,
+        longPressTimer: null,
+        longPressInterval: null,
     };
 
     const debounce = (func, delay) => {
@@ -373,14 +375,12 @@
             DOM.modalContainer.hidden = true;
         }, { once: true });
     };
-
+    
     const setupEventListeners = () => {
         const debouncedUpdate = debounce(updateDisplay, DEBOUNCE_DELAY);
         
         DOM.filterForm.addEventListener("input", e => {
-            if(e.target.type === 'checkbox' || e.target.type === 'select-one') {
-                updateDisplay();
-            } else if (e.target.type === 'number') {
+            if(e.target.type === 'checkbox' || e.target.type === 'select-one' || e.target.type === 'number') {
                 debouncedUpdate();
             }
         });
@@ -417,30 +417,45 @@
         window.addEventListener("scroll", debounce(updateScrollButtonsVisibility, 150));
         window.addEventListener("resize", debounce(updateScrollButtonsVisibility, 150));
         
-        DOM.filterForm.addEventListener("click", e => {
+        DOM.filterForm.addEventListener("mousedown", e => {
             if (!e.target.classList.contains("spinner-btn")) return;
-            
+            e.preventDefault();
+
             const wrapper = e.target.closest(".number-input-wrapper");
             if (!wrapper) return;
-
             const input = wrapper.querySelector('input[type="number"]');
             if (!input) return;
 
-            e.preventDefault();
-            const step = parseFloat(input.step) || 1;
-            let value = parseFloat(input.value) || 0;
+            const changeValue = () => {
+                const step = parseFloat(input.step) || 1;
+                let value = parseFloat(input.value) || 0;
+                const min = parseFloat(input.min) || 0;
+                const max = parseFloat(input.max) || 30;
 
-            if (e.target.classList.contains("up")) {
-                value = Math.min(parseFloat(input.max) || 30, value + step);
-            } else if (e.target.classList.contains("down")) {
-                value = Math.max(parseFloat(input.min) || 0, value - step);
-            }
+                if (e.target.classList.contains("up")) {
+                    value = Math.min(max, value + step);
+                } else if (e.target.classList.contains("down")) {
+                    value = Math.max(min, value - step);
+                }
+                input.value = value;
+                const inputEvent = new Event('input', { bubbles: true, cancelable: true });
+                input.dispatchEvent(inputEvent);
+            };
             
-            input.value = value;
-            
-            const inputEvent = new Event('input', { bubbles: true, cancelable: true });
-            input.dispatchEvent(inputEvent);
+            changeValue();
+
+            state.longPressTimer = setTimeout(() => {
+                state.longPressInterval = setInterval(changeValue, 100);
+            }, 500);
         });
+        
+        const stopLongPress = () => {
+            clearTimeout(state.longPressTimer);
+            clearInterval(state.longPressInterval);
+        };
+
+        document.addEventListener("mouseup", stopLongPress);
+        document.addEventListener("mouseleave", stopLongPress, {capture: true});
     };
 
     const initWorker = () => {
