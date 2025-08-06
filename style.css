@@ -373,7 +373,7 @@ input[type="number"].filter-item-interactive:focus-visible, select.filter-item-i
 .grade-g { color: #6c757d; } .grade-f { color: #0d47a1; } .grade-e { color: #6a1b9a; } .grade-d { color: #1565c0; } .grade-c { color: #558b2f; }
 .grade-b { font-weight: 700; color: #c62828; } .grade-a { font-weight: 700; color: #ef6c00; } .grade-s { font-weight: 700; color: #ffc02f; }
 
-.skill-details { border-top: 1px solid var(--color-border); padding-top: 1rem; transition: max-height var(--transition-slow); }
+.skill-details { border-top: 1px solid var(--color-border); padding-top: 1rem; }
 .skill-summary { font-weight: 600; padding: 0.75rem; border-radius: var(--radius-md); background-color: var(--color-surface-1); cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: center; gap: 0.25rem; transition: background-color var(--transition-fast), color var(--transition-fast); color: var(--color-text-secondary); }
 .skill-summary:hover { background-color: var(--color-border); color: var(--color-text-primary); }
 .skill-summary::-webkit-details-marker { display: none; }
@@ -386,15 +386,6 @@ input[type="number"].filter-item-interactive:focus-visible, select.filter-item-i
     flex-direction: column; 
     gap: 0.5rem; 
     overflow: hidden; 
-}
-
-@keyframes slide-down-fade-in { 
-    from { opacity: 0; transform: translateY(-10px); } 
-    to { opacity: 1; transform: translateY(0); } 
-}
-
-.skill-details[open] .skill-container {
-    animation: slide-down-fade-in var(--transition-normal) forwards;
 }
 
 .skill-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 0.5rem; }
