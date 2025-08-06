@@ -348,6 +348,7 @@ input[type="number"].filter-item-interactive:focus-visible, select.filter-item-i
     box-shadow: var(--shadow-elevation-low);
     width: 100%;
     padding: 1.25rem;
+    padding-left: calc(1.25rem + 4px);
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
@@ -374,16 +375,37 @@ input[type="number"].filter-item-interactive:focus-visible, select.filter-item-i
 .character-card:hover::before { transform: scaleY(1); }
 
 .card-main-info {
-    flex: 0 0 200px;
-    padding-right: 1.25rem;
-    border-right: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
-.card-identity { text-align: center; }
+.card-identity { 
+    text-align: center;
+    margin-bottom: 1rem;
+}
 .card-title { font-size: 1.5em; font-weight: 700; color: var(--color-text-primary); }
-.card-nickname { font-size: 0.9em; color: var(--color-text-secondary); margin-bottom: 1rem; }
-.card-stats { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr; gap: 0.5rem; }
-.stat-category { font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; text-align: center; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--color-border); color: var(--color-text-secondary); }
+.card-nickname { font-size: 0.9em; color: var(--color-text-secondary); margin-bottom: 0.25rem; }
+.card-stats { 
+    list-style: none; 
+    padding: 0; 
+    margin: 0; 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); 
+    gap: 0.5rem 1rem; 
+}
+.stat-category { 
+    grid-column: 1 / -1; 
+    font-weight: 600; 
+    font-size: 0.8rem; 
+    text-transform: uppercase; 
+    letter-spacing: 0.05em; 
+    text-align: center; 
+    margin-top: 1rem; 
+    padding-top: 1rem; 
+    border-top: 1px solid var(--color-border); 
+    color: var(--color-text-secondary); 
+}
 .stat-category:first-of-type { margin-top: 0; padding-top: 0; border-top: none; }
 .stat-item { display: flex; justify-content: space-between; align-items: baseline; font-size: 0.95em; padding: 0.25rem 0; }
 .stat-item .label { font-weight: 500; color: var(--color-text-secondary); }
@@ -393,8 +415,24 @@ input[type="number"].filter-item-interactive:focus-visible, select.filter-item-i
 .grade-g { color: #6c757d; } .grade-f { color: #0d47a1; } .grade-e { color: #6a1b9a; } .grade-d { color: #1565c0; } .grade-c { color: #558b2f; }
 .grade-b { font-weight: 700; color: #c62828; } .grade-a { font-weight: 700; color: #ef6c00; } .grade-s { font-weight: 700; color: #ffc02f; }
 
-.skill-details { flex: 1; }
-.skill-summary { font-weight: 600; padding: 0.75rem; border-radius: var(--radius-md); background-color: var(--color-surface-1); cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: center; gap: 0.25rem; transition: background-color var(--transition-fast), color var(--transition-fast); color: var(--color-text-secondary); }
+.skill-details { 
+    border-top: 1px solid var(--color-border); 
+    padding-top: 1rem;
+}
+.skill-summary { 
+    font-weight: 600; 
+    padding: 0.75rem; 
+    border-radius: var(--radius-md); 
+    background-color: var(--color-surface-1); 
+    cursor: pointer; 
+    list-style: none; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    gap: 0.25rem; 
+    transition: background-color var(--transition-fast), color var(--transition-fast); 
+    color: var(--color-text-secondary); 
+}
 .skill-summary:hover { background-color: var(--color-border); color: var(--color-text-primary); }
 .skill-summary::-webkit-details-marker { display: none; }
 .skill-summary::after { content: 'expand_more'; font-family: 'Material Symbols Outlined'; transition: transform var(--transition-fast); }
@@ -569,6 +607,16 @@ html[data-theme="dark"] #dark-mode-toggle:hover .material-symbols-outlined {
         flex-direction: row;
         align-items: stretch;
     }
+    .card-main-info {
+        flex: 0 0 220px;
+        padding-right: 1.25rem;
+        border-right: 1px solid var(--color-border);
+    }
+    .skill-details {
+        flex: 1;
+        padding-top: 0;
+        border-top: none;
+    }
     #character-list {
         grid-template-columns: 1fr;
     }
@@ -578,10 +626,6 @@ html[data-theme="dark"] #dark-mode-toggle:hover .material-symbols-outlined {
     .controls-container { flex-direction: column; align-items: stretch; }
     .search-wrapper { width: 100%; }
     .sort-reset-wrapper { width: 100%; justify-content: space-between; }
-    .card-main-info {
-        padding-right: 0;
-        border-right: none;
-    }
 }
 
 @media (prefers-reduced-motion: reduce) {
