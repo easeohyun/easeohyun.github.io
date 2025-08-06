@@ -32,7 +32,6 @@
         allCharacters: [],
         observer: null,
         worker: null,
-        isBulkToggling: false,
         themeTransitionTimeout: null,
         longPressTimer: null,
         longPressInterval: null,
@@ -152,17 +151,6 @@
         
         skillDetails.addEventListener('toggle', () => {
              skillSummary.setAttribute('aria-expanded', skillDetails.open);
-             if (state.isBulkToggling) return;
-
-             const container = skillDetails.querySelector('.skill-container');
-             if (skillDetails.open) {
-                container.style.animation = 'none';
-                requestAnimationFrame(() => {
-                    requestAnimationFrame(() => {
-                         container.style.animation = '';
-                    });
-                });
-             }
         });
 
         return card;
@@ -280,10 +268,8 @@
     };
     
     const toggleAllSkills = () => {
-        state.isBulkToggling = true;
         const allDetails = DOM.characterList.querySelectorAll(".skill-details");
         if (allDetails.length === 0) {
-            state.isBulkToggling = false;
             return;
         }
 
@@ -293,8 +279,6 @@
         const icon = DOM.toggleSkillsButton.querySelector(".material-symbols-outlined");
         icon.textContent = shouldOpen ? "unfold_less" : "unfold_more";
         DOM.toggleSkillsButton.title = `모든 스킬 ${shouldOpen ? '접기' : '펼치기'} (A)`;
-        
-        setTimeout(() => { state.isBulkToggling = false; }, 0);
     };
 
     const updateScrollButtonsVisibility = () => {
