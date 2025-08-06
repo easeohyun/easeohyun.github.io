@@ -71,7 +71,7 @@
             }
         }
     };
-
+    
     const createStatItem = (displayName, value, isBonus = false) => {
         const itemLi = document.createElement('li');
         itemLi.className = 'stat-item';
@@ -82,34 +82,33 @@
         return itemLi;
     };
 
-    const createStatGroup = (fragment, sectionKey, char, name, map) => {
-        if (!char[sectionKey]) return;
+    const createStatGroup = (char, sectionKey, groupName, itemMap, isBonus = false) => {
+        const statData = char[sectionKey];
+        if (!statData) return null;
 
-        const categoryLi = document.createElement('li');
-        categoryLi.className = 'stat-item stat-category';
-        categoryLi.textContent = name;
-        fragment.appendChild(categoryLi);
+        const items = Object.entries(itemMap)
+            .map(([itemKey, displayName]) => {
+                const value = statData[itemKey];
+                return value !== undefined ? createStatItem(displayName, value, isBonus) : null;
+            })
+            .filter(Boolean);
 
-        const isBonus = sectionKey === "StatBonuses";
-        for (const [itemKey, displayName] of Object.entries(map)) {
-            const value = char[sectionKey]?.[itemKey];
-            if (value !== undefined) {
-                fragment.appendChild(createStatItem(displayName, value, isBonus));
-            }
-        }
-    };
+        if (items.length === 0) return null;
 
-    const createSkillRow = (skills, color) => {
-        if (!skills || skills.length === 0) return null;
-        const rowDiv = document.createElement('div');
-        rowDiv.className = 'skill-row';
-        skills.forEach(skill => {
-            const slotDiv = document.createElement('div');
-            slotDiv.className = `skill-slot skill-${color}`;
-            slotDiv.textContent = skill || "";
-            rowDiv.appendChild(slotDiv);
-        });
-        return rowDiv;
+        const groupDiv = document.createElement('div');
+        groupDiv.className = 'stat-group';
+
+        const titleDiv = document.createElement('div');
+        titleDiv.className = 'stat-group-title';
+        titleDiv.textContent = groupName;
+        groupDiv.appendChild(titleDiv);
+
+        const listUl = document.createElement('ul');
+        listUl.className = 'stat-items-list';
+        items.forEach(item => listUl.appendChild(item));
+        groupDiv.appendChild(listUl);
+
+        return groupDiv;
     };
 
     const createCharacterCard = (char) => {
@@ -119,21 +118,42 @@
             card.style.setProperty("--character-color", char.color);
         }
 
-        card.querySelector(".card-nickname").textContent = char.nickname;
-        card.querySelector(".card-title").textContent = char.name;
+        const identityDiv = card.querySelector(".card-identity");
+        identityDiv.querySelector(".card-nickname").textContent = `[ ${char.nickname} ]`;
+        identityDiv.querySelector(".card-title").textContent = char.name;
 
-        const statsFragment = document.createDocumentFragment();
+        const statsContainer = card.querySelector(".card-stats");
         const aptitudeMap = {
-            SurfaceAptitude: { name: " [ 경기장 적성 ] ", map: { Turf: "잔디", Dirt: "더트" }},
-            DistanceAptitude: { name: " [ 거리 적성 ] ", map: { Short: "단거리", Mile: "마일", Medium: "중거리", Long: "장거리" }},
-            StrategyAptitude: { name: " [ 각질 적성 ] ", map: { Front: "도주", Pace: "선행", Late: "선입", End: "추입" }},
-            StatBonuses: { name: "[ 성장률 ] ", map: { Speed: "스피드", Stamina: "스태미나", Power: "파워", Guts: "근성", Wit: "지능" }}
+            SurfaceAptitude: { name: "경기장 적성", map: { Turf: "잔디", Dirt: "더트" }},
+            DistanceAptitude: { name: "거리 적성", map: { Short: "단거리", Mile: "마일", Medium: "중거리", Long: "장거리" }},
+            StrategyAptitude: { name: "각질 적성", map: { Front: "도주", Pace: "선행", Late: "선입", End: "추입" }},
         };
-        for (const [sectionKey, { name, map }] of Object.entries(aptitudeMap)) {
-            createStatGroup(statsFragment, sectionKey, char, name, map);
-        }
-        card.querySelector(".card-stats").appendChild(statsFragment);
+        const bonusMap = {
+            StatBonuses: { name: "성장률", map: { Speed: "스피드", Stamina: "스태미나", Power: "파워", Guts: "근성", Wit: "지능" }, isBonus: true }
+        };
 
+        for (const [sectionKey, { name, map }] of Object.entries(aptitudeMap)) {
+            const groupEl = createStatGroup(char, sectionKey, name, map);
+            if (groupEl) statsContainer.appendChild(groupEl);
+        }
+        for (const [sectionKey, { name, map, isBonus }] of Object.entries(bonusMap)) {
+            const groupEl = createStatGroup(char, sectionKey, name, map, isBonus);
+            if (groupEl) statsContainer.appendChild(groupEl);
+        }
+
+        const createSkillRow = (skills, color) => {
+            if (!skills || skills.length === 0) return null;
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'skill-row';
+            skills.forEach(skill => {
+                const slotDiv = document.createElement('div');
+                slotDiv.className = `skill-slot skill-${color}`;
+                slotDiv.textContent = skill || "";
+                rowDiv.appendChild(slotDiv);
+            });
+            return rowDiv;
+        };
+        
         const skillContainer = card.querySelector(".skill-container");
         const skillsMap = {
             rainbow: char.skills?.rainbow,
@@ -388,13 +408,14 @@
         DOM.contactEmailLink.addEventListener("click", function(e) {
             e.preventDefault();
             if (this.dataset.revealed !== "true") {
-                const encoded = "ZWFzZW9oeXVuQGdvb2dsZS5jb20="; 
-                const decoded = atob(encoded);
-                this.href = `mailto:${decoded}`;
-                this.textContent = decoded;
+                const user = "easeohyun";
+                const domain = "google.com";
+                const email = `${user}@${domain}`;
+                this.href = `mailto:${email}`;
+                this.textContent = email;
                 this.dataset.revealed = "true";
             }
-            window.location.href = this.href;
+            window.open(this.href, '_blank');
         });
 
         document.addEventListener("keydown", handleKeyboardShortcuts);
@@ -438,8 +459,16 @@
             clearInterval(state.longPressInterval);
         };
 
-        document.addEventListener("mouseup", stopLongPress);
-        document.addEventListener("mouseleave", stopLongPress, {capture: true});
+        DOM.filterForm.addEventListener("mouseup", e => {
+            if (e.target.classList.contains("spinner-btn")) {
+                stopLongPress();
+            }
+        });
+        DOM.filterForm.addEventListener("mouseleave", e => {
+            if (e.target.classList.contains("spinner-btn")) {
+                stopLongPress();
+            }
+        }, { capture: true });
     };
 
     const initWorker = () => {
