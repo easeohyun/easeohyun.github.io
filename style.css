@@ -373,7 +373,7 @@ input[type="number"].filter-item-interactive:focus-visible, select.filter-item-i
 .stat-item .value { font-weight: 600; font-size: 1.05em; }
 .stat-item .value .percent { font-size: 0.8em; color: var(--color-text-secondary); }
 
-.grade-g { color: #6c757d; } .grade-f { color: #0d47a1; } .grade-e { color: #6a1b9a; } .grade-d { color: #1565c0; } .grade-c { color: #558b2f; }
+.grade-g { font-weight: 500; color: #6c757d; } .grade-f { font-weight: 500; color: #0d47a1; } .grade-e { font-weight: 500; color: #6a1b9a; } .grade-d { font-weight: 500; color: #1565c0; } .grade-c { font-weight: 500; color: #558b2f; }
 .grade-b { font-weight: 700; color: #c62828; } .grade-a { font-weight: 700; color: #ef6c00; } .grade-s { font-weight: 700; color: #ffc02f; }
 
 .skill-details { border-top: 1px solid var(--color-border); padding-top: 1rem; }
@@ -414,6 +414,7 @@ input[type="number"].filter-item-interactive:focus-visible, select.filter-item-i
 }
 
 .skill-rainbow { 
+    font-size: 1.2rem; 
     background: var(--rainbow-gradient);
     color: #794016;
     text-shadow: 
@@ -565,3 +566,4 @@ html[data-theme="dark"] #dark-mode-toggle:hover .material-symbols-outlined {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
   .button:hover, .scroll-buttons button:hover, .character-card:hover { transform: none; }
 }
+
