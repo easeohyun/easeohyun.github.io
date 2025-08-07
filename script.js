@@ -35,6 +35,7 @@
         themeTransitionTimeout: null,
         longPressTimer: null,
         longPressInterval: null,
+        isModalOpen: false,
     };
     
     const getRandomMessage = (messages) => {
@@ -55,7 +56,7 @@
             'filter-dirt': 'landslide',
             'filter-speed': 'podiatry',
             'filter-stamina': 'favorite',
-            'filter-power': 'humerus_alt',
+            'filter-power': 'ulna_radius_alt',
             'filter-guts': 'mode_heat',
             'filter-wit': 'school',
             'filter-short': 'directions_run',
@@ -349,20 +350,26 @@
         
         const activeElement = document.activeElement;
         const isTyping = activeElement && (activeElement.tagName === "INPUT" || activeElement.tagName === "SELECT" || activeElement.isContentEditable);
-        const isModalOpen = !DOM.modalContainer.hidden;
 
-        if (isTyping && event.key !== 'Escape') return;
-        if (isModalOpen && event.key !== 'Escape') return;
+        if (event.key === 'Escape') {
+            event.preventDefault();
+            if (state.isModalOpen) {
+                closeModal();
+            } else if (isTyping) {
+                activeElement.blur();
+            } else {
+                resetAllFilters();
+            }
+            return;
+        }
+
+        if (isTyping) return;
+        if (state.isModalOpen) return;
 
         const shortcuts = {
             'q': () => DOM.searchBox.focus(),
             '/': () => DOM.searchBox.focus(),
             'r': resetAllFilters,
-            'Escape': () => {
-                if (isModalOpen) closeModal();
-                else if (isTyping) activeElement.blur();
-                else resetAllFilters();
-            },
             'w': () => window.scrollTo({ top: 0, behavior: "smooth" }),
             's': () => window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" }),
             'a': toggleAllSkills,
@@ -398,6 +405,11 @@
     };
     
     const openModal = () => {
+        if (state.isModalOpen) return;
+        state.isModalOpen = true;
+        
+        history.pushState({ modal: true }, '', '#modal');
+        
         DOM.modalContainer.hidden = false;
         requestAnimationFrame(() => {
              DOM.modalContainer.classList.add("active");
@@ -406,12 +418,18 @@
     };
     
     const closeModal = () => {
+        if (!state.isModalOpen) return;
+        state.isModalOpen = false;
+        
         DOM.modalContainer.classList.remove("active");
         DOM.modalContainer.addEventListener("transitionend", () => {
             DOM.modalContainer.hidden = true;
+            if (location.hash === "#modal") {
+                 history.back();
+            }
         }, { once: true });
     };
-    
+
     const setupEventListeners = () => {
         const debouncedUpdate = debounce(updateDisplay, DEBOUNCE_DELAY);
         
@@ -437,6 +455,12 @@
         DOM.closeModalBtn.addEventListener("click", closeModal);
         DOM.modalOverlay.addEventListener("click", closeModal);
         
+        window.addEventListener('popstate', (event) => {
+            if (state.isModalOpen) {
+                closeModal();
+            }
+        });
+
         DOM.contactEmailLink.addEventListener("click", function(e) {
             e.preventDefault();
             if (this.dataset.revealed !== "true") {
@@ -491,21 +515,13 @@
             clearInterval(state.longPressInterval);
         };
 
-        DOM.filterForm.addEventListener("mouseup", e => {
-            if (e.target.classList.contains("spinner-btn")) {
-                stopLongPress();
-            }
-        });
-        DOM.filterForm.addEventListener("mouseleave", e => {
-            if (e.target.classList.contains("spinner-btn")) {
-                stopLongPress();
-            }
-        }, { capture: true });
+        document.addEventListener("mouseup", stopLongPress);
+        document.addEventListener("mouseleave", stopLongPress);
     };
 
     const initWorker = () => {
         return new Promise((resolve, reject) => {
-            if (!'Worker' in window) {
+            if (!('Worker' in window)) {
                 reject(new Error("Web Workers are not supported in this browser."));
                 return;
             }
