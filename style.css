@@ -414,7 +414,7 @@ input[type="number"].filter-item-interactive:focus-visible, select.filter-item-i
 }
 
 .skill-rainbow { 
-    font-size: 1.2rem; 
+    font-size: 1.25rem; 
     background: var(--rainbow-gradient);
 }
 .skill-pink { 
@@ -422,14 +422,15 @@ input[type="number"].filter-item-interactive:focus-visible, select.filter-item-i
     background: linear-gradient(137.5deg, #ffefef, #ff9ad6);
 }
 .skill-yellow { 
-    font-size: 1.0rem;
-    font-weight: 500;
+    font-size: 1.05rem;
+    font-weight: 700;
     background: linear-gradient(137.5deg, #ffffef, #ffbe29);
 }
 .skill-white { 
-    font-size: 0.95rem;
-    font-weight: 500;
-    background: linear-gradient(137.5deg, #ffffff, #bdbece);
+    font-size: 0.9rem; 
+    font-weight: 500; 
+    word-spacing: -1px; 
+    background: linear-gradient(137.5deg, #ffffff, #bdbece); 
 }
 
 @keyframes skeleton-loading { 0% { background-position: -200px 0; } 100% { background-position: calc(200px + 100%) 0; } }
@@ -564,4 +565,5 @@ html[data-theme="dark"] #dark-mode-toggle:hover .material-symbols-outlined {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
   .button:hover, .scroll-buttons button:hover, .character-card:hover { transform: none; }
 }
+
 
