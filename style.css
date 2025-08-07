@@ -416,21 +416,19 @@ input[type="number"].filter-item-interactive:focus-visible, select.filter-item-i
 .skill-rainbow { 
     font-size: 1.2rem; 
     background: var(--rainbow-gradient);
-    color: #794016;
-    text-shadow: 
-        0 0 0.7px #FFFFFF, 
-        0.7px 0.7px 0.7px #FFFFFF, 
-        -0.7px -0.7px 0.7px #FFFFFF, 
-        0.7px -0.7px 0.7px #FFFFFF, 
-        -0.7px 0.7px 0.7px #FFFFFF;
 }
 .skill-pink { 
+    font-size: 1.1rem;
     background: linear-gradient(137.5deg, #ffefef, #ff9ad6);
 }
-.skill-yellow {
+.skill-yellow { 
+    font-size: 1.0rem;
+    font-weight: 500;
     background: linear-gradient(137.5deg, #ffffef, #ffbe29);
 }
-.skill-white {
+.skill-white { 
+    font-size: 0.95rem;
+    font-weight: 500;
     background: linear-gradient(137.5deg, #ffffff, #bdbece);
 }
 
@@ -566,3 +564,4 @@ html[data-theme="dark"] #dark-mode-toggle:hover .material-symbols-outlined {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
   .button:hover, .scroll-buttons button:hover, .character-card:hover { transform: none; }
 }
+
