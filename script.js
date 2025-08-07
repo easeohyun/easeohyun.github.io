@@ -563,8 +563,8 @@
             setLoadingState(false);
             DOM.resultSummary.innerHTML = `
                 <div style="color:var(--color-danger); text-align:center;">
-                    <p><strong>Error:</strong> Failed to load a core feature of the page.</p>
-                    <p>Please check browser compatibility or refresh the page.</p>
+                    <p><strong>오류:</strong> 여기서 꼭 필요한 기능을 불러오지 못했어요.</p>
+                    <p>새로고침을 해보세요. 최신 버전의 브라우저, 다른 브라우저를 사용하는 것도 방법이에요.</p>
                 </div>`;
             return;
         }
@@ -581,8 +581,8 @@
             setLoadingState(false);
             DOM.resultSummary.innerHTML = `
                 <div style="color:var(--color-danger); text-align:center;">
-                    <p><strong>Error:</strong> Could not load character data.</p>
-                    <p>Please check your network connection or refresh the page.</p>
+                    <p><strong>오류:</strong> 우마무스메 데이터를 불러오지 못했어요.</p>
+                    <p>인터넷에 연결이 잘 되었는지 확인하고 새로고침을 부탁드려요!</p>
                 </div>`;
         } finally {
             updateScrollButtonsVisibility();
