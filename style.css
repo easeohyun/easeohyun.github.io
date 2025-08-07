@@ -216,7 +216,7 @@ footer p { margin: var(--spacing-sm, 8px) 0; }
 #filter-dirt label { --icon-content: 'landslide'; }
 #filter-speed label { --icon-content: 'podiatry'; }
 #filter-stamina label { --icon-content: 'favorite'; }
-#filter-power label { --icon-content: 'humerus_alt'; }
+#filter-power label { --icon-content: 'ulna_radius_alt'; }
 #filter-guts label { --icon-content: 'mode_heat'; }
 #filter-wit label { --icon-content: 'school'; }
 #filter-short label, #filter-mile label, #filter-medium label, #filter-long label { --icon-content: 'directions_run'; }
@@ -230,7 +230,7 @@ footer p { margin: var(--spacing-sm, 8px) 0; }
 #filter-guts input:checked + label { --icon-color: #ff6fac; }
 #filter-wit input:checked + label { --icon-color: #22bf7d; }
 
-#filter-power input:checked + label::before { --icon-content: 'ulna_radius_alt'; }
+#filter-power input:checked + label::before { --icon-content: 'humerus_alt'; }
 #filter-short input:checked + label::before,
 #filter-mile input:checked + label::before,
 #filter-medium input:checked + label::before,
@@ -566,4 +566,3 @@ html[data-theme="dark"] #dark-mode-toggle:hover .material-symbols-outlined {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
   .button:hover, .scroll-buttons button:hover, .character-card:hover { transform: none; }
 }
-
