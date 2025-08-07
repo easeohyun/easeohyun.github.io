@@ -36,6 +36,10 @@
         longPressTimer: null,
         longPressInterval: null,
     };
+    
+    const getRandomMessage = (messages) => {
+        return messages[Math.floor(Math.random() * messages.length)];
+    };
 
     const debounce = (func, delay) => {
         let timeout;
@@ -180,7 +184,7 @@
         if (isLoading) {
             DOM.characterList.innerHTML = "";
             DOM.resultSummary.setAttribute('aria-live', 'assertive');
-            DOM.resultSummary.textContent = message;
+            DOM.resultSummary.innerHTML = message;
         } else {
             DOM.resultSummary.setAttribute('aria-live', 'polite');
         }
@@ -198,7 +202,7 @@
         if (count === 0 && hasActiveFilters) {
             characterList.style.display = "none";
             noResultsContainer.style.display = "block";
-            resultSummary.textContent = "";
+            resultSummary.innerHTML = "";
             return;
         }
 
@@ -207,21 +211,49 @@
 
         let summaryText = "";
         if (!hasActiveFilters) {
-            summaryText = `트레센 학원에 어서오세요, ${state.allCharacters.length}명의 우마무스메를 만날 수 있답니다!`;
+            const messages = [
+                `트레센 학원에 어서오세요, 이렇게 많은 친구들은 처음이죠?<p>지금부터 <strong>${state.allCharacters.length}</strong>명의 우마무스메 중에서 3년을 함께할 학생을 찾아봐요.</p>`
+            ];
+            summaryText = getRandomMessage(messages);
         } else {
             if (count === 1) {
-                summaryText = "당신이 찾던 그 우마무스메가... 딱 1명 있네요! 찾았어요!";
-            } else if (count > 1 && count <= 5) {
-                summaryText = `당신이 찾던 그 우마무스메가... ${count}명 있어요!`;
-            } else if (count > 5 && count <= 15) {
-                summaryText = `당신이 찾는 그 우마무스메가... ${count}명 중에 있을 것 같아요.`;
-            } else if (count > 15 && count <= 50) {
-                summaryText = `당신이 찾는 그 우마무스메가... ${count}명 중에 있는 것 맞죠?`;
+                const messages = [
+                    "당신이 찾던 그 우마무스메가... 딱 <strong>1명</strong> 있었어요!",
+                    "앞으로 3년을 함께할 우마무스메를 <strong>1명</strong> 찾았어요.",
+                    "지금 이 <strong>1명</strong>과 만남은 운명, 꿈은 목표."
+                ];
+                summaryText = getRandomMessage(messages);
+            } else if (count >= 2 && count <= 5) {
+                const messages = [
+                    `당신이 찾던 그 우마무스메는... <strong>${count}</strong>명 중에 있을 거예요.`,
+                    `<strong>${count}</strong>명의 우마무스메를 찾았어요. 어떤 옷을 입히고 싶으신가요?`,
+                    `<strong>${count}</strong>명의 우마무스메 중에서, 결정이 필요할 거예요.`
+                ];
+                summaryText = getRandomMessage(messages);
+            } else if (count >= 6 && count <= 15) {
+                const messages = [
+                    `당신이 찾던 그 우마무스메는... <strong>${count}</strong>명 중에 있을 것 같아요.`,
+                    `<strong>${count}</strong>명의 우마무스메를 찾았어요. 아직은 좀 많죠?`,
+                    `<strong>${count}</strong>명의 우마무스메 중에서, 간추릴 필요가 있어요.`
+                ];
+                summaryText = getRandomMessage(messages);
+            } else if (count >= 16 && count <= 50) {
+                 const messages = [
+                    `당신이 찾는 그 우마무스메는... <strong>${count}</strong>명 중에 있는 것 맞죠?`,
+                    `<strong>${count}</strong>명의 우마무스메를 찾았는데요, 더 둘러봐야 해요.`,
+                    `<strong>${count}</strong>명의 우마무스메 중에서, 대체 어디있을까요?`
+                ];
+                summaryText = getRandomMessage(messages);
             } else {
-                summaryText = `당신이 찾는 그 우마무스메가... ${count}명 중에 있기를 바랍니다!`;
+                const messages = [
+                    `당신이 찾는 그 우마무스메가... <strong>${count}</strong>명 중에 있기를 바랍니다!`,
+                    `<strong>${count}</strong>명의 우마무스메를 찾았는데요, 이제 시작이에요.`,
+                    `<strong>${count}</strong>명의 우마무스메 중에서, 이제 찾아볼까요?`
+                ];
+                summaryText = getRandomMessage(messages);
             }
         }
-        resultSummary.textContent = summaryText;
+        resultSummary.innerHTML = summaryText;
         
         state.observer = new IntersectionObserver((entries, obs) => {
             entries.forEach(entry => {
