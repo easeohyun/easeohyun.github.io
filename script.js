@@ -207,7 +207,7 @@
             });
             return rowDiv;
         };
-
+        
         const skillContainer = card.querySelector(".skill-container");
         const skillsMap = {
             rainbow: char.skills?.rainbow,
@@ -231,18 +231,18 @@
     };
     
     const setLoadingState = (isLoading, message = "") => {
-        if (isLoading) {
-            if (DOM.characterList) DOM.characterList.innerHTML = "";
-            if (DOM.resultSummary) {
-                DOM.resultSummary.setAttribute('aria-live', 'assertive');
-                DOM.resultSummary.innerHTML = message;
-            }
-        } else {
-            if (DOM.resultSummary) {
-                DOM.resultSummary.setAttribute('aria-live', 'polite');
-            }
+    if (isLoading) {
+        if (DOM.characterList) DOM.characterList.innerHTML = "";
+        if (DOM.resultSummary) {
+            DOM.resultSummary.setAttribute('aria-live', 'assertive');
+            DOM.resultSummary.innerHTML = message;
         }
-    };
+    } else {
+        if (DOM.resultSummary) {
+            DOM.resultSummary.setAttribute('aria-live', 'polite');
+        }
+    }
+};
     
     const renderCharacters = (charactersToRender, isFiltered) => {
         const { characterList, noResultsContainer, resultSummary } = DOM;
@@ -515,22 +515,22 @@
         });
 
         DOM.contactEmailLink.addEventListener("click", function(e) {
-            e.preventDefault();
-            const isRevealed = this.dataset.revealed === "true";
+    e.preventDefault();
+    const isRevealed = this.dataset.revealed === "true";
 
-            if (!isRevealed) {
-                const user = "easeohyun";
-                const domain = "gmail.com";
-                const email = `${user}@${domain}`; 
-                this.textContent = email;
-                this.href = `mailto:${email}`;
-                this.dataset.revealed = "true";
-            }
+    if (!isRevealed) {
+        const user = "easeohyun";
+        const domain = "gmail.com";
+        const email = `${user}@${domain}`; 
+        this.textContent = email;
+        this.href = `mailto:${email}`;
+        this.dataset.revealed = "true";
+    }
 
-            if (confirm(`메일 클라이언트를 열어 '${this.textContent}' 주소로 메일을 보내시겠습니까?`)) {
-                window.open(this.href, '_blank');
-            }
-        });
+    if (confirm(`메일 클라이언트를 열어 '${this.textContent}' 주소로 메일을 보내시겠습니까?`)) {
+        window.open(this.href, '_blank');
+    }
+});
 
         document.addEventListener("keydown", handleKeyboardShortcuts);
         window.addEventListener("scroll", debounce(updateScrollButtonsVisibility, 150));
@@ -604,8 +604,8 @@
         });
     };
     
-    const fetchJsonData = async (path, options = { cache: 'no-cache' }) => {
-        const response = await fetch(path, options);
+    const fetchJsonData = async (path) => {
+        const response = await fetch(path, { cache: 'no-cache' });
         if (!response.ok) {
             throw new Error(`HTTP ${response.status} - ${response.statusText} at ${path}`);
         }
@@ -646,7 +646,7 @@
         try {
             const [characters, skillDescriptions] = await Promise.all([
                 fetchJsonData(CHARACTERS_JSON_PATH),
-                fetchJsonData(SKILL_DESCRIPTIONS_JSON_PATH, { cache: 'force-cache' })
+                fetchJsonData(SKILL_DESCRIPTIONS_JSON_PATH)
             ]);
             
             state.allCharacters = characters;
