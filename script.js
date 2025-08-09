@@ -3,10 +3,12 @@
 
     const GRADE_MAP = Object.freeze({ S: 8, A: 7, B: 6, C: 5, D: 4, E: 3, F: 2, G: 1 });
     const CHARACTERS_JSON_PATH = "./characters.json";
+    const SKILL_DESCRIPTIONS_PATH = "./skill-descriptions.json";
     const DEBOUNCE_DELAY = 250;
 
     const DOM = {
         html: document.documentElement,
+        body: document.body,
         filterForm: document.getElementById("filter-form"),
         characterList: document.getElementById("character-list"),
         resultSummary: document.getElementById("result-summary"),
@@ -30,12 +32,14 @@
 
     const state = {
         allCharacters: [],
+        skillDescriptions: {},
         observer: null,
         worker: null,
         themeTransitionTimeout: null,
         longPressTimer: null,
         longPressInterval: null,
         isModalOpen: false,
+        activeTooltip: null,
     };
     
     const getRandomMessage = (messages) => {
@@ -115,7 +119,7 @@
 
         return groupDiv;
     };
-
+    
     const createCharacterCard = (char) => {
         const card = DOM.cardTemplate.content.cloneNode(true).firstElementChild;
         card.dataset.id = char.id;
@@ -151,9 +155,12 @@
             const rowDiv = document.createElement('div');
             rowDiv.className = 'skill-row';
             skills.forEach(skill => {
+                if (!skill) return;
                 const slotDiv = document.createElement('div');
-                slotDiv.className = `skill-slot skill-${color}`;
-                slotDiv.textContent = skill || "";
+                slotDiv.className = `skill-slot skill-interactive skill-${color}`;
+                slotDiv.textContent = skill;
+                slotDiv.setAttribute('role', 'button');
+                slotDiv.setAttribute('tabindex', '0');
                 rowDiv.appendChild(slotDiv);
             });
             return rowDiv;
@@ -180,20 +187,20 @@
 
         return card;
     };
-    
+
     const setLoadingState = (isLoading, message = "") => {
-    if (isLoading) {
-        if (DOM.characterList) DOM.characterList.innerHTML = "";
-        if (DOM.resultSummary) {
-            DOM.resultSummary.setAttribute('aria-live', 'assertive');
-            DOM.resultSummary.innerHTML = message;
+        if (isLoading) {
+            if (DOM.characterList) DOM.characterList.innerHTML = "";
+            if (DOM.resultSummary) {
+                DOM.resultSummary.setAttribute('aria-live', 'assertive');
+                DOM.resultSummary.innerHTML = message;
+            }
+        } else {
+            if (DOM.resultSummary) {
+                DOM.resultSummary.setAttribute('aria-live', 'polite');
+            }
         }
-    } else {
-        if (DOM.resultSummary) {
-            DOM.resultSummary.setAttribute('aria-live', 'polite');
-        }
-    }
-};
+    };
     
     const renderCharacters = (charactersToRender, isFiltered) => {
         const { characterList, noResultsContainer, resultSummary } = DOM;
@@ -326,9 +333,7 @@
     
     const toggleAllSkills = () => {
         const allDetails = DOM.characterList.querySelectorAll(".skill-details");
-        if (allDetails.length === 0) {
-            return;
-        }
+        if (allDetails.length === 0) return;
 
         const shouldOpen = Array.from(allDetails).some(d => !d.open);
         allDetails.forEach(detail => detail.open = shouldOpen);
@@ -357,7 +362,9 @@
 
         if (event.key === 'Escape') {
             event.preventDefault();
-            if (state.isModalOpen) {
+            if (state.activeTooltip) {
+                hideTooltip();
+            } else if (state.isModalOpen) {
                 closeModal();
             } else if (isTyping) {
                 activeElement.blur();
@@ -367,8 +374,7 @@
             return;
         }
 
-        if (isTyping) return;
-        if (state.isModalOpen) return;
+        if (isTyping || state.isModalOpen) return;
 
         const shortcuts = {
             'q': () => DOM.searchBox.focus(),
@@ -434,6 +440,47 @@
         }, { once: true });
     };
 
+    const hideTooltip = () => {
+        if (state.activeTooltip) {
+            state.activeTooltip.remove();
+            state.activeTooltip = null;
+        }
+    };
+
+    const showTooltip = (target) => {
+        hideTooltip();
+
+        const skillName = target.textContent.trim();
+        const skillDescription = state.skillDescriptions[skillName];
+        if (!skillDescription) return;
+
+        const card = target.closest('.character-card');
+        const characterColor = card ? card.style.getPropertyValue('--character-color') : 'var(--color-primary)';
+
+        const tooltip = document.createElement('div');
+        tooltip.className = 'skill-tooltip';
+        tooltip.textContent = skillDescription;
+        tooltip.style.setProperty('--character-color', characterColor);
+        state.activeTooltip = tooltip;
+        DOM.body.appendChild(tooltip);
+
+        const targetRect = target.getBoundingClientRect();
+        const tooltipRect = tooltip.getBoundingClientRect();
+        
+        let top = targetRect.bottom + window.scrollY + 8;
+        let left = targetRect.left + window.scrollX + (targetRect.width / 2) - (tooltipRect.width / 2);
+
+        if (left < 0) left = 8;
+        if (left + tooltipRect.width > window.innerWidth) left = window.innerWidth - tooltipRect.width - 8;
+        if (top + tooltipRect.height > window.innerHeight + window.scrollY) {
+            top = targetRect.top + window.scrollY - tooltipRect.height - 8;
+        }
+
+        tooltip.style.top = `${top}px`;
+        tooltip.style.left = `${left}px`;
+        tooltip.style.opacity = 1;
+    };
+    
     const setupEventListeners = () => {
         const debouncedUpdate = debounce(updateDisplay, DEBOUNCE_DELAY);
         
@@ -460,37 +507,38 @@
         DOM.modalOverlay.addEventListener("click", closeModal);
         
         window.addEventListener('popstate', (event) => {
-            if (state.isModalOpen) {
-                closeModal();
-            }
+            if (state.isModalOpen) closeModal();
         });
 
         DOM.contactEmailLink.addEventListener("click", function(e) {
-    e.preventDefault();
-    const isRevealed = this.dataset.revealed === "true";
-
-    if (!isRevealed) {
-        const user = "easeohyun";
-        const domain = "gmail.com";
-        const email = `${user}@${domain}`; 
-        this.textContent = email;
-        this.href = `mailto:${email}`;
-        this.dataset.revealed = "true";
-    }
-
-    if (confirm(`메일 클라이언트를 열어 '${this.textContent}' 주소로 메일을 보내시겠습니까?`)) {
-        window.open(this.href, '_blank');
-    }
-});
+            e.preventDefault();
+            const isRevealed = this.dataset.revealed === "true";
+            if (!isRevealed) {
+                const user = "easeohyun";
+                const domain = "gmail.com";
+                const email = `${user}@${domain}`; 
+                this.textContent = email;
+                this.href = `mailto:${email}`;
+                this.dataset.revealed = "true";
+            }
+            if (confirm(`메일 클라이언트를 열어 '${this.textContent}' 주소로 메일을 보내시겠습니까?`)) {
+                window.open(this.href, '_blank');
+            }
+        });
 
         document.addEventListener("keydown", handleKeyboardShortcuts);
-        window.addEventListener("scroll", debounce(updateScrollButtonsVisibility, 150));
-        window.addEventListener("resize", debounce(updateScrollButtonsVisibility, 150));
+        window.addEventListener("scroll", debounce(() => {
+            updateScrollButtonsVisibility();
+            hideTooltip();
+        }, 150));
+        window.addEventListener("resize", debounce(() => {
+            updateScrollButtonsVisibility();
+            hideTooltip();
+        }, 150));
         
         DOM.filterForm.addEventListener("mousedown", e => {
             if (!e.target.classList.contains("spinner-btn")) return;
             e.preventDefault();
-
             const wrapper = e.target.closest(".number-input-wrapper");
             if (!wrapper) return;
             const input = wrapper.querySelector('input[type="number"]');
@@ -501,19 +549,12 @@
                 let value = parseFloat(input.value) || 0;
                 const min = parseFloat(input.min) || 0;
                 const max = parseFloat(input.max) || 30;
-
-                if (e.target.classList.contains("up")) {
-                    value = Math.min(max, value + step);
-                } else if (e.target.classList.contains("down")) {
-                    value = Math.max(min, value - step);
-                }
+                if (e.target.classList.contains("up")) value = Math.min(max, value + step);
+                else if (e.target.classList.contains("down")) value = Math.max(min, value - step);
                 input.value = value;
-                const inputEvent = new Event('input', { bubbles: true, cancelable: true });
-                input.dispatchEvent(inputEvent);
+                input.dispatchEvent(new Event('input', { bubbles: true, cancelable: true }));
             };
-            
             changeValue();
-
             state.longPressTimer = setTimeout(() => {
                 state.longPressInterval = setInterval(changeValue, 100);
             }, 500);
@@ -523,53 +564,72 @@
             clearTimeout(state.longPressTimer);
             clearInterval(state.longPressInterval);
         };
-
         document.addEventListener("mouseup", stopLongPress);
         document.addEventListener("mouseleave", stopLongPress);
+
+        DOM.characterList.addEventListener('mouseover', e => {
+            const target = e.target.closest('.skill-interactive');
+            if (target) showTooltip(target);
+        });
+        DOM.characterList.addEventListener('mouseout', e => {
+            if (e.target.closest('.skill-interactive')) hideTooltip();
+        });
+        DOM.characterList.addEventListener('click', e => {
+            const target = e.target.closest('.skill-interactive');
+            if (target) {
+                if (state.activeTooltip && state.activeTooltip.target === target) {
+                    hideTooltip();
+                } else {
+                    showTooltip(target);
+                    state.activeTooltip.target = target; 
+                }
+            }
+        });
+        DOM.characterList.addEventListener('keydown', e => {
+            const target = e.target.closest('.skill-interactive');
+            if (target && (e.key === 'Enter' || e.key === ' ')) {
+                e.preventDefault();
+                showTooltip(target);
+            }
+        });
+        document.addEventListener('click', e => {
+            if (!e.target.closest('.skill-interactive') && !e.target.closest('.skill-tooltip')) {
+                hideTooltip();
+            }
+        });
     };
 
     const initWorker = () => {
         return new Promise((resolve, reject) => {
             if (!('Worker' in window)) {
-                reject(new Error("Web Workers are not supported in this browser."));
-                return;
+                return reject(new Error("Web Workers are not supported in this browser."));
             }
             const worker = new Worker('./workers/filterWorker.js');
             worker.onmessage = e => {
                 const { type, payload } = e.data;
-                if (type === 'filtered') {
-                    renderCharacters(payload, true);
-                }
+                if (type === 'filtered') renderCharacters(payload, true);
             };
             worker.onerror = error => {
                 console.error(`Web Worker error: ${error.message}`, error);
                 setLoadingState(false);
-                DOM.resultSummary.innerHTML = `
-                    <div style="color:red; text-align:center;">
-                        <p><strong>Error:</strong> An error occurred while processing data.</p>
-                        <p>Please refresh the page.</p>
-                    </div>`;
+                DOM.resultSummary.innerHTML = `<div style="color:red; text-align:center;"><p><strong>Error:</strong> An error occurred while processing data.</p><p>Please refresh the page.</p></div>`;
                 reject(error);
             };
             resolve(worker);
         });
     };
     
-    const fetchCharacters = async () => {
-        const response = await fetch(CHARACTERS_JSON_PATH, { cache: 'no-cache' });
+    const fetchData = async (url) => {
+        const response = await fetch(url, { cache: 'no-cache' });
         if (!response.ok) {
-            throw new Error(`HTTP ${response.status} - ${response.statusText}`);
+            throw new Error(`HTTP ${response.status} - ${response.statusText} for ${url}`);
         }
         return await response.json();
     };
 
     const initializeApp = async () => {
         const style = document.createElement('style');
-        style.textContent = `
-            .theme-transition, .theme-transition *, .theme-transition *::before, .theme-transition *::after {
-                transition: background-color 150ms ease-out, color 150ms ease-out, border-color 150ms ease-out !important;
-            }
-        `;
+        style.textContent = `.theme-transition, .theme-transition *, .theme-transition *::before, .theme-transition *::after { transition: background-color 150ms ease-out, color 150ms ease-out, border-color 150ms ease-out !important; }`;
         document.head.appendChild(style);
 
         setupEventListeners();
@@ -586,29 +646,26 @@
         } catch (error) {
             console.error("Failed to initialize Web Worker:", error);
             setLoadingState(false);
-            DOM.resultSummary.innerHTML = `
-                <div style="color:var(--color-danger); text-align:center;">
-                    <p><strong>오류:</strong> 여기서 꼭 필요한 기능을 불러오지 못했어요.</p>
-                    <p>새로고침을 해보세요. 최신 버전의 브라우저, 다른 브라우저를 사용하는 것도 방법이에요.</p>
-                </div>`;
+            DOM.resultSummary.innerHTML = `<div style="color:var(--color-danger); text-align:center;"><p><strong>오류:</strong> 여기서 꼭 필요한 기능을 불러오지 못했어요.</p><p>새로고침을 해보세요. 최신 버전의 브라우저, 다른 브라우저를 사용하는 것도 방법이에요.</p></div>`;
             return;
         }
 
         try {
-            const characters = await fetchCharacters();
+            const [characters, skillDescriptions] = await Promise.all([
+                fetchData(CHARACTERS_JSON_PATH),
+                fetchData(SKILL_DESCRIPTIONS_PATH)
+            ]);
+            
             state.allCharacters = characters;
+            state.skillDescriptions = skillDescriptions;
             
             state.worker.postMessage({ type: 'init', payload: { characters: state.allCharacters } });
             renderCharacters(state.allCharacters, false);
 
         } catch (error) {
-            console.error("Failed to load character data:", error);
+            console.error("Failed to load data:", error);
             setLoadingState(false);
-            DOM.resultSummary.innerHTML = `
-                <div style="color:var(--color-danger); text-align:center;">
-                    <p><strong>오류:</strong> 우마무스메 데이터를 불러오지 못했어요.</p>
-                    <p>인터넷에 연결이 잘 되었는지 확인하고 새로고침을 부탁드려요!</p>
-                </div>`;
+            DOM.resultSummary.innerHTML = `<div style="color:var(--color-danger); text-align:center;"><p><strong>오류:</strong> 데이터를 불러오지 못했어요.</p><p>인터넷에 연결이 잘 되었는지 확인하고 새로고침을 부탁드려요!</p></div>`;
         } finally {
             updateScrollButtonsVisibility();
         }
@@ -617,5 +674,3 @@
     document.addEventListener("DOMContentLoaded", initializeApp);
 
 })();
-
-
