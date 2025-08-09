@@ -3,12 +3,10 @@
 
     const GRADE_MAP = Object.freeze({ S: 8, A: 7, B: 6, C: 5, D: 4, E: 3, F: 2, G: 1 });
     const CHARACTERS_JSON_PATH = "./characters.json";
-    const SKILL_DESCRIPTIONS_JSON_PATH = "./skill-descriptions.json";
     const DEBOUNCE_DELAY = 250;
 
     const DOM = {
         html: document.documentElement,
-        body: document.body,
         filterForm: document.getElementById("filter-form"),
         characterList: document.getElementById("character-list"),
         resultSummary: document.getElementById("result-summary"),
@@ -32,16 +30,14 @@
 
     const state = {
         allCharacters: [],
-        skillDescriptions: {},
         observer: null,
         worker: null,
         themeTransitionTimeout: null,
         longPressTimer: null,
         longPressInterval: null,
         isModalOpen: false,
-        tooltip: null,
     };
-
+    
     const getRandomMessage = (messages) => {
         return messages[Math.floor(Math.random() * messages.length)];
     };
@@ -52,40 +48,6 @@
             clearTimeout(timeout);
             timeout = setTimeout(() => func.apply(this, args), delay);
         };
-    };
-
-    const createTooltip = () => {
-        const tooltipEl = document.createElement('div');
-        tooltipEl.className = 'skill-tooltip';
-        DOM.body.appendChild(tooltipEl);
-        return tooltipEl;
-    };
-
-    const showTooltip = (e, content, color) => {
-        if (!state.tooltip) state.tooltip = createTooltip();
-        const tooltip = state.tooltip;
-
-        tooltip.innerHTML = content;
-        tooltip.style.setProperty('--character-color', color);
-
-        const targetRect = e.target.getBoundingClientRect();
-        tooltip.style.left = `${e.clientX}px`;
-        tooltip.style.top = `${targetRect.bottom + window.scrollY + 5}px`;
-        tooltip.classList.add('visible');
-
-        const tooltipRect = tooltip.getBoundingClientRect();
-        if (tooltipRect.right > window.innerWidth - 10) {
-            tooltip.style.left = `${window.innerWidth - tooltipRect.width - 10}px`;
-        }
-        if (tooltipRect.left < 10) {
-            tooltip.style.left = '10px';
-        }
-    };
-
-    const hideTooltip = () => {
-        if (state.tooltip) {
-            state.tooltip.classList.remove('visible');
-        }
     };
 
     const setCheckboxIcons = () => {
@@ -184,25 +146,14 @@
             if (groupEl) statsContainer.appendChild(groupEl);
         }
 
-        const createSkillRow = (skills, color, charColor) => {
+        const createSkillRow = (skills, color) => {
             if (!skills || skills.length === 0) return null;
             const rowDiv = document.createElement('div');
             rowDiv.className = 'skill-row';
-            skills.forEach(skillName => {
-                if (!skillName) return;
+            skills.forEach(skill => {
                 const slotDiv = document.createElement('div');
                 slotDiv.className = `skill-slot skill-${color}`;
-                slotDiv.textContent = skillName;
-                slotDiv.tabIndex = 0;
-
-                const description = state.skillDescriptions[skillName] || "설명을 찾을 수 없습니다.";
-                const tooltipContent = `<strong>${skillName}</strong><p>${description}</p>`;
-
-                slotDiv.addEventListener('mouseenter', (e) => showTooltip(e, tooltipContent, charColor));
-                slotDiv.addEventListener('mouseleave', hideTooltip);
-                slotDiv.addEventListener('focus', (e) => showTooltip(e, tooltipContent, charColor));
-                slotDiv.addEventListener('blur', hideTooltip);
-
+                slotDiv.textContent = skill || "";
                 rowDiv.appendChild(slotDiv);
             });
             return rowDiv;
@@ -216,7 +167,7 @@
             white: char.skills?.white,
         };
         for (const [color, skills] of Object.entries(skillsMap)) {
-            const row = createSkillRow(skills, color, char.color);
+            const row = createSkillRow(skills, color);
             if (row) skillContainer.appendChild(row);
         }
         
@@ -604,10 +555,10 @@
         });
     };
     
-    const fetchJsonData = async (path) => {
-        const response = await fetch(path, { cache: 'no-cache' });
+    const fetchCharacters = async () => {
+        const response = await fetch(CHARACTERS_JSON_PATH, { cache: 'no-cache' });
         if (!response.ok) {
-            throw new Error(`HTTP ${response.status} - ${response.statusText} at ${path}`);
+            throw new Error(`HTTP ${response.status} - ${response.statusText}`);
         }
         return await response.json();
     };
@@ -644,23 +595,18 @@
         }
 
         try {
-            const [characters, skillDescriptions] = await Promise.all([
-                fetchJsonData(CHARACTERS_JSON_PATH),
-                fetchJsonData(SKILL_DESCRIPTIONS_JSON_PATH)
-            ]);
-            
+            const characters = await fetchCharacters();
             state.allCharacters = characters;
-            state.skillDescriptions = skillDescriptions;
             
             state.worker.postMessage({ type: 'init', payload: { characters: state.allCharacters } });
             renderCharacters(state.allCharacters, false);
 
         } catch (error) {
-            console.error("Failed to load data:", error);
+            console.error("Failed to load character data:", error);
             setLoadingState(false);
             DOM.resultSummary.innerHTML = `
                 <div style="color:var(--color-danger); text-align:center;">
-                    <p><strong>오류:</strong> 데이터를 불러오지 못했어요.</p>
+                    <p><strong>오류:</strong> 우마무스메 데이터를 불러오지 못했어요.</p>
                     <p>인터넷에 연결이 잘 되었는지 확인하고 새로고침을 부탁드려요!</p>
                 </div>`;
         } finally {
@@ -671,3 +617,5 @@
     document.addEventListener("DOMContentLoaded", initializeApp);
 
 })();
+
+
