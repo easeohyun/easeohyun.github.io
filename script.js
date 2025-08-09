@@ -3,10 +3,12 @@
 
     const GRADE_MAP = Object.freeze({ S: 8, A: 7, B: 6, C: 5, D: 4, E: 3, F: 2, G: 1 });
     const CHARACTERS_JSON_PATH = "./characters.json";
+    const SKILL_DESCRIPTIONS_JSON_PATH = "./skill-descriptions.json";
     const DEBOUNCE_DELAY = 250;
 
     const DOM = {
         html: document.documentElement,
+        body: document.body,
         filterForm: document.getElementById("filter-form"),
         characterList: document.getElementById("character-list"),
         resultSummary: document.getElementById("result-summary"),
@@ -30,14 +32,16 @@
 
     const state = {
         allCharacters: [],
+        skillDescriptions: {},
         observer: null,
         worker: null,
         themeTransitionTimeout: null,
         longPressTimer: null,
         longPressInterval: null,
         isModalOpen: false,
+        activeTooltip: null,
     };
-    
+
     const getRandomMessage = (messages) => {
         return messages[Math.floor(Math.random() * messages.length)];
     };
@@ -48,6 +52,52 @@
             clearTimeout(timeout);
             timeout = setTimeout(() => func.apply(this, args), delay);
         };
+    };
+    
+    const showTooltip = (skillSlot, skillName) => {
+        if (state.activeTooltip) hideTooltip();
+
+        const description = state.skillDescriptions[skillName] || "설명을 찾을 수 없습니다.";
+        const characterCard = skillSlot.closest('.character-card');
+        const characterColor = characterCard ? characterCard.style.getPropertyValue('--character-color') : 'var(--color-primary)';
+
+        const tooltip = document.createElement('div');
+        tooltip.className = 'skill-tooltip';
+        tooltip.style.setProperty('--character-color', characterColor);
+        tooltip.innerHTML = `<strong>${skillName}</strong><p>${description}</p>`;
+        
+        DOM.body.appendChild(tooltip);
+        state.activeTooltip = tooltip;
+
+        const rect = skillSlot.getBoundingClientRect();
+        const tooltipRect = tooltip.getBoundingClientRect();
+
+        let top = rect.bottom + window.scrollY + 5;
+        let left = rect.left + window.scrollX + (rect.width - tooltipRect.width) / 2;
+
+        if (left < 10) left = 10;
+        if (left + tooltipRect.width > window.innerWidth - 10) {
+            left = window.innerWidth - tooltipRect.width - 10;
+        }
+        if (top + tooltipRect.height > window.innerHeight + window.scrollY - 10) {
+            top = rect.top + window.scrollY - tooltipRect.height - 5;
+        }
+
+        tooltip.style.top = `${top}px`;
+        tooltip.style.left = `${left}px`;
+        
+        requestAnimationFrame(() => {
+            tooltip.classList.add('visible');
+        });
+    };
+    
+    const hideTooltip = () => {
+        if (!state.activeTooltip) return;
+        state.activeTooltip.classList.remove('visible');
+        state.activeTooltip.addEventListener('transitionend', () => {
+            state.activeTooltip?.remove();
+            state.activeTooltip = null;
+        }, { once: true });
     };
 
     const setCheckboxIcons = () => {
@@ -150,10 +200,19 @@
             if (!skills || skills.length === 0) return null;
             const rowDiv = document.createElement('div');
             rowDiv.className = 'skill-row';
-            skills.forEach(skill => {
+            skills.forEach(skillName => {
                 const slotDiv = document.createElement('div');
                 slotDiv.className = `skill-slot skill-${color}`;
-                slotDiv.textContent = skill || "";
+                slotDiv.textContent = skillName || "";
+                slotDiv.tabIndex = 0;
+                slotDiv.setAttribute('role', 'button');
+                slotDiv.setAttribute('aria-label', `${skillName} 스킬 정보`);
+                
+                slotDiv.addEventListener('mouseenter', () => showTooltip(slotDiv, skillName));
+                slotDiv.addEventListener('mouseleave', hideTooltip);
+                slotDiv.addEventListener('focus', () => showTooltip(slotDiv, skillName));
+                slotDiv.addEventListener('blur', hideTooltip);
+
                 rowDiv.appendChild(slotDiv);
             });
             return rowDiv;
@@ -182,18 +241,18 @@
     };
     
     const setLoadingState = (isLoading, message = "") => {
-    if (isLoading) {
-        if (DOM.characterList) DOM.characterList.innerHTML = "";
-        if (DOM.resultSummary) {
-            DOM.resultSummary.setAttribute('aria-live', 'assertive');
-            DOM.resultSummary.innerHTML = message;
+        if (isLoading) {
+            if (DOM.characterList) DOM.characterList.innerHTML = "";
+            if (DOM.resultSummary) {
+                DOM.resultSummary.setAttribute('aria-live', 'assertive');
+                DOM.resultSummary.innerHTML = message;
+            }
+        } else {
+            if (DOM.resultSummary) {
+                DOM.resultSummary.setAttribute('aria-live', 'polite');
+            }
         }
-    } else {
-        if (DOM.resultSummary) {
-            DOM.resultSummary.setAttribute('aria-live', 'polite');
-        }
-    }
-};
+    };
     
     const renderCharacters = (charactersToRender, isFiltered) => {
         const { characterList, noResultsContainer, resultSummary } = DOM;
@@ -357,7 +416,9 @@
 
         if (event.key === 'Escape') {
             event.preventDefault();
-            if (state.isModalOpen) {
+            if (state.activeTooltip) {
+                hideTooltip();
+            } else if (state.isModalOpen) {
                 closeModal();
             } else if (isTyping) {
                 activeElement.blur();
@@ -466,22 +527,22 @@
         });
 
         DOM.contactEmailLink.addEventListener("click", function(e) {
-    e.preventDefault();
-    const isRevealed = this.dataset.revealed === "true";
+            e.preventDefault();
+            const isRevealed = this.dataset.revealed === "true";
 
-    if (!isRevealed) {
-        const user = "easeohyun";
-        const domain = "gmail.com";
-        const email = `${user}@${domain}`; 
-        this.textContent = email;
-        this.href = `mailto:${email}`;
-        this.dataset.revealed = "true";
-    }
+            if (!isRevealed) {
+                const user = "easeohyun";
+                const domain = "gmail.com";
+                const email = `${user}@${domain}`; 
+                this.textContent = email;
+                this.href = `mailto:${email}`;
+                this.dataset.revealed = "true";
+            }
 
-    if (confirm(`메일 클라이언트를 열어 '${this.textContent}' 주소로 메일을 보내시겠습니까?`)) {
-        window.open(this.href, '_blank');
-    }
-});
+            if (confirm(`메일 클라이언트를 열어 '${this.textContent}' 주소로 메일을 보내시겠습니까?`)) {
+                window.open(this.href, '_blank');
+            }
+        });
 
         document.addEventListener("keydown", handleKeyboardShortcuts);
         window.addEventListener("scroll", debounce(updateScrollButtonsVisibility, 150));
@@ -555,10 +616,10 @@
         });
     };
     
-    const fetchCharacters = async () => {
-        const response = await fetch(CHARACTERS_JSON_PATH, { cache: 'no-cache' });
+    const fetchData = async (url) => {
+        const response = await fetch(url, { cache: 'no-cache' });
         if (!response.ok) {
-            throw new Error(`HTTP ${response.status} - ${response.statusText}`);
+            throw new Error(`HTTP ${response.status} - ${response.statusText} for ${url}`);
         }
         return await response.json();
     };
@@ -595,18 +656,23 @@
         }
 
         try {
-            const characters = await fetchCharacters();
+            const [characters, skillDescriptions] = await Promise.all([
+                fetchData(CHARACTERS_JSON_PATH),
+                fetchData(SKILL_DESCRIPTIONS_JSON_PATH)
+            ]);
+            
             state.allCharacters = characters;
+            state.skillDescriptions = skillDescriptions;
             
             state.worker.postMessage({ type: 'init', payload: { characters: state.allCharacters } });
             renderCharacters(state.allCharacters, false);
 
         } catch (error) {
-            console.error("Failed to load character data:", error);
+            console.error("Failed to load initial data:", error);
             setLoadingState(false);
             DOM.resultSummary.innerHTML = `
                 <div style="color:var(--color-danger); text-align:center;">
-                    <p><strong>오류:</strong> 우마무스메 데이터를 불러오지 못했어요.</p>
+                    <p><strong>오류:</strong> 데이터를 불러오지 못했어요.</p>
                     <p>인터넷에 연결이 잘 되었는지 확인하고 새로고침을 부탁드려요!</p>
                 </div>`;
         } finally {
@@ -617,5 +683,3 @@
     document.addEventListener("DOMContentLoaded", initializeApp);
 
 })();
-
-
