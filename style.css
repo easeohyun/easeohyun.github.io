@@ -244,7 +244,7 @@ footer p { margin: var(--spacing-sm, 8px) 0; }
 }
 
 html[data-theme="dark"] .filter-item:is(
-    #filter-short, #filter-mile, #filter-medium, #filter-long, 
+    #filter-short, #filter-mile, #filter-medium, #filter-long,
     #filter-front, #filter-pace, #filter-late, #filter-end
 ) input:checked + label::before {
     color: var(--color-text-primary);
@@ -390,54 +390,54 @@ input[type="number"].filter-item-interactive:focus-visible, select.filter-item-i
 .skill-summary::after { content: 'expand_more'; font-family: 'Material Symbols Outlined'; transition: transform var(--transition-fast); }
 .skill-details[open] > .skill-summary { color: var(--color-primary-deep); }
 .skill-details[open] > .skill-summary::after { transform: rotate(180deg); }
-.skill-container { 
-    padding-top: 1rem; 
-    display: flex; 
-    flex-direction: column; 
-    gap: 0.5rem; 
-    overflow: hidden; 
+.skill-container {
+    padding-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    overflow: hidden;
 }
 
 .skill-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 0.5rem; }
-.skill-slot { 
-    min-height: 3.3rem; 
-    border-radius: var(--radius-md); 
+.skill-slot {
+    min-height: 3.3rem;
+    border-radius: var(--radius-md);
     border: none;
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 0.935rem;
     font-weight: 700;
-    padding: 0.25rem 0.5rem; 
-    text-align: center; 
-    line-height: 1.3; 
+    padding: 0.25rem 0.5rem;
+    text-align: center;
+    line-height: 1.3;
     color: #794016;
-    text-shadow: 
-        0 0 0.7px #FFFFFF, 
-        0.7px 0.7px 0.7px #FFFFFF, 
-        -0.7px -0.7px 0.7px #FFFFFF, 
-        0.7px -0.7px 0.7px #FFFFFF, 
+    text-shadow:
+        0 0 0.7px #FFFFFF,
+        0.7px 0.7px 0.7px #FFFFFF,
+        -0.7px -0.7px 0.7px #FFFFFF,
+        0.7px -0.7px 0.7px #FFFFFF,
         -0.7px 0.7px 0.7px #FFFFFF;
 }
 
-.skill-rainbow { 
-    font-size: 1.25rem; 
+.skill-rainbow {
+    font-size: 1.25rem;
     background: var(--rainbow-gradient);
 }
-.skill-pink { 
+.skill-pink {
     font-size: 1.1rem;
     background: linear-gradient(137.5deg, #ffefef, #ff9ad6);
 }
-.skill-yellow { 
+.skill-yellow {
     font-size: 1.05rem;
     font-weight: 700;
     background: linear-gradient(137.5deg, #ffffef, #ffbe29);
 }
-.skill-white { 
-    font-size: 0.9rem; 
-    font-weight: 500; 
-    word-spacing: -1px; 
-    background: linear-gradient(137.5deg, #ffffff, #bdbece); 
+.skill-white {
+    font-size: 0.9rem;
+    font-weight: 500;
+    word-spacing: -1px;
+    background: linear-gradient(137.5deg, #ffffff, #bdbece);
 }
 
 @keyframes skeleton-loading { 0% { background-position: -200px 0; } 100% { background-position: calc(200px + 100%) 0; } }
@@ -463,19 +463,19 @@ html[data-theme="dark"] .skeleton .skeleton-text { background-color: hsl(var(--c
     align-items: center;
     justify-content: center;
 }
-.scroll-buttons button:hover { 
-    transform: scale(1.1); 
+.scroll-buttons button:hover {
+    transform: scale(1.1);
     box-shadow: var(--toggle-shadow-hover);
 }
-.scroll-buttons button.hidden { 
-    opacity: 0; 
-    pointer-events: none; 
-    transform: scale(0.5); 
+.scroll-buttons button.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.5);
 }
-#scroll-top:hover, #scroll-bottom:hover { 
-    background-color: var(--color-primary); 
-    border-color: var(--color-primary); 
-    color: white; 
+#scroll-top:hover, #scroll-bottom:hover {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    color: white;
 }
 #dark-mode-toggle:hover {
     background-color: var(--color-border-hover);
@@ -485,7 +485,7 @@ html[data-theme="dark"] .skeleton .skeleton-text { background-color: hsl(var(--c
     font-variation-settings: 'FILL' 1;
 }
 html[data-theme="light"] #dark-mode-toggle:hover .material-symbols-outlined {
-    color: #fce570; 
+    color: #fce570;
 }
 html[data-theme="dark"] #dark-mode-toggle:hover .material-symbols-outlined {
     color: #ff7070;
@@ -572,7 +572,3 @@ html[data-theme="dark"] #dark-mode-toggle:hover .material-symbols-outlined {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
   .button:hover, .scroll-buttons button:hover, .character-card:hover { transform: none; }
 }
-
-
-
-
