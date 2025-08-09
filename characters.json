@@ -391,12 +391,39 @@
     "SurfaceAptitude": { "Turf": "A", "Dirt": "A" },
     "DistanceAptitude": { "Short": "F", "Mile": "A", "Medium": "A", "Long": "G" },
     "StrategyAptitude": { "Front": "G", "Pace": "A", "Late": "A", "End": "B" },
-    "StatBonuses": { "Speed": 10, "Stamina": 0, "Power": 10, "Guts": 0, "Wit": 10 },
+    "StatBonuses": { "Speed": 7, "Stamina": 7, "Power": 8, "Guts": 8, "Wit": 0 },
     "skills": { "rainbow": ["너무 존귀해서 되살아났다해!"], "pink": ["초특급 입고!", "끓어오른다앗~~!!", "목표는 맨 앞줄로 가는 길!"], "yellow": ["텐션 오르는데!", "권토중래"], "white": ["만회하기", "페이스 업", "상승기류", "우마무스메 애호가", "앞줄 겨냥"] },
     "tags": ["할로윈", "핼러윈", "데이즈인어플래시", "Agnes Digital", "アグネスデジタル"]
   },
   {
-    "id": 102101, "name": "타마모 크로스", "nickname": "하얀 번개", "color": "#A0522D",
+    "id": 102001, "name": "세이운 스카이", "nickname": "푸른 구름 서밍", "color": "#65d283",
+    "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
+    "DistanceAptitude": { "Short": "G", "Mile": "C", "Medium": "A", "Long": "A" },
+    "StrategyAptitude": { "Front": "A", "Pace": "B", "Late": "D", "End": "E" },
+    "StatBonuses": { "Speed": 0, "Stamina": 10, "Power": 0, "Guts": 20, "Wit": 0 },
+    "skills": { "rainbow": ["앵글링×스키밍"], "pink": ["패스트 리트리브", "거물을 노리는 마음가짐", "탈출 대작전"], "yellow": ["선봉의 마음가짐", "탈출술"], "white": ["선행 주저", "리드 킵", "빠른 걸음", "도주의 요령○", "꼬리 올리기"] },
+    "tags": ["황금세대", "Seiun Sky", "セイウンスカイ"]
+  },
+  {
+    "id": 102002, "name": "세이운 스카이", "nickname": "하얀 번개", "color": "#65d283",
+    "SurfaceAptitude": { "Turf": "A", "Dirt": "F" },
+    "DistanceAptitude": { "Short": "G", "Mile": "D", "Medium": "A", "Long": "A" },
+    "StrategyAptitude": { "Front": "G", "Pace": "F", "Late": "A", "End": "A" },
+    "StatBonuses": { "Speed": 0, "Stamina": 10, "Power": 10, "Guts": 10, "Wit": 0 },
+    "skills": { "rainbow": ["번갯불의 질주, 그림자 없는 경주"], "pink": ["번갯불의 스텝", "하얀 번개"], "yellow": ["직선 주파", "꼬리 올리기"], "white": ["꼬리 올리기", "직선 가속", "가벼운 발걸음", "중거리 직선○", "안쪽 그룹 능숙○"] },
+    "tags": ["신데렐라그레이", "타마"]
+  },
+  {
+    "id": 102101, "name": "타마모 크로스", "nickname": "질풍신뢰", "color": "#3290d6",
+    "SurfaceAptitude": { "Turf": "A", "Dirt": "F" },
+    "DistanceAptitude": { "Short": "G", "Mile": "D", "Medium": "A", "Long": "A" },
+    "StrategyAptitude": { "Front": "G", "Pace": "F", "Late": "A", "End": "A" },
+    "StatBonuses": { "Speed": 0, "Stamina": 10, "Power": 10, "Guts": 10, "Wit": 0 },
+    "skills": { "rainbow": ["번갯불의 질주, 그림자 없는 경주"], "pink": ["번갯불의 스텝", "하얀 번개"], "yellow": ["직선 주파", "꼬리 올리기"], "white": ["꼬리 올리기", "직선 가속", "가벼운 발걸음", "중거리 직선○", "안쪽 그룹 능숙○"] },
+    "tags": ["신데렐라그레이", "타마"]
+  },
+  {
+    "id": 102101, "name": "타마모 크로스", "nickname": "날뛰는 나루카미", "color": "#3290d6",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "F" },
     "DistanceAptitude": { "Short": "G", "Mile": "D", "Medium": "A", "Long": "A" },
     "StrategyAptitude": { "Front": "G", "Pace": "F", "Late": "A", "End": "A" },
