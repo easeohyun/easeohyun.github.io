@@ -3,7 +3,6 @@
 
     const GRADE_MAP = Object.freeze({ S: 8, A: 7, B: 6, C: 5, D: 4, E: 3, F: 2, G: 1 });
     const CHARACTERS_JSON_PATH = "./characters.json";
-    const SKILL_DESCRIPTIONS_PATH = "./skill-descriptions.json";
     const DEBOUNCE_DELAY = 250;
 
     const DOM = {
@@ -27,12 +26,10 @@
         closeModalBtn: document.getElementById("close-modal-btn"),
         modalOverlay: document.querySelector(".modal-overlay"),
         contactEmailLink: document.getElementById("contact-email-link"),
-        tooltip: null,
     };
 
     const state = {
         allCharacters: [],
-        skillDescriptions: {},
         observer: null,
         worker: null,
         themeTransitionTimeout: null,
@@ -157,7 +154,6 @@
                 const slotDiv = document.createElement('div');
                 slotDiv.className = `skill-slot skill-${color}`;
                 slotDiv.textContent = skill || "";
-                slotDiv.dataset.skillName = skill;
                 rowDiv.appendChild(slotDiv);
             });
             return rowDiv;
@@ -256,7 +252,7 @@
             } else {
                 const messages = [
                     `당신이 찾는 그 우마무스메가... <strong>${count}</strong>명 중에 있기를 바랍니다!`,
-                    `<strong>${count}</strong>명의 우마무스메를 찾았어요. 이제 시작이에요.`,
+                    `<strong>${count}</strong>명의 우마무스메를 찾았는데요, 이제 시작이에요.`,
                     `<strong>${count}</strong>명의 우마무스메 중에서, 이제 찾아볼까요?`
                 ];
                 summaryText = getRandomMessage(messages);
@@ -438,49 +434,6 @@
         }, { once: true });
     };
 
-    const createTooltip = () => {
-        const tooltip = document.createElement('div');
-        tooltip.className = 'skill-tooltip';
-        document.body.appendChild(tooltip);
-        return tooltip;
-    };
-
-    const showTooltip = (event) => {
-        const target = event.target.closest('.skill-slot');
-        if (!target) return;
-
-        const skillName = target.dataset.skillName;
-        const description = state.skillDescriptions[skillName];
-        if (!description) return;
-
-        const card = target.closest('.character-card');
-        const color = card ? card.style.getPropertyValue('--character-color') : 'var(--color-primary)';
-
-        DOM.tooltip.textContent = description;
-        DOM.tooltip.style.setProperty('--character-color', color);
-        
-        const rect = target.getBoundingClientRect();
-        let top = rect.bottom + window.scrollY + 8;
-        let left = rect.left + window.scrollX;
-
-        DOM.tooltip.classList.add('visible');
-
-        const tooltipRect = DOM.tooltip.getBoundingClientRect();
-        if (left + tooltipRect.width > window.innerWidth - 10) {
-            left = window.innerWidth - tooltipRect.width - 10;
-        }
-        if (top + tooltipRect.height > window.innerHeight + window.scrollY - 10) {
-            top = rect.top + window.scrollY - tooltipRect.height - 8;
-        }
-
-        DOM.tooltip.style.top = `${top}px`;
-        DOM.tooltip.style.left = `${left}px`;
-    };
-
-    const hideTooltip = () => {
-        DOM.tooltip.classList.remove('visible');
-    };
-
     const setupEventListeners = () => {
         const debouncedUpdate = debounce(updateDisplay, DEBOUNCE_DELAY);
         
@@ -511,34 +464,24 @@
                 closeModal();
             }
         });
-        
-        DOM.characterList.addEventListener('mouseover', showTooltip);
-        DOM.characterList.addEventListener('mouseout', hideTooltip);
-        DOM.characterList.addEventListener('click', (e) => {
-            if (e.target.closest('.skill-slot')) {
-                 showTooltip(e);
-            }
-        });
-
-        document.addEventListener('scroll', hideTooltip, true);
 
         DOM.contactEmailLink.addEventListener("click", function(e) {
-            e.preventDefault();
-            const isRevealed = this.dataset.revealed === "true";
+    e.preventDefault();
+    const isRevealed = this.dataset.revealed === "true";
 
-            if (!isRevealed) {
-                const user = "easeohyun";
-                const domain = "gmail.com";
-                const email = `${user}@${domain}`; 
-                this.textContent = email;
-                this.href = `mailto:${email}`;
-                this.dataset.revealed = "true";
-            }
+    if (!isRevealed) {
+        const user = "easeohyun";
+        const domain = "gmail.com";
+        const email = `${user}@${domain}`; 
+        this.textContent = email;
+        this.href = `mailto:${email}`;
+        this.dataset.revealed = "true";
+    }
 
-            if (confirm(`메일 클라이언트를 열어 '${this.textContent}' 주소로 메일을 보내시겠습니까?`)) {
-                window.open(this.href, '_blank');
-            }
-        });
+    if (confirm(`메일 클라이언트를 열어 '${this.textContent}' 주소로 메일을 보내시겠습니까?`)) {
+        window.open(this.href, '_blank');
+    }
+});
 
         document.addEventListener("keydown", handleKeyboardShortcuts);
         window.addEventListener("scroll", debounce(updateScrollButtonsVisibility, 150));
@@ -612,10 +555,10 @@
         });
     };
     
-    const fetchData = async (url) => {
-        const response = await fetch(url, { cache: 'no-cache' });
+    const fetchCharacters = async () => {
+        const response = await fetch(CHARACTERS_JSON_PATH, { cache: 'no-cache' });
         if (!response.ok) {
-            throw new Error(`HTTP ${response.status} - ${response.statusText} for ${url}`);
+            throw new Error(`HTTP ${response.status} - ${response.statusText}`);
         }
         return await response.json();
     };
@@ -629,7 +572,6 @@
         `;
         document.head.appendChild(style);
 
-        DOM.tooltip = createTooltip();
         setupEventListeners();
         setCheckboxIcons();
 
@@ -653,19 +595,14 @@
         }
 
         try {
-            const [characters, skillDescriptions] = await Promise.all([
-                fetchData(CHARACTERS_JSON_PATH),
-                fetchData(SKILL_DESCRIPTIONS_PATH)
-            ]);
-            
+            const characters = await fetchCharacters();
             state.allCharacters = characters;
-            state.skillDescriptions = skillDescriptions;
             
             state.worker.postMessage({ type: 'init', payload: { characters: state.allCharacters } });
             renderCharacters(state.allCharacters, false);
 
         } catch (error) {
-            console.error("Failed to load data:", error);
+            console.error("Failed to load character data:", error);
             setLoadingState(false);
             DOM.resultSummary.innerHTML = `
                 <div style="color:var(--color-danger); text-align:center;">
@@ -680,3 +617,5 @@
     document.addEventListener("DOMContentLoaded", initializeApp);
 
 })();
+
+
