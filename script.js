@@ -1,605 +1,682 @@
-:root {
-    --font-primary: "IBM Plex Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+(function () {
+    'use strict';
+
+    const GRADE_MAP = Object.freeze({ S: 8, A: 7, B: 6, C: 5, D: 4, E: 3, F: 2, G: 1 });
+    const CHARACTERS_JSON_PATH = "./characters.json";
+    const SKILL_DESCRIPTIONS_PATH = "./skill-descriptions.json";
+    const DEBOUNCE_DELAY = 250;
+
+    const DOM = {
+        html: document.documentElement,
+        filterForm: document.getElementById("filter-form"),
+        characterList: document.getElementById("character-list"),
+        resultSummary: document.getElementById("result-summary"),
+        sortOrder: document.getElementById("sort-order"),
+        searchBox: document.getElementById("search-box"),
+        resetFiltersButton: document.getElementById("reset-filters"),
+        noResultsContainer: document.getElementById("no-results"),
+        noResultsResetButton: document.getElementById("no-results-reset"),
+        scrollTopButton: document.getElementById("scroll-top"),
+        scrollBottomButton: document.getElementById("scroll-bottom"),
+        toggleSkillsButton: document.getElementById("toggle-skills-btn"),
+        darkModeToggleButton: document.getElementById("dark-mode-toggle"),
+        cardTemplate: document.getElementById("character-card-template"),
+        skeletonTemplate: document.getElementById("skeleton-card-template"),
+        modalContainer: document.getElementById("contact-modal"),
+        openModalBtn: document.getElementById("open-modal-btn"),
+        closeModalBtn: document.getElementById("close-modal-btn"),
+        modalOverlay: document.querySelector(".modal-overlay"),
+        contactEmailLink: document.getElementById("contact-email-link"),
+        tooltip: null,
+    };
+
+    const state = {
+        allCharacters: [],
+        skillDescriptions: {},
+        observer: null,
+        worker: null,
+        themeTransitionTimeout: null,
+        longPressTimer: null,
+        longPressInterval: null,
+        isModalOpen: false,
+    };
     
-    --ease-in-out-quad: cubic-bezier(0.45, 0, 0.55, 1);
-    --ease-out-cubic: cubic-bezier(0.33, 1, 0.68, 1);
-    --transition-fast: 150ms var(--ease-out-cubic);
-    --transition-normal: 150ms var(--ease-out-cubic);
-    --transition-slow: 400ms var(--ease-in-out-quad);
+    const getRandomMessage = (messages) => {
+        return messages[Math.floor(Math.random() * messages.length)];
+    };
 
-    --radius-sm: 4px;
-    --radius-md: 8px;
-    --radius-lg: 16px;
-    --radius-round: 50%;
+    const debounce = (func, delay) => {
+        let timeout;
+        return (...args) => {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(this, args), delay);
+        };
+    };
 
-    --container-width: 1600px;
-    --element-height: 42px;
+    const setCheckboxIcons = () => {
+        const iconMap = {
+            'filter-turf': 'grass',
+            'filter-dirt': 'landslide',
+            'filter-speed': 'podiatry',
+            'filter-stamina': 'favorite',
+            'filter-power': 'ulna_radius_alt',
+            'filter-guts': 'mode_heat',
+            'filter-wit': 'school',
+            'filter-short': 'directions_run',
+            'filter-mile': 'directions_run',
+            'filter-medium': 'directions_run',
+            'filter-long': 'directions_run',
+            'filter-front': 'directions_run',
+            'filter-pace': 'directions_run',
+            'filter-late': 'directions_run',
+            'filter-end': 'directions_run'
+        };
+
+        for (const [id, icon] of Object.entries(iconMap)) {
+            const element = document.querySelector(`#${id} label`);
+            if (element) {
+                element.style.setProperty('--icon-content', `'${icon}'`);
+            }
+        }
+    };
     
-    --shadow-color: 220 25% 5%;
-    --shadow-elevation-low:
-        0.3px 0.5px 0.7px hsl(var(--shadow-color) / 0.2),
-        0.4px 0.8px 1px -1.2px hsl(var(--shadow-color) / 0.2),
-        1px 2px 2.5px -2.5px hsl(var(--shadow-color) / 0.2);
-    --shadow-elevation-medium:
-        0.3px 0.5px 0.7px hsl(var(--shadow-color) / 0.22),
-        0.8px 1.6px 2px -0.8px hsl(var(--shadow-color) / 0.22),
-        2.1px 4.1px 5.2px -1.7px hsl(var(--shadow-color) / 0.22),
-        5px 10px 12.6px -2.5px hsl(var(--shadow-color) / 0.22);
+    const createStatItem = (displayName, value, isBonus = false) => {
+        const itemLi = document.createElement('li');
+        itemLi.className = 'stat-item';
+        const valueSpan = isBonus
+            ? `${value}<span class="percent">%</span>`
+            : `<span class="grade-${String(value).toLowerCase()}">${value}</span>`;
+        itemLi.innerHTML = `<span class="label">${displayName}</span><span class="value">${valueSpan}</span>`;
+        return itemLi;
+    };
+
+    const createStatGroup = (char, sectionKey, groupName, itemMap, isBonus = false) => {
+        const statData = char[sectionKey];
+        if (!statData) return null;
+
+        const items = Object.entries(itemMap)
+            .map(([itemKey, displayName]) => {
+                const value = statData[itemKey];
+                return value !== undefined ? createStatItem(displayName, value, isBonus) : null;
+            })
+            .filter(Boolean);
+
+        if (items.length === 0) return null;
+
+        const groupDiv = document.createElement('div');
+        groupDiv.className = 'stat-group';
+
+        const titleDiv = document.createElement('div');
+        titleDiv.className = 'stat-group-title';
+        titleDiv.textContent = groupName;
+        groupDiv.appendChild(titleDiv);
+
+        const listUl = document.createElement('ul');
+        listUl.className = 'stat-items-list';
+        items.forEach(item => listUl.appendChild(item));
+        groupDiv.appendChild(listUl);
+
+        return groupDiv;
+    };
+
+    const createCharacterCard = (char) => {
+        const card = DOM.cardTemplate.content.cloneNode(true).firstElementChild;
+        card.dataset.id = char.id;
+        if (char.color) {
+            card.style.setProperty("--character-color", char.color);
+        }
+
+        const identityDiv = card.querySelector(".card-identity");
+        identityDiv.querySelector(".card-nickname").textContent = `[ ${char.nickname} ]`;
+        identityDiv.querySelector(".card-title").textContent = char.name;
+
+        const statsContainer = card.querySelector(".card-stats");
+        const aptitudeMap = {
+            SurfaceAptitude: { name: "경기장 적성", map: { Turf: "잔디", Dirt: "더트" }},
+            DistanceAptitude: { name: "거리 적성", map: { Short: "단거리", Mile: "마일", Medium: "중거리", Long: "장거리" }},
+            StrategyAptitude: { name: "각질 적성", map: { Front: "도주", Pace: "선행", Late: "선입", End: "추입" }},
+        };
+        const bonusMap = {
+            StatBonuses: { name: "성장률", map: { Speed: "스피드", Stamina: "스태미나", Power: "파워", Guts: "근성", Wit: "지능" }, isBonus: true }
+        };
+
+        for (const [sectionKey, { name, map }] of Object.entries(aptitudeMap)) {
+            const groupEl = createStatGroup(char, sectionKey, name, map);
+            if (groupEl) statsContainer.appendChild(groupEl);
+        }
+        for (const [sectionKey, { name, map, isBonus }] of Object.entries(bonusMap)) {
+            const groupEl = createStatGroup(char, sectionKey, name, map, isBonus);
+            if (groupEl) statsContainer.appendChild(groupEl);
+        }
+
+        const createSkillRow = (skills, color) => {
+            if (!skills || skills.length === 0) return null;
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'skill-row';
+            skills.forEach(skill => {
+                const slotDiv = document.createElement('div');
+                slotDiv.className = `skill-slot skill-${color}`;
+                slotDiv.textContent = skill || "";
+                slotDiv.dataset.skillName = skill;
+                rowDiv.appendChild(slotDiv);
+            });
+            return rowDiv;
+        };
+        
+        const skillContainer = card.querySelector(".skill-container");
+        const skillsMap = {
+            rainbow: char.skills?.rainbow,
+            pink: char.skills?.pink,
+            yellow: char.skills?.yellow,
+            white: char.skills?.white,
+        };
+        for (const [color, skills] of Object.entries(skillsMap)) {
+            const row = createSkillRow(skills, color);
+            if (row) skillContainer.appendChild(row);
+        }
+        
+        const skillDetails = card.querySelector('.skill-details');
+        const skillSummary = card.querySelector('.skill-summary');
+        
+        skillDetails.addEventListener('toggle', () => {
+             skillSummary.setAttribute('aria-expanded', skillDetails.open);
+        });
+
+        return card;
+    };
     
-    --toggle-shadow: 2px 2px 4px hsl(var(--shadow-color) / 0.2);
-    --toggle-shadow-hover: 4px 4px 8px hsl(var(--shadow-color) / 0.3);
-
-    --rainbow-gradient: linear-gradient(137.5deg, #eaffd4, #a7f5f5, #a5c8ff, #d3bfff, #ffc3f2);
-}
-
-html {
-    --color-primary-hue: 210;
-    --color-accent-hue: 350;
-    --color-background-base: 0 0% 100%;
-    --color-text-base: 220 20% 15%;
+    const setLoadingState = (isLoading, message = "") => {
+    if (isLoading) {
+        if (DOM.characterList) DOM.characterList.innerHTML = "";
+        if (DOM.resultSummary) {
+            DOM.resultSummary.setAttribute('aria-live', 'assertive');
+            DOM.resultSummary.innerHTML = message;
+        }
+    } else {
+        if (DOM.resultSummary) {
+            DOM.resultSummary.setAttribute('aria-live', 'polite');
+        }
+    }
+};
     
-    --color-background: hsl(var(--color-background-base));
-    --color-surface-1: hsl(var(--color-primary-hue) 60% 98%);
-    --color-surface-2: hsl(0 0% 100%);
-    --color-text-primary: hsl(var(--color-text-base));
-    --color-text-secondary: hsl(var(--color-text-base) / 0.65);
-    --color-border: hsl(var(--color-primary-hue) 30% 90%);
-    --color-border-hover: hsl(var(--color-primary-hue) 40% 85%);
-    --color-primary: hsl(var(--color-primary-hue) 90% 60%);
-    --color-primary-deep: hsl(var(--color-primary-hue) 70% 50%);
-    --color-danger: hsl(var(--color-accent-hue) 85% 60%);
-    --color-danger-deep: hsl(var(--color-accent-hue) 75% 50%);
-    --color-danger-bg: hsl(var(--color-accent-hue) 80% 97%);
-    --color-placeholder: hsl(var(--color-text-base) / 0.4);
+    const renderCharacters = (charactersToRender, isFiltered) => {
+        const { characterList, noResultsContainer, resultSummary } = DOM;
+        const count = charactersToRender.length;
+        
+        if (state.observer) state.observer.disconnect();
+        characterList.innerHTML = "";
+
+        const hasActiveFilters = isFiltered || DOM.searchBox.value.trim() !== "" || Array.from(DOM.filterForm.elements).some(el => el.type === "checkbox" && el.checked);
+        
+        if (count === 0 && hasActiveFilters) {
+            characterList.style.display = "none";
+            noResultsContainer.style.display = "block";
+            resultSummary.innerHTML = "";
+            return;
+        }
+
+        characterList.style.display = "grid";
+        noResultsContainer.style.display = "none";
+
+        let summaryText = "";
+        if (!hasActiveFilters) {
+            const messages = [
+                `트레센 학원에 어서오세요, 이렇게 많은 친구들은 처음이죠?<p>지금부터 <strong>${state.allCharacters.length}</strong>명의 우마무스메 중에서 3년을 함께할 학생을 찾아봐요.</p>`
+            ];
+            summaryText = getRandomMessage(messages);
+        } else {
+            if (count === 1) {
+                const messages = [
+                    "당신이 찾던 그 우마무스메가... 딱 <strong>1명</strong> 있었어요!",
+                    "앞으로 3년을 함께할 우마무스메를 <strong>1명</strong> 찾았어요.",
+                    "지금 이 <strong>1명</strong>과 만남은 운명, 꿈은 목표."
+                ];
+                summaryText = getRandomMessage(messages);
+            } else if (count >= 2 && count <= 5) {
+                const messages = [
+                    `당신이 찾던 그 우마무스메는... <strong>${count}</strong>명 중에 있을 거예요.`,
+                    `<strong>${count}</strong>명의 우마무스메를 찾았어요. 어떤 옷을 입히고 싶으신가요?`,
+                    `<strong>${count}</strong>명의 우마무스메 중에서, 결정이 필요할 거예요.`
+                ];
+                summaryText = getRandomMessage(messages);
+            } else if (count >= 6 && count <= 15) {
+                const messages = [
+                    `당신이 찾던 그 우마무스메는... <strong>${count}</strong>명 중에 있을 것 같아요.`,
+                    `<strong>${count}</strong>명의 우마무스메를 찾았어요. 아직은 좀 많죠?`,
+                    `<strong>${count}</strong>명의 우마무스메 중에서, 간추릴 필요가 있어요.`
+                ];
+                summaryText = getRandomMessage(messages);
+            } else if (count >= 16 && count <= 50) {
+                 const messages = [
+                    `당신이 찾는 그 우마무스메는... <strong>${count}</strong>명 중에 있는 것 맞죠?`,
+                    `<strong>${count}</strong>명의 우마무스메를 찾았는데요, 더 둘러봐야 해요.`,
+                    `<strong>${count}</strong>명의 우마무스메 중에서, 대체 어디있을까요?`
+                ];
+                summaryText = getRandomMessage(messages);
+            } else {
+                const messages = [
+                    `당신이 찾는 그 우마무스메가... <strong>${count}</strong>명 중에 있기를 바랍니다!`,
+                    `<strong>${count}</strong>명의 우마무스메를 찾았어요. 이제 시작이에요.`,
+                    `<strong>${count}</strong>명의 우마무스메 중에서, 이제 찾아볼까요?`
+                ];
+                summaryText = getRandomMessage(messages);
+            }
+        }
+        resultSummary.innerHTML = summaryText;
+        
+        state.observer = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const skeletonCard = entry.target;
+                    const charId = skeletonCard.dataset.id;
+                    const characterData = state.allCharacters.find(c => String(c.id) === charId);
+                    if (characterData) {
+                        const realCard = createCharacterCard(characterData);
+                        skeletonCard.replaceWith(realCard);
+                    }
+                    obs.unobserve(skeletonCard);
+                }
+            });
+        }, { root: null, rootMargin: '0px 0px 400px 0px', threshold: 0 });
+
+        const fragment = document.createDocumentFragment();
+        charactersToRender.forEach(char => {
+            const skeletonCard = DOM.skeletonTemplate.content.cloneNode(true).firstElementChild;
+            skeletonCard.dataset.id = char.id;
+            fragment.appendChild(skeletonCard);
+            state.observer.observe(skeletonCard);
+        });
+
+        characterList.appendChild(fragment);
+    };
+
+    const updateDisplay = () => {
+        if (!state.worker) return;
+
+        const formData = new FormData(DOM.filterForm);
+        const activeFilters = [];
+        for (const el of DOM.filterForm.elements) {
+            if (el.type === "checkbox" && el.checked) {
+                const key = el.name;
+                const isStatBonus = el.id.match(/Speed|Stamina|Power|Guts|Wit/);
+                const filter = isStatBonus
+                    ? { key, type: "value", value: parseInt(formData.get(`${key}-value`), 10) || 0 }
+                    : { key, type: "grade", value: GRADE_MAP[formData.get(`${key}-grade`)] };
+                activeFilters.push(filter);
+            }
+        }
+        
+        const rawSearchTerms = DOM.searchBox.value.split(",").map(term => term.trim()).filter(Boolean);
+        const searchTerms = {
+            inclusionTerms: rawSearchTerms.filter(term => !term.startsWith("-")),
+            exclusionTerms: rawSearchTerms.filter(term => term.startsWith("-")).map(term => term.substring(1)).filter(Boolean)
+        };
+        
+        const sortBy = DOM.sortOrder.value;
+
+        setLoadingState(true, "조건에 맞는 우마무스메를 찾고 있습니다...");
+
+        state.worker.postMessage({
+            type: 'filter',
+            payload: { activeFilters, searchTerms, sortBy }
+        });
+    };
+
+    const resetAllFilters = () => {
+        DOM.filterForm.reset();
+        DOM.searchBox.value = "";
+        updateDisplay();
+    };
     
-    --shadow-focus: 0 0 0 3px hsl(var(--color-primary-hue) 90% 60% / 0.3);
-}
+    const toggleAllSkills = () => {
+        const allDetails = DOM.characterList.querySelectorAll(".skill-details");
+        if (allDetails.length === 0) {
+            return;
+        }
 
-html[data-theme="dark"] {
-    --color-background-base: 220 20% 7%;
-    --color-text-base: 220 20% 95%;
+        const shouldOpen = Array.from(allDetails).some(d => !d.open);
+        allDetails.forEach(detail => detail.open = shouldOpen);
 
-    --color-background: hsl(var(--color-background-base));
-    --color-surface-1: hsl(var(--color-primary-hue) 15% 12%);
-    --color-surface-2: hsl(var(--color-primary-hue) 15% 15%);
-    --color-text-primary: hsl(var(--color-text-base));
-    --color-text-secondary: hsl(var(--color-text-base) / 0.6);
-    --color-border: hsl(var(--color-primary-hue) 15% 25%);
-    --color-border-hover: hsl(var(--color-primary-hue) 15% 30%);
-    --color-primary: hsl(var(--color-primary-hue) 80% 70%);
-    --color-primary-deep: hsl(var(--color-primary-hue) 90% 60%);
-    --color-danger: hsl(var(--color-accent-hue) 80% 70%);
-    --color-danger-deep: hsl(var(--color-accent-hue) 85% 60%);
-    --color-danger-bg: hsl(var(--color-accent-hue) 20% 15%);
-    --color-placeholder: hsl(var(--color-text-base) / 0.4);
+        const icon = DOM.toggleSkillsButton.querySelector(".material-symbols-outlined");
+        icon.textContent = shouldOpen ? "unfold_less" : "unfold_more";
+        DOM.toggleSkillsButton.title = `모든 스킬 ${shouldOpen ? '접기' : '펼치기'} (A)`;
+    };
+
+    const updateScrollButtonsVisibility = () => {
+        const { scrollTopButton, scrollBottomButton } = DOM;
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const scrollHeight = document.documentElement.scrollHeight;
+        const windowHeight = window.innerHeight;
+        const isAtBottom = scrollTop + windowHeight >= scrollHeight - 20;
+
+        scrollTopButton.classList.toggle("hidden", scrollTop < 200);
+        scrollBottomButton.classList.toggle("hidden", isAtBottom);
+    };
     
-    --shadow-color: 220 25% 0%;
-    --shadow-focus: 0 0 0 3px hsl(var(--color-primary-hue) 80% 70% / 0.3);
-}
+    const handleKeyboardShortcuts = (event) => {
+        if (event.ctrlKey || event.altKey || event.metaKey) return;
+        
+        const activeElement = document.activeElement;
+        const isTyping = activeElement && (activeElement.tagName === "INPUT" || activeElement.tagName === "SELECT" || activeElement.isContentEditable);
 
-*, *::before, *::after {
-    box-sizing: border-box;
-}
+        if (event.key === 'Escape') {
+            event.preventDefault();
+            if (state.isModalOpen) {
+                closeModal();
+            } else if (isTyping) {
+                activeElement.blur();
+            } else {
+                resetAllFilters();
+            }
+            return;
+        }
 
-html {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
-    scroll-behavior: smooth;
-    scrollbar-color: var(--color-primary) var(--color-surface-1);
-    scrollbar-width: thin;
-}
-html::-webkit-scrollbar { width: 10px; }
-html::-webkit-scrollbar-track { background-color: var(--color-surface-1); }
-html::-webkit-scrollbar-thumb { background-color: var(--color-primary); border-radius: 10px; border: 2px solid var(--color-surface-1); }
-html::-webkit-scrollbar-thumb:hover { background-color: var(--color-primary-deep); }
+        if (isTyping) return;
+        if (state.isModalOpen) return;
 
-body {
-    font-family: var(--font-primary);
-    line-height: 1.65;
-    margin: 0;
-    padding: clamp(1rem, 4vw, 2rem);
-    background-color: var(--color-background);
-    color: var(--color-text-primary);
-    background-image:
-        radial-gradient(circle at 1px 1px, hsl(var(--color-primary-hue) 30% 90%) 1px, transparent 0),
-        radial-gradient(circle at 1px 1px, hsl(var(--color-primary-hue) 30% 90%) 1px, transparent 0);
-    background-size: 2rem 2rem;
-    transition: background-color var(--transition-normal), color var(--transition-normal);
-}
-html[data-theme="dark"] body {
-    background-image:
-        radial-gradient(circle at 1px 1px, hsl(var(--color-primary-hue) 15% 15%) 1px, transparent 0),
-        radial-gradient(circle at 1px 1px, hsl(var(--color-primary-hue) 15% 15%) 1px, transparent 0);
-}
+        const shortcuts = {
+            'q': () => DOM.searchBox.focus(),
+            '/': () => DOM.searchBox.focus(),
+            'r': resetAllFilters,
+            'w': () => window.scrollTo({ top: 0, behavior: "smooth" }),
+            's': () => window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" }),
+            'a': toggleAllSkills,
+            'd': toggleTheme,
+        };
 
-a { color: var(--color-primary-deep); text-decoration: none; transition: color var(--transition-fast); }
-a:hover { color: var(--color-primary); text-decoration: underline; text-decoration-thickness: 1.5px; }
-h1, h2, h3 { line-height: 1.2; font-weight: 700; }
+        const action = shortcuts[event.key.toLowerCase()];
+        if (action) {
+            event.preventDefault();
+            action();
+        }
+    };
+    
+    const applyTheme = (theme) => {
+        const { html, darkModeToggleButton } = DOM;
+        const icon = darkModeToggleButton.querySelector(".material-symbols-outlined");
+        
+        clearTimeout(state.themeTransitionTimeout);
+        html.classList.add('theme-transition');
+        html.dataset.theme = theme;
+        icon.textContent = theme === 'dark' ? 'light_mode' : 'dark_mode';
+        darkModeToggleButton.title = theme === 'dark' ? '밝은 테마로 전환 (D)' : '어두운 테마로 전환 (D)';
+        localStorage.setItem("theme", theme);
+        
+        state.themeTransitionTimeout = setTimeout(() => {
+            html.classList.remove('theme-transition');
+        }, 150);
+    };
 
-main {
-    max-width: var(--container-width);
-    margin: 0 auto;
-    background-color: var(--color-surface-2);
-    padding: clamp(1rem, 5vw, 2.5rem);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-elevation-medium);
-    border: 1px solid var(--color-border);
-    transition: background-color var(--transition-normal), border-color var(--transition-normal);
-}
+    const toggleTheme = () => {
+        const newTheme = (DOM.html.dataset.theme || 'light') === 'light' ? 'dark' : 'light';
+        applyTheme(newTheme);
+    };
+    
+    const openModal = () => {
+        if (state.isModalOpen) return;
+        state.isModalOpen = true;
+        
+        history.pushState({ modal: true }, '', '#modal');
+        
+        DOM.modalContainer.hidden = false;
+        requestAnimationFrame(() => {
+             DOM.modalContainer.classList.add("active");
+             DOM.closeModalBtn.focus();
+        });
+    };
+    
+    const closeModal = () => {
+        if (!state.isModalOpen) return;
+        state.isModalOpen = false;
+        
+        DOM.modalContainer.classList.remove("active");
+        DOM.modalContainer.addEventListener("transitionend", () => {
+            DOM.modalContainer.hidden = true;
+            if (location.hash === "#modal") {
+                 history.back();
+            }
+        }, { once: true });
+    };
 
-header { text-align: center; margin-bottom: 2.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--color-border); }
-header h1 a { color: inherit; text-decoration: none; font-size: clamp(1.8rem, 5vw, 2.5rem); }
-header p { color: var(--color-text-secondary); max-width: 65ch; margin: 0.5em auto 0; }
-.warning-notice { margin-top: 1em; }
+    const createTooltip = () => {
+        const tooltip = document.createElement('div');
+        tooltip.className = 'skill-tooltip';
+        document.body.appendChild(tooltip);
+        return tooltip;
+    };
 
-footer {
-    font-size: 0.875rem;
-    color: var(--color-text-secondary);
-    text-align: left;
-    padding: 2.5rem clamp(1rem, 5vw, 2.5rem) 0;
-    max-width: 1200px;
-    margin: 2.5rem auto 0;
-    border-top: 1px solid var(--color-border);
-}
-footer p { margin: var(--spacing-sm, 8px) 0; }
+    const showTooltip = (event) => {
+        const target = event.target.closest('.skill-slot');
+        if (!target) return;
 
-.button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    height: var(--element-height);
-    padding: 0 1.25rem;
-    border: 1px solid transparent;
-    border-radius: var(--radius-md);
-    font-weight: 600;
-    font-size: 0.95rem;
-    white-space: nowrap;
-    cursor: pointer;
-    user-select: none;
-    transition: transform var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
-}
-.button:hover { transform: translateY(-2px); box-shadow: var(--shadow-elevation-low); }
-.button:active { transform: translateY(0); }
-.button:focus-visible { outline: none; box-shadow: var(--shadow-focus); }
-.button-danger { background-color: var(--color-danger-bg); border-color: var(--color-danger); color: var(--color-danger-deep); }
-.button-danger:hover { background-color: var(--color-danger); border-color: var(--color-danger); color: white; box-shadow: 0 4px 10px color-mix(in srgb, var(--color-danger) 30%, transparent); }
+        const skillName = target.dataset.skillName;
+        const description = state.skillDescriptions[skillName];
+        if (!description) return;
 
-#no-results-reset.button {
-    background-color: var(--color-primary);
-    color: white;
-    border-color: transparent;
-}
-#no-results-reset.button:hover {
-    background-color: var(--color-primary-deep);
-    box-shadow: 0 4px 10px color-mix(in srgb, var(--color-primary) 30%, transparent);
-}
+        const card = target.closest('.character-card');
+        const color = card ? card.style.getPropertyValue('--character-color') : 'var(--color-primary)';
 
-#filter-form fieldset { border: 1px solid var(--color-border); background-color: var(--color-surface-1); border-radius: var(--radius-lg); margin-bottom: 1.5rem; padding: 1.5rem; }
-#filter-form legend { font-size: 1.25em; font-weight: 700; color: var(--color-primary-deep); padding: 0 0.5rem; }
-.filter-group { display: flex; flex-wrap: wrap; gap: 1rem 1.5rem; }
-.filter-item { display: flex; align-items: center; gap: 0.5rem; }
-.filter-item input[type="checkbox"] { display: none; }
-.filter-item label { position: relative; padding-left: 32px; cursor: pointer; user-select: none; transition: color var(--transition-fast); }
-.filter-item label::before {
-    font-family: 'Material Symbols Outlined';
-    font-weight: normal;
-    font-style: normal;
-    font-size: 22px;
-    line-height: 1;
-    letter-spacing: normal;
-    text-transform: none;
-    display: inline-block;
-    white-space: nowrap;
-    word-wrap: normal;
-    direction: ltr;
-    -webkit-font-feature-settings: 'liga';
-    -webkit-font-smoothing: antialiased;
-    content: var(--icon-content);
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 22px;
-    height: 22px;
-    border: none;
-    color: var(--icon-color, hsl(var(--color-primary-hue) 15% 75%));
-    transition: all var(--transition-fast);
-    font-variation-settings: 'FILL' 0;
-}
-.filter-item input[type="checkbox"]:checked + label::before {
-    font-variation-settings: 'FILL' 1;
-    color: var(--icon-color);
-}
+        DOM.tooltip.textContent = description;
+        DOM.tooltip.style.setProperty('--character-color', color);
+        
+        const rect = target.getBoundingClientRect();
+        let top = rect.bottom + window.scrollY + 8;
+        let left = rect.left + window.scrollX;
 
-#filter-turf label { --icon-content: 'grass'; }
-#filter-dirt label { --icon-content: 'landslide'; }
-#filter-speed label { --icon-content: 'podiatry'; }
-#filter-stamina label { --icon-content: 'favorite'; }
-#filter-power label { --icon-content: 'ulna_radius_alt'; }
-#filter-guts label { --icon-content: 'mode_heat'; }
-#filter-wit label { --icon-content: 'school'; }
-#filter-short label, #filter-mile label, #filter-medium label, #filter-long label { --icon-content: 'directions_run'; }
-#filter-front label, #filter-pace label, #filter-late label, #filter-end label { --icon-content: 'directions_run'; }
+        DOM.tooltip.classList.add('visible');
 
-#filter-turf input:checked + label { --icon-color: #2ecc71; }
-#filter-dirt input:checked + label { --icon-color: #e67e22; }
-#filter-speed input:checked + label { --icon-color: #2bb7f1; }
-#filter-stamina input:checked + label { --icon-color: #ff7c67; }
-#filter-power input:checked + label { --icon-color: #f39b17; }
-#filter-guts input:checked + label { --icon-color: #ff6fac; }
-#filter-wit input:checked + label { --icon-color: #22bf7d; }
+        const tooltipRect = DOM.tooltip.getBoundingClientRect();
+        if (left + tooltipRect.width > window.innerWidth - 10) {
+            left = window.innerWidth - tooltipRect.width - 10;
+        }
+        if (top + tooltipRect.height > window.innerHeight + window.scrollY - 10) {
+            top = rect.top + window.scrollY - tooltipRect.height - 8;
+        }
 
-#filter-power input:checked + label::before { --icon-content: 'humerus_alt'; }
-#filter-short input:checked + label::before,
-#filter-mile input:checked + label::before,
-#filter-medium input:checked + label::before,
-#filter-long input:checked + label::before,
-#filter-front input:checked + label::before,
-#filter-pace input:checked + label::before,
-#filter-late input:checked + label::before,
-#filter-end input:checked + label::before {
-    --icon-content: 'sprint';
-    color: #000;
-}
+        DOM.tooltip.style.top = `${top}px`;
+        DOM.tooltip.style.left = `${left}px`;
+    };
 
-html[data-theme="dark"] .filter-item:is(
-    #filter-short, #filter-mile, #filter-medium, #filter-long, 
-    #filter-front, #filter-pace, #filter-late, #filter-end
-) input:checked + label::before {
-    color: var(--color-text-primary);
-}
+    const hideTooltip = () => {
+        DOM.tooltip.classList.remove('visible');
+    };
 
-.filter-item input[type="checkbox"]:checked + label { color: var(--color-primary-deep); font-weight: 500; }
-.filter-item-interactive { height: 32px; border: 1px solid var(--color-border-hover); border-radius: var(--radius-md); background-color: var(--color-surface-2); color: var(--color-text-primary); padding: 0 0.5rem; transition: border-color var(--transition-fast), box-shadow var(--transition-fast); }
-.filter-item input[type="checkbox"]:checked ~ .filter-item-interactive { border-color: var(--color-primary); box-shadow: var(--shadow-focus); }
-input[type="number"].filter-item-interactive { width: 60px; }
-input[type="number"].filter-item-interactive:focus-visible, select.filter-item-interactive:focus-visible { outline: none; border-color: var(--color-primary); box-shadow: var(--shadow-focus); }
+    const setupEventListeners = () => {
+        const debouncedUpdate = debounce(updateDisplay, DEBOUNCE_DELAY);
+        
+        DOM.filterForm.addEventListener("input", e => {
+            if(e.target.type === 'checkbox' || e.target.type === 'select-one' || e.target.type === 'number') {
+                debouncedUpdate();
+            }
+        });
 
-.controls-container { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; padding: 1rem; margin-bottom: 1.5rem; background-color: var(--color-surface-1); border-radius: var(--radius-lg); border: 1px solid var(--color-border); }
-.search-wrapper { position: relative; display: flex; align-items: center; flex-grow: 1; min-width: 200px; }
-.search-icon { position: absolute; left: 14px; color: var(--color-text-secondary); pointer-events: none; transition: color var(--transition-fast); }
-.search-input { width: 100%; height: var(--element-height); padding: 0 1.25rem 0 44px; font-size: 1rem; border: 1px solid var(--color-border-hover); background-color: var(--color-surface-2); color: var(--color-text-primary); border-radius: var(--radius-md); transition: border-color var(--transition-fast), box-shadow var(--transition-fast); }
-.search-input::placeholder { color: var(--color-placeholder); transition: color var(--transition-fast); }
-.search-input:focus-visible { outline: none; border-color: var(--color-primary); box-shadow: var(--shadow-focus); }
-.search-input:focus-visible ~ .search-icon { color: var(--color-primary); }
-.sort-reset-wrapper { display: flex; align-items: center; gap: 1rem; flex-shrink: 0; }
-.sort-container { display: flex; align-items: center; gap: 0.5rem; }
-.sort-container label { color: var(--color-text-secondary); }
-.sort-select { height: var(--element-height); border: 1px solid var(--color-border-hover); border-radius: var(--radius-md); background-color: var(--color-surface-2); color: var(--color-text-primary); padding: 0 0.75rem; cursor: pointer; transition: border-color var(--transition-fast), box-shadow var(--transition-fast); }
-.sort-select:focus-visible { outline: none; border-color: var(--color-primary); box-shadow: var(--shadow-focus); }
+        DOM.searchBox.addEventListener("input", debouncedUpdate);
+        DOM.sortOrder.addEventListener("change", updateDisplay);
 
-#result-summary { text-align: center; font-size: 1.25rem; font-weight: 500; margin-bottom: 2rem; color: var(--color-text-secondary); }
-#no-results { text-align: center; padding: 3rem 1.5rem; margin-top: 1.5rem; background-color: var(--color-surface-1); border: 1px dashed var(--color-border-hover); border-radius: var(--radius-lg); }
-.no-results-icon { font-size: 2.5em; font-weight: 700; color: var(--color-primary); margin-bottom: 1rem; transform: rotate(-10deg); }
-#no-results p { font-size: 1.2em; color: var(--color-text-secondary); margin: 0 0 1.5rem 0; }
+        DOM.resetFiltersButton.addEventListener("click", resetAllFilters);
+        DOM.noResultsResetButton.addEventListener("click", resetAllFilters);
 
-.number-input-wrapper {
-    display: inline-flex;
-    align-items: center;
-    height: 32px;
-    border: 1px solid var(--color-border-hover);
-    border-radius: var(--radius-md);
-    background-color: var(--color-surface-2);
-    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
-    overflow: hidden;
-}
+        DOM.scrollTopButton.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+        DOM.scrollBottomButton.addEventListener("click", () => window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" }));
+        
+        DOM.toggleSkillsButton.addEventListener("click", toggleAllSkills);
+        DOM.darkModeToggleButton.addEventListener("click", toggleTheme);
 
-.filter-item input[type="checkbox"]:checked ~ .number-input-wrapper {
-    border-color: var(--color-primary);
-    box-shadow: var(--shadow-focus);
-}
+        DOM.openModalBtn.addEventListener("click", openModal);
+        DOM.closeModalBtn.addEventListener("click", closeModal);
+        DOM.modalOverlay.addEventListener("click", closeModal);
+        
+        window.addEventListener('popstate', (event) => {
+            if (state.isModalOpen) {
+                closeModal();
+            }
+        });
+        
+        DOM.characterList.addEventListener('mouseover', showTooltip);
+        DOM.characterList.addEventListener('mouseout', hideTooltip);
+        DOM.characterList.addEventListener('click', (e) => {
+            if (e.target.closest('.skill-slot')) {
+                 showTooltip(e);
+            }
+        });
 
-.number-input-wrapper input[type="number"] {
-    width: 40px;
-    text-align: center;
-    border: none;
-    background: transparent;
-    padding: 0;
-    font-weight: 600;
-    color: var(--color-text-primary);
-    -moz-appearance: textfield;
-}
-.number-input-wrapper input[type="number"]::-webkit-outer-spin-button,
-.number-input-wrapper input[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-.number-input-wrapper input[type="number"]:focus {
-    outline: none;
-}
+        document.addEventListener('scroll', hideTooltip, true);
 
-.number-input-wrapper .unit {
-    font-size: 0.9em;
-    color: var(--color-text-secondary);
-    padding-right: 4px;
-}
+        DOM.contactEmailLink.addEventListener("click", function(e) {
+            e.preventDefault();
+            const isRevealed = this.dataset.revealed === "true";
 
-.spinner-btn {
-    width: 28px;
-    height: 100%;
-    border: none;
-    background-color: transparent;
-    color: var(--color-text-secondary);
-    cursor: pointer;
-    transition: background-color var(--transition-fast), color var(--transition-fast);
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 1;
-}
-.spinner-btn:hover {
-    background-color: var(--color-border);
-    color: var(--color-text-primary);
-}
-.spinner-btn:active {
-    background-color: var(--color-border-hover);
-}
-.spinner-btn.down {
-    border-right: 1px solid var(--color-border-hover);
-}
-.spinner-btn.up {
-    border-left: 1px solid var(--color-border-hover);
-}
+            if (!isRevealed) {
+                const user = "easeohyun";
+                const domain = "gmail.com";
+                const email = `${user}@${domain}`; 
+                this.textContent = email;
+                this.href = `mailto:${email}`;
+                this.dataset.revealed = "true";
+            }
 
-#character-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 1.5rem; }
-.character-card {
-    background-color: var(--color-surface-2);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-elevation-low);
-    width: 100%;
-    padding: 1.25rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-    transition: transform var(--transition-normal), box-shadow var(--transition-normal), border-color var(--transition-normal), max-height var(--transition-slow);
-    position: relative;
-    overflow: hidden;
-    --character-color: var(--color-primary);
-}
-.character-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background-color: var(--character-color); transition: transform var(--transition-normal); }
-.character-card:hover {
-    transform: translateY(-6px);
-    box-shadow: var(--shadow-elevation-medium), 0 0 20px color-mix(in srgb, var(--character-color) 20%, transparent);
-    border-color: var(--character-color);
-}
-.character-card:hover::before { transform: scaleX(1); }
+            if (confirm(`메일 클라이언트를 열어 '${this.textContent}' 주소로 메일을 보내시겠습니까?`)) {
+                window.open(this.href, '_blank');
+            }
+        });
 
-.card-identity { text-align: center; padding-bottom: 1rem; border-bottom: 1px solid var(--color-border); margin-bottom: 1rem; }
-.card-title { font-size: 1.6em; font-weight: 700; color: var(--color-text-primary); line-height: 1.2; }
-.card-nickname { font-size: 0.9em; color: var(--color-text-secondary); margin-bottom: 0.25rem; }
+        document.addEventListener("keydown", handleKeyboardShortcuts);
+        window.addEventListener("scroll", debounce(updateScrollButtonsVisibility, 150));
+        window.addEventListener("resize", debounce(updateScrollButtonsVisibility, 150));
+        
+        DOM.filterForm.addEventListener("mousedown", e => {
+            if (!e.target.classList.contains("spinner-btn")) return;
+            e.preventDefault();
 
-.card-stats { display: flex; flex-direction: column; gap: 0.75rem; }
-.stat-group { display: grid; grid-template-columns: 80px 1fr; align-items: center; gap: 0 1rem; padding: 0.25rem 0; }
-.stat-group-title { font-weight: 600; font-size: 0.9rem; color: var(--color-text-secondary); text-align: center; }
-.stat-items-list { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; }
-.stat-item { display: flex; align-items: baseline; font-size: 0.95em; gap: 0.5rem; }
-.stat-item .label { font-weight: 500; }
-.stat-item .value { font-weight: 600; font-size: 1.05em; }
-.stat-item .value .percent { font-size: 0.8em; color: var(--color-text-secondary); }
+            const wrapper = e.target.closest(".number-input-wrapper");
+            if (!wrapper) return;
+            const input = wrapper.querySelector('input[type="number"]');
+            if (!input) return;
 
-.grade-g { font-weight: 500; color: #6c757d; } .grade-f { font-weight: 500; color: #0d47a1; } .grade-e { font-weight: 500; color: #6a1b9a; } .grade-d { font-weight: 500; color: #1565c0; } .grade-c { font-weight: 500; color: #558b2f; }
-.grade-b { font-weight: 700; color: #c62828; } .grade-a { font-weight: 700; color: #ef6c00; } .grade-s { font-weight: 700; color: #ffc02f; }
+            const changeValue = () => {
+                const step = parseFloat(input.step) || 1;
+                let value = parseFloat(input.value) || 0;
+                const min = parseFloat(input.min) || 0;
+                const max = parseFloat(input.max) || 30;
 
-.skill-details { border-top: 1px solid var(--color-border); padding-top: 1rem; }
-.skill-summary { font-weight: 600; padding: 0.75rem; border-radius: var(--radius-md); background-color: var(--color-surface-1); cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: center; gap: 0.25rem; transition: background-color var(--transition-fast), color var(--transition-fast); color: var(--color-text-secondary); }
-.skill-summary:hover { background-color: var(--color-border); color: var(--color-text-primary); }
-.skill-summary::-webkit-details-marker { display: none; }
-.skill-summary::after { content: 'expand_more'; font-family: 'Material Symbols Outlined'; transition: transform var(--transition-fast); }
-.skill-details[open] > .skill-summary { color: var(--color-primary-deep); }
-.skill-details[open] > .skill-summary::after { transform: rotate(180deg); }
-.skill-container { 
-    padding-top: 1rem; 
-    display: flex; 
-    flex-direction: column; 
-    gap: 0.5rem; 
-    overflow: hidden; 
-}
+                if (e.target.classList.contains("up")) {
+                    value = Math.min(max, value + step);
+                } else if (e.target.classList.contains("down")) {
+                    value = Math.max(min, value - step);
+                }
+                input.value = value;
+                const inputEvent = new Event('input', { bubbles: true, cancelable: true });
+                input.dispatchEvent(inputEvent);
+            };
+            
+            changeValue();
 
-.skill-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 0.5rem; }
-.skill-slot { 
-    min-height: 3.3rem; 
-    border-radius: var(--radius-md); 
-    border: none;
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    font-size: 0.935rem;
-    font-weight: 700;
-    padding: 0.25rem 0.5rem; 
-    text-align: center; 
-    line-height: 1.3; 
-    color: #794016;
-    text-shadow: 
-        0 0 0.7px #FFFFFF, 
-        0.7px 0.7px 0.7px #FFFFFF, 
-        -0.7px -0.7px 0.7px #FFFFFF, 
-        0.7px -0.7px 0.7px #FFFFFF, 
-        -0.7px 0.7px 0.7px #FFFFFF;
-    cursor: pointer;
-    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
-}
+            state.longPressTimer = setTimeout(() => {
+                state.longPressInterval = setInterval(changeValue, 100);
+            }, 500);
+        });
+        
+        const stopLongPress = () => {
+            clearTimeout(state.longPressTimer);
+            clearInterval(state.longPressInterval);
+        };
 
-.skill-slot:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 12px hsla(var(--shadow-color) / 0.15);
-}
+        document.addEventListener("mouseup", stopLongPress);
+        document.addEventListener("mouseleave", stopLongPress);
+    };
 
-.skill-rainbow { 
-    font-size: 1.25rem; 
-    background: var(--rainbow-gradient);
-}
-.skill-pink { 
-    font-size: 1.1rem;
-    background: linear-gradient(137.5deg, #ffefef, #ff9ad6);
-}
-.skill-yellow { 
-    font-size: 1.05rem;
-    font-weight: 700;
-    background: linear-gradient(137.5deg, #ffffef, #ffbe29);
-}
-.skill-white { 
-    font-size: 0.9rem; 
-    font-weight: 500; 
-    word-spacing: -1px; 
-    background: linear-gradient(137.5deg, #ffffff, #bdbece); 
-}
+    const initWorker = () => {
+        return new Promise((resolve, reject) => {
+            if (!('Worker' in window)) {
+                reject(new Error("Web Workers are not supported in this browser."));
+                return;
+            }
+            const worker = new Worker('./workers/filterWorker.js');
+            worker.onmessage = e => {
+                const { type, payload } = e.data;
+                if (type === 'filtered') {
+                    renderCharacters(payload, true);
+                }
+            };
+            worker.onerror = error => {
+                console.error(`Web Worker error: ${error.message}`, error);
+                setLoadingState(false);
+                DOM.resultSummary.innerHTML = `
+                    <div style="color:red; text-align:center;">
+                        <p><strong>Error:</strong> An error occurred while processing data.</p>
+                        <p>Please refresh the page.</p>
+                    </div>`;
+                reject(error);
+            };
+            resolve(worker);
+        });
+    };
+    
+    const fetchData = async (url) => {
+        const response = await fetch(url, { cache: 'no-cache' });
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status} - ${response.statusText} for ${url}`);
+        }
+        return await response.json();
+    };
 
-@keyframes skeleton-loading { 0% { background-position: -200px 0; } 100% { background-position: calc(200px + 100%) 0; } }
-.skeleton .skeleton-text { background-color: hsl(var(--color-primary-hue) 20% 90%); background-image: linear-gradient(90deg, hsl(var(--color-primary-hue) 20% 90%), hsl(var(--color-primary-hue) 20% 95%), hsl(var(--color-primary-hue) 20% 90%)); background-size: 200px 100%; background-repeat: no-repeat; border-radius: var(--radius-sm); color: transparent; user-select: none; animation: skeleton-loading 1.5s ease-in-out infinite; }
-html[data-theme="dark"] .skeleton .skeleton-text { background-color: hsl(var(--color-primary-hue) 15% 20%); background-image: linear-gradient(90deg, hsl(var(--color-primary-hue) 15% 20%), hsl(var(--color-primary-hue) 15% 25%), hsl(var(--color-primary-hue) 15% 20%)); }
-.skeleton-nick { width: 40%; height: 1em; margin: 0.2em auto 0.7em; }
-.skeleton-title { width: 60%; height: 1.5em; margin: 0 auto 1.5em; }
-.skeleton-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
-.skeleton-stats .skeleton-text { height: 1em; }
-.skeleton-skills { height: 6em; }
+    const initializeApp = async () => {
+        const style = document.createElement('style');
+        style.textContent = `
+            .theme-transition, .theme-transition *, .theme-transition *::before, .theme-transition *::after {
+                transition: background-color 150ms ease-out, color 150ms ease-out, border-color 150ms ease-out !important;
+            }
+        `;
+        document.head.appendChild(style);
 
-.scroll-buttons { position: fixed; bottom: 1.5rem; right: 1.5rem; display: flex; flex-direction: column; gap: 1rem; z-index: 1000; }
-.scroll-buttons button {
-    width: 52px;
-    height: 52px;
-    border-radius: var(--radius-round);
-    border: 1px solid var(--color-border);
-    background-color: var(--color-surface-2);
-    color: var(--color-text-primary);
-    box-shadow: var(--toggle-shadow);
-    transition: all var(--transition-fast);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.scroll-buttons button:hover { 
-    transform: scale(1.1); 
-    box-shadow: var(--toggle-shadow-hover);
-}
-.scroll-buttons button.hidden { 
-    opacity: 0; 
-    pointer-events: none; 
-    transform: scale(0.5); 
-}
-#scroll-top:hover, #scroll-bottom:hover { 
-    background-color: var(--color-primary); 
-    border-color: var(--color-primary); 
-    color: white; 
-}
-#dark-mode-toggle:hover {
-    background-color: var(--color-border-hover);
-}
+        DOM.tooltip = createTooltip();
+        setupEventListeners();
+        setCheckboxIcons();
 
-#dark-mode-toggle:hover .material-symbols-outlined {
-    font-variation-settings: 'FILL' 1;
-}
-html[data-theme="light"] #dark-mode-toggle:hover .material-symbols-outlined {
-    color: #fce570; 
-}
-html[data-theme="dark"] #dark-mode-toggle:hover .material-symbols-outlined {
-    color: #ff7070;
-}
+        const savedTheme = localStorage.getItem("theme");
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        applyTheme(savedTheme || (prefersDark ? 'dark' : 'light'));
+        
+        setLoadingState(true, "학생 명부를 불러오는 중...");
 
-#toggle-skills-btn {
-    background: var(--rainbow-gradient);
-    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
-}
-#toggle-skills-btn:hover {
-    background-size: 200% 200%;
-    background-position: 100% 100%;
-    transform: scale(1.1) rotate(180deg);
-    transition: background-position var(--transition-slow) ease-in-out, transform var(--transition-fast), box-shadow var(--transition-fast);
-}
-#toggle-skills-btn > .material-symbols-outlined {
-    color: #000;
-    transition: transform var(--transition-slow) ease-in-out;
-}
-#toggle-skills-btn:hover > .material-symbols-outlined {
-    transform: rotate(-180deg);
-}
+        try {
+            state.worker = await initWorker();
+        } catch (error) {
+            console.error("Failed to initialize Web Worker:", error);
+            setLoadingState(false);
+            DOM.resultSummary.innerHTML = `
+                <div style="color:var(--color-danger); text-align:center;">
+                    <p><strong>오류:</strong> 여기서 꼭 필요한 기능을 불러오지 못했어요.</p>
+                    <p>새로고침을 해보세요. 최신 버전의 브라우저, 다른 브라우저를 사용하는 것도 방법이에요.</p>
+                </div>`;
+            return;
+        }
 
-.modal-container { position: fixed; inset: 0; z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 1rem; opacity: 0; visibility: hidden; transition: opacity var(--transition-normal), visibility var(--transition-normal); }
-.modal-container.active { opacity: 1; visibility: visible; }
-.modal-overlay { position: absolute; inset: 0; background-color: hsl(0 0% 0% / 0.6); backdrop-filter: blur(8px); cursor: pointer; }
-.modal-content { position: relative; background-color: var(--color-surface-2); border-radius: var(--radius-lg); border: 1px solid var(--color-border); box-shadow: var(--shadow-elevation-high); max-width: 700px; width: 100%; max-height: 90vh; overflow-y: auto; display: flex; flex-direction: column; transform: scale(0.95); transition: transform var(--transition-normal); }
-.modal-container.active .modal-content { transform: scale(1); }
-.modal-header { padding: 1rem 1.5rem; border-bottom: 1px solid var(--color-border); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
-.modal-body { padding: 1.5rem; flex-grow: 1; }
-.modal-close-button { background: none; border: none; font-size: 2rem; line-height: 1; cursor: pointer; color: var(--color-text-secondary); transition: color var(--transition-fast), transform var(--transition-fast); }
-.modal-close-button:hover { color: var(--color-text-primary); transform: rotate(90deg); }
+        try {
+            const [characters, skillDescriptions] = await Promise.all([
+                fetchData(CHARACTERS_JSON_PATH),
+                fetchData(SKILL_DESCRIPTIONS_PATH)
+            ]);
+            
+            state.allCharacters = characters;
+            state.skillDescriptions = skillDescriptions;
+            
+            state.worker.postMessage({ type: 'init', payload: { characters: state.allCharacters } });
+            renderCharacters(state.allCharacters, false);
 
-.modal-trigger-button {
-    background: transparent;
-    border: none;
-    color: var(--color-primary-deep);
-    text-decoration: underline;
-    text-underline-offset: 4px;
-    padding: 0.25rem;
-    border-radius: var(--radius-sm);
-    transition: color var(--transition-fast), background-color var(--transition-fast);
-}
-.modal-trigger-button:hover {
-    color: var(--color-primary);
-    background-color: var(--color-border);
-    text-decoration: none;
-}
-.email-info { margin-top: 2rem; text-align: center; }
-.email-text-image {
-    display: inline-block;
-    padding: 0.75rem 1.5rem;
-    border: 1px solid var(--color-border-hover);
-    border-radius: var(--radius-md);
-    background-color: var(--color-surface-1);
-    color: var(--color-text-primary);
-    text-decoration: none;
-    font-weight: 500;
-    transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
-}
-.email-text-image:hover {
-    background-color: var(--color-primary);
-    border-color: var(--color-primary);
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-elevation-low);
-}
+        } catch (error) {
+            console.error("Failed to load data:", error);
+            setLoadingState(false);
+            DOM.resultSummary.innerHTML = `
+                <div style="color:var(--color-danger); text-align:center;">
+                    <p><strong>오류:</strong> 우마무스메 데이터를 불러오지 못했어요.</p>
+                    <p>인터넷에 연결이 잘 되었는지 확인하고 새로고침을 부탁드려요!</p>
+                </div>`;
+        } finally {
+            updateScrollButtonsVisibility();
+        }
+    };
+    
+    document.addEventListener("DOMContentLoaded", initializeApp);
 
-.skill-tooltip {
-    position: fixed;
-    z-index: 9999;
-    max-width: 320px;
-    width: max-content;
-    padding: 0.75rem 1rem;
-    background-color: var(--color-surface-2);
-    border: 1px solid var(--color-border-hover);
-    border-left: 5px solid var(--character-color, var(--color-primary));
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-elevation-medium);
-    font-size: 0.95rem;
-    line-height: 1.5;
-    pointer-events: none;
-    opacity: 0;
-    transform: scale(0.95);
-    transition: opacity var(--transition-fast), transform var(--transition-fast);
-}
-
-.skill-tooltip.visible {
-    opacity: 1;
-    transform: scale(1);
-}
-
-@media (max-width: 767px) {
-    .controls-container { flex-direction: column; align-items: stretch; }
-    .search-wrapper { width: 100%; }
-    .sort-reset-wrapper { width: 100%; justify-content: space-between; }
-}
-
-@media (min-width: 640px) {
-    #character-list { grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); }
-}
-
-@media (min-width: 900px) {
-    #character-list { grid-template-columns: 1fr 1fr; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
-  .button:hover, .scroll-buttons button:hover, .character-card:hover { transform: none; }
-}
+})();
