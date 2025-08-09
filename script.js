@@ -4,6 +4,8 @@
     const GRADE_MAP = Object.freeze({ S: 8, A: 7, B: 6, C: 5, D: 4, E: 3, F: 2, G: 1 });
     const CHARACTERS_JSON_PATH = "./characters.json";
     const DEBOUNCE_DELAY = 250;
+    const SKILL_DESCRIPTIONS_JSON_PATH = "./skill-descriptions.json";
+
 
     const DOM = {
         html: document.documentElement,
@@ -24,7 +26,7 @@
         modalContainer: document.getElementById("contact-modal"),
         openModalBtn: document.getElementById("open-modal-btn"),
         closeModalBtn: document.getElementById("close-modal-btn"),
-        modalOverlay: document.querySelector(".modal-overlay"),
+            modalOverlay: document.querySelector(".modal-overlay"),
         contactEmailLink: document.getElementById("contact-email-link"),
     };
 
@@ -36,6 +38,7 @@
         longPressTimer: null,
         longPressInterval: null,
         isModalOpen: false,
+        skillDescriptions: {},
     };
     
     const getRandomMessage = (messages) => {
@@ -43,32 +46,67 @@
     };
 
     const debounce = (func, delay) => {
-        let timeout;
+        let timeoutId;
         return (...args) => {
-            clearTimeout(timeout);
-            timeout = setTimeout(() => func.apply(this, args), delay);
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => func(...args), delay);
         };
+    };
+
+    const createElementWithClass = (tag, className, textContent) => {
+        const el = document.createElement(tag);
+        if (className) el.className = className;
+        if (textContent !== undefined) el.textContent = textContent;
+        return el;
+    };
+
+    const applyTheme = (theme) => {
+        const html = DOM.html;
+        if (!html) return;
+        html.classList.add('theme-transition');
+        requestAnimationFrame(() => {
+            html.setAttribute('data-theme', theme);
+            clearTimeout(state.themeTransitionTimeout);
+            state.themeTransitionTimeout = setTimeout(() => {
+                html.classList.remove('theme-transition');
+            }, 200);
+        });
+        localStorage.setItem("theme", theme);
+        const isDark = theme === 'dark';
+        DOM.darkModeToggleButton.setAttribute('aria-pressed', String(isDark));
+        DOM.darkModeToggleButton.title = isDark ? "밝은 테마로 전환 (D)" : "어두운 테마로 전환 (D)";
+    };
+
+    const toggleTheme = () => {
+        const current = DOM.html.getAttribute('data-theme') || 'light';
+        applyTheme(current === 'light' ? 'dark' : 'light');
+    };
+
+    const updateScrollButtonsVisibility = () => {
+        const atTop = window.scrollY <= 0;
+        const atBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 10;
+        DOM.scrollTopButton.hidden = atTop;
+        DOM.scrollBottomButton.hidden = atBottom;
     };
 
     const setCheckboxIcons = () => {
         const iconMap = {
-            'filter-turf': 'grass',
-            'filter-dirt': 'landslide',
-            'filter-speed': 'podiatry',
-            'filter-stamina': 'favorite',
-            'filter-power': 'ulna_radius_alt',
-            'filter-guts': 'mode_heat',
-            'filter-wit': 'school',
-            'filter-short': 'directions_run',
-            'filter-mile': 'directions_run',
-            'filter-medium': 'directions_run',
-            'filter-long': 'directions_run',
-            'filter-front': 'directions_run',
-            'filter-pace': 'directions_run',
-            'filter-late': 'directions_run',
-            'filter-end': 'directions_run'
+            "turf": "grass",
+            "dirt": "terrain",
+            "short": "speed",
+            "mile": "directions_run",
+            "medium": "route",
+            "long": "timelapse",
+            "front": "sprint",
+            "pace": "directions_walk",
+            "late": "directions_run",
+            "end": "hourglass_bottom",
+            "speed": "bolt",
+            "stamina": "battery_charging_full",
+            "power": "fitness_center",
+            "guts": "monitor_heart",
+            "wit": "psychology"
         };
-
         for (const [id, icon] of Object.entries(iconMap)) {
             const element = document.querySelector(`#${id} label`);
             if (element) {
@@ -87,33 +125,112 @@
         return itemLi;
     };
 
-    const createStatGroup = (char, sectionKey, groupName, itemMap, isBonus = false) => {
-        const statData = char[sectionKey];
-        if (!statData) return null;
+    const createStatGroup = (char, sectionKey, groupDisplayName, map, isBonus = false) => {
+        const sectionData = char[sectionKey];
+        if (!sectionData) return null;
+        const sectionDiv = document.createElement('div');
+        sectionDiv.className = 'stat-group';
+        const title = createElementWithClass('div', 'stat-group-title', groupDisplayName);
+        const list = document.createElement('ul');
+        list.className = 'stat-list';
+        for (const [key, displayName] of Object.entries(map)) {
+            const value = sectionData[key];
+            if (value !== undefined) {
+                list.appendChild(createStatItem(displayName, value, isBonus));
+            }
+        }
+        sectionDiv.appendChild(title);
+        sectionDiv.appendChild(list);
+        return sectionDiv;
+    };
 
-        const items = Object.entries(itemMap)
-            .map(([itemKey, displayName]) => {
-                const value = statData[itemKey];
-                return value !== undefined ? createStatItem(displayName, value, isBonus) : null;
-            })
-            .filter(Boolean);
+    const parseLooseSkillMap = (text) => {
+        try {
+            return JSON.parse(text);
+        } catch (e) {
+            const map = {};
+            const regex = /"(.*?)"\s*:\s*"(.*?)"/gs;
+            let m;
+            while ((m = regex.exec(text)) !== null) {
+                map[m[1]] = m[2];
+            }
+            return map;
+        }
+    };
 
-        if (items.length === 0) return null;
+    const fetchSkillDescriptions = async () => {
+        try {
+            const res = await fetch(SKILL_DESCRIPTIONS_JSON_PATH, { cache: 'no-cache' });
+            if (!res.ok) return {};
+            const text = await res.text();
+            return parseLooseSkillMap(text);
+        } catch (e) {
+            return {};
+        }
+    };
 
-        const groupDiv = document.createElement('div');
-        groupDiv.className = 'stat-group';
+    let tooltipEl = null;
+    const ensureTooltipEl = () => {
+        if (tooltipEl) return tooltipEl;
+        tooltipEl = document.createElement('div');
+        tooltipEl.id = 'skill-tooltip';
+        tooltipEl.className = 'skill-tooltip';
+        tooltipEl.setAttribute('role', 'dialog');
+        tooltipEl.setAttribute('aria-hidden', 'true');
+        tooltipEl.innerHTML = '<div class="skill-tooltip__inner"><div class="skill-tooltip__title"></div><div class="skill-tooltip__desc"></div></div>';
+        document.body.appendChild(tooltipEl);
+        return tooltipEl;
+    };
 
-        const titleDiv = document.createElement('div');
-        titleDiv.className = 'stat-group-title';
-        titleDiv.textContent = groupName;
-        groupDiv.appendChild(titleDiv);
+    const hideTooltip = () => {
+        if (!tooltipEl) return;
+        tooltipEl.classList.remove('is-visible');
+        tooltipEl.setAttribute('aria-hidden', 'true');
+    };
 
-        const listUl = document.createElement('ul');
-        listUl.className = 'stat-items-list';
-        items.forEach(item => listUl.appendChild(item));
-        groupDiv.appendChild(listUl);
+    const showTooltipForSlot = (slotEl, skillName, description) => {
+        if (!description) return;
+        const tooltip = ensureTooltipEl();
+        const titleEl = tooltip.querySelector('.skill-tooltip__title');
+        const descEl = tooltip.querySelector('.skill-tooltip__desc');
+        titleEl.textContent = skillName;
+        descEl.textContent = description;
 
-        return groupDiv;
+        const card = slotEl.closest('.character-card');
+        let charColor = '#3498db';
+        if (card) {
+            const style = getComputedStyle(card);
+            charColor = style.getPropertyValue('--character-color') || charColor;
+        }
+        tooltip.style.setProperty('--skill-accent', charColor.trim());
+
+        const rect = slotEl.getBoundingClientRect();
+        const tooltipRect = tooltip.getBoundingClientRect();
+        const margin = 10;
+        let left = Math.max(margin, rect.left + rect.width / 2 - tooltipRect.width / 2);
+        let top = rect.bottom + margin;
+        const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+        const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+        left = Math.min(left, vw - tooltipRect.width - margin);
+        if (top + tooltipRect.height + margin > vh) {
+            top = rect.top - tooltipRect.height - margin;
+        }
+        tooltip.style.left = left + window.scrollX + 'px';
+        tooltip.style.top = top + window.scrollY + 'px';
+
+        tooltip.classList.add('is-visible');
+        tooltip.setAttribute('aria-hidden', 'false');
+    };
+
+    const getSkillDescription = (name) => {
+        if (!name) return '';
+        const map = state.skillDescriptions || {};
+        if (map[name]) return map[name];
+        if (map['#' + name]) return map['#' + name];
+        const alt = name.replace(/\s+/g, '');
+        if (map[alt]) return map[alt];
+        if (map['#' + alt]) return map['#' + alt];
+        return '';
     };
 
     const createCharacterCard = (char) => {
@@ -129,9 +246,9 @@
 
         const statsContainer = card.querySelector(".card-stats");
         const aptitudeMap = {
-            SurfaceAptitude: { name: "경기장 적성", map: { Turf: "잔디", Dirt: "더트" }},
-            DistanceAptitude: { name: "거리 적성", map: { Short: "단거리", Mile: "마일", Medium: "중거리", Long: "장거리" }},
-            StrategyAptitude: { name: "각질 적성", map: { Front: "도주", Pace: "선행", Late: "선입", End: "추입" }},
+            SurfaceAptitude: { name: "주요", map: { Turf: "잔디", Dirt: "더트" } },
+            DistanceAptitude: { name: "거리", map: { Short: "단거리", Mile: "마일", Medium: "중거리", Long: "장거리" } },
+            StrategyAptitude: { name: "작전", map: { Front: "도주", Pace: "선행", Late: "선입", End: "추입" } }
         };
         const bonusMap = {
             StatBonuses: { name: "성장률", map: { Speed: "스피드", Stamina: "스태미나", Power: "파워", Guts: "근성", Wit: "지능" }, isBonus: true }
@@ -154,6 +271,7 @@
                 const slotDiv = document.createElement('div');
                 slotDiv.className = `skill-slot skill-${color}`;
                 slotDiv.textContent = skill || "";
+                slotDiv.dataset.skillName = skill || "";
                 rowDiv.appendChild(slotDiv);
             });
             return rowDiv;
@@ -201,121 +319,102 @@
         
         if (state.observer) state.observer.disconnect();
         characterList.innerHTML = "";
+        noResultsContainer.hidden = count > 0;
 
-        const hasActiveFilters = isFiltered || DOM.searchBox.value.trim() !== "" || Array.from(DOM.filterForm.elements).some(el => el.type === "checkbox" && el.checked);
-        
-        if (count === 0 && hasActiveFilters) {
-            characterList.style.display = "none";
-            noResultsContainer.style.display = "block";
-            resultSummary.innerHTML = "";
+        if (count === 0) {
+            resultSummary.innerHTML = "조건에 맞는 결과가 없습니다.";
             return;
         }
-
-        characterList.style.display = "grid";
-        noResultsContainer.style.display = "none";
-
-        let summaryText = "";
-        if (!hasActiveFilters) {
-            const messages = [
-                `트레센 학원에 어서오세요, 이렇게 많은 친구들은 처음이죠?<p>지금부터 <strong>${state.allCharacters.length}</strong>명의 우마무스메 중에서 3년을 함께할 학생을 찾아봐요.</p>`
-            ];
-            summaryText = getRandomMessage(messages);
-        } else {
-            if (count === 1) {
-                const messages = [
-                    "당신이 찾던 그 우마무스메가... 딱 <strong>1명</strong> 있었어요!",
-                    "앞으로 3년을 함께할 우마무스메를 <strong>1명</strong> 찾았어요.",
-                    "지금 이 <strong>1명</strong>과 만남은 운명, 꿈은 목표."
-                ];
-                summaryText = getRandomMessage(messages);
-            } else if (count >= 2 && count <= 5) {
-                const messages = [
-                    `당신이 찾던 그 우마무스메는... <strong>${count}</strong>명 중에 있을 거예요.`,
-                    `<strong>${count}</strong>명의 우마무스메를 찾았어요. 어떤 옷을 입히고 싶으신가요?`,
-                    `<strong>${count}</strong>명의 우마무스메 중에서, 결정이 필요할 거예요.`
-                ];
-                summaryText = getRandomMessage(messages);
-            } else if (count >= 6 && count <= 15) {
-                const messages = [
-                    `당신이 찾던 그 우마무스메는... <strong>${count}</strong>명 중에 있을 것 같아요.`,
-                    `<strong>${count}</strong>명의 우마무스메를 찾았어요. 아직은 좀 많죠?`,
-                    `<strong>${count}</strong>명의 우마무스메 중에서, 간추릴 필요가 있어요.`
-                ];
-                summaryText = getRandomMessage(messages);
-            } else if (count >= 16 && count <= 50) {
-                 const messages = [
-                    `당신이 찾는 그 우마무스메는... <strong>${count}</strong>명 중에 있는 것 맞죠?`,
-                    `<strong>${count}</strong>명의 우마무스메를 찾았는데요, 더 둘러봐야 해요.`,
-                    `<strong>${count}</strong>명의 우마무스메 중에서, 대체 어디있을까요?`
-                ];
-                summaryText = getRandomMessage(messages);
-            } else {
-                const messages = [
-                    `당신이 찾는 그 우마무스메가... <strong>${count}</strong>명 중에 있기를 바랍니다!`,
-                    `<strong>${count}</strong>명의 우마무스메를 찾았는데요, 이제 시작이에요.`,
-                    `<strong>${count}</strong>명의 우마무스메 중에서, 이제 찾아볼까요?`
-                ];
-                summaryText = getRandomMessage(messages);
-            }
-        }
-        resultSummary.innerHTML = summaryText;
         
-        state.observer = new IntersectionObserver((entries, obs) => {
+        const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    const skeletonCard = entry.target;
-                    const charId = skeletonCard.dataset.id;
-                    const characterData = state.allCharacters.find(c => String(c.id) === charId);
-                    if (characterData) {
-                        const realCard = createCharacterCard(characterData);
-                        skeletonCard.replaceWith(realCard);
-                    }
-                    obs.unobserve(skeletonCard);
+                    const el = entry.target;
+                    el.classList.add('appear');
+                    observer.unobserve(el);
                 }
             });
-        }, { root: null, rootMargin: '0px 0px 400px 0px', threshold: 0 });
+        }, { threshold: 0.1 });
+        state.observer = observer;
 
-        const fragment = document.createDocumentFragment();
-        charactersToRender.forEach(char => {
-            const skeletonCard = DOM.skeletonTemplate.content.cloneNode(true).firstElementChild;
-            skeletonCard.dataset.id = char.id;
-            fragment.appendChild(skeletonCard);
-            state.observer.observe(skeletonCard);
-        });
+        const frag = document.createDocumentFragment();
+        for (const char of charactersToRender) {
+            const card = createCharacterCard(char);
+            frag.appendChild(card);
+        }
+        characterList.appendChild(frag);
 
-        characterList.appendChild(fragment);
+        document.querySelectorAll('.character-card').forEach(card => observer.observe(card));
+
+        if (isFiltered) {
+            resultSummary.innerHTML = `${count}명의 결과를 찾았습니다.`;
+        } else {
+            resultSummary.innerHTML = `총 ${count}명의 캐릭터가 로드되었습니다.`;
+        }
+    };
+
+    const sortCharacters = (list, order) => {
+        const copy = [...list];
+        const compareByName = (a, b) => a.name.localeCompare(b.name, 'ko');
+        if (!order || order === "name-asc") return copy.sort(compareByName);
+        if (order === "name-desc") return copy.sort((a, b) => compareByName(b, a));
+        if (order === "id-asc") return copy.sort((a, b) => a.id - b.id);
+        if (order === "id-desc") return copy.sort((a, b) => b.id - a.id);
+        return copy;
+    };
+
+    const getCheckedValues = (selector) => {
+        return Array.from(document.querySelectorAll(selector))
+            .filter(el => el.checked)
+            .map(el => el.value);
+    };
+
+    const getNumberValue = (id) => {
+        const el = document.getElementById(id);
+        return el ? Number(el.value) : 0;
+    };
+
+    const gatherFilters = () => {
+        const filters = {
+            surfaces: getCheckedValues('input[name="surface"]:checked'),
+            distances: getCheckedValues('input[name="distance"]:checked'),
+            strategies: getCheckedValues('input[name="strategy"]:checked'),
+            stats: {
+                speed: getNumberValue('min-speed'),
+                stamina: getNumberValue('min-stamina'),
+                power: getNumberValue('min-power'),
+                guts: getNumberValue('min-guts'),
+                wit: getNumberValue('min-wit')
+            },
+            search: DOM.searchBox.value.trim(),
+            exclude: document.getElementById('exclude-term').value.trim()
+        };
+        return filters;
     };
 
     const updateDisplay = () => {
-        if (!state.worker) return;
+        const filters = gatherFilters();
+        const order = DOM.sortOrder.value;
+        state.worker.postMessage({ type: 'filter', payload: { filters, order } });
+    };
 
-        const formData = new FormData(DOM.filterForm);
-        const activeFilters = [];
-        for (const el of DOM.filterForm.elements) {
-            if (el.type === "checkbox" && el.checked) {
-                const key = el.name;
-                const isStatBonus = el.id.match(/Speed|Stamina|Power|Guts|Wit/);
-                const filter = isStatBonus
-                    ? { key, type: "value", value: parseInt(formData.get(`${key}-value`), 10) || 0 }
-                    : { key, type: "grade", value: GRADE_MAP[formData.get(`${key}-grade`)] };
-                activeFilters.push(filter);
-            }
+    const handleKeyboardShortcuts = (e) => {
+        if (e.key === 'd' || e.key === 'D') {
+            toggleTheme();
+        } else if (e.key === 's' || e.key === 'S') {
+            window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+        } else if (e.key === 't' || e.key === 'T') {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        } else if (e.key === 'k' || e.key === 'K') {
+            DOM.searchBox.focus();
         }
-        
-        const rawSearchTerms = DOM.searchBox.value.split(",").map(term => term.trim()).filter(Boolean);
-        const searchTerms = {
-            inclusionTerms: rawSearchTerms.filter(term => !term.startsWith("-")),
-            exclusionTerms: rawSearchTerms.filter(term => term.startsWith("-")).map(term => term.substring(1)).filter(Boolean)
-        };
-        
-        const sortBy = DOM.sortOrder.value;
+    };
 
-        setLoadingState(true, "조건에 맞는 우마무스메를 찾고 있습니다...");
-
-        state.worker.postMessage({
-            type: 'filter',
-            payload: { activeFilters, searchTerms, sortBy }
-        });
+    const toggleAllSkills = () => {
+        const details = document.querySelectorAll('.skill-details');
+        let hasOpen = false;
+        details.forEach(d => { if (d.open) hasOpen = true; });
+        details.forEach(d => d.open = !hasOpen);
     };
 
     const resetAllFilters = () => {
@@ -323,110 +422,26 @@
         DOM.searchBox.value = "";
         updateDisplay();
     };
-    
-    const toggleAllSkills = () => {
-        const allDetails = DOM.characterList.querySelectorAll(".skill-details");
-        if (allDetails.length === 0) {
-            return;
-        }
 
-        const shouldOpen = Array.from(allDetails).some(d => !d.open);
-        allDetails.forEach(detail => detail.open = shouldOpen);
-
-        const icon = DOM.toggleSkillsButton.querySelector(".material-symbols-outlined");
-        icon.textContent = shouldOpen ? "unfold_less" : "unfold_more";
-        DOM.toggleSkillsButton.title = `모든 스킬 ${shouldOpen ? '접기' : '펼치기'} (A)`;
-    };
-
-    const updateScrollButtonsVisibility = () => {
-        const { scrollTopButton, scrollBottomButton } = DOM;
-        const scrollTop = window.scrollY || document.documentElement.scrollTop;
-        const scrollHeight = document.documentElement.scrollHeight;
-        const windowHeight = window.innerHeight;
-        const isAtBottom = scrollTop + windowHeight >= scrollHeight - 20;
-
-        scrollTopButton.classList.toggle("hidden", scrollTop < 200);
-        scrollBottomButton.classList.toggle("hidden", isAtBottom);
-    };
-    
-    const handleKeyboardShortcuts = (event) => {
-        if (event.ctrlKey || event.altKey || event.metaKey) return;
-        
-        const activeElement = document.activeElement;
-        const isTyping = activeElement && (activeElement.tagName === "INPUT" || activeElement.tagName === "SELECT" || activeElement.isContentEditable);
-
-        if (event.key === 'Escape') {
-            event.preventDefault();
-            if (state.isModalOpen) {
-                closeModal();
-            } else if (isTyping) {
-                activeElement.blur();
-            } else {
-                resetAllFilters();
-            }
-            return;
-        }
-
-        if (isTyping) return;
-        if (state.isModalOpen) return;
-
-        const shortcuts = {
-            'q': () => DOM.searchBox.focus(),
-            '/': () => DOM.searchBox.focus(),
-            'r': resetAllFilters,
-            'w': () => window.scrollTo({ top: 0, behavior: "smooth" }),
-            's': () => window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" }),
-            'a': toggleAllSkills,
-            'd': toggleTheme,
-        };
-
-        const action = shortcuts[event.key.toLowerCase()];
-        if (action) {
-            event.preventDefault();
-            action();
-        }
-    };
-    
-    const applyTheme = (theme) => {
-        const { html, darkModeToggleButton } = DOM;
-        const icon = darkModeToggleButton.querySelector(".material-symbols-outlined");
-        
-        clearTimeout(state.themeTransitionTimeout);
-        html.classList.add('theme-transition');
-        html.dataset.theme = theme;
-        icon.textContent = theme === 'dark' ? 'light_mode' : 'dark_mode';
-        darkModeToggleButton.title = theme === 'dark' ? '밝은 테마로 전환 (D)' : '어두운 테마로 전환 (D)';
-        localStorage.setItem("theme", theme);
-        
-        state.themeTransitionTimeout = setTimeout(() => {
-            html.classList.remove('theme-transition');
-        }, 150);
-    };
-
-    const toggleTheme = () => {
-        const newTheme = (DOM.html.dataset.theme || 'light') === 'light' ? 'dark' : 'light';
-        applyTheme(newTheme);
-    };
-    
     const openModal = () => {
         if (state.isModalOpen) return;
         state.isModalOpen = true;
-        
-        history.pushState({ modal: true }, '', '#modal');
-        
         DOM.modalContainer.hidden = false;
+        DOM.modalContainer.setAttribute('aria-hidden', 'false');
+        DOM.modalOverlay.setAttribute('aria-hidden', 'false');
+        history.pushState({ modal: true }, "", "#modal");
         requestAnimationFrame(() => {
-             DOM.modalContainer.classList.add("active");
-             DOM.closeModalBtn.focus();
+            DOM.modalContainer.classList.add('open');
         });
     };
-    
+
     const closeModal = () => {
         if (!state.isModalOpen) return;
+        DOM.modalContainer.classList.remove('open');
         state.isModalOpen = false;
-        
-        DOM.modalContainer.classList.remove("active");
-        DOM.modalContainer.addEventListener("transitionend", () => {
+        DOM.modalContainer.setAttribute('aria-hidden', 'true');
+        DOM.modalOverlay.setAttribute('aria-hidden', 'true');
+        DOM.modalContainer.addEventListener('transitionend', () => {
             DOM.modalContainer.hidden = true;
             if (location.hash === "#modal") {
                  history.back();
@@ -460,28 +475,27 @@
         DOM.modalOverlay.addEventListener("click", closeModal);
         
         window.addEventListener('popstate', (event) => {
-            if (state.isModalOpen) {
+            if (state.isModalOpen && (!event.state || !event.state.modal)) {
                 closeModal();
             }
         });
 
-        DOM.contactEmailLink.addEventListener("click", function(e) {
-    e.preventDefault();
-    const isRevealed = this.dataset.revealed === "true";
+        DOM.contactEmailLink.addEventListener("click", function (e) {
+            e.preventDefault();
+            const isRevealed = this.dataset.revealed === "true";
+            if (!isRevealed) {
+                const user = "easeohyun";
+                const domain = "gmail.com";
+                const email = `${user}@${domain}`; 
+                this.textContent = email;
+                this.href = `mailto:${email}`;
+                this.dataset.revealed = "true";
+            }
 
-    if (!isRevealed) {
-        const user = "easeohyun";
-        const domain = "gmail.com";
-        const email = `${user}@${domain}`; 
-        this.textContent = email;
-        this.href = `mailto:${email}`;
-        this.dataset.revealed = "true";
-    }
-
-    if (confirm(`메일 클라이언트를 열어 '${this.textContent}' 주소로 메일을 보내시겠습니까?`)) {
-        window.open(this.href, '_blank');
-    }
-});
+            if (confirm(`메일 클라이언트를 열어 '${this.textContent}' 주소로 메일을 보내시겠습니까?`)) {
+                window.open(this.href, '_blank');
+            }
+        });
 
         document.addEventListener("keydown", handleKeyboardShortcuts);
         window.addEventListener("scroll", debounce(updateScrollButtonsVisibility, 150));
@@ -499,21 +513,22 @@
             const changeValue = () => {
                 const step = parseFloat(input.step) || 1;
                 let value = parseFloat(input.value) || 0;
-                const min = parseFloat(input.min) || 0;
-                const max = parseFloat(input.max) || 30;
-
-                if (e.target.classList.contains("up")) {
-                    value = Math.min(max, value + step);
-                } else if (e.target.classList.contains("down")) {
-                    value = Math.max(min, value - step);
+                if (e.target.classList.contains("btn-minus")) {
+                    value -= step;
+                } else if (e.target.classList.contains("btn-plus")) {
+                    value += step;
                 }
+                const min = input.min !== "" ? parseFloat(input.min) : -Infinity;
+                const max = input.max !== "" ? parseFloat(input.max) : Infinity;
+                value = Math.min(Math.max(value, min), max);
                 input.value = value;
-                const inputEvent = new Event('input', { bubbles: true, cancelable: true });
-                input.dispatchEvent(inputEvent);
+                input.dispatchEvent(new Event('input', { bubbles: true }));
             };
-            
+
             changeValue();
 
+            clearTimeout(state.longPressTimer);
+            clearInterval(state.longPressInterval);
             state.longPressTimer = setTimeout(() => {
                 state.longPressInterval = setInterval(changeValue, 100);
             }, 500);
@@ -526,6 +541,26 @@
 
         document.addEventListener("mouseup", stopLongPress);
         document.addEventListener("mouseleave", stopLongPress);
+        if (DOM.characterList) {
+            DOM.characterList.addEventListener('click', (e) => {
+                const slot = e.target.closest('.skill-slot');
+                if (!slot) return;
+                const name = (slot.dataset.skillName || slot.textContent || '').trim();
+                const desc = getSkillDescription(name);
+                if (!desc) { hideTooltip(); return; }
+                showTooltipForSlot(slot, name, desc);
+            });
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('#skill-tooltip') && !e.target.closest('.skill-slot')) {
+                    hideTooltip();
+                }
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') hideTooltip();
+            });
+            window.addEventListener('scroll', () => hideTooltip(), { passive: true });
+            window.addEventListener('resize', () => hideTooltip());
+        }
     };
 
     const initWorker = () => {
@@ -595,9 +630,9 @@
         }
 
         try {
-            const characters = await fetchCharacters();
+            const [characters, skillMap] = await Promise.all([fetchCharacters(), fetchSkillDescriptions()]);
             state.allCharacters = characters;
-            
+            state.skillDescriptions = skillMap || {};
             state.worker.postMessage({ type: 'init', payload: { characters: state.allCharacters } });
             renderCharacters(state.allCharacters, false);
 
@@ -617,5 +652,3 @@
     document.addEventListener("DOMContentLoaded", initializeApp);
 
 })();
-
-
