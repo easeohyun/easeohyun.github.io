@@ -1,4 +1,4 @@
-const CACHE_VERSION = 2; 
+const CACHE_VERSION = 3;
 const CURRENT_CACHE_NAME = `umamusume-filter-cache-v${CACHE_VERSION}`;
 const ASSETS_TO_CACHE = [
   '/',
@@ -7,7 +7,8 @@ const ASSETS_TO_CACHE = [
   '/script.js',
   '/workers/filterWorker.js',
   '/characters.json',
-  'https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap',
+  '/skill-descriptions.json',
+  'https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap',
   'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200'
 ];
 
@@ -37,27 +38,36 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  const { request } = event;
-  const url = new URL(request.url);
-  if (url.pathname.endsWith('/characters.json')) {
-    event.respondWith(
-      caches.open(CURRENT_CACHE_NAME).then(cache => {
-        return cache.match(request).then(cachedResponse => {
-          const fetchPromise = fetch(request).then(networkResponse => {
-            cache.put(request, networkResponse.clone());
-            return networkResponse;
-          });
-          return cachedResponse || fetchPromise;
-        });
-      })
-    );
-  } 
-  else if (ASSETS_TO_CACHE.some(asset => url.pathname.endsWith(asset))) {
-    event.respondWith(
-      caches.match(request).then(response => {
-        return response || fetch(request);
-      })
-    );
-  }
-});
+    const { request } = event;
+    const url = new URL(request.url);
 
+    const isApiData = url.pathname.endsWith('/characters.json') || url.pathname.endsWith('/skill-descriptions.json');
+    const isCachableAsset = ASSETS_TO_CACHE.some(asset => {
+        const assetUrl = new URL(asset, self.location.origin);
+        return assetUrl.href === url.href;
+    });
+
+    if (isApiData) {
+        event.respondWith(
+            caches.open(CURRENT_CACHE_NAME).then(cache => {
+                return fetch(request).then(networkResponse => {
+                    cache.put(request, networkResponse.clone());
+                    return networkResponse;
+                }).catch(() => {
+                    return cache.match(request);
+                });
+            })
+        );
+    } else if (isCachableAsset) {
+        event.respondWith(
+            caches.match(request).then(response => {
+                return response || fetch(request).then(networkResponse => {
+                    return caches.open(CURRENT_CACHE_NAME).then(cache => {
+                        cache.put(request, networkResponse.clone());
+                        return networkResponse;
+                    });
+                });
+            })
+        );
+    }
+});
