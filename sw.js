@@ -1,4 +1,4 @@
-const CACHE_VERSION = 3; 
+const CACHE_VERSION = 2; 
 const CURRENT_CACHE_NAME = `umamusume-filter-cache-v${CACHE_VERSION}`;
 const ASSETS_TO_CACHE = [
   '/',
@@ -7,8 +7,7 @@ const ASSETS_TO_CACHE = [
   '/script.js',
   '/workers/filterWorker.js',
   '/characters.json',
-  '/skill-descriptions.json',
-  'https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap',
+  'https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap',
   'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200'
 ];
 
@@ -40,20 +39,20 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
-  
-  if (url.pathname.endsWith('/characters.json') || url.pathname.endsWith('/skill-descriptions.json')) {
+  if (url.pathname.endsWith('/characters.json')) {
     event.respondWith(
       caches.open(CURRENT_CACHE_NAME).then(cache => {
-        return fetch(request).then(networkResponse => {
-          cache.put(request, networkResponse.clone());
-          return networkResponse;
-        }).catch(() => {
-          return cache.match(request);
+        return cache.match(request).then(cachedResponse => {
+          const fetchPromise = fetch(request).then(networkResponse => {
+            cache.put(request, networkResponse.clone());
+            return networkResponse;
+          });
+          return cachedResponse || fetchPromise;
         });
       })
     );
   } 
-  else if (ASSETS_TO_CACHE.some(asset => url.pathname.endsWith(asset) || url.origin === 'https://fonts.gstatic.com')) {
+  else if (ASSETS_TO_CACHE.some(asset => url.pathname.endsWith(asset))) {
     event.respondWith(
       caches.match(request).then(response => {
         return response || fetch(request);
@@ -61,3 +60,4 @@ self.addEventListener('fetch', (event) => {
     );
   }
 });
+
