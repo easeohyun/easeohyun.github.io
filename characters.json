@@ -60,7 +60,7 @@
     "StrategyAptitude": { "Front": "D", "Pace": "A", "Late": "C", "End": "E" },
     "StatBonuses": { "Speed": 20, "Stamina": 10, "Power": 0, "Guts": 0, "Wit": 0 },
     "skills": { "rainbow": ["절대는, 나야"], "pink": ["레이스의 천재", "지평선 저편까지"], "yellow": ["레이스 플래너", "신들린 스텝"], "white": ["포지션 센스", "경쾌한 스텝", "좋은 위치 뒤따르기", "봄 우마무스메○", "코너 회복○"] },
-    "tags": ["애니 콜라보", "BrandnewFriend", "Tokai Teio", "トウカイテイオー"]
+    "tags": ["애니 콜라보", "BrandnewFriend", "불닭", "Tokai Teio", "トウカイテイオー"]
   },
   {
     "id": 100303, "name": "토카이 테이오", "nickname": "자색 구름의 나비", "color": "#3376d2",
@@ -159,7 +159,7 @@
     "StrategyAptitude": { "Front": "G", "Pace": "B", "Late": "B", "End": "A" },
     "StatBonuses": { "Speed": 8, "Stamina": 14, "Power": 8, "Guts": 0, "Wit": 0 },
     "skills": { "rainbow": ["Vive la GOLD"], "pink": ["밀려드는 쥬뗌므", "거친 해안을 선호하는 황금배"], "yellow": ["육박하는 그림자", "진창길의 귀신"], "white": ["직선 주파", "진창길○", "코너 회복○", "뛰어난 작전", "중거리 직선○"] },
-    "tags": ["ReachforthestarsProjectL'Arc", "개선문상", "Gold Ship", "ゴールドシップ"]  
+    "tags": ["ReachforthestarsProjectL'Arc", "개선문상", "개루시", "Gold Ship", "ゴールドシップ"]  
   },
   {
     "id": 100801, "name": "보드카", "nickname": "와일드 톱기어", "color": "#d4c200",
@@ -267,16 +267,16 @@
     "StrategyAptitude": { "Front": "B", "Pace": "A", "Late": "D", "End": "F" },
     "StatBonuses": { "Speed": 0, "Stamina": 20, "Power": 0, "Guts": 0, "Wit": 10 },
     "skills": { "rainbow": ["존귀한 사명을 완수하기 위하여"], "pink": ["메지로의 마음가짐", "명배우의 여유"], "yellow": ["선봉의 마음가짐", "여유만만"], "white": ["봄 우마무스메○", "스태미나 킵", "리드 킵", "장거리 코너○", "영양 보급"] },
-    "tags": ["파쿠파쿠데스와", "마꾸잉", "영애"]  
+    "tags": ["파쿠파쿠데스와", "마꾸잉", "영애", "Mejiro McQueen", "メジロマックイーン"]  
   },
   {
     "id": 101302, "name": "메지로 맥퀸", "nickname": "엔드・오브・스카이", "color": "#00b5be",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "E" },
     "DistanceAptitude": { "Short": "G", "Mile": "F", "Medium": "A", "Long": "A" }, 
     "StrategyAptitude": { "Front": "B", "Pace": "A", "Late": "D", "End": "F" },
-    "StatBonuses": { "Speed": 10, "Stamina": 10, "Power": 10, "Guts": 0, "Wit": 0 },
+    "StatBonuses": { "Speed": 0, "Stamina": 10, "Power": 10, "Guts": 0, "Wit": 10 },
     "skills": { "rainbow": ["최강의 이름을 걸고"], "pink": ["액티브 레스트", "하늘 끝까지"], "yellow": ["쿨다운", "한줄기 질풍"], "white": ["직선 달인", "스태미나 킵", "심호흡", "가을 우마무스메○", "페이스 업"] },
-    "tags": ["애니 콜라보", "빙닭", "명배우"]  
+    "tags": ["애니 콜라보", "빙닭", "명배우","BrandnewFriend", "Mejiro McQueen", "メジロマックイーン"]  
   },
   {
     "id": 101303, "name": "메지로 맥퀸", "nickname": "잔물결 페어 레이디", "color": "#00b5be",
@@ -285,106 +285,115 @@
     "StrategyAptitude": { "Front": "B", "Pace": "A", "Late": "D", "End": "F" },
     "StatBonuses": { "Speed": 8, "Stamina": 8, "Power": 0, "Guts": 0, "Wit": 14 },
     "skills": { "rainbow": ["빛나는 바다, 눈부신 그대"], "pink": ["여름의 명배우", "일의전심으로 리프레시!"], "yellow": ["노력의 결정체", "일의전심"], "white": ["집중력", "선행의 요령○", "노력의 결과", "빈틈 없음", "스태미나 킵"] },
-    "tags": ["여름", "수영복", "수맥퀸"]  
+    "tags": ["여름", "수영복", "수맥퀸", "대난투여름빛바캉스", "Mejiro McQueen", "メジロマックイーン"]  
   },
   {
-    "id": 101401, "name": "엘 콘도르 파사", "nickname": "엘☆Número 1", "color": "#FF4500",
+    "id": 101401, "name": "엘 콘도르 파사", "nickname": "엘☆Número 1", "color": "#dd4e31",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "B" },
     "DistanceAptitude": { "Short": "F", "Mile": "A", "Medium": "A", "Long": "B" }, 
     "StrategyAptitude": { "Front": "E", "Pace": "A", "Late": "A", "End": "C" },
     "StatBonuses": { "Speed": 20, "Stamina": 0, "Power": 0, "Guts": 0, "Wit": 10 },
     "skills": { "rainbow": ["플란차☆가나도르", "열혈☆아미고"], "pink": ["매의 눈", "여유로운 퍼포먼스"], "yellow": ["천리안", "여유만만"], "white": ["직선 달인", "호크아이", "선행 직선○", "스태미나 킵", "템포 업"] },
-    "tags": ["가나돌", "맘보", "황금세대"]  
+    "tags": ["가나돌", "맘보", "황금세대", "El Condor Pasa","エルコンドルパサー"]  
   },
   {
-    "id": 101402, "name": "엘 콘도르 파사", "nickname": "쿠쿨칸・몽크", "color": "#FF4500",
+    "id": 101402, "name": "엘 콘도르 파사", "nickname": "쿠쿨칸・몽크", "color": "#dd4e31",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "B" },
     "DistanceAptitude": { "Short": "F", "Mile": "A", "Medium": "A", "Long": "B" }, 
     "StrategyAptitude": { "Front": "E", "Pace": "A", "Late": "A", "End": "C" },
     "StatBonuses": { "Speed": 15, "Stamina": 0, "Power": 0, "Guts": 15, "Wit": 0 },
     "skills": { "rainbow": ["콘도르 맹격파"], "pink": ["호용무쌍", "콘도르 도약술", "승천하는 콘도르"], "yellow": ["강인한 다리", "승천하는 용"], "white": ["뒷심", "상승기류", "외곽 추월 준비", "오기", "십만 마력"] },
-    "tags": ["환상세계우마네스트", "파닭"]  
+    "tags": ["판타지", "환상세계우마네스트", "파닭", "El Condor Pasa","エルコンドルパサー"]  
   },
   {
-    "id": 101501, "name": "티엠 오페라 오", "nickname": "오・솔레・수오!", "color": "#800000",
+    "id": 101501, "name": "티엠 오페라 오", "nickname": "오・솔레・수오!", "color": "#f271c4",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "E" },
     "DistanceAptitude": { "Short": "G", "Mile": "E", "Medium": "A", "Long": "A" }, 
     "StrategyAptitude": { "Front": "C", "Pace": "A", "Late": "A", "End": "G" },
     "StatBonuses": { "Speed": 0, "Stamina": 20, "Power": 0, "Guts": 0, "Wit": 10 },
     "skills": { "rainbow": ["빅토리아에게 바치는 무도"], "pink": ["강림! 세기말 패왕!", "가극왕의 행진"], "yellow": ["스피드스터", "킬러 튠"], "white": ["빠져나갈 준비", "템포 업", "비근간거리○", "직선 달인", "스태미나 킵"] },
-    "tags": [""]  
+    "tags": ["세기말패왕", "T.M. Opera O", "テイエムオペラオー"]  
   },
   {
-    "id": 101502, "name": "티엠 오페라 오", "nickname": "새해 창천・푸르른 현란", "color": "#800000",
+    "id": 101502, "name": "티엠 오페라 오", "nickname": "새해 창천・푸르른 현란", "color": "#f271c4",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "E" },
     "DistanceAptitude": { "Short": "G", "Mile": "E", "Medium": "A", "Long": "A" }, 
     "StrategyAptitude": { "Front": "C", "Pace": "A", "Late": "A", "End": "G" },
     "StatBonuses": { "Speed": 14, "Stamina": 8, "Power": 0, "Guts": 0, "Wit": 8 },
     "skills": { "rainbow": ["복을 베푸는 바르카롤"], "pink": ["왈츠의 마에스트로", "코너에 내려앉은 가극왕", "나는 늦지 않게 찾아온다!"], "yellow": ["원호의 마에스트로", "노력의 결정체"], "white": ["선행 직선○", "노력의 결과", "코너 회복○", "안쪽 그룹 능숙○", "겨울 우마무스메○"] },
-    "tags": ["새해", "신년", "뉴페라"]  
+    "tags": ["새해", "신년", "뉴페라", "서화요란새해카루타접전", "T.M. Opera O", "テイエムオペラオー"]  
   },
   {
-    "id": 101601, "name": "나리타 브라이언", "nickname": "Maverick", "color": "#483D8B",
+    "id": 101601, "name": "나리타 브라이언", "nickname": "Maverick", "color": "#75358c",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "F", "Mile": "B", "Medium": "A", "Long": "A" }, 
     "StrategyAptitude": { "Front": "G", "Pace": "A", "Late": "A", "End": "D" },
     "StatBonuses": { "Speed": 10, "Stamina": 20, "Power": 0, "Guts": 0, "Wit": 0 },
     "skills": { "rainbow": ["Shadow Break"], "pink": ["일도양단", "굶주린 늑대의 송곳니"], "yellow": ["한줄기 질풍", "전심전력"], "white": ["직선 달인", "중거리 직선○", "좋은 위치 뒤따르기", "뒷심", "고독한 늑대"] },
-    "tags": ["나리브", "쉐브", "고늑"]  
+    "tags": ["나리브", "쉐브", "고늑", "Narita Brian", "ナリタブライアン"]  
   },
   {
-    "id": 101602, "name": "나리타 브라이언", "nickname": "굶주린 늑대", "color": "#483D8B",
+    "id": 101602, "name": "나리타 브라이언", "nickname": "굶주린 늑대", "color": "#75358c",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "F", "Mile": "B", "Medium": "A", "Long": "A" }, 
     "StrategyAptitude": { "Front": "G", "Pace": "A", "Late": "A", "End": "D" },
     "StatBonuses": { "Speed": 10, "Stamina": 10, "Power": 0, "Guts": 10, "Wit": 0 },
     "skills": { "rainbow": ["회색 임계점"], "pink": ["BLAZING WOLF", "갈망하는 괴물"], "yellow": ["맹추격", "괴물"], "white": ["봄 우마무스메○", "달려들기", "진가 발휘", "심호흡", "빈틈 없음"] },
-    "tags": ["메인스토리", "Blaze", "겜리브"]  
+    "tags": ["메인스토리", "Blaze", "겜리브", "Narita Brian", "ナリタブライアン"]  
   },
   {
-    "id": 101701, "name": "심볼리 루돌프", "nickname": "로드・오브・엠퍼러", "color": "#006400",
+    "id": 101701, "name": "심볼리 루돌프", "nickname": "로드・오브・엠퍼러", "color": "#1c7763",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "E", "Mile": "C", "Medium": "A", "Long": "A" }, 
     "StrategyAptitude": { "Front": "B", "Pace": "A", "Late": "A", "End": "C" },
     "StatBonuses": { "Speed": 0, "Stamina": 20, "Power": 0, "Guts": 10, "Wit": 0 },
     "skills": { "rainbow": ["그대, 황제의 신위를 보라"], "pink": ["황제의 시선", "개수일촉"], "yellow": ["독점력", "호선의 프로페서"], "white": ["코너 달인○", "속박", "좋은 위치 뒤따르기", "선입 견제", "선행 코너○"] },
-    "tags": ["학생회장", "말장난"]  
+    "tags": ["학생회장", "말장난", "Symboli Rudolf", "シンボリルドルフ"]  
   },
   {
-    "id": 101702, "name": "심볼리 루돌프", "nickname": "밝은 달의 활잡이", "color": "#006400",
+    "id": 101702, "name": "심볼리 루돌프", "nickname": "밝은 달의 활잡이", "color": "#1c7763",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "E", "Mile": "C", "Medium": "A", "Long": "A" }, 
     "StrategyAptitude": { "Front": "B", "Pace": "A", "Late": "A", "End": "C" },
     "StatBonuses": { "Speed": 8, "Stamina": 14, "Power": 0, "Guts": 0, "Wit": 8 },
     "skills": { "rainbow": ["어스름이 물러서는 떠들썩한 화살"], "pink": ["신색자약", "풍상고결"], "yellow": ["여유만만", "초가을 강풍"], "white": ["가을 우마무스메○", "안쪽 코너 여포", "스태미나 킵", "직활강", "선행 직선○"] },
-    "tags": ["축제", "활돌프", "한조"]  
+    "tags": ["축제", "활돌프", "한조", "늦가을장단이울려퍼지다", "Symboli Rudolf", "シンボリルドルフ"]  
   },
   {
-    "id": 101801, "name": "에어 그루브", "nickname": "엠프리스 로드", "color": "#A9A9A9",
+    "id": 101801, "name": "에어 그루브", "nickname": "엠프리스 로드", "color": "#0092cb",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "C", "Mile": "B", "Medium": "A", "Long": "E" }, 
     "StrategyAptitude": { "Front": "D", "Pace": "A", "Late": "A", "End": "G" },
     "StatBonuses": { "Speed": 10, "Stamina": 0, "Power": 20, "Guts": 0, "Wit": 0 },
     "skills": { "rainbow": ["블레이즈 오브 프라이드", "엠프리스 프라이드"], "pink": ["여제의 권모", "수월경화"], "yellow": ["현혹의 교란", "레인의 마술사"], "white": ["임기응변", "템포 업", "교란", "추입 주저", "추입 긴장"] },
-    "tags": ["타와케", "부회장"]  
+    "tags": ["타와케", "부회장", "Air Groove", "エアグルーヴ"]  
   },
   {
-    "id": 101802, "name": "에어 그루브", "nickname": "퀘르쿠스・키윌리스", "color": "#A9A9A9",
+    "id": 101802, "name": "에어 그루브", "nickname": "퀘르쿠스・키윌리스", "color": "#0092cb",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "C", "Mile": "B", "Medium": "A", "Long": "E" }, 
     "StrategyAptitude": { "Front": "D", "Pace": "A", "Late": "A", "End": "G" },
     "StatBonuses": { "Speed": 10, "Stamina": 0, "Power": 10, "Guts": 10, "Wit": 0 },
     "skills": { "rainbow": ["훈풍, 영원한 순간을"], "pink": ["여제의 긍지", "상현의 소믈리에"], "yellow": ["여장부 기질", "곡선의 소믈리에"], "white": ["코너 가속○", "오기", "선행 코너○", "선행의 요령○", "페이스 업"] },
-    "tags": ["웨딩", "신부", "결혼", "Air Groove"]
+    "tags": ["웨딩드레스", "신부", "결혼식", "꽃피는소녀의JunePride", "Air Groove", "エアグルーヴ"]
   },
   {
-    "id": 101901, "name": "아그네스 디지털", "nickname": "초특급! 풀컬러 특수 PP", "color": "#00BFFF",
+    "id": 101901, "name": "아그네스 디지털", "nickname": "초특급! 풀컬러 특수 PP", "color": "#f37f96",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "A" },
     "DistanceAptitude": { "Short": "F", "Mile": "A", "Medium": "A", "Long": "G" },
     "StrategyAptitude": { "Front": "G", "Pace": "B", "Late": "A", "End": "D" },
     "StatBonuses": { "Speed": 10, "Stamina": 0, "Power": 10, "Guts": 0, "Wit": 10 },
-    "skills": { "rainbow": ["존귀☆라스트 스퍼—(ﾟ∀ﾟ)—트!"], "pink": ["UBP", "목표는 전장 제패!"], "yellow": ["추격", "빠져나갈 준비"], "white": ["마일 코너○", "선입 코너○", "뒷심", "진흙탕길○", "꼬리 올리기"] },
+    "skills": { "rainbow": ["존귀☆라스트 스퍼—(ﾟ∀ﾟ)—트!"], "pink": ["한계 우마무스메 마니아", "맨 앞줄은 양보하지 않아!", "목표는 맨 앞줄로 가는 길!"], "yellow": ["추격", "빠져나갈 준비"], "white": ["마일 코너○", "선입 코너○", "뒷심", "진흙탕길○", "꼬리 올리기"] },
     "tags": ["데지땅", "우마뾰이", "오타쿠"]
+  },  
+  {
+    "id": 101901, "name": "아그네스 디지털", "nickname": "초특급! 풀컬러 특수 PP", "color": "#f37f96",
+    "SurfaceAptitude": { "Turf": "A", "Dirt": "A" },
+    "DistanceAptitude": { "Short": "F", "Mile": "A", "Medium": "A", "Long": "G" },
+    "StrategyAptitude": { "Front": "G", "Pace": "B", "Late": "A", "End": "D" },
+    "StatBonuses": { "Speed": 10, "Stamina": 0, "Power": 10, "Guts": 0, "Wit": 10 },
+    "skills": { "rainbow": ["존귀☆라스트 스퍼—(ﾟ∀ﾟ)—트!"], "pink": ["한계 우마무스메 마니아", "맨 앞줄은 양보하지 않아!", "목표는 맨 앞줄로 가는 길!"], "yellow": ["추격", "빠져나갈 준비"], "white": ["마일 코너○", "선입 코너○", "뒷심", "진흙탕길○", "꼬리 올리기"] },
+    "tags": ["데이즈인어플래시"]
   },
   {
     "id": 102101, "name": "타마모 크로스", "nickname": "하얀 번개", "color": "#A0522D",
