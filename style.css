@@ -420,6 +420,11 @@ input[type="number"].filter-item-interactive:focus-visible, select.filter-item-i
         -0.7px 0.7px 0.7px #FFFFFF;
 }
 
+.skill-interactive {
+    cursor: help;
+    position: relative;
+}
+
 .skill-rainbow { 
     font-size: 1.25rem; 
     background: var(--rainbow-gradient);
@@ -438,6 +443,24 @@ input[type="number"].filter-item-interactive:focus-visible, select.filter-item-i
     font-weight: 500; 
     word-spacing: -1px; 
     background: linear-gradient(137.5deg, #ffffff, #bdbece); 
+}
+
+.skill-tooltip {
+    position: absolute;
+    background-color: var(--color-surface-1);
+    color: var(--color-text-primary);
+    border: 1px solid var(--character-color, var(--color-border));
+    border-radius: var(--radius-md);
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    max-width: 320px;
+    width: max-content;
+    z-index: 3000;
+    pointer-events: none;
+    opacity: 0;
+    box-shadow: var(--shadow-elevation-medium);
+    transition: opacity var(--transition-fast);
 }
 
 @keyframes skeleton-loading { 0% { background-position: -200px 0; } 100% { background-position: calc(200px + 100%) 0; } }
@@ -572,7 +595,3 @@ html[data-theme="dark"] #dark-mode-toggle:hover .material-symbols-outlined {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
   .button:hover, .scroll-buttons button:hover, .character-card:hover { transform: none; }
 }
-
-
-
-
