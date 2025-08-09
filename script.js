@@ -651,21 +651,22 @@
         }
 
         try {
-            const [characters, skillDescriptions] = await Promise.all([
-                fetchData(CHARACTERS_JSON_PATH),
-                fetchData(SKILL_DESCRIPTIONS_PATH)
-            ]);
-            
-            state.allCharacters = characters;
-            state.skillDescriptions = skillDescriptions;
-            
+            state.allCharacters = await fetchData(CHARACTERS_JSON_PATH);
             state.worker.postMessage({ type: 'init', payload: { characters: state.allCharacters } });
+
+            try {
+                state.skillDescriptions = await fetchData(SKILL_DESCRIPTIONS_PATH);
+            } catch (error) {
+                console.warn("스킬 설명 데이터를 불러오지 못했습니다. 툴팁 기능이 비활성화됩니다.", error);
+                state.skillDescriptions = {};
+            }
+
             renderCharacters(state.allCharacters, false);
 
         } catch (error) {
-            console.error("Failed to load data:", error);
+            console.error("Failed to load critical data:", error);
             setLoadingState(false);
-            DOM.resultSummary.innerHTML = `<div style="color:var(--color-danger); text-align:center;"><p><strong>오류:</strong> 데이터를 불러오지 못했어요.</p><p>인터넷에 연결이 잘 되었는지 확인하고 새로고침을 부탁드려요!</p></div>`;
+            DOM.resultSummary.innerHTML = `<div style="color:var(--color-danger); text-align:center;"><p><strong>오류:</strong> 우마무스메 데이터를 불러오지 못했어요.</p><p>인터넷에 연결이 잘 되었는지 확인하고 새로고침을 부탁드려요!</p></div>`;
         } finally {
             updateScrollButtonsVisibility();
         }
