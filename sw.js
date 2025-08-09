@@ -7,6 +7,7 @@ const ASSETS_TO_CACHE = [
   '/script.js',
   '/workers/filterWorker.js',
   '/characters.json',
+  '/skill-descriptions.json',
   'https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap',
   'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200'
 ];
@@ -60,4 +61,3 @@ self.addEventListener('fetch', (event) => {
     );
   }
 });
-
