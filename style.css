@@ -418,6 +418,12 @@ input[type="number"].filter-item-interactive:focus-visible, select.filter-item-i
         -0.7px -0.7px 0.7px #FFFFFF, 
         0.7px -0.7px 0.7px #FFFFFF, 
         -0.7px 0.7px 0.7px #FFFFFF;
+    cursor: pointer;
+    transition: transform var(--transition-fast);
+}
+
+.skill-slot:hover {
+    transform: scale(1.05);
 }
 
 .skill-rainbow { 
@@ -438,6 +444,62 @@ input[type="number"].filter-item-interactive:focus-visible, select.filter-item-i
     font-weight: 500; 
     word-spacing: -1px; 
     background: linear-gradient(137.5deg, #ffffff, #bdbece); 
+}
+
+#skill-tooltip {
+    position: fixed;
+    z-index: 3000;
+    background-color: var(--color-surface-2);
+    border: 2px solid var(--character-color, var(--color-primary));
+    border-radius: var(--radius-md);
+    padding: 0.75rem 1rem;
+    box-shadow: var(--shadow-elevation-medium);
+    max-width: 350px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(10px) scale(0.95);
+    transition: opacity var(--transition-fast), transform var(--transition-fast);
+    visibility: hidden;
+}
+
+#skill-tooltip.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    visibility: visible;
+}
+
+#skill-tooltip::before {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-color: transparent;
+    border-width: 8px;
+}
+
+#skill-tooltip.tooltip-top::before {
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-top-color: var(--character-color, var(--color-primary));
+}
+
+#skill-tooltip.tooltip-bottom::before {
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-bottom-color: var(--character-color, var(--color-primary));
+}
+
+#skill-tooltip .skill-name {
+    font-weight: 700;
+    font-size: 1.1em;
+    color: var(--character-color, var(--color-primary-deep));
+    margin-bottom: 0.5rem;
+    display: block;
 }
 
 @keyframes skeleton-loading { 0% { background-position: -200px 0; } 100% { background-position: calc(200px + 100%) 0; } }
@@ -572,7 +634,3 @@ html[data-theme="dark"] #dark-mode-toggle:hover .material-symbols-outlined {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
   .button:hover, .scroll-buttons button:hover, .character-card:hover { transform: none; }
 }
-
-
-
-
