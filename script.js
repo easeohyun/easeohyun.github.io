@@ -3,12 +3,10 @@
 
     const GRADE_MAP = Object.freeze({ S: 8, A: 7, B: 6, C: 5, D: 4, E: 3, F: 2, G: 1 });
     const CHARACTERS_JSON_PATH = "./characters.json";
-    const SKILL_DESCRIPTIONS_JSON_PATH = "./skill-descriptions.json";
     const DEBOUNCE_DELAY = 250;
 
     const DOM = {
         html: document.documentElement,
-        body: document.body,
         filterForm: document.getElementById("filter-form"),
         characterList: document.getElementById("character-list"),
         resultSummary: document.getElementById("result-summary"),
@@ -28,19 +26,16 @@
         closeModalBtn: document.getElementById("close-modal-btn"),
         modalOverlay: document.querySelector(".modal-overlay"),
         contactEmailLink: document.getElementById("contact-email-link"),
-        tooltip: null,
     };
 
     const state = {
         allCharacters: [],
-        skillDescriptions: {},
         observer: null,
         worker: null,
         themeTransitionTimeout: null,
         longPressTimer: null,
         longPressInterval: null,
         isModalOpen: false,
-        isTooltipVisible: false,
     };
     
     const getRandomMessage = (messages) => {
@@ -187,18 +182,18 @@
     };
     
     const setLoadingState = (isLoading, message = "") => {
-        if (isLoading) {
-            if (DOM.characterList) DOM.characterList.innerHTML = "";
-            if (DOM.resultSummary) {
-                DOM.resultSummary.setAttribute('aria-live', 'assertive');
-                DOM.resultSummary.innerHTML = message;
-            }
-        } else {
-            if (DOM.resultSummary) {
-                DOM.resultSummary.setAttribute('aria-live', 'polite');
-            }
+    if (isLoading) {
+        if (DOM.characterList) DOM.characterList.innerHTML = "";
+        if (DOM.resultSummary) {
+            DOM.resultSummary.setAttribute('aria-live', 'assertive');
+            DOM.resultSummary.innerHTML = message;
         }
-    };
+    } else {
+        if (DOM.resultSummary) {
+            DOM.resultSummary.setAttribute('aria-live', 'polite');
+        }
+    }
+};
     
     const renderCharacters = (charactersToRender, isFiltered) => {
         const { characterList, noResultsContainer, resultSummary } = DOM;
@@ -362,9 +357,7 @@
 
         if (event.key === 'Escape') {
             event.preventDefault();
-            if (state.isTooltipVisible) {
-                hideTooltip();
-            } else if (state.isModalOpen) {
+            if (state.isModalOpen) {
                 closeModal();
             } else if (isTyping) {
                 activeElement.blur();
@@ -441,83 +434,6 @@
         }, { once: true });
     };
 
-    const createTooltip = () => {
-        const tooltip = document.createElement('div');
-        tooltip.id = 'skill-tooltip';
-        tooltip.className = 'skill-tooltip';
-        tooltip.setAttribute('role', 'tooltip');
-        tooltip.hidden = true;
-        DOM.body.appendChild(tooltip);
-        return tooltip;
-    };
-    
-    const hideTooltip = () => {
-        if (!state.isTooltipVisible) return;
-        DOM.tooltip.hidden = true;
-        state.isTooltipVisible = false;
-    };
-
-    const updateTooltip = (target, skillName, description) => {
-        const card = target.closest('.character-card');
-        const color = card.style.getPropertyValue('--character-color').trim();
-        DOM.tooltip.style.setProperty('--tooltip-color', color || 'var(--color-primary)');
-
-        DOM.tooltip.innerHTML = `
-            <div class="tooltip-skill-name">${skillName}</div>
-            <div class="tooltip-skill-description">${description}</div>
-        `;
-    
-        const rect = target.getBoundingClientRect();
-        const tooltipRect = DOM.tooltip.getBoundingClientRect();
-        const tooltipHeight = tooltipRect.height;
-        const spaceBelow = window.innerHeight - rect.bottom;
-        const spaceAbove = rect.top;
-    
-        let top;
-        let left = rect.left + rect.width / 2;
-    
-        DOM.tooltip.classList.remove('bottom', 'top');
-
-        if (spaceBelow > tooltipHeight + 10) {
-            top = rect.bottom + 8;
-            DOM.tooltip.classList.add('top');
-        } else if (spaceAbove > tooltipHeight + 10) {
-            top = rect.top - tooltipHeight - 8;
-            DOM.tooltip.classList.add('bottom');
-        } else {
-            top = rect.bottom + 8;
-            DOM.tooltip.classList.add('top');
-        }
-    
-        DOM.tooltip.style.top = `${top + window.scrollY}px`;
-        DOM.tooltip.style.left = `${left + window.scrollX}px`;
-        DOM.tooltip.hidden = false;
-        state.isTooltipVisible = true;
-    };
-
-    const handleSkillClick = (event) => {
-        const target = event.target;
-        if (!target.classList.contains('skill-slot')) return;
-
-        event.stopPropagation();
-        
-        const skillName = target.textContent.trim();
-        const description = state.skillDescriptions[skillName] || '설명을 찾을 수 없습니다.';
-        
-        if (state.isTooltipVisible && DOM.tooltip.dataset.skillName === skillName) {
-            hideTooltip();
-        } else {
-            DOM.tooltip.dataset.skillName = skillName;
-            updateTooltip(target, skillName, description);
-        }
-    };
-    
-    const handleBodyClick = (event) => {
-        if (state.isTooltipVisible && !DOM.tooltip.contains(event.target)) {
-            hideTooltip();
-        }
-    };
-
     const setupEventListeners = () => {
         const debouncedUpdate = debounce(updateDisplay, DEBOUNCE_DELAY);
         
@@ -550,22 +466,22 @@
         });
 
         DOM.contactEmailLink.addEventListener("click", function(e) {
-            e.preventDefault();
-            const isRevealed = this.dataset.revealed === "true";
+    e.preventDefault();
+    const isRevealed = this.dataset.revealed === "true";
 
-            if (!isRevealed) {
-                const user = "easeohyun";
-                const domain = "gmail.com";
-                const email = `${user}@${domain}`; 
-                this.textContent = email;
-                this.href = `mailto:${email}`;
-                this.dataset.revealed = "true";
-            }
+    if (!isRevealed) {
+        const user = "easeohyun";
+        const domain = "gmail.com";
+        const email = `${user}@${domain}`; 
+        this.textContent = email;
+        this.href = `mailto:${email}`;
+        this.dataset.revealed = "true";
+    }
 
-            if (confirm(`메일 클라이언트를 열어 '${this.textContent}' 주소로 메일을 보내시겠습니까?`)) {
-                window.open(this.href, '_blank');
-            }
-        });
+    if (confirm(`메일 클라이언트를 열어 '${this.textContent}' 주소로 메일을 보내시겠습니까?`)) {
+        window.open(this.href, '_blank');
+    }
+});
 
         document.addEventListener("keydown", handleKeyboardShortcuts);
         window.addEventListener("scroll", debounce(updateScrollButtonsVisibility, 150));
@@ -610,9 +526,6 @@
 
         document.addEventListener("mouseup", stopLongPress);
         document.addEventListener("mouseleave", stopLongPress);
-        
-        DOM.characterList.addEventListener('click', handleSkillClick);
-        DOM.body.addEventListener('click', handleBodyClick);
     };
 
     const initWorker = () => {
@@ -642,35 +555,12 @@
         });
     };
     
-    const fetchData = async () => {
-        try {
-            const [charResponse, skillResponse] = await Promise.all([
-                fetch(CHARACTERS_JSON_PATH, { cache: 'no-cache' }),
-                fetch(SKILL_DESCRIPTIONS_JSON_PATH, { cache: 'no-cache' })
-            ]);
-    
-            if (!charResponse.ok) {
-                throw new Error(`HTTP ${charResponse.status} - ${charResponse.statusText} fetching characters`);
-            }
-            if (!skillResponse.ok) {
-                throw new Error(`HTTP ${skillResponse.status} - ${skillResponse.statusText} fetching skill descriptions`);
-            }
-    
-            const characters = await charResponse.json();
-            const skillDescriptions = await skillResponse.json();
-    
-            return { characters, skillDescriptions };
-    
-        } catch (error) {
-            console.error("Failed to load data:", error);
-            setLoadingState(false);
-            DOM.resultSummary.innerHTML = `
-                <div style="color:var(--color-danger); text-align:center;">
-                    <p><strong>오류:</strong> 데이터를 불러오지 못했어요.</p>
-                    <p>인터넷 연결을 확인하고 새로고침 해주세요!</p>
-                </div>`;
-            throw error;
+    const fetchCharacters = async () => {
+        const response = await fetch(CHARACTERS_JSON_PATH, { cache: 'no-cache' });
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status} - ${response.statusText}`);
         }
+        return await response.json();
     };
 
     const initializeApp = async () => {
@@ -682,7 +572,6 @@
         `;
         document.head.appendChild(style);
 
-        DOM.tooltip = createTooltip();
         setupEventListeners();
         setCheckboxIcons();
 
@@ -706,15 +595,20 @@
         }
 
         try {
-            const { characters, skillDescriptions } = await fetchData();
+            const characters = await fetchCharacters();
             state.allCharacters = characters;
-            state.skillDescriptions = skillDescriptions;
             
             state.worker.postMessage({ type: 'init', payload: { characters: state.allCharacters } });
             renderCharacters(state.allCharacters, false);
 
         } catch (error) {
-            // Error is already logged and message displayed in fetchData
+            console.error("Failed to load character data:", error);
+            setLoadingState(false);
+            DOM.resultSummary.innerHTML = `
+                <div style="color:var(--color-danger); text-align:center;">
+                    <p><strong>오류:</strong> 우마무스메 데이터를 불러오지 못했어요.</p>
+                    <p>인터넷에 연결이 잘 되었는지 확인하고 새로고침을 부탁드려요!</p>
+                </div>`;
         } finally {
             updateScrollButtonsVisibility();
         }
@@ -723,3 +617,5 @@
     document.addEventListener("DOMContentLoaded", initializeApp);
 
 })();
+
+
