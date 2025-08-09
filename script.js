@@ -472,7 +472,8 @@
     if (!isRevealed) {
         const user = "easeohyun";
         const domain = "gmail.com";
-        this.textContent = email; 
+        const email = `${user}@${domain}`; 
+        this.textContent = email;
         this.href = `mailto:${email}`;
         this.dataset.revealed = "true";
     }
@@ -616,4 +617,5 @@
     document.addEventListener("DOMContentLoaded", initializeApp);
 
 })();
+
 
