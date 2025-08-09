@@ -1,13 +1,13 @@
 const CACHE_VERSION = 3;
 const CURRENT_CACHE_NAME = `umamusume-filter-cache-v${CACHE_VERSION}`;
 const ASSETS_TO_CACHE = [
-  '/',
-  './index.html',
-  './style.css',
-  './script.js',
-  './workers/filterWorker.js',
-  './characters.json',
-  './skill-descriptions.json',
+  '/easeohyun.github.io/',
+  '/easeohyun.github.io/index.html',
+  '/easeohyun.github.io/style.css',
+  '/easeohyun.github.io/script.js',
+  '/easeohyun.github.io/workers/filterWorker.js',
+  '/easeohyun.github.io/characters.json',
+  '/easeohyun.github.io/skill-descriptions.json',
   'https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap',
   'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200'
 ];
@@ -43,3 +43,4 @@ self.addEventListener('fetch', (event) => {
     })
   );
 });
+
