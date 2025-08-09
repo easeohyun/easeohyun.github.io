@@ -452,15 +452,15 @@
 
         const skillName = target.textContent.trim();
         const skillDescription = state.skillDescriptions[skillName];
-        if (!skillDescription) return;
-
+        
         const card = target.closest('.character-card');
         const characterColor = card ? card.style.getPropertyValue('--character-color') : 'var(--color-primary)';
 
         const tooltip = document.createElement('div');
         tooltip.className = 'skill-tooltip';
-        tooltip.textContent = skillDescription;
+        tooltip.textContent = skillDescription || "스킬 정보를 찾을 수 없습니다.";
         tooltip.style.setProperty('--character-color', characterColor);
+        
         state.activeTooltip = tooltip;
         DOM.body.appendChild(tooltip);
 
