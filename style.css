@@ -222,8 +222,8 @@ footer p { margin: var(--spacing-sm, 8px) 0; }
 #filter-short label, #filter-mile label, #filter-medium label, #filter-long label { --icon-content: 'directions_run'; }
 #filter-front label, #filter-pace label, #filter-late label, #filter-end label { --icon-content: 'directions_run'; }
 
-#filter-turf input:checked + label { --icon-color: #38761d; }
-#filter-dirt input:checked + label { --icon-color: #744700; }
+#filter-turf input:checked + label { --icon-color: #2ecc71; }
+#filter-dirt input:checked + label { --icon-color: #e67e22; }
 #filter-speed input:checked + label { --icon-color: #2bb7f1; }
 #filter-stamina input:checked + label { --icon-color: #ff7c67; }
 #filter-power input:checked + label { --icon-color: #f39b17; }
@@ -572,6 +572,7 @@ html[data-theme="dark"] #dark-mode-toggle:hover .material-symbols-outlined {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
   .button:hover, .scroll-buttons button:hover, .character-card:hover { transform: none; }
 }
+
 
 
 
