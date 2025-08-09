@@ -243,6 +243,13 @@ footer p { margin: var(--spacing-sm, 8px) 0; }
     color: #000;
 }
 
+html[data-theme="dark"] .filter-item:is(
+    #filter-short, #filter-mile, #filter-medium, #filter-long, 
+    #filter-front, #filter-pace, #filter-late, #filter-end
+) input:checked + label::before {
+    color: var(--color-text-primary);
+}
+
 .filter-item input[type="checkbox"]:checked + label { color: var(--color-primary-deep); font-weight: 500; }
 .filter-item-interactive { height: 32px; border: 1px solid var(--color-border-hover); border-radius: var(--radius-md); background-color: var(--color-surface-2); color: var(--color-text-primary); padding: 0 0.5rem; transition: border-color var(--transition-fast), box-shadow var(--transition-fast); }
 .filter-item input[type="checkbox"]:checked ~ .filter-item-interactive { border-color: var(--color-primary); box-shadow: var(--shadow-focus); }
@@ -565,5 +572,6 @@ html[data-theme="dark"] #dark-mode-toggle:hover .material-symbols-outlined {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
   .button:hover, .scroll-buttons button:hover, .character-card:hover { transform: none; }
 }
+
 
 
