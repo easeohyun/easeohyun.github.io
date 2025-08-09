@@ -2,15 +2,11 @@
     'use strict';
 
     const GRADE_MAP = Object.freeze({ S: 8, A: 7, B: 6, C: 5, D: 4, E: 3, F: 2, G: 1 });
+    const CHARACTERS_JSON_PATH = "./characters.json";
     const DEBOUNCE_DELAY = 250;
-    const DATA_PATHS = {
-        characters: "./characters.json",
-        skillDescriptions: "./skill-descriptions.json"
-    };
 
     const DOM = {
         html: document.documentElement,
-        body: document.body,
         filterForm: document.getElementById("filter-form"),
         characterList: document.getElementById("character-list"),
         resultSummary: document.getElementById("result-summary"),
@@ -30,19 +26,16 @@
         closeModalBtn: document.getElementById("close-modal-btn"),
         modalOverlay: document.querySelector(".modal-overlay"),
         contactEmailLink: document.getElementById("contact-email-link"),
-        skillTooltip: document.getElementById("skill-tooltip"),
     };
 
     const state = {
         allCharacters: [],
-        skillDescriptions: {},
         observer: null,
         worker: null,
         themeTransitionTimeout: null,
         longPressTimer: null,
         longPressInterval: null,
         isModalOpen: false,
-        activeTooltip: { element: null, timeout: null },
     };
     
     const getRandomMessage = (messages) => {
@@ -57,6 +50,33 @@
         };
     };
 
+    const setCheckboxIcons = () => {
+        const iconMap = {
+            'filter-turf': 'grass',
+            'filter-dirt': 'landslide',
+            'filter-speed': 'podiatry',
+            'filter-stamina': 'favorite',
+            'filter-power': 'ulna_radius_alt',
+            'filter-guts': 'mode_heat',
+            'filter-wit': 'school',
+            'filter-short': 'directions_run',
+            'filter-mile': 'directions_run',
+            'filter-medium': 'directions_run',
+            'filter-long': 'directions_run',
+            'filter-front': 'directions_run',
+            'filter-pace': 'directions_run',
+            'filter-late': 'directions_run',
+            'filter-end': 'directions_run'
+        };
+
+        for (const [id, icon] of Object.entries(iconMap)) {
+            const element = document.querySelector(`#${id} label`);
+            if (element) {
+                element.style.setProperty('--icon-content', `'${icon}'`);
+            }
+        }
+    };
+    
     const createStatItem = (displayName, value, isBonus = false) => {
         const itemLi = document.createElement('li');
         itemLi.className = 'stat-item';
@@ -134,8 +154,6 @@
                 const slotDiv = document.createElement('div');
                 slotDiv.className = `skill-slot skill-${color}`;
                 slotDiv.textContent = skill || "";
-                slotDiv.setAttribute('role', 'button');
-                slotDiv.setAttribute('tabindex', '0');
                 rowDiv.appendChild(slotDiv);
             });
             return rowDiv;
@@ -164,14 +182,18 @@
     };
     
     const setLoadingState = (isLoading, message = "") => {
-        if (isLoading) {
-            DOM.characterList.innerHTML = "";
+    if (isLoading) {
+        if (DOM.characterList) DOM.characterList.innerHTML = "";
+        if (DOM.resultSummary) {
             DOM.resultSummary.setAttribute('aria-live', 'assertive');
             DOM.resultSummary.innerHTML = message;
-        } else {
+        }
+    } else {
+        if (DOM.resultSummary) {
             DOM.resultSummary.setAttribute('aria-live', 'polite');
         }
-    };
+    }
+};
     
     const renderCharacters = (charactersToRender, isFiltered) => {
         const { characterList, noResultsContainer, resultSummary } = DOM;
@@ -194,15 +216,47 @@
 
         let summaryText = "";
         if (!hasActiveFilters) {
-            summaryText = `트레센 학원에 어서오세요, 이렇게 많은 친구들은 처음이죠?<p>지금부터 <strong>${state.allCharacters.length}</strong>명의 우마무스메 중에서 3년을 함께할 학생을 찾아봐요.</p>`;
-        } else {
-            const messages = 
-                count === 1 ? ["당신이 찾던 그 우마무스메가... 딱 <strong>1명</strong> 있었어요!", "앞으로 3년을 함께할 우마무스메를 <strong>1명</strong> 찾았어요.", "지금 이 <strong>1명</strong>과 만남은 운명, 꿈은 목표."] :
-                count <= 5 ? [`당신이 찾던 그 우마무스메는... <strong>${count}</strong>명 중에 있을 거예요.`, `<strong>${count}</strong>명의 우마무스메를 찾았어요. 어떤 옷을 입히고 싶으신가요?`, `<strong>${count}</strong>명의 우마무스메 중에서, 결정이 필요할 거예요.`] :
-                count <= 15 ? [`당신이 찾던 그 우마무스메는... <strong>${count}</strong>명 중에 있을 것 같아요.`, `<strong>${count}</strong>명의 우마무스메를 찾았어요. 아직은 좀 많죠?`, `<strong>${count}</strong>명의 우마무스메 중에서, 간추릴 필요가 있어요.`] :
-                count <= 50 ? [`당신이 찾는 그 우마무스메는... <strong>${count}</strong>명 중에 있는 것 맞죠?`, `<strong>${count}</strong>명의 우마무스메를 찾았는데요, 더 둘러봐야 해요.`, `<strong>${count}</strong>명의 우마무스메 중에서, 대체 어디있을까요?`] :
-                [`당신이 찾는 그 우마무스메가... <strong>${count}</strong>명 중에 있기를 바랍니다!`, `<strong>${count}</strong>명의 우마무스메를 찾았는데요, 이제 시작이에요.`, `<strong>${count}</strong>명의 우마무스메 중에서, 이제 찾아볼까요?`];
+            const messages = [
+                `트레센 학원에 어서오세요, 이렇게 많은 친구들은 처음이죠?<p>지금부터 <strong>${state.allCharacters.length}</strong>명의 우마무스메 중에서 3년을 함께할 학생을 찾아봐요.</p>`
+            ];
             summaryText = getRandomMessage(messages);
+        } else {
+            if (count === 1) {
+                const messages = [
+                    "당신이 찾던 그 우마무스메가... 딱 <strong>1명</strong> 있었어요!",
+                    "앞으로 3년을 함께할 우마무스메를 <strong>1명</strong> 찾았어요.",
+                    "지금 이 <strong>1명</strong>과 만남은 운명, 꿈은 목표."
+                ];
+                summaryText = getRandomMessage(messages);
+            } else if (count >= 2 && count <= 5) {
+                const messages = [
+                    `당신이 찾던 그 우마무스메는... <strong>${count}</strong>명 중에 있을 거예요.`,
+                    `<strong>${count}</strong>명의 우마무스메를 찾았어요. 어떤 옷을 입히고 싶으신가요?`,
+                    `<strong>${count}</strong>명의 우마무스메 중에서, 결정이 필요할 거예요.`
+                ];
+                summaryText = getRandomMessage(messages);
+            } else if (count >= 6 && count <= 15) {
+                const messages = [
+                    `당신이 찾던 그 우마무스메는... <strong>${count}</strong>명 중에 있을 것 같아요.`,
+                    `<strong>${count}</strong>명의 우마무스메를 찾았어요. 아직은 좀 많죠?`,
+                    `<strong>${count}</strong>명의 우마무스메 중에서, 간추릴 필요가 있어요.`
+                ];
+                summaryText = getRandomMessage(messages);
+            } else if (count >= 16 && count <= 50) {
+                 const messages = [
+                    `당신이 찾는 그 우마무스메는... <strong>${count}</strong>명 중에 있는 것 맞죠?`,
+                    `<strong>${count}</strong>명의 우마무스메를 찾았는데요, 더 둘러봐야 해요.`,
+                    `<strong>${count}</strong>명의 우마무스메 중에서, 대체 어디있을까요?`
+                ];
+                summaryText = getRandomMessage(messages);
+            } else {
+                const messages = [
+                    `당신이 찾는 그 우마무스메가... <strong>${count}</strong>명 중에 있기를 바랍니다!`,
+                    `<strong>${count}</strong>명의 우마무스메를 찾았는데요, 이제 시작이에요.`,
+                    `<strong>${count}</strong>명의 우마무스메 중에서, 이제 찾아볼까요?`
+                ];
+                summaryText = getRandomMessage(messages);
+            }
         }
         resultSummary.innerHTML = summaryText;
         
@@ -240,7 +294,7 @@
         for (const el of DOM.filterForm.elements) {
             if (el.type === "checkbox" && el.checked) {
                 const key = el.name;
-                const isStatBonus = ["Speed", "Stamina", "Power", "Guts", "Wit"].includes(key);
+                const isStatBonus = el.id.match(/Speed|Stamina|Power|Guts|Wit/);
                 const filter = isStatBonus
                     ? { key, type: "value", value: parseInt(formData.get(`${key}-value`), 10) || 0 }
                     : { key, type: "grade", value: GRADE_MAP[formData.get(`${key}-grade`)] };
@@ -272,7 +326,9 @@
     
     const toggleAllSkills = () => {
         const allDetails = DOM.characterList.querySelectorAll(".skill-details");
-        if (allDetails.length === 0) return;
+        if (allDetails.length === 0) {
+            return;
+        }
 
         const shouldOpen = Array.from(allDetails).some(d => !d.open);
         allDetails.forEach(detail => detail.open = shouldOpen);
@@ -286,8 +342,8 @@
         const { scrollTopButton, scrollBottomButton } = DOM;
         const scrollTop = window.scrollY || document.documentElement.scrollTop;
         const scrollHeight = document.documentElement.scrollHeight;
-        const clientHeight = document.documentElement.clientHeight;
-        const isAtBottom = scrollTop + clientHeight >= scrollHeight - 20;
+        const windowHeight = window.innerHeight;
+        const isAtBottom = scrollTop + windowHeight >= scrollHeight - 20;
 
         scrollTopButton.classList.toggle("hidden", scrollTop < 200);
         scrollBottomButton.classList.toggle("hidden", isAtBottom);
@@ -301,9 +357,7 @@
 
         if (event.key === 'Escape') {
             event.preventDefault();
-            if (state.activeTooltip.element) {
-                hideTooltip();
-            } else if (state.isModalOpen) {
+            if (state.isModalOpen) {
                 closeModal();
             } else if (isTyping) {
                 activeElement.blur();
@@ -313,7 +367,8 @@
             return;
         }
 
-        if (isTyping || state.isModalOpen) return;
+        if (isTyping) return;
+        if (state.isModalOpen) return;
 
         const shortcuts = {
             'q': () => DOM.searchBox.focus(),
@@ -333,26 +388,32 @@
     };
     
     const applyTheme = (theme) => {
-        clearTimeout(state.themeTransitionTimeout);
-        DOM.html.classList.add('theme-transition');
-        DOM.html.dataset.theme = theme;
+        const { html, darkModeToggleButton } = DOM;
+        const icon = darkModeToggleButton.querySelector(".material-symbols-outlined");
         
-        const icon = DOM.darkModeToggleButton.querySelector(".material-symbols-outlined");
+        clearTimeout(state.themeTransitionTimeout);
+        html.classList.add('theme-transition');
+        html.dataset.theme = theme;
         icon.textContent = theme === 'dark' ? 'light_mode' : 'dark_mode';
-        DOM.darkModeToggleButton.title = theme === 'dark' ? '밝은 테마로 전환 (D)' : '어두운 테마로 전환 (D)';
+        darkModeToggleButton.title = theme === 'dark' ? '밝은 테마로 전환 (D)' : '어두운 테마로 전환 (D)';
         localStorage.setItem("theme", theme);
         
-        state.themeTransitionTimeout = setTimeout(() => DOM.html.classList.remove('theme-transition'), 150);
+        state.themeTransitionTimeout = setTimeout(() => {
+            html.classList.remove('theme-transition');
+        }, 150);
     };
 
     const toggleTheme = () => {
-        applyTheme(DOM.html.dataset.theme === 'light' ? 'dark' : 'light');
+        const newTheme = (DOM.html.dataset.theme || 'light') === 'light' ? 'dark' : 'light';
+        applyTheme(newTheme);
     };
     
     const openModal = () => {
         if (state.isModalOpen) return;
         state.isModalOpen = true;
+        
         history.pushState({ modal: true }, '', '#modal');
+        
         DOM.modalContainer.hidden = false;
         requestAnimationFrame(() => {
              DOM.modalContainer.classList.add("active");
@@ -363,77 +424,21 @@
     const closeModal = () => {
         if (!state.isModalOpen) return;
         state.isModalOpen = false;
+        
         DOM.modalContainer.classList.remove("active");
         DOM.modalContainer.addEventListener("transitionend", () => {
             DOM.modalContainer.hidden = true;
-            if (location.hash === "#modal") history.back();
+            if (location.hash === "#modal") {
+                 history.back();
+            }
         }, { once: true });
     };
 
-    const showTooltip = (element, skillName) => {
-        if (state.activeTooltip.element) hideTooltip();
-
-        const description = state.skillDescriptions[skillName];
-        const card = element.closest('.character-card');
-        const characterColor = card ? getComputedStyle(card).getPropertyValue('--character-color').trim() : 'var(--color-primary)';
-        
-        DOM.skillTooltip.style.setProperty('--character-color', characterColor);
-        DOM.skillTooltip.innerHTML = `
-            <div class="tooltip-header">${skillName}</div>
-            <div class="tooltip-description">${description || '<span class="tooltip-not-found">설명을 찾을 수 없어요.</span>'}</div>
-        `;
-
-        const rect = element.getBoundingClientRect();
-        const tooltipRect = DOM.skillTooltip.getBoundingClientRect();
-
-        let top = rect.bottom + window.scrollY + 8;
-        let left = rect.left + window.scrollX + (rect.width / 2) - (tooltipRect.width / 2);
-
-        if (left < 10) left = 10;
-        if (left + tooltipRect.width > window.innerWidth - 10) {
-            left = window.innerWidth - tooltipRect.width - 10;
-        }
-        if (top + tooltipRect.height > window.innerHeight + window.scrollY - 10) {
-            top = rect.top + window.scrollY - tooltipRect.height - 8;
-        }
-
-        DOM.skillTooltip.style.top = `${top}px`;
-        DOM.skillTooltip.style.left = `${left}px`;
-        
-        DOM.skillTooltip.setAttribute('aria-hidden', 'false');
-        requestAnimationFrame(() => DOM.skillTooltip.classList.add('visible'));
-        
-        state.activeTooltip.element = element;
-    };
-
-    const hideTooltip = () => {
-        if (!state.activeTooltip.element) return;
-        DOM.skillTooltip.classList.remove('visible');
-        DOM.skillTooltip.setAttribute('aria-hidden', 'true');
-        state.activeTooltip.element = null;
-    };
-
-    const handleSkillClick = (event) => {
-        const skillSlot = event.target.closest('.skill-slot');
-        if (!skillSlot) return;
-
-        const skillName = skillSlot.textContent.trim();
-        if (!skillName) return;
-
-        showTooltip(skillSlot, skillName);
-    };
-
-    const handleBodyClick = (event) => {
-        if (state.activeTooltip.element && !state.activeTooltip.element.contains(event.target)) {
-            hideTooltip();
-        }
-    };
-    
     const setupEventListeners = () => {
         const debouncedUpdate = debounce(updateDisplay, DEBOUNCE_DELAY);
         
         DOM.filterForm.addEventListener("input", e => {
-            if (['checkbox', 'select-one', 'number'].includes(e.target.type)) {
+            if(e.target.type === 'checkbox' || e.target.type === 'select-one' || e.target.type === 'number') {
                 debouncedUpdate();
             }
         });
@@ -454,54 +459,61 @@
         DOM.closeModalBtn.addEventListener("click", closeModal);
         DOM.modalOverlay.addEventListener("click", closeModal);
         
-        DOM.characterList.addEventListener('click', handleSkillClick);
-        DOM.body.addEventListener('click', handleBodyClick);
-        
-        window.addEventListener('popstate', () => {
-            if (state.isModalOpen) closeModal();
+        window.addEventListener('popstate', (event) => {
+            if (state.isModalOpen) {
+                closeModal();
+            }
         });
 
         DOM.contactEmailLink.addEventListener("click", function(e) {
-            e.preventDefault();
-            if (this.dataset.revealed !== "true") {
-                const email = "easeohyun" + "@" + "gmail.com"; 
-                this.textContent = email;
-                this.href = `mailto:${email}`;
-                this.dataset.revealed = "true";
-            }
-            if (confirm(`메일 클라이언트를 열어 '${this.textContent}' 주소로 메일을 보내시겠습니까?`)) {
-                window.open(this.href, '_blank');
-            }
-        });
+    e.preventDefault();
+    const isRevealed = this.dataset.revealed === "true";
+
+    if (!isRevealed) {
+        const user = "easeohyun";
+        const domain = "gmail.com";
+        const email = `${user}@${domain}`; 
+        this.textContent = email;
+        this.href = `mailto:${email}`;
+        this.dataset.revealed = "true";
+    }
+
+    if (confirm(`메일 클라이언트를 열어 '${this.textContent}' 주소로 메일을 보내시겠습니까?`)) {
+        window.open(this.href, '_blank');
+    }
+});
 
         document.addEventListener("keydown", handleKeyboardShortcuts);
-        window.addEventListener("scroll", debounce(updateScrollButtonsVisibility, 150), { passive: true });
+        window.addEventListener("scroll", debounce(updateScrollButtonsVisibility, 150));
         window.addEventListener("resize", debounce(updateScrollButtonsVisibility, 150));
         
         DOM.filterForm.addEventListener("mousedown", e => {
-            const button = e.target.closest(".spinner-btn");
-            if (!button) return;
+            if (!e.target.classList.contains("spinner-btn")) return;
             e.preventDefault();
 
-            const input = button.parentElement.querySelector('input[type="number"]');
+            const wrapper = e.target.closest(".number-input-wrapper");
+            if (!wrapper) return;
+            const input = wrapper.querySelector('input[type="number"]');
             if (!input) return;
 
             const changeValue = () => {
                 const step = parseFloat(input.step) || 1;
                 let value = parseFloat(input.value) || 0;
-                const min = parseFloat(input.min);
-                const max = parseFloat(input.max);
+                const min = parseFloat(input.min) || 0;
+                const max = parseFloat(input.max) || 30;
 
-                if (button.classList.contains("up")) {
-                    value = isNaN(max) ? value + step : Math.min(max, value + step);
-                } else {
-                    value = isNaN(min) ? value - step : Math.max(min, value - step);
+                if (e.target.classList.contains("up")) {
+                    value = Math.min(max, value + step);
+                } else if (e.target.classList.contains("down")) {
+                    value = Math.max(min, value - step);
                 }
                 input.value = value;
-                input.dispatchEvent(new Event('input', { bubbles: true }));
+                const inputEvent = new Event('input', { bubbles: true, cancelable: true });
+                input.dispatchEvent(inputEvent);
             };
             
             changeValue();
+
             state.longPressTimer = setTimeout(() => {
                 state.longPressInterval = setInterval(changeValue, 100);
             }, 500);
@@ -511,38 +523,57 @@
             clearTimeout(state.longPressTimer);
             clearInterval(state.longPressInterval);
         };
+
         document.addEventListener("mouseup", stopLongPress);
         document.addEventListener("mouseleave", stopLongPress);
     };
 
-    const initWorker = () => new Promise((resolve, reject) => {
-        if (!('Worker' in window)) return reject(new Error("Web Workers are not supported."));
-        
-        const worker = new Worker('./workers/filterWorker.js');
-        worker.onmessage = e => {
-            if (e.data.type === 'filtered') renderCharacters(e.data.payload, true);
-        };
-        worker.onerror = err => {
-            console.error(`Web Worker error: ${err.message}`, err);
-            setLoadingState(false);
-            DOM.resultSummary.innerHTML = `<div class="error-message"><p><strong>오류:</strong> 데이터를 처리하는 중 문제가 발생했어요.</p><p>페이지를 새로고침 해주세요.</p></div>`;
-            reject(err);
-        };
-        resolve(worker);
-    });
+    const initWorker = () => {
+        return new Promise((resolve, reject) => {
+            if (!('Worker' in window)) {
+                reject(new Error("Web Workers are not supported in this browser."));
+                return;
+            }
+            const worker = new Worker('./workers/filterWorker.js');
+            worker.onmessage = e => {
+                const { type, payload } = e.data;
+                if (type === 'filtered') {
+                    renderCharacters(payload, true);
+                }
+            };
+            worker.onerror = error => {
+                console.error(`Web Worker error: ${error.message}`, error);
+                setLoadingState(false);
+                DOM.resultSummary.innerHTML = `
+                    <div style="color:red; text-align:center;">
+                        <p><strong>Error:</strong> An error occurred while processing data.</p>
+                        <p>Please refresh the page.</p>
+                    </div>`;
+                reject(error);
+            };
+            resolve(worker);
+        });
+    };
     
-    const fetchData = async (url) => {
-        const response = await fetch(url, { cache: 'no-cache' });
-        if (!response.ok) throw new Error(`HTTP ${response.status} - ${response.statusText} for ${url}`);
-        return response.json();
+    const fetchCharacters = async () => {
+        const response = await fetch(CHARACTERS_JSON_PATH, { cache: 'no-cache' });
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status} - ${response.statusText}`);
+        }
+        return await response.json();
     };
 
     const initializeApp = async () => {
         const style = document.createElement('style');
-        style.textContent = `.theme-transition, .theme-transition *, .theme-transition *::before, .theme-transition *::after { transition: background-color 150ms ease-out, color 150ms ease-out, border-color 150ms ease-out !important; }`;
+        style.textContent = `
+            .theme-transition, .theme-transition *, .theme-transition *::before, .theme-transition *::after {
+                transition: background-color 150ms ease-out, color 150ms ease-out, border-color 150ms ease-out !important;
+            }
+        `;
         document.head.appendChild(style);
 
         setupEventListeners();
+        setCheckboxIcons();
 
         const savedTheme = localStorage.getItem("theme");
         const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -554,25 +585,30 @@
             state.worker = await initWorker();
         } catch (error) {
             console.error("Failed to initialize Web Worker:", error);
-            DOM.resultSummary.innerHTML = `<div class="error-message"><p><strong>오류:</strong> 필수 기능을 불러오지 못했어요.</p><p>최신 브라우저를 사용하거나 페이지를 새로고침 해주세요.</p></div>`;
+            setLoadingState(false);
+            DOM.resultSummary.innerHTML = `
+                <div style="color:var(--color-danger); text-align:center;">
+                    <p><strong>오류:</strong> 여기서 꼭 필요한 기능을 불러오지 못했어요.</p>
+                    <p>새로고침을 해보세요. 최신 버전의 브라우저, 다른 브라우저를 사용하는 것도 방법이에요.</p>
+                </div>`;
             return;
         }
 
         try {
-            const [characters, skillDescriptions] = await Promise.all([
-                fetchData(DATA_PATHS.characters),
-                fetchData(DATA_PATHS.skillDescriptions)
-            ]);
-            
+            const characters = await fetchCharacters();
             state.allCharacters = characters;
-            state.skillDescriptions = skillDescriptions;
             
             state.worker.postMessage({ type: 'init', payload: { characters: state.allCharacters } });
             renderCharacters(state.allCharacters, false);
 
         } catch (error) {
-            console.error("Failed to load initial data:", error);
-            DOM.resultSummary.innerHTML = `<div class="error-message"><p><strong>오류:</strong> 데이터를 불러오지 못했어요.</p><p>인터넷 연결을 확인하고 새로고침 해주세요.</p></div>`;
+            console.error("Failed to load character data:", error);
+            setLoadingState(false);
+            DOM.resultSummary.innerHTML = `
+                <div style="color:var(--color-danger); text-align:center;">
+                    <p><strong>오류:</strong> 우마무스메 데이터를 불러오지 못했어요.</p>
+                    <p>인터넷에 연결이 잘 되었는지 확인하고 새로고침을 부탁드려요!</p>
+                </div>`;
         } finally {
             updateScrollButtonsVisibility();
         }
@@ -581,3 +617,5 @@
     document.addEventListener("DOMContentLoaded", initializeApp);
 
 })();
+
+
