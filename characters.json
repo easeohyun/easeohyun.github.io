@@ -381,19 +381,19 @@
     "id": 101901, "name": "아그네스 디지털", "nickname": "초특급! 풀컬러 특수 PP", "color": "#f37f96",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "A" },
     "DistanceAptitude": { "Short": "F", "Mile": "A", "Medium": "A", "Long": "G" },
-    "StrategyAptitude": { "Front": "G", "Pace": "B", "Late": "A", "End": "D" },
-    "StatBonuses": { "Speed": 10, "Stamina": 0, "Power": 10, "Guts": 0, "Wit": 10 },
-    "skills": { "rainbow": ["존귀☆라스트 스퍼—(ﾟ∀ﾟ)—트!"], "pink": ["한계 우마무스메 마니아", "맨 앞줄은 양보하지 않아!", "목표는 맨 앞줄로 가는 길!"], "yellow": ["추격", "빠져나갈 준비"], "white": ["마일 코너○", "선입 코너○", "뒷심", "진흙탕길○", "꼬리 올리기"] },
-    "tags": ["데지땅", "우마뾰이", "오타쿠"]
+    "StrategyAptitude": { "Front": "G", "Pace": "A", "Late": "A", "End": "B" },
+    "StatBonuses": { "Speed": 8, "Stamina": 8, "Power": 7, "Guts": 0, "Wit": 7 },
+    "skills": { "rainbow": ["존귀☆라스트 스퍼—(ﾟ∀ﾟ)—트!"], "pink": ["한계 우마무스메 마니아", "맨 앞줄은 양보하지 않아!", "목표는 맨 앞줄로 가는 길!"], "yellow": ["우마무스메 마니아", "목표는 맨 앞줄!"], "white": ["우마무스메 애호가", "앞줄 겨냥", "선입 직선○", "진창길○", "중거리 직선○"] },
+    "tags": [ "용사", "디지땅", "변태", "오타쿠", "Agnes Digital", "アグネスデジタル"]
   },  
   {
-    "id": 101901, "name": "아그네스 디지털", "nickname": "초특급! 풀컬러 특수 PP", "color": "#f37f96",
+    "id": 101902, "name": "아그네스 디지털", "nickname": "아이리♡강시", "color": "#f37f96",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "A" },
     "DistanceAptitude": { "Short": "F", "Mile": "A", "Medium": "A", "Long": "G" },
-    "StrategyAptitude": { "Front": "G", "Pace": "B", "Late": "A", "End": "D" },
+    "StrategyAptitude": { "Front": "G", "Pace": "A", "Late": "A", "End": "B" },
     "StatBonuses": { "Speed": 10, "Stamina": 0, "Power": 10, "Guts": 0, "Wit": 10 },
-    "skills": { "rainbow": ["존귀☆라스트 스퍼—(ﾟ∀ﾟ)—트!"], "pink": ["한계 우마무스메 마니아", "맨 앞줄은 양보하지 않아!", "목표는 맨 앞줄로 가는 길!"], "yellow": ["추격", "빠져나갈 준비"], "white": ["마일 코너○", "선입 코너○", "뒷심", "진흙탕길○", "꼬리 올리기"] },
-    "tags": ["데이즈인어플래시"]
+    "skills": { "rainbow": ["너무 존귀해서 되살아났다해!"], "pink": ["초특급 입고!", "끓어오른다앗~~!!", "목표는 맨 앞줄로 가는 길!"], "yellow": ["텐션 오르는데!", "권토중래"], "white": ["만회하기", "페이스 업", "상승기류", "우마무스메 애호가", "앞줄 겨냥"] },
+    "tags": ["할로윈", "핼러윈", "데이즈인어플래시", "Agnes Digital", "アグネスデジタル"]
   },
   {
     "id": 102101, "name": "타마모 크로스", "nickname": "하얀 번개", "color": "#A0522D",
