@@ -182,14 +182,18 @@
     };
     
     const setLoadingState = (isLoading, message = "") => {
-        if (isLoading) {
-            DOM.characterList.innerHTML = "";
+    if (isLoading) {
+        if (DOM.characterList) DOM.characterList.innerHTML = "";
+        if (DOM.resultSummary) {
             DOM.resultSummary.setAttribute('aria-live', 'assertive');
             DOM.resultSummary.innerHTML = message;
-        } else {
+        }
+    } else {
+        if (DOM.resultSummary) {
             DOM.resultSummary.setAttribute('aria-live', 'polite');
         }
-    };
+    }
+};
     
     const renderCharacters = (charactersToRender, isFiltered) => {
         const { characterList, noResultsContainer, resultSummary } = DOM;
@@ -462,17 +466,21 @@
         });
 
         DOM.contactEmailLink.addEventListener("click", function(e) {
-            e.preventDefault();
-            if (this.dataset.revealed !== "true") {
-                const user = "easeohyun";
-                const domain = "google.com";
-                const email = `${user}@${domain}`;
-                this.href = `mailto:${email}`;
-                this.textContent = email;
-                this.dataset.revealed = "true";
-            }
-            window.open(this.href, '_blank');
-        });
+    e.preventDefault();
+    const isRevealed = this.dataset.revealed === "true";
+
+    if (!isRevealed) {
+        const user = "easeohyun";
+        const domain = "gmail.com";
+        this.textContent = email; 
+        this.href = `mailto:${email}`;
+        this.dataset.revealed = "true";
+    }
+
+    if (confirm(`메일 클라이언트를 열어 '${this.textContent}' 주소로 메일을 보내시겠습니까?`)) {
+        window.open(this.href, '_blank');
+    }
+});
 
         document.addEventListener("keydown", handleKeyboardShortcuts);
         window.addEventListener("scroll", debounce(updateScrollButtonsVisibility, 150));
@@ -608,3 +616,4 @@
     document.addEventListener("DOMContentLoaded", initializeApp);
 
 })();
+
