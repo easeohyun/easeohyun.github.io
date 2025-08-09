@@ -39,7 +39,7 @@
         longPressTimer: null,
         longPressInterval: null,
         isModalOpen: false,
-        activeTooltip: null,
+        tooltip: null,
     };
 
     const getRandomMessage = (messages) => {
@@ -53,51 +53,39 @@
             timeout = setTimeout(() => func.apply(this, args), delay);
         };
     };
-    
-    const showTooltip = (skillSlot, skillName) => {
-        if (state.activeTooltip) hideTooltip();
 
-        const description = state.skillDescriptions[skillName] || "설명을 찾을 수 없습니다.";
-        const characterCard = skillSlot.closest('.character-card');
-        const characterColor = characterCard ? characterCard.style.getPropertyValue('--character-color') : 'var(--color-primary)';
-
-        const tooltip = document.createElement('div');
-        tooltip.className = 'skill-tooltip';
-        tooltip.style.setProperty('--character-color', characterColor);
-        tooltip.innerHTML = `<strong>${skillName}</strong><p>${description}</p>`;
-        
-        DOM.body.appendChild(tooltip);
-        state.activeTooltip = tooltip;
-
-        const rect = skillSlot.getBoundingClientRect();
-        const tooltipRect = tooltip.getBoundingClientRect();
-
-        let top = rect.bottom + window.scrollY + 5;
-        let left = rect.left + window.scrollX + (rect.width - tooltipRect.width) / 2;
-
-        if (left < 10) left = 10;
-        if (left + tooltipRect.width > window.innerWidth - 10) {
-            left = window.innerWidth - tooltipRect.width - 10;
-        }
-        if (top + tooltipRect.height > window.innerHeight + window.scrollY - 10) {
-            top = rect.top + window.scrollY - tooltipRect.height - 5;
-        }
-
-        tooltip.style.top = `${top}px`;
-        tooltip.style.left = `${left}px`;
-        
-        requestAnimationFrame(() => {
-            tooltip.classList.add('visible');
-        });
+    const createTooltip = () => {
+        const tooltipEl = document.createElement('div');
+        tooltipEl.className = 'skill-tooltip';
+        DOM.body.appendChild(tooltipEl);
+        return tooltipEl;
     };
-    
+
+    const showTooltip = (e, content, color) => {
+        if (!state.tooltip) state.tooltip = createTooltip();
+        const tooltip = state.tooltip;
+
+        tooltip.innerHTML = content;
+        tooltip.style.setProperty('--character-color', color);
+
+        const targetRect = e.target.getBoundingClientRect();
+        tooltip.style.left = `${e.clientX}px`;
+        tooltip.style.top = `${targetRect.bottom + window.scrollY + 5}px`;
+        tooltip.classList.add('visible');
+
+        const tooltipRect = tooltip.getBoundingClientRect();
+        if (tooltipRect.right > window.innerWidth - 10) {
+            tooltip.style.left = `${window.innerWidth - tooltipRect.width - 10}px`;
+        }
+        if (tooltipRect.left < 10) {
+            tooltip.style.left = '10px';
+        }
+    };
+
     const hideTooltip = () => {
-        if (!state.activeTooltip) return;
-        state.activeTooltip.classList.remove('visible');
-        state.activeTooltip.addEventListener('transitionend', () => {
-            state.activeTooltip?.remove();
-            state.activeTooltip = null;
-        }, { once: true });
+        if (state.tooltip) {
+            state.tooltip.classList.remove('visible');
+        }
     };
 
     const setCheckboxIcons = () => {
@@ -196,28 +184,30 @@
             if (groupEl) statsContainer.appendChild(groupEl);
         }
 
-        const createSkillRow = (skills, color) => {
+        const createSkillRow = (skills, color, charColor) => {
             if (!skills || skills.length === 0) return null;
             const rowDiv = document.createElement('div');
             rowDiv.className = 'skill-row';
             skills.forEach(skillName => {
+                if (!skillName) return;
                 const slotDiv = document.createElement('div');
                 slotDiv.className = `skill-slot skill-${color}`;
-                slotDiv.textContent = skillName || "";
+                slotDiv.textContent = skillName;
                 slotDiv.tabIndex = 0;
-                slotDiv.setAttribute('role', 'button');
-                slotDiv.setAttribute('aria-label', `${skillName} 스킬 정보`);
-                
-                slotDiv.addEventListener('mouseenter', () => showTooltip(slotDiv, skillName));
+
+                const description = state.skillDescriptions[skillName] || "설명을 찾을 수 없습니다.";
+                const tooltipContent = `<strong>${skillName}</strong><p>${description}</p>`;
+
+                slotDiv.addEventListener('mouseenter', (e) => showTooltip(e, tooltipContent, charColor));
                 slotDiv.addEventListener('mouseleave', hideTooltip);
-                slotDiv.addEventListener('focus', () => showTooltip(slotDiv, skillName));
+                slotDiv.addEventListener('focus', (e) => showTooltip(e, tooltipContent, charColor));
                 slotDiv.addEventListener('blur', hideTooltip);
 
                 rowDiv.appendChild(slotDiv);
             });
             return rowDiv;
         };
-        
+
         const skillContainer = card.querySelector(".skill-container");
         const skillsMap = {
             rainbow: char.skills?.rainbow,
@@ -226,7 +216,7 @@
             white: char.skills?.white,
         };
         for (const [color, skills] of Object.entries(skillsMap)) {
-            const row = createSkillRow(skills, color);
+            const row = createSkillRow(skills, color, char.color);
             if (row) skillContainer.appendChild(row);
         }
         
@@ -416,9 +406,7 @@
 
         if (event.key === 'Escape') {
             event.preventDefault();
-            if (state.activeTooltip) {
-                hideTooltip();
-            } else if (state.isModalOpen) {
+            if (state.isModalOpen) {
                 closeModal();
             } else if (isTyping) {
                 activeElement.blur();
@@ -616,10 +604,10 @@
         });
     };
     
-    const fetchData = async (url) => {
-        const response = await fetch(url, { cache: 'no-cache' });
+    const fetchJsonData = async (path, options = { cache: 'no-cache' }) => {
+        const response = await fetch(path, options);
         if (!response.ok) {
-            throw new Error(`HTTP ${response.status} - ${response.statusText} for ${url}`);
+            throw new Error(`HTTP ${response.status} - ${response.statusText} at ${path}`);
         }
         return await response.json();
     };
@@ -657,8 +645,8 @@
 
         try {
             const [characters, skillDescriptions] = await Promise.all([
-                fetchData(CHARACTERS_JSON_PATH),
-                fetchData(SKILL_DESCRIPTIONS_JSON_PATH)
+                fetchJsonData(CHARACTERS_JSON_PATH),
+                fetchJsonData(SKILL_DESCRIPTIONS_JSON_PATH, { cache: 'force-cache' })
             ]);
             
             state.allCharacters = characters;
@@ -668,7 +656,7 @@
             renderCharacters(state.allCharacters, false);
 
         } catch (error) {
-            console.error("Failed to load initial data:", error);
+            console.error("Failed to load data:", error);
             setLoadingState(false);
             DOM.resultSummary.innerHTML = `
                 <div style="color:var(--color-danger); text-align:center;">
