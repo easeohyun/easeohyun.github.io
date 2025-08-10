@@ -466,11 +466,6 @@ input[type="number"].filter-item-interactive:focus-visible, select.filter-item-i
     visibility: hidden;
 }
 
-.skill-tooltip.active {
-  opacity: 1;
-  visibility: visible;
-}
-
 @keyframes skeleton-loading { 0% { background-position: -200px 0; } 100% { background-position: calc(200px + 100%) 0; } }
 .skeleton .skeleton-text { background-color: hsl(var(--color-primary-hue) 20% 90%); background-image: linear-gradient(90deg, hsl(var(--color-primary-hue) 20% 90%), hsl(var(--color-primary-hue) 20% 95%), hsl(var(--color-primary-hue) 20% 90%)); background-size: 200px 100%; background-repeat: no-repeat; border-radius: var(--radius-sm); color: transparent; user-select: none; animation: skeleton-loading 1.5s ease-in-out infinite; }
 html[data-theme="dark"] .skeleton .skeleton-text { background-color: hsl(var(--color-primary-hue) 15% 20%); background-image: linear-gradient(90deg, hsl(var(--color-primary-hue) 15% 20%), hsl(var(--color-primary-hue) 15% 25%), hsl(var(--color-primary-hue) 15% 20%)); }
@@ -603,5 +598,6 @@ html[data-theme="dark"] #dark-mode-toggle:hover .material-symbols-outlined {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
   .button:hover, .scroll-buttons button:hover, .character-card:hover { transform: none; }
 }
+
 
 
