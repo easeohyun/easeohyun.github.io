@@ -459,13 +459,7 @@
         const skillName = target.textContent.trim();
         const normalizedSkillName = normalizeSkillName(skillName);
         const skillDescription = state.skillDescriptions[normalizedSkillName];
-
-        console.log("--- 툴팁 진단 ---");
-        console.log(`[1단계] UI에서 가져온 원본 스킬명: "${skillName}"`);
-        console.log(`[2단계] 정규화된 검색용 키: "${normalizedSkillName}"`);
-        console.log(`[3단계] 검색 결과:`, skillDescription === undefined ? "찾지 못함 (undefined)" : `"${skillDescription}"`);
-        console.log("------------------");
-
+        
         const card = target.closest('.character-card');
         const characterColor = card ? card.style.getPropertyValue('--character-color') : 'var(--color-primary)';
 
@@ -672,12 +666,6 @@
                 state.skillDescriptions = Object.fromEntries(
                     Object.entries(rawDescriptions).map(([key, value]) => [normalizeSkillName(key), value])
                 );
-
-                console.log("--- 스킬 설명 데이터 진단 ---");
-                console.log("정규화된 스킬 설명 데이터가 로드되었습니다. 샘플 키:");
-                console.log(Object.keys(state.skillDescriptions).slice(0, 5));
-                console.log("--------------------------");
-
             } catch (error) {
                 console.warn("스킬 설명 데이터를 불러오지 못했습니다. 툴팁 기능이 비활성화됩니다.", error);
                 state.skillDescriptions = {};
@@ -691,10 +679,9 @@
             DOM.resultSummary.innerHTML = `<div style="color:var(--color-danger); text-align:center;"><p><strong>오류:</strong> 우마무스메 데이터를 불러오지 못했어요.</p><p>인터넷에 연결이 잘 되었는지 확인하고 새로고침을 부탁드려요!</p></div>`;
         } finally {
             updateScrollButtonsVisibility();
-        };
+        }
+    };
     
     document.addEventListener("DOMContentLoaded", initializeApp);
 
 })();
-
-
