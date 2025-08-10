@@ -423,7 +423,7 @@
     "tags": ["신데렐라그레이", "타마", "어내다", "우동은반찬이야", "Tamamo Cross", "タマモクロス"]
   },
   {
-    "id": 102101, "name": "타마모 크로스", "nickname": "날뛰는 나루카미", "color": "#3290d6",
+    "id": 102102, "name": "타마모 크로스", "nickname": "날뛰는 나루카미", "color": "#3290d6",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "F" },
     "DistanceAptitude": { "Short": "G", "Mile": "E", "Medium": "A", "Long": "A" },
     "StrategyAptitude": { "Front": "G", "Pace": "A", "Late": "A", "End": "A" },
