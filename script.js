@@ -102,8 +102,8 @@
         titleDiv.className = 'stat-group-title';
         titleDiv.textContent = groupName;
         const ul = document.createElement('ul');
-ul.className = 'stat-items-list';
-ul.append(...items);
+        ul.className = 'stat-items-list';
+        ul.append(...items);
         
         groupDiv.append(titleDiv, ul);
         return groupDiv;
@@ -437,7 +437,7 @@ ul.append(...items);
 
         const tooltip = document.createElement('div');
         tooltip.className = 'skill-tooltip';
-        tooltip.textContent = skillDescription || "스킬 정보를 찾을 수 없어요.";
+        tooltip.textContent = skillDescription || "스킬 정보를 찾을 수 없습니다.";
         tooltip.style.setProperty('--character-color', characterColor);
         
         state.activeTooltip.element = tooltip;
@@ -580,7 +580,7 @@ ul.append(...items);
             worker.onerror = error => {
                 console.error(`Web Worker error: ${error.message}`, error);
                 setLoadingState(false);
-                DOM.resultSummary.innerHTML = `<div class="error-message"><p><strong>Error:</strong> 데이터 처리 중 오류가 발생했어요.</p><p>페이지를 새로고침 해주세요.</p></div>`;
+                DOM.resultSummary.innerHTML = `<div class="error-message"><p><strong>Error:</strong> 데이터 처리 중 오류가 발생했습니다.</p><p>페이지를 새로고침 해주세요.</p></div>`;
                 reject(error);
             };
             resolve(worker);
@@ -610,7 +610,7 @@ ul.append(...items);
             const [characters, rawDescriptions] = await Promise.all([
                 fetchData(CHARACTERS_JSON_PATH),
                 fetchData(SKILL_DESCRIPTIONS_PATH).catch(err => {
-                    console.warn("스킬 설명 데이터를 불러오지 못했어요. 툴팁 기능이 비활성화할게요.", err);
+                    console.warn("스킬 설명 데이터를 불러오지 못했습니다. 툴팁 기능이 비활성화됩니다.", err);
                     return {};
                 })
             ]);
