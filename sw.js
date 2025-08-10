@@ -1,6 +1,6 @@
-const CACHE_VERSION = 3;
+const CACHE_VERSION = 4;
 const CURRENT_CACHE_NAME = `umamusume-filter-cache-v${CACHE_VERSION}`;
-const ASSETS_TO_CACHE = [
+const APP_SHELL_ASSETS = [
   './',
   './index.html',
   './style.css',
@@ -15,10 +15,8 @@ const ASSETS_TO_CACHE = [
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CURRENT_CACHE_NAME)
-    .then((cache) => {
-      console.log('Opened cache');
-      return cache.addAll(ASSETS_TO_CACHE);
-    })
+      .then((cache) => cache.addAll(APP_SHELL_ASSETS))
+      .catch(error => console.error('Failed to cache app shell:', error))
   );
 });
 
@@ -26,49 +24,51 @@ self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
-        cacheNames.map((cacheName) => {
-          if (cacheName !== CURRENT_CACHE_NAME) {
-            console.log('Deleting old cache:', cacheName);
-            return caches.delete(cacheName);
-          }
-        })
+        cacheNames
+          .filter(cacheName => cacheName !== CURRENT_CACHE_NAME)
+          .map(cacheName => caches.delete(cacheName))
       );
-    })
+    }).then(() => self.clients.claim())
   );
 });
+
+const handleApiRequest = async (request) => {
+    const cache = await caches.open(CURRENT_CACHE_NAME);
+    const cachedResponse = await cache.match(request);
+
+    const networkFetchPromise = fetch(request).then(networkResponse => {
+        if (networkResponse.ok) {
+            cache.put(request, networkResponse.clone());
+        }
+        return networkResponse;
+    }).catch(error => {
+        console.error('Network fetch failed:', error);
+    });
+
+    return cachedResponse || networkFetchPromise;
+};
+
+const handleAssetRequest = async (request) => {
+    const cache = await caches.open(CURRENT_CACHE_NAME);
+    const cachedResponse = await cache.match(request);
+    
+    return cachedResponse || fetch(request).then(networkResponse => {
+        if (networkResponse.ok) {
+            cache.put(request, networkResponse.clone());
+        }
+        return networkResponse;
+    }).catch(error => {
+        console.error('Asset fetch failed:', error);
+    });
+};
 
 self.addEventListener('fetch', (event) => {
     const { request } = event;
     const url = new URL(request.url);
 
-    const isApiData = url.pathname.endsWith('/characters.json') || url.pathname.endsWith('/skill-descriptions.json');
-    const isCachableAsset = ASSETS_TO_CACHE.some(asset => {
-        const assetUrl = new URL(asset, self.location.origin);
-        return assetUrl.href === url.href;
-    });
-
-    if (isApiData) {
-        event.respondWith(
-            caches.open(CURRENT_CACHE_NAME).then(cache => {
-                return fetch(request).then(networkResponse => {
-                    cache.put(request, networkResponse.clone());
-                    return networkResponse;
-                }).catch(() => {
-                    return cache.match(request);
-                });
-            })
-        );
-    } else if (isCachableAsset) {
-        event.respondWith(
-            caches.match(request).then(response => {
-                return response || fetch(request).then(networkResponse => {
-                    return caches.open(CURRENT_CACHE_NAME).then(cache => {
-                        cache.put(request, networkResponse.clone());
-                        return networkResponse;
-                    });
-                });
-            })
-        );
+    if (url.pathname.endsWith('.json')) {
+        event.respondWith(handleApiRequest(request));
+    } else if (APP_SHELL_ASSETS.some(asset => url.href === new URL(asset, self.location.origin).href)) {
+        event.respondWith(handleAssetRequest(request));
     }
 });
-
