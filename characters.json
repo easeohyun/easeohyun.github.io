@@ -258,7 +258,7 @@
     "StrategyAptitude": { "Front": "G", "Pace": "B", "Late": "C", "End": "A" },
     "StatBonuses": { "Speed": 10, "Stamina": 0, "Power": 10, "Guts": 0, "Wit": 10 },
     "skills": { "rainbow": ["곱빼기! 퍼스트 바이트!"], "pink": ["열렬한 인게이지!", "투혼입도!"], "yellow": ["강공책", "뛰어난 추입력"], "white": ["이른 작전", "속박", "추입력", "뛰어난 작전", "직선 주파"] },
-    "tags": ["선서싸우는그대를향한프러포즈", "웨딩", "신부", "결혼", "아침차려주는예쁜누나", "Hishi Amazon", "ヒシアマゾン"]  
+    "tags": ["선서싸우는그대를향한프러포즈", "웨딩드레스", "신부", "결혼식", "아침차려주는예쁜누나", "Hishi Amazon", "ヒシアマゾン"]  
   },
   {
     "id": 101301, "name": "메지로 맥퀸", "nickname": "엘레강스・라인", "color": "#00b5be",
@@ -434,29 +434,47 @@
   {
     "id": 102201, "name": "파인 모션", "nickname": "Noble Seamair", "color": "#20a95c",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
-    "DistanceAptitude": { "Short": "B", "Mile": "A", "Medium": "B", "Long": "F" },
-    "StrategyAptitude": { "Front": "D", "Pace": "A", "Late": "A", "End": "E" },
-    "StatBonuses": { "Speed": 0, "Stamina": 0, "Power": 0, "Guts": 10, "Wit": 20 },
-    "skills": { "rainbow": ["Fairy tale"], "pink": ["미라클 플랜", "퀸즈 애드바이스"], "yellow": ["스피드스터", "마일의 지배자"], "white": ["반시계(좌) 방향○", "템포 업", "빠져나갈 준비", "선행의 요령○", "마일 코너○"] },
-    "tags": ["SP", "공주님", "라면", "라멘", "아일랜드", "클로버", "Fine Motion", "ファインモーション"]
+    "DistanceAptitude": { "Short": "F", "Mile": "A", "Medium": "A", "Long": "C" },
+    "StrategyAptitude": { "Front": "D", "Pace": "A", "Late": "E", "End": "C" },
+    "StatBonuses": { "Speed": 0, "Stamina": 0, "Power": 15, "Guts": 0, "Wit": 15 },
+    "skills": { "rainbow": ["Fairy tale"], "pink": ["로열스터", "천공 떨구기"], "yellow": ["스피드스터", "결의의 직활강"], "white": ["가을 우마무스메○", "빠져나갈 준비", "중거리 코너○", "직활강", "시계(우) 방향○"] },
+    "tags": ["SP", "공주님", "라면", "라멘", "아일랜드", "해병", "클로버", "Fine Motion", "ファインモーション"]
   },
   {
     "id": 102202, "name": "파인 모션", "nickname": "Titania", "color": "#20a95c",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
-    "DistanceAptitude": { "Short": "B", "Mile": "A", "Medium": "B", "Long": "F" },
-    "StrategyAptitude": { "Front": "D", "Pace": "A", "Late": "A", "End": "E" },
+    "DistanceAptitude": { "Short": "F", "Mile": "A", "Medium": "A", "Long": "C" },
+    "StrategyAptitude": { "Front": "D", "Pace": "A", "Late": "E", "End": "C" },
     "StatBonuses": { "Speed": 0, "Stamina": 0, "Power": 0, "Guts": 10, "Wit": 20 },
-    "skills": { "rainbow": ["Best day ever"], "pink": ["추억을 힘으로 바꾸어", "퀸즈 애드바이스"], "yellow": ["스피드스터", "마일의 지배자"], "white": ["반시계(좌) 방향○", "템포 업", "빠져나갈 준비", "선행의 요령○", "마일 코너○"] },
-    "tags": ["SP", "공주님", "라면", "라멘", "아일랜드", "Fine Motion", "ファインモーション"]
+    "skills": { "rainbow": ["Best day ever"], "pink": ["추억을 힘으로 바꾸어", "모리안의 창", "이상으로 향하는 각오"], "yellow": ["기어 체인지", "치열한 승부"], "white": ["양호한 경기장○", "정면 승부", "기어 시프트", "마일 코너○", "가을 우마무스메○"] },
+    "tags": ["정각SilksThreeRiddles", "웨딩드레스", "신부", "결혼식", "Fine Motion", "ファインモーション"]
   },
   {
-    "id": 102301, "name": "비와 하야히데", "nickname": "위닝・사이언티스트", "color": "#87CEEB",
-    "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
-    "DistanceAptitude": { "Short": "G", "Mile": "D", "Medium": "A", "Long": "A" },
-    "StrategyAptitude": { "Front": "D", "Pace": "A", "Late": "B", "End": "G" },
-    "StatBonuses": { "Speed": 0, "Stamina": 10, "Power": 10, "Guts": 0, "Wit": 10 },
-    "skills": { "rainbow": ["P=Pe(1+γ)c"], "pink": ["쿨&로지컬", "비와 식 훈련법"], "yellow": ["개척자", "호선의 프로페서"], "white": ["코너 달인○", "비근간거리○", "페이스 업", "선행의 요령○", "빈틈 없음"] },
-    "tags": ["BNW", "안경", "대두"]
+    "id": 102301, "name": "비와 하야히데", "nickname": "pf.Victory formula...", "color": "#b03d81",
+    "SurfaceAptitude": { "Turf": "A", "Dirt": "F" },
+    "DistanceAptitude": { "Short": "F", "Mile": "C", "Medium": "A", "Long": "A" },
+    "StrategyAptitude": { "Front": "E", "Pace": "A", "Late": "B", "End": "E" },
+    "StatBonuses": { "Speed": 0, "Stamina": 0, "Power": 0, "Guts": 10, "Wit": 20 },
+    "skills": { "rainbow": ["∴win Q.E.D."], "pink": ["예상대로, 여유 충분", "계획적 쿨다운"], "yellow": ["여유만만", "쿨다운"], "white": ["진창길○", "심호흡", "스태미나 킵", "바깥쪽 그룹 능숙○", "추입 심리전"] },
+    "tags": ["BNW", "안경", "대두", "언니", "Biwa Hayahide", "ビワハヤヒデ"]
+  },
+{
+    "id": 102301, "name": "비와 하야히데", "nickname": "pf.Victory formula...", "color": "#b03d81",
+    "SurfaceAptitude": { "Turf": "A", "Dirt": "F" },
+    "DistanceAptitude": { "Short": "F", "Mile": "C", "Medium": "A", "Long": "A" },
+    "StrategyAptitude": { "Front": "E", "Pace": "A", "Late": "B", "End": "E" },
+    "StatBonuses": { "Speed": 0, "Stamina": 0, "Power": 0, "Guts": 10, "Wit": 20 },
+    "skills": { "rainbow": ["∴win Q.E.D."], "pink": ["예상대로, 여유 충분", "계획적 쿨다운"], "yellow": ["여유만만", "쿨다운"], "white": ["진창길○", "심호흡", "스태미나 킵", "바깥쪽 그룹 능숙○", "추입 심리전"] },
+    "tags": ["BNW", "안경", "대두", "언니", "Biwa Hayahide", "ビワハヤヒデ"]
+  },
+  {
+    "id": 102301, "name": "비와 하야히데", "nickname": "pf.Victory formula...", "color": "#b03d81",
+    "SurfaceAptitude": { "Turf": "A", "Dirt": "F" },
+    "DistanceAptitude": { "Short": "F", "Mile": "C", "Medium": "A", "Long": "A" },
+    "StrategyAptitude": { "Front": "E", "Pace": "A", "Late": "B", "End": "E" },
+    "StatBonuses": { "Speed": 0, "Stamina": 0, "Power": 0, "Guts": 10, "Wit": 20 },
+    "skills": { "rainbow": ["∴win Q.E.D."], "pink": ["예상대로, 여유 충분", "계획적 쿨다운"], "yellow": ["여유만만", "쿨다운"], "white": ["진창길○", "심호흡", "스태미나 킵", "바깥쪽 그룹 능숙○", "추입 심리전"] },
+    "tags": ["BNW", "안경", "대두", "언니", "Biwa Hayahide", "ビワハヤヒデ"]
   },
   {
     "id": 102401, "name": "마야노 탑건", "nickname": "스크램블☆존", "color": "#f88741",
