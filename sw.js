@@ -1,4 +1,4 @@
-const CACHE_VERSION = 7;
+const CACHE_VERSION = 8;
 const CURRENT_CACHE_NAME = `umamusume-filter-cache-v${CACHE_VERSION}`;
 const APP_SHELL_ASSETS = [
   './',
@@ -77,3 +77,4 @@ self.addEventListener('fetch', (event) => {
         event.respondWith(handleAssetRequest(request));
     }
 });
+
