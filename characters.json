@@ -122,7 +122,7 @@
     "DistanceAptitude": { "Short": "E", "Mile": "A", "Medium": "A", "Long": "B" }, 
     "StrategyAptitude": { "Front": "F", "Pace": "A", "Late": "A", "End": "D" },
     "StatBonuses": { "Speed": 20, "Stamina": 0, "Power": 10, "Guts": 0, "Wit": 0 },
-    "skills": { "rainbow": ["승리의 고동"], "pink": ["가사마쓰의 먹보", "굶주린 괴물", "괴물의 코너링"], "yellow": ["먹보", "곡선의 소믈리에"], "white": ["코너 가속○", "엑셀러레이션", "영양 보급", "흐린 날○", "뒤처지기 방지"] },
+    "skills": { "rainbow": ["승리의 고동"], "pink": ["가사마쓰의 먹보", "굶주린 괴물", "괴물의 코너링"], "yellow": ["먹보", "곡선의 소믈리에"], "white": ["코너 가속○", "액셀러레이션", "영양 보급", "흐린 날○", "뒤처지기 방지"] },
     "tags": ["신데렐라그레이", "주인공", "Oguri Cap", "オグリキャップ"]  
   },
   {
@@ -409,9 +409,9 @@
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "G", "Mile": "C", "Medium": "A", "Long": "A" },
     "StrategyAptitude": { "Front": "A", "Pace": "B", "Late": "D", "End": "E" },
-    "StatBonuses": { "Speed": 8, "Stamina": 10, "Power": 8, "Guts": 14, "Wit": 0 },
+    "StatBonuses": { "Speed": 8, "Stamina": 0, "Power": 8, "Guts": 14, "Wit": 0 },
     "skills": { "rainbow": ["Do Ya Breakin!"], "pink": ["도망쳐~♪", "서프라이즈 대성공~☆", "레코드 러너"], "yellow": ["탈출술", "톱 러너"], "white": ["봄 우마무스메○", "전도유망", "빠른 걸음", "선두 프라이드", "앞장서기"] },
-    "tags": ["무도회", "댄싱운", "두야", "오늘밤리뉴드로와트에서"]
+    "tags": ["무도회", "댄싱운", "두야", "오늘밤리뉴드로와트에서", "Seiun Sky", "セイウンスカイ"]
   },
   {
     "id": 102101, "name": "타마모 크로스", "nickname": "질풍신뢰", "color": "#3290d6",
@@ -420,7 +420,7 @@
     "StrategyAptitude": { "Front": "G", "Pace": "A", "Late": "A", "End": "A" },
     "StatBonuses": { "Speed": 0, "Stamina": 20, "Power": 10, "Guts": 0, "Wit": 0 },
     "skills": { "rainbow": ["하얀 번개, 보여 주꾸마!"], "pink": ["뇌등운분", "퍼뜩 시작해 보까!", "꼬리 날아오르기"], "yellow": ["신속 과감", "꼬리 솟구쳐 오르기"], "white": ["꼬리 올리기", "천둥 번개 스텝", "위치 선정 밀어붙이기", "좋은 위치 뒤따르기", "직선 주파"] },
-    "tags": ["신데렐라그레이", "타마", "어내다", "우동은반찬이야"]
+    "tags": ["신데렐라그레이", "타마", "어내다", "우동은반찬이야", "Tamamo Cross", "タマモクロス"]
   },
   {
     "id": 102101, "name": "타마모 크로스", "nickname": "날뛰는 나루카미", "color": "#3290d6",
@@ -429,16 +429,25 @@
     "StrategyAptitude": { "Front": "G", "Pace": "A", "Late": "A", "End": "A" },
     "StatBonuses": { "Speed": 14, "Stamina": 8, "Power": 0, "Guts": 8, "Wit": 0 },
     "skills": { "rainbow": ["불벼락"], "pink": ["선도자들에게 바치는 기도의 찬사", "자, 내랑 붙어 보는 기다!"], "yellow": ["킬러 튠", "텐션 오르는데!"], "white": ["페이스 업", "템포 업", "정면 승부", "진창길○", "꼬리 올리기"] },
-    "tags": ["불타마", "마음을얽고마음을쫓고"]
+    "tags": ["축제", "불타마", "마음을얽고마음을쫓고", "Tamamo Cross", "タマモクロス"]
   },
   {
-    "id": 102201, "name": "파인 모션", "nickname": "해피・메이킹・해피", "color": "#FFC0CB",
+    "id": 102201, "name": "파인 모션", "nickname": "Noble Seamair", "color": "#20a95c",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "B", "Mile": "A", "Medium": "B", "Long": "F" },
     "StrategyAptitude": { "Front": "D", "Pace": "A", "Late": "A", "End": "E" },
     "StatBonuses": { "Speed": 0, "Stamina": 0, "Power": 0, "Guts": 10, "Wit": 20 },
-    "skills": { "rainbow": ["Happiest prize"], "pink": ["미라클 플랜", "퀸즈 애드바이스"], "yellow": ["스피드스터", "마일의 지배자"], "white": ["반시계(좌) 방향○", "템포 업", "빠져나갈 준비", "선행의 요령○", "마일 코너○"] },
-    "tags": ["SP", "공주"]
+    "skills": { "rainbow": ["Fairy tale"], "pink": ["미라클 플랜", "퀸즈 애드바이스"], "yellow": ["스피드스터", "마일의 지배자"], "white": ["반시계(좌) 방향○", "템포 업", "빠져나갈 준비", "선행의 요령○", "마일 코너○"] },
+    "tags": ["SP", "공주님", "라면", "라멘", "아일랜드", "클로버", "Fine Motion", "ファインモーション"]
+  },
+  {
+    "id": 102202, "name": "파인 모션", "nickname": "Titania", "color": "#20a95c",
+    "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
+    "DistanceAptitude": { "Short": "B", "Mile": "A", "Medium": "B", "Long": "F" },
+    "StrategyAptitude": { "Front": "D", "Pace": "A", "Late": "A", "End": "E" },
+    "StatBonuses": { "Speed": 0, "Stamina": 0, "Power": 0, "Guts": 10, "Wit": 20 },
+    "skills": { "rainbow": ["Best day ever"], "pink": ["추억을 힘으로 바꾸어", "퀸즈 애드바이스"], "yellow": ["스피드스터", "마일의 지배자"], "white": ["반시계(좌) 방향○", "템포 업", "빠져나갈 준비", "선행의 요령○", "마일 코너○"] },
+    "tags": ["SP", "공주님", "라면", "라멘", "아일랜드", "Fine Motion", "ファインモーション"]
   },
   {
     "id": 102301, "name": "비와 하야히데", "nickname": "위닝・사이언티스트", "color": "#87CEEB",
