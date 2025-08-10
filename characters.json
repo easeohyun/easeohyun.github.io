@@ -478,33 +478,42 @@
   },
   {
     "id": 102401, "name": "마야노 탑건", "nickname": "스크램블☆존", "color": "#f57d38",
-    "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
-    "DistanceAptitude": { "Short": "E", "Mile": "B", "Medium": "A", "Long": "A" },
-    "StrategyAptitude": { "Front": "A", "Pace": "A", "Late": "A", "End": "A" },
-    "StatBonuses": { "Speed": 20, "Stamina": 0, "Power": 0, "Guts": 10, "Wit": 0 },
-    "skills": { "rainbow": ["틸팅・샷"], "pink": ["변환자재", "마야의 추천 애기♪"], "yellow": ["임기응변", "능숙한 환승"], "white": ["추월 확정 태세", "포지션 센스", "템포 업", "가벼운 발걸음", "진창길○"] },
-    "tags": ["변환자재"]
+    "SurfaceAptitude": { "Turf": "A", "Dirt": "E" },
+    "DistanceAptitude": { "Short": "D", "Mile": "D", "Medium": "A", "Long": "A" },
+    "StrategyAptitude": { "Front": "A", "Pace": "A", "Late": "B", "End": "B" },
+    "StatBonuses": { "Speed": 0, "Stamina": 20, "Power": 0, "Guts": 10, "Wit": 0 },
+    "skills": { "rainbow": ["번뜩임☆랜딩", "승리의 키스☆"], "pink": ["You copy?", "I copy!"], "yellow": ["호전일식", "논스톱 걸"], "white": ["직선 회복", "선두 프라이드", "심호흡", "뒤처지기 방지", "임기응변"] },
+    "tags": ["변환자재", "자유자재", "코도모드래곤", "Mayano Top Gun", "マヤノトップガン"]
   },
   {
     "id": 102402, "name": "마야노 탑건", "nickname": "선라이트・부케", "color": "#f57d38",
-    "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
-    "DistanceAptitude": { "Short": "E", "Mile": "B", "Medium": "A", "Long": "A" },
-    "StrategyAptitude": { "Front": "A", "Pace": "A", "Late": "A", "End": "A" },
-    "StatBonuses": { "Speed": 20, "Stamina": 0, "Power": 0, "Guts": 10, "Wit": 0 },
-    "skills": { "rainbow": ["틸팅・샷"], "pink": ["변환자재", "마야의 추천 애기♪"], "yellow": ["임기응변", "능숙한 환승"], "white": ["추월 확정 태세", "포지션 센스", "템포 업", "가벼운 발걸음", "진창길○"] },
-    "tags": ["웨딩드레스", "결혼식", "신부"]
+    "SurfaceAptitude": { "Turf": "A", "Dirt": "E" },
+    "DistanceAptitude": { "Short": "D", "Mile": "D", "Medium": "A", "Long": "A" },
+    "StrategyAptitude": { "Front": "A", "Pace": "A", "Late": "B", "End": "B" },
+    "StatBonuses": { "Speed": 10, "Stamina": 10, "Power": 0, "Guts": 0, "Wit": 10 },
+    "skills": { "rainbow": ["플라워리☆머누버"], "pink": ["순백의 속삭임", "배럴 롤"], "yellow": ["매혹적인 속삭임", "원호의 마에스트로"], "white": ["코너 회복○", "교묘한 스텝", "속삭임", "집중력", "코너 달인○"] },
+    "tags": ["웨딩드레스", "결혼식", "신부", "Mayano Top Gun", "マヤノトップガン"]
   },  
   {
     "id": 102403, "name": "마야노 탑건", "nickname": "ろっきん☆MewMeow", "color": "#f57d38",
-    "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
-    "DistanceAptitude": { "Short": "E", "Mile": "B", "Medium": "A", "Long": "A" },
-    "StrategyAptitude": { "Front": "A", "Pace": "A", "Late": "A", "End": "A" },
+    "SurfaceAptitude": { "Turf": "A", "Dirt": "E" },
+    "DistanceAptitude": { "Short": "D", "Mile": "D", "Medium": "A", "Long": "A" },
+    "StrategyAptitude": { "Front": "A", "Pace": "A", "Late": "B", "End": "B" },
     "StatBonuses": { "Speed": 20, "Stamina": 0, "Power": 0, "Guts": 10, "Wit": 0 },
-    "skills": { "rainbow": ["틸팅・샷"], "pink": ["변환자재", "마야의 추천 애기♪"], "yellow": ["임기응변", "능숙한 환승"], "white": ["추월 확정 태세", "포지션 센스", "템포 업", "가벼운 발걸음", "진창길○"] },
-    "tags": ["웨딩드레스", "결혼식", "신부"]
+    "skills": { "rainbow": ["HOP STEP♪LOCK ON!"], "pink": ["お先に☆テールウィンド", "コックピット・マジシャン"], "yellow": ["만리일공", "早業"], "white": ["위험 회피", "망설임 없음", "目にも留まらず", "터다지기", "気の向くままに"] },
+    "tags": ["웨딩드레스", "결혼식", "신부", "Mayano Top Gun", "マヤノトップガン"]
   },
   {
-    "id": 102501, "name": "맨하탄 카페", "nickname": "론리・글로", "color": "#000000",
+    "id": 102501, "name": "맨하탄 카페", "nickname": "Creeping Black", "color": "#494541",
+    "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
+    "DistanceAptitude": { "Short": "G", "Mile": "E", "Medium": "B", "Long": "A" },
+    "StrategyAptitude": { "Front": "G", "Pace": "E", "Late": "A", "End": "B" },
+    "StatBonuses": { "Speed": 0, "Stamina": 20, "Power": 0, "Guts": 0, "Wit": 10 },
+    "skills": { "rainbow": ["칠흑의 환영"], "pink": ["스태미나 그리드", "무아몽중"], "yellow": ["스태미나 이터", "무아몽중"], "white": ["장거리 직선○", "장거리 코너○", "심호흡", "진창길○", "외곽 추월 준비"] },
+    "tags": ["SS", "친구", "커피"]
+  },  
+  {
+    "id": 102502, "name": "맨하탄 카페", "nickname": "론리・글로", "color": "#494541",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "G", "Mile": "E", "Medium": "B", "Long": "A" },
     "StrategyAptitude": { "Front": "G", "Pace": "E", "Late": "A", "End": "B" },
