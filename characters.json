@@ -684,22 +684,22 @@
     "tags": ["BNW", "타이신"]
   },
   {
-    "id": 104501, "name": "니시노 플라워", "nickname": "플라워리・레시피", "color": "#ADD8E6",
+    "id": 104501, "name": "니시노 플라워", "nickname": "티어드・페탈", "color": "#ADD8E6",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "A", "Mile": "A", "Medium": "E", "Long": "G" },
     "StrategyAptitude": { "Front": "D", "Pace": "A", "Late": "A", "End": "F" },
     "StatBonuses": { "Speed": 20, "Stamina": 0, "Power": 10, "Guts": 0, "Wit": 0 },
-    "skills": { "rainbow": ["작은 미소도 소중히"], "pink": ["언니의 품격", "플라워리 스텝"], "yellow": ["환승 숙달", "단거리 코너○"], "white": ["단거리 직선○", "선행 직선○", "꼬리 올리기", "가벼운 발걸음", "빠져나갈 준비"] },
-    "tags": ["이모"]
+    "skills": { "rainbow": ["꽃봉오리, 피어날 때"], "pink": ["풍화질주", "한 송이 용기", "큰 꽃송이의 결의"], "yellow": ["한줄기 질풍", "결의의 직활강"], "white": ["직선 달인", "액셀러레이션", "직활강", "스프린트 기어", "선입 코너○"] },
+    "tags": ["프린파이"]
   },
   {
-    "id": 104601, "name": "하루 우라라", "nickname": "트윙클・스마일", "color": "#FFB6C1",
-    "SurfaceAptitude": { "Turf": "G", "Dirt": "A" },
-    "DistanceAptitude": { "Short": "A", "Mile": "F", "Medium": "G", "Long": "G" },
+    "id": 104601, "name": "하루 우라라", "nickname": "화창한 1등상♪", "color": "#FFB6C1",
+    "SurfaceAptitude": { "Turf": "A", "Dirt": "A" },
+    "DistanceAptitude": { "Short": "A", "Mile": "F", "Medium": "A", "Long": "A" },
     "StrategyAptitude": { "Front": "A", "Pace": "A", "Late": "A", "End": "A" },
-    "StatBonuses": { "Speed": 0, "Stamina": 0, "Power": 0, "Guts": 20, "Wit": 10 },
-    "skills": { "rainbow": ["오늘도 즐겁게, 내일도 즐겁게!"], "pink": ["긍정적 사고방식", "포기하지 않아!"], "yellow": ["진흙탕길의 귀신", "전심전력"], "white": ["진창길○", "꼬리 올리기", "집중력", "정면 승부", "슬립스트림"] },
-    "tags": ["우라라라"]
+    "StatBonuses": { "Speed": 0, "Stamina": 0, "Power": 0, "Guts": 0, "Wit": 0 },
+    "skills": { "rainbow": ["두근두근 클라이맥스", "두근두근 준비 땅!"], "pink": ["긍정적 사고방식", "포기하지 않아!"], "yellow": ["진흙탕길의 귀신", "전심전력"], "white": ["진창길○", "꼬리 올리기", "집중력", "정면 승부", "슬립스트림"] },
+    "tags": ["유희왕"]
   },
   {
     "id": 104701, "name": "마치카네 후쿠키타루", "nickname": "길흉의 인도자", "color": "#9370DB",
@@ -717,7 +717,16 @@
     "StrategyAptitude": { "Front": "F", "Pace": "A", "Late": "A", "End": "G" },
     "StatBonuses": { "Speed": 0, "Stamina": 20, "Power": 0, "Guts": 10, "Wit": 0 },
     "skills": { "rainbow": ["I Never Goof Up!"], "pink": ["불굴의 마음", "페이스 킵"], "yellow": ["빠져나갈 준비", "페이스 킵"], "white": ["비근간거리○", "선행 견제", "중거리 코너○", "뒷심", "꼬리 올리기"] },
-    "tags": ["도토", "주인공"]
+    "tags": ["도토"]
+  },
+  {
+    "id": 104801, "name": "메이쇼 도토", "nickname": "Dot-o'-Lantern", "color": "#595dde",
+    "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
+    "DistanceAptitude": { "Short": "G", "Mile": "C", "Medium": "A", "Long": "A" },
+    "StrategyAptitude": { "Front": "F", "Pace": "A", "Late": "A", "End": "G" },
+    "StatBonuses": { "Speed": 0, "Stamina": 20, "Power": 0, "Guts": 10, "Wit": 0 },
+    "skills": { "rainbow": ["I Never Goof Up!"], "pink": ["불굴의 마음", "페이스 킵"], "yellow": ["빠져나갈 준비", "페이스 킵"], "white": ["비근간거리○", "선행 견제", "중거리 코너○", "뒷심", "꼬리 올리기"] },
+    "tags": ["도토"]
   },
   {
     "id": 106001, "name": "나이스 네이처", "nickname": "포인세티아・리본", "color": "#f25f77",
@@ -726,7 +735,7 @@
     "StrategyAptitude": { "Front": "F", "Pace": "B", "Late": "A", "End": "D" },
     "StatBonuses": { "Speed": 0, "Stamina": 0, "Power": 20, "Guts": 0, "Wit": 10 },
     "skills": { "rainbow": ["반드시 그 너머로…!", "나도 가끔은 해야지, 안 그래?"], "pink": ["환승 숙달", "끈기"], "yellow": ["능숙한 환승", "뒷심"], "white": ["외곽 추월 준비", "물고 늘어지기", "가을 우마무스메○", "안쪽 그룹 능숙○", "꼬리 올리기"] },
-    "tags": ["네이짱"]
+    "tags": ["네짱", "팀카노푸스"]
   },
   {
     "id": 105001, "name": "킹 헤일로", "nickname": "킹・오브・에메랄드", "color": "#3CB371",
@@ -744,7 +753,7 @@
     "StrategyAptitude": { "Front": "E", "Pace": "A", "Late": "A", "End": "G" },
     "StatBonuses": { "Speed": 0, "Stamina": 10, "Power": 20, "Guts": 0, "Wit": 0 },
     "skills": { "rainbow": ["공주님의 필살기☆"], "pink": ["프린세스・에스코트", "강철 같은 의지"], "yellow": ["기세로 밀어붙이기", "장난은 끝이야!"], "white": ["오기", "대항 의식○", "선행 코너○", "꼬리 올리기", "뒤처지기 방지"] },
-    "tags": ["공주"]
+    "tags": ["공주", "프린파이"]
   },
   {
     "id": 105301, "name": "사쿠라 바쿠신 오", "nickname": "박신적☆스피드", "color": "#EE82EE",
@@ -762,7 +771,7 @@
     "StrategyAptitude": { "Front": "G", "Pace": "B", "Late": "A", "End": "G" },
     "StatBonuses": { "Speed": 0, "Stamina": 15, "Power": 0, "Guts": 0, "Wit": 15 },
     "skills": { "rainbow": ["넘치는 반짝임"], "pink": ["잠복 태세", "노력의 결과"], "yellow": ["조용한 호흡", "노력의 결과"], "white": ["장거리 직선○", "장거리 코너○", "꼬리 올리기", "진가 발휘", "페이스 킵"] },
-    "tags": ["ReachforthestarsProjectL'Arc", "개선문상"]
+    "tags": ["ReachforthestarsProjectLArc", "개선문상"]
   },
   {
     "id": 105501, "name": "키타산 블랙", "nickname": "금상・금화가마", "color": "#364147",
@@ -771,7 +780,7 @@
     "StrategyAptitude": { "Front": "A", "Pace": "A", "Late": "G", "End": "G" },
     "StatBonuses": { "Speed": 20, "Stamina": 10, "Power": 0, "Guts": 0, "Wit": 0 },
     "skills": { "rainbow": ["승리의 함성 와ッ쇼이!"], "pink": ["선수 필승", "열풍일섬"], "yellow": ["앞장서기", "장거리 직선○"], "white": ["집중력", "중거리 직선○", "선두 프라이드", "꼬리 올리기", "빠져나갈 준비"] },
-    "tags": ["키타쨩", "인자"]
+    "tags": ["키타쨩", "애망추"]
   },
   {
     "id": 105601, "name": "트윈 터보", "nickname": "폭주! 터보 엔진", "color": "#CCCCCC",
