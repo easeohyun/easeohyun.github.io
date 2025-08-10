@@ -38,17 +38,20 @@ const smartIncludes = (term, character) => {
     const sanitizedTerm = term.toLowerCase().replace(SANITIZE_REGEX, "");
     if (!sanitizedTerm) return true;
     
-    const isTermAllChosung = [...sanitizedTerm].every(char => CHO_SUNG.includes(char));
+    const originalFields = character._searchableFields;
+    const chosungFields = character._chosungFields;
+    
+    const chosungTerm = [...sanitizedTerm].map(getChosung).join("");
 
-    const fields = isTermAllChosung ? character._chosungFields : character._searchableFields;
-
-    if (fields.name.includes(sanitizedTerm) || fields.nickname.includes(sanitizedTerm)) {
+    if (originalFields.name.includes(sanitizedTerm) || originalFields.nickname.includes(sanitizedTerm) ||
+        originalFields.skills.some(skill => skill.includes(sanitizedTerm)) ||
+        originalFields.tags.some(tag => tag.includes(sanitizedTerm))) {
         return true;
     }
-    if (fields.skills.some(skill => skill.includes(sanitizedTerm))) {
-        return true;
-    }
-    if (fields.tags.some(tag => tag.includes(sanitizedTerm))) {
+    
+    if (chosungFields.name.includes(chosungTerm) || chosungFields.nickname.includes(chosungTerm) ||
+        chosungFields.skills.some(skillChosung => skillChosung.includes(chosungTerm)) ||
+        chosungFields.tags.some(tagChosung => tagChosung.includes(chosungTerm))) {
         return true;
     }
     
