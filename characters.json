@@ -132,7 +132,7 @@
     "StrategyAptitude": { "Front": "F", "Pace": "A", "Late": "A", "End": "D" },
     "StatBonuses": { "Speed": 15, "Stamina": 15, "Power": 0, "Guts": 0, "Wit": 0 },
     "skills": { "rainbow": ["크리스마스 이브의 미라클 런!"], "pink": ["폭식 보양", "크리스마스의 기적 체험"], "yellow": ["먹보", "내적 체험"], "white": ["쥐어짜기", "안쪽 코너 여포", "영양 보급", "짧은 휴식", "스리 세븐"] },
-    "tags": ["크리스마스", "클구리", "삼대장", "성스러운밤에더해지는 기적", "Oguri Cap", "オグリキャップ"]    
+    "tags": ["산타클로스", "크리스마스", "클구리", "삼대장", "성스러운밤에더해지는기적", "Oguri Cap", "オグリキャップ"]    
   },
   {
     "id": 100701, "name": "골드 쉽", "nickname": "레드 스트라이프", "color": "#da3c57",
@@ -456,28 +456,28 @@
     "StrategyAptitude": { "Front": "E", "Pace": "A", "Late": "B", "End": "E" },
     "StatBonuses": { "Speed": 0, "Stamina": 0, "Power": 0, "Guts": 10, "Wit": 20 },
     "skills": { "rainbow": ["∴win Q.E.D."], "pink": ["예상대로, 여유 충분", "계획적 쿨다운"], "yellow": ["여유만만", "쿨다운"], "white": ["진창길○", "심호흡", "스태미나 킵", "바깥쪽 그룹 능숙○", "추입 심리전"] },
-    "tags": ["BNW", "안경", "대두", "언니", "Biwa Hayahide", "ビワハヤヒデ"]
+    "tags": ["BNW", "안경", "대두", "언니", "바나나", "Biwa Hayahide", "ビワハヤヒデ"]
   },
 {
-    "id": 102301, "name": "비와 하야히데", "nickname": "pf.Victory formula...", "color": "#b03d81",
+    "id": 102302, "name": "비와 하야히데", "nickname": "노엘 루주・캐럴", "color": "#b03d81",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "F" },
     "DistanceAptitude": { "Short": "F", "Mile": "C", "Medium": "A", "Long": "A" },
     "StrategyAptitude": { "Front": "E", "Pace": "A", "Late": "B", "End": "E" },
-    "StatBonuses": { "Speed": 0, "Stamina": 0, "Power": 0, "Guts": 10, "Wit": 20 },
-    "skills": { "rainbow": ["∴win Q.E.D."], "pink": ["예상대로, 여유 충분", "계획적 쿨다운"], "yellow": ["여유만만", "쿨다운"], "white": ["진창길○", "심호흡", "스태미나 킵", "바깥쪽 그룹 능숙○", "추입 심리전"] },
-    "tags": ["BNW", "안경", "대두", "언니", "Biwa Hayahide", "ビワハヤヒデ"]
+    "StatBonuses": { "Speed": 0, "Stamina": 12, "Power": 12, "Guts": 0, "Wit": 6 },
+    "skills": { "rainbow": ["Presents from X"], "pink": ["전력 산타클로스", "VIP다운 뒷모습"], "yellow": ["전심전력", "VIP 프리패스"], "white": ["뒷심", "능숙한 패스", "좋은 위치 뒤따르기", "선행의 요령○", "선행 직선○"] },
+    "tags": ["성스러운밤에더해지는기적", "산타클로스", "크리스마스", "Biwa Hayahide", "ビワハヤヒデ"]
   },
   {
-    "id": 102301, "name": "비와 하야히데", "nickname": "pf.Victory formula...", "color": "#b03d81",
+    "id": 102303, "name": "비와 하야히데", "nickname": "Engineered Victory", "color": "#b03d81",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "F" },
     "DistanceAptitude": { "Short": "F", "Mile": "C", "Medium": "A", "Long": "A" },
     "StrategyAptitude": { "Front": "E", "Pace": "A", "Late": "B", "End": "E" },
-    "StatBonuses": { "Speed": 0, "Stamina": 0, "Power": 0, "Guts": 10, "Wit": 20 },
-    "skills": { "rainbow": ["∴win Q.E.D."], "pink": ["예상대로, 여유 충분", "계획적 쿨다운"], "yellow": ["여유만만", "쿨다운"], "white": ["진창길○", "심호흡", "스태미나 킵", "바깥쪽 그룹 능숙○", "추입 심리전"] },
-    "tags": ["BNW", "안경", "대두", "언니", "Biwa Hayahide", "ビワハヤヒデ"]
+    "StatBonuses": { "Speed": 0, "Stamina": 10, "Power": 10, "Guts": 10, "Wit": 0 },
+    "skills": { "rainbow": ["勝利ヘ至ル累積"], "pink": ["シミュレートグラス・オン", "ネオンの尾を引いて"], "yellow": ["一点集中", "민첩함의 너머로"], "white": ["정확히 노려서", "장거리 직선○", "한눈팔지 않고", "시계(우) 방향○", "결정타"] },
+    "tags": ["Biwa Hayahide", "ビワハヤヒデ"]
   },
   {
-    "id": 102401, "name": "마야노 탑건", "nickname": "스크램블☆존", "color": "#f88741",
+    "id": 102401, "name": "마야노 탑건", "nickname": "스크램블☆존", "color": "#f57d38",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "E", "Mile": "B", "Medium": "A", "Long": "A" },
     "StrategyAptitude": { "Front": "A", "Pace": "A", "Late": "A", "End": "A" },
@@ -486,7 +486,16 @@
     "tags": ["변환자재"]
   },
   {
-    "id": 102402, "name": "마야노 탑건", "nickname": "선라이트・부케", "color": "#f88741",
+    "id": 102402, "name": "마야노 탑건", "nickname": "선라이트・부케", "color": "#f57d38",
+    "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
+    "DistanceAptitude": { "Short": "E", "Mile": "B", "Medium": "A", "Long": "A" },
+    "StrategyAptitude": { "Front": "A", "Pace": "A", "Late": "A", "End": "A" },
+    "StatBonuses": { "Speed": 20, "Stamina": 0, "Power": 0, "Guts": 10, "Wit": 0 },
+    "skills": { "rainbow": ["틸팅・샷"], "pink": ["변환자재", "마야의 추천 애기♪"], "yellow": ["임기응변", "능숙한 환승"], "white": ["추월 확정 태세", "포지션 센스", "템포 업", "가벼운 발걸음", "진창길○"] },
+    "tags": ["웨딩드레스", "결혼식", "신부"]
+  },  
+  {
+    "id": 102403, "name": "마야노 탑건", "nickname": "ろっきん☆MewMeow", "color": "#f57d38",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "E", "Mile": "B", "Medium": "A", "Long": "A" },
     "StrategyAptitude": { "Front": "A", "Pace": "A", "Late": "A", "End": "A" },
