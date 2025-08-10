@@ -439,7 +439,7 @@ input[type="number"].filter-item-interactive:focus-visible, select.filter-item-i
     background: linear-gradient(137.5deg, #ffffef, #ffbe29);
 }
 .skill-white { 
-    font-size: 0.9rem; 
+    font-size: 1.0rem; 
     font-weight: 500; 
     word-spacing: -1px; 
     background: linear-gradient(137.5deg, #ffffff, #bdbece); 
@@ -449,10 +449,10 @@ input[type="number"].filter-item-interactive:focus-visible, select.filter-item-i
     position: absolute;
     background-color: var(--color-surface-1);
     color: var(--color-text-primary);
-    border: 1px solid var(--color-border);
+    border: 1.25px solid var(--color-border);
     border-radius: var(--radius-md);
     padding: 0.75rem 1rem;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     line-height: 1.5;
     max-width: 320px;
     width: max-content;
@@ -595,3 +595,4 @@ html[data-theme="dark"] #dark-mode-toggle:hover .material-symbols-outlined {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
   .button:hover, .scroll-buttons button:hover, .character-card:hover { transform: none; }
 }
+
