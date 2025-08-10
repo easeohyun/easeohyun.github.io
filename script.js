@@ -64,32 +64,49 @@
     };
     
     const createStatItem = (displayName, value, isBonus = false) => {
-        const valueSpan = isBonus
-            ? `${value}<span class="percent">%</span>`
-            : `<span class="grade-${String(value).toLowerCase()}">${value}</span>`;
-        return `<li class="stat-item"><span class="label">${displayName}</span><span class="value">${valueSpan}</span></li>`;
+        const li = document.createElement('li');
+        li.className = 'stat-item';
+        const label = document.createElement('span');
+        label.className = 'label';
+        label.textContent = displayName;
+        const valueEl = document.createElement('span');
+        valueEl.className = 'value';
+
+        if (isBonus) {
+            valueEl.innerHTML = `${value}<span class="percent">%</span>`;
+        } else {
+            valueEl.className += ` grade-${String(value).toLowerCase()}`;
+            valueEl.textContent = value;
+        }
+
+        li.append(label, valueEl);
+        return li;
     };
 
     const createStatGroup = (char, sectionKey, groupName, itemMap, isBonus = false) => {
         const statData = char[sectionKey];
-        if (!statData) return '';
+        if (!statData) return null;
 
-        const itemsHtml = Object.entries(itemMap)
+        const items = Object.entries(itemMap)
             .map(([itemKey, displayName]) => {
                 const value = statData[itemKey];
                 return value !== undefined ? createStatItem(displayName, value, isBonus) : null;
             })
-            .filter(Boolean)
-            .join('');
+            .filter(Boolean);
 
-        if (!itemsHtml) return '';
+        if (items.length === 0) return null;
 
-        return `
-            <div class="stat-group">
-                <div class="stat-group-title">${groupName}</div>
-                <ul class="stat-items-list">${itemsHtml}</ul>
-            </div>
-        `;
+        const groupDiv = document.createElement('div');
+        groupDiv.className = 'stat-group';
+        const titleDiv = document.createElement('div');
+        titleDiv.className = 'stat-group-title';
+        titleDiv.textContent = groupName;
+        const ul = document.createElement('ul');
+ul.className = 'stat-items-list';
+ul.append(...items);
+        
+        groupDiv.append(titleDiv, ul);
+        return groupDiv;
     };
     
     const createCharacterCard = (char) => {
@@ -104,6 +121,8 @@
         identityDiv.querySelector(".card-title").textContent = char.name;
 
         const statsContainer = card.querySelector(".card-stats");
+        statsContainer.innerHTML = '';
+        
         const aptitudeMap = {
             SurfaceAptitude: { name: "경기장 적성", map: { Turf: "잔디", Dirt: "더트" }},
             DistanceAptitude: { name: "거리 적성", map: { Short: "단거리", Mile: "마일", Medium: "중거리", Long: "장거리" }},
@@ -113,23 +132,31 @@
             StatBonuses: { name: "성장률", map: { Speed: "스피드", Stamina: "스태미나", Power: "파워", Guts: "근성", Wit: "지능" }, isBonus: true }
         };
         
-        let statsHtml = '';
-        for (const [sectionKey, { name, map }] of Object.entries(aptitudeMap)) {
-            statsHtml += createStatGroup(char, sectionKey, name, map);
-        }
-        for (const [sectionKey, { name, map, isBonus }] of Object.entries(bonusMap)) {
-            statsHtml += createStatGroup(char, sectionKey, name, map, isBonus);
-        }
-        statsContainer.innerHTML = statsHtml;
+        const statGroups = [
+            ...Object.entries(aptitudeMap).map(([sectionKey, { name, map }]) => createStatGroup(char, sectionKey, name, map)),
+            ...Object.entries(bonusMap).map(([sectionKey, { name, map, isBonus }]) => createStatGroup(char, sectionKey, name, map, isBonus))
+        ].filter(Boolean);
+        
+        statsContainer.append(...statGroups);
         
         const createSkillRow = (skills, color) => {
             if (!skills || skills.length === 0) return '';
-            return `<div class="skill-row">${skills.map(skill => skill ? `
-                <div class="skill-slot skill-interactive skill-${color}" role="button" tabindex="0">${skill}</div>
-            ` : '').join('')}</div>`;
+            const row = document.createElement('div');
+            row.className = 'skill-row';
+            skills.forEach(skill => {
+                if (!skill) return;
+                const slot = document.createElement('div');
+                slot.className = `skill-slot skill-interactive skill-${color}`;
+                slot.setAttribute('role', 'button');
+                slot.setAttribute('tabindex', '0');
+                slot.textContent = skill;
+                row.appendChild(slot);
+            });
+            return row;
         };
         
         const skillContainer = card.querySelector(".skill-container");
+        skillContainer.innerHTML = '';
         const skillsMap = {
             rainbow: char.skills?.rainbow,
             pink: char.skills?.pink,
@@ -137,11 +164,11 @@
             white: char.skills?.white,
         };
 
-        let skillsHtml = '';
-        for (const [color, skills] of Object.entries(skillsMap)) {
-            skillsHtml += createSkillRow(skills, color);
-        }
-        skillContainer.innerHTML = skillsHtml;
+        const skillRows = Object.entries(skillsMap)
+            .map(([color, skills]) => createSkillRow(skills, color))
+            .filter(Boolean);
+        
+        skillContainer.append(...skillRows);
         
         const skillDetails = card.querySelector('.skill-details');
         const skillSummary = card.querySelector('.skill-summary');
@@ -410,7 +437,7 @@
 
         const tooltip = document.createElement('div');
         tooltip.className = 'skill-tooltip';
-        tooltip.textContent = skillDescription || "스킬 정보를 찾을 수 없습니다.";
+        tooltip.textContent = skillDescription || "스킬 정보를 찾을 수 없어요.";
         tooltip.style.setProperty('--character-color', characterColor);
         
         state.activeTooltip.element = tooltip;
@@ -553,7 +580,7 @@
             worker.onerror = error => {
                 console.error(`Web Worker error: ${error.message}`, error);
                 setLoadingState(false);
-                DOM.resultSummary.innerHTML = `<div class="error-message"><p><strong>Error:</strong> 데이터 처리 중 오류가 발생했습니다.</p><p>페이지를 새로고침 해주세요.</p></div>`;
+                DOM.resultSummary.innerHTML = `<div class="error-message"><p><strong>Error:</strong> 데이터 처리 중 오류가 발생했어요.</p><p>페이지를 새로고침 해주세요.</p></div>`;
                 reject(error);
             };
             resolve(worker);
@@ -583,7 +610,7 @@
             const [characters, rawDescriptions] = await Promise.all([
                 fetchData(CHARACTERS_JSON_PATH),
                 fetchData(SKILL_DESCRIPTIONS_PATH).catch(err => {
-                    console.warn("스킬 설명 데이터를 불러오지 못했습니다. 툴팁 기능이 비활성화됩니다.", err);
+                    console.warn("스킬 설명 데이터를 불러오지 못했어요. 툴팁 기능이 비활성화할게요.", err);
                     return {};
                 })
             ]);
