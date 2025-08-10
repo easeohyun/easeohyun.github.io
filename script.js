@@ -208,14 +208,14 @@
         }
     };
     
-    const renderCharacters = (charactersToRender, isFiltered) => {
+    const renderCharacters = (charactersToRender) => {
         const { characterList, noResultsContainer, resultSummary } = DOM;
         const count = charactersToRender.length;
         
         if (state.observer) state.observer.disconnect();
         characterList.innerHTML = "";
 
-        const hasActiveFilters = isFiltered || DOM.searchBox.value.trim() !== "" || Array.from(DOM.filterForm.elements).some(el => el.type === "checkbox" && el.checked);
+        const hasActiveFilters = DOM.searchBox.value.trim() !== "" || Array.from(DOM.filterForm.elements).some(el => el.type === "checkbox" && el.checked);
         
         if (count === 0 && hasActiveFilters) {
             characterList.style.display = "none";
@@ -487,36 +487,36 @@
         tooltip.style.left = `${left}px`;
         tooltip.style.opacity = 1;
     };
-    
-    const setupEventListeners = () => {
+
+    const setupFormEventListeners = () => {
         const debouncedUpdate = debounce(updateDisplay, DEBOUNCE_DELAY);
-        
         DOM.filterForm.addEventListener("input", e => {
-            if(e.target.type === 'checkbox' || e.target.type === 'select-one' || e.target.type === 'number') {
+            if (e.target.matches('input[type="checkbox"], select, input[type="number"]')) {
                 debouncedUpdate();
             }
         });
-
         DOM.searchBox.addEventListener("input", debouncedUpdate);
         DOM.sortOrder.addEventListener("change", updateDisplay);
-
         DOM.resetFiltersButton.addEventListener("click", resetAllFilters);
         DOM.noResultsResetButton.addEventListener("click", resetAllFilters);
+    };
 
+    const setupScrollEventListeners = () => {
         DOM.scrollTopButton.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
         DOM.scrollBottomButton.addEventListener("click", () => window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" }));
-        
-        DOM.toggleSkillsButton.addEventListener("click", toggleAllSkills);
-        DOM.darkModeToggleButton.addEventListener("click", toggleTheme);
+        window.addEventListener("scroll", debounce(() => {
+            updateScrollButtonsVisibility();
+            hideTooltip();
+        }, 150));
+    };
 
+    const setupModalEventListeners = () => {
         DOM.openModalBtn.addEventListener("click", openModal);
         DOM.closeModalBtn.addEventListener("click", closeModal);
         DOM.modalOverlay.addEventListener("click", closeModal);
-        
-        window.addEventListener('popstate', (event) => {
+        window.addEventListener('popstate', () => {
             if (state.isModalOpen) closeModal();
         });
-
         DOM.contactEmailLink.addEventListener("click", function(e) {
             e.preventDefault();
             const isRevealed = this.dataset.revealed === "true";
@@ -532,17 +532,54 @@
                 window.open(this.href, '_blank');
             }
         });
-
+    };
+    
+    const setupTooltipEventListeners = () => {
+        DOM.characterList.addEventListener('mouseover', e => {
+            const target = e.target.closest('.skill-interactive');
+            if (target) showTooltip(target);
+        });
+        DOM.characterList.addEventListener('mouseout', e => {
+            if (e.target.closest('.skill-interactive')) hideTooltip();
+        });
+        DOM.characterList.addEventListener('click', e => {
+            const target = e.target.closest('.skill-interactive');
+            if (target) {
+                if (state.activeTooltip && state.activeTooltip.target === target) {
+                    hideTooltip();
+                } else {
+                    showTooltip(target);
+                    state.activeTooltip.target = target;
+                }
+            }
+        });
+        DOM.characterList.addEventListener('keydown', e => {
+            const target = e.target.closest('.skill-interactive');
+            if (target && (e.key === 'Enter' || e.key === ' ')) {
+                e.preventDefault();
+                showTooltip(target);
+            }
+        });
+        document.addEventListener('click', e => {
+            if (!e.target.closest('.skill-interactive') && !e.target.closest('.skill-tooltip')) {
+                hideTooltip();
+            }
+        });
+    };
+    
+    const setupKeyboardAndMiscEventListeners = () => {
+        DOM.toggleSkillsButton.addEventListener("click", toggleAllSkills);
+        DOM.darkModeToggleButton.addEventListener("click", toggleTheme);
         document.addEventListener("keydown", handleKeyboardShortcuts);
-        window.addEventListener("scroll", debounce(() => {
-            updateScrollButtonsVisibility();
-            hideTooltip();
-        }, 150));
         window.addEventListener("resize", debounce(() => {
             updateScrollButtonsVisibility();
             hideTooltip();
         }, 150));
         
+        const stopLongPress = () => {
+            clearTimeout(state.longPressTimer);
+            clearInterval(state.longPressInterval);
+        };
         DOM.filterForm.addEventListener("mousedown", e => {
             if (!e.target.classList.contains("spinner-btn")) return;
             e.preventDefault();
@@ -566,46 +603,18 @@
                 state.longPressInterval = setInterval(changeValue, 100);
             }, 500);
         });
-        
-        const stopLongPress = () => {
-            clearTimeout(state.longPressTimer);
-            clearInterval(state.longPressInterval);
-        };
         document.addEventListener("mouseup", stopLongPress);
         document.addEventListener("mouseleave", stopLongPress);
-
-        DOM.characterList.addEventListener('mouseover', e => {
-            const target = e.target.closest('.skill-interactive');
-            if (target) showTooltip(target);
-        });
-        DOM.characterList.addEventListener('mouseout', e => {
-            if (e.target.closest('.skill-interactive')) hideTooltip();
-        });
-        DOM.characterList.addEventListener('click', e => {
-            const target = e.target.closest('.skill-interactive');
-            if (target) {
-                if (state.activeTooltip && state.activeTooltip.target === target) {
-                    hideTooltip();
-                } else {
-                    showTooltip(target);
-                    state.activeTooltip.target = target; 
-                }
-            }
-        });
-        DOM.characterList.addEventListener('keydown', e => {
-            const target = e.target.closest('.skill-interactive');
-            if (target && (e.key === 'Enter' || e.key === ' ')) {
-                e.preventDefault();
-                showTooltip(target);
-            }
-        });
-        document.addEventListener('click', e => {
-            if (!e.target.closest('.skill-interactive') && !e.target.closest('.skill-tooltip')) {
-                hideTooltip();
-            }
-        });
     };
 
+    const setupEventListeners = () => {
+        setupFormEventListeners();
+        setupScrollEventListeners();
+        setupModalEventListeners();
+        setupTooltipEventListeners();
+        setupKeyboardAndMiscEventListeners();
+    };
+    
     const initWorker = () => {
         return new Promise((resolve, reject) => {
             if (!('Worker' in window)) {
@@ -614,7 +623,7 @@
             const worker = new Worker('./workers/filterWorker.js');
             worker.onmessage = e => {
                 const { type, payload } = e.data;
-                if (type === 'filtered') renderCharacters(payload, true);
+                if (type === 'filtered') renderCharacters(payload);
             };
             worker.onerror = error => {
                 console.error(`Web Worker error: ${error.message}`, error);
@@ -671,7 +680,7 @@
                 state.skillDescriptions = {};
             }
 
-            renderCharacters(state.allCharacters, false);
+            renderCharacters(state.allCharacters);
 
         } catch (error) {
             console.error("Failed to load critical data:", error);
