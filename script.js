@@ -44,6 +44,7 @@
             element: null,
             target: null,
         },
+        newWorker: null,
     };
 
     const normalizeSkillName = (name) => {
@@ -102,7 +103,7 @@
         titleDiv.className = 'stat-group-title';
         titleDiv.textContent = groupName;
         const ul = document.createElement('ul');
-        ul.className = 'stat-items-list';
+ul.className = 'stat-items-list';
         ul.append(...items);
         
         groupDiv.append(titleDiv, ul);
@@ -601,6 +602,52 @@
         return await response.json();
     };
 
+    const showUpdateNotification = () => {
+        const notification = document.createElement('div');
+        notification.id = 'update-notification';
+        notification.setAttribute('role', 'alert');
+        notification.innerHTML = `
+            <p>새로운 버전이 있어요! 지금 바로 만나보세요.</p>
+            <button id="update-now-btn" class="button">업데이트</button>
+        `;
+        DOM.body.appendChild(notification);
+        
+        document.getElementById('update-now-btn').addEventListener('click', () => {
+            if (state.newWorker) {
+                state.newWorker.postMessage({ action: 'skipWaiting' });
+            }
+        });
+    };
+
+    const registerServiceWorker = () => {
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js').then(reg => {
+                if (reg.waiting) {
+                    state.newWorker = reg.waiting;
+                    showUpdateNotification();
+                }
+
+                reg.addEventListener('updatefound', () => {
+                    state.newWorker = reg.installing;
+                    state.newWorker.addEventListener('statechange', () => {
+                        if (state.newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            showUpdateNotification();
+                        }
+                    });
+                });
+
+                let refreshing;
+                navigator.serviceWorker.addEventListener('controllerchange', () => {
+                    if (refreshing) return;
+                    window.location.reload();
+                    refreshing = true;
+                });
+            }).catch(error => {
+                console.error('ServiceWorker registration failed: ', error);
+            });
+        }
+    };
+
     const initializeApp = async () => {
         setupEventListeners();
 
@@ -639,20 +686,6 @@
         }
     };
     
-    const registerServiceWorker = () => {
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .then(registration => {
-                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
-                    })
-                    .catch(error => {
-                        console.log('ServiceWorker registration failed: ', error);
-                    });
-            });
-        }
-    };
-
     document.addEventListener("DOMContentLoaded", initializeApp);
     registerServiceWorker();
 
