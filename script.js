@@ -437,7 +437,7 @@
 
         const tooltip = document.createElement('div');
         tooltip.className = 'skill-tooltip';
-        tooltip.textContent = skillDescription || "스킬 정보를 찾을 수 없습니다.";
+        tooltip.textContent = skillDescription || "스킬 정보를 찾을 수 없어요.";
         tooltip.style.setProperty('--character-color', characterColor);
         
         state.activeTooltip.element = tooltip;
@@ -491,16 +491,14 @@
         });
         DOM.contactEmailLink.addEventListener("click", function(e) {
             e.preventDefault();
-            const isRevealed = this.dataset.revealed === "true";
-            if (!isRevealed) {
+            if (this.href.endsWith('#')) {
                 const user = "easeohyun";
                 const domain = "gmail.com";
                 const email = `${user}@${domain}`; 
                 this.textContent = email;
                 this.href = `mailto:${email}`;
-                this.dataset.revealed = "true";
             }
-            if (confirm(`메일 클라이언트를 열어 '${this.textContent}' 주소로 메일을 보내시겠습니까?`)) {
+            if (confirm(`메일 클라이언트를 열어 '${this.textContent}' 주소로 메일을 보내시겠어요?`)) {
                 window.open(this.href, '_blank');
             }
         });
@@ -610,7 +608,7 @@
             const [characters, rawDescriptions] = await Promise.all([
                 fetchData(CHARACTERS_JSON_PATH),
                 fetchData(SKILL_DESCRIPTIONS_PATH).catch(err => {
-                    console.warn("스킬 설명 데이터를 불러오지 못했습니다. 툴팁 기능이 비활성화됩니다.", err);
+                    console.warn("스킬 설명 데이터를 불러오지 못했어요. 툴팁 기능이 비활성화할게요.", err);
                     return {};
                 })
             ]);
