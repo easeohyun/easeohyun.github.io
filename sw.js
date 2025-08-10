@@ -1,4 +1,4 @@
-const CACHE_VERSION = 5;
+const CACHE_VERSION = 6;
 const CURRENT_CACHE_NAME = `umamusume-filter-cache-v${CACHE_VERSION}`;
 const APP_SHELL_ASSETS = [
   './',
@@ -57,17 +57,21 @@ const handleJsonRequest = async (request) => {
     } catch (error) {
         console.warn('Network request failed, attempting to serve from cache.', error);
         const cache = await caches.open(CURRENT_CACHE_NAME);
-        return await cache.match(request);
+        const cachedResponse = await cache.match(request);
+        if (cachedResponse) {
+            return cachedResponse;
+        }
     }
 };
 
 self.addEventListener('fetch', (event) => {
     const { request } = event;
     const url = new URL(request.url);
+    const destination = request.destination;
 
     if (url.pathname.endsWith('.json')) {
         event.respondWith(handleJsonRequest(request));
-    } else if (APP_SHELL_ASSETS.includes(request.url) || url.pathname === '/' || url.pathname.endsWith('.html')) {
+    } else if (destination === 'style' || destination === 'script' || destination === 'worker' || destination === 'document') {
         event.respondWith(handleAssetRequest(request));
     } else if (url.origin === 'https://fonts.googleapis.com' || url.origin === 'https://fonts.gstatic.com') {
         event.respondWith(handleAssetRequest(request));
