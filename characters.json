@@ -1,6 +1,6 @@
 [
   {
-    "id": 100101, "name": "스페셜 위크", "nickname": "스페셜 드리머", "color": "#ee6dcb",
+    "id": 100101, "name": "스페셜 위크", "nickname": "스페셜 드리머", "color": "#ee6dcb", "color2": "#ffdef9", 
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "F", "Mile": "C", "Medium": "A", "Long": "A" },
     "StrategyAptitude": { "Front": "G", "Pace": "A", "Late": "A", "End": "C" },
@@ -9,7 +9,7 @@
     "tags": ["1기", "주인공", "스페짱", "아게마셍", "황금세대", "오리지널", "Special Week", "スペシャルウィーク"]
   },
   {
-    "id": 100102, "name": "스페셜 위크", "nickname": "호핑♪비타민 하트", "color": "#ee6dcb",
+    "id": 100102, "name": "스페셜 위크", "nickname": "호핑♪비타민 하트", "color": "#ee6dcb", "color2": "#ffdef9", 
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "F", "Mile": "C", "Medium": "A", "Long": "A" },
     "StrategyAptitude": { "Front": "G", "Pace": "A", "Late": "A", "End": "C" },
@@ -18,7 +18,7 @@
     "tags": ["여름", "수영복", "수스페", "그아이가수영복으로갈아입는다면우마무스메여름이야기", "Special Week", "スペシャルウィーク"]
   },
   {
-    "id": 100103, "name": "스페셜 위크", "nickname": "일본 최고의 총대장", "color": "#ee6dcb",
+    "id": 100103, "name": "스페셜 위크", "nickname": "일본 최고의 총대장", "color": "#ee6dcb", "color2": "#ffdef9", 
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "F", "Mile": "C", "Medium": "A", "Long": "A" }, 
     "StrategyAptitude": { "Front": "G", "Pace": "A", "Late": "A", "End": "C" },
@@ -955,3 +955,4 @@
   }
 
 ]
+
