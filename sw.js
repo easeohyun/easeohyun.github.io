@@ -1,4 +1,4 @@
-const CACHE_VERSION = 8;
+const CACHE_VERSION = 9;
 const CURRENT_CACHE_NAME = `umamusume-filter-cache-v${CACHE_VERSION}`;
 const APP_SHELL_ASSETS = [
   './',
@@ -16,6 +16,7 @@ self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CURRENT_CACHE_NAME)
       .then((cache) => cache.addAll(APP_SHELL_ASSETS))
+      .then(() => self.skipWaiting())
       .catch(error => console.error('Failed to cache app shell:', error))
   );
 });
@@ -36,14 +37,17 @@ const handleAssetRequest = async (request) => {
     const cache = await caches.open(CURRENT_CACHE_NAME);
     const cachedResponse = await cache.match(request);
     
-    return cachedResponse || fetch(request).then(networkResponse => {
+    const fetchPromise = fetch(request).then(networkResponse => {
         if (networkResponse.ok) {
             cache.put(request, networkResponse.clone());
         }
         return networkResponse;
     }).catch(error => {
         console.error('Asset fetch failed:', error);
+        throw error;
     });
+
+    return cachedResponse || fetchPromise;
 };
 
 const handleJsonRequest = async (request) => {
@@ -61,20 +65,19 @@ const handleJsonRequest = async (request) => {
         if (cachedResponse) {
             return cachedResponse;
         }
+        throw error;
     }
 };
 
 self.addEventListener('fetch', (event) => {
     const { request } = event;
     const url = new URL(request.url);
-    const destination = request.destination;
 
-    if (url.pathname.endsWith('.json')) {
-        event.respondWith(handleJsonRequest(request));
-    } else if (destination === 'style' || destination === 'script' || destination === 'worker' || destination === 'document') {
-        event.respondWith(handleAssetRequest(request));
+    if (APP_SHELL_ASSETS.includes(url.pathname) || url.origin === self.location.origin) {
+         event.respondWith(handleAssetRequest(request));
     } else if (url.origin === 'https://fonts.googleapis.com' || url.origin === 'https://fonts.gstatic.com') {
         event.respondWith(handleAssetRequest(request));
+    } else if (url.pathname.endsWith('.json')) {
+        event.respondWith(handleJsonRequest(request));
     }
 });
-
