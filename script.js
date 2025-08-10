@@ -465,7 +465,7 @@
 
         const tooltip = document.createElement('div');
         tooltip.className = 'skill-tooltip';
-        tooltip.textContent = skillDescription || "스킬 정보를 찾을 수 없습니다.";
+        tooltip.textContent = skillDescription || "스킬 정보를 불러올 수 없습니다.";
         tooltip.style.setProperty('--character-color', characterColor);
         
         state.activeTooltip = tooltip;
@@ -685,3 +685,4 @@
     document.addEventListener("DOMContentLoaded", initializeApp);
 
 })();
+
