@@ -5,6 +5,7 @@
     const CHARACTERS_JSON_PATH = "./characters.json";
     const SKILL_DESCRIPTIONS_PATH = "./skill-descriptions.json";
     const DEBOUNCE_DELAY = 250;
+    const SANITIZE_REGEX = /[\s\-!@#$%^&*()_+={}\[\]:;"'<>,.?\/\\|`~♪☆・！？—ﾟ∀]/g;
 
     const DOM = {
         html: document.documentElement,
@@ -40,6 +41,11 @@
         longPressInterval: null,
         isModalOpen: false,
         activeTooltip: null,
+    };
+
+    const normalizeSkillName = (name) => {
+        if (typeof name !== 'string') return '';
+        return name.toLowerCase().replace(SANITIZE_REGEX, '');
     };
     
     const getRandomMessage = (messages) => {
@@ -451,7 +457,8 @@
         hideTooltip();
 
         const skillName = target.textContent.trim();
-        const skillDescription = state.skillDescriptions[skillName];
+        const normalizedSkillName = normalizeSkillName(skillName);
+        const skillDescription = state.skillDescriptions[normalizedSkillName];
         
         const card = target.closest('.character-card');
         const characterColor = card ? card.style.getPropertyValue('--character-color') : 'var(--color-primary)';
@@ -620,7 +627,7 @@
     };
     
     const fetchData = async (url) => {
-        const response = await fetch(url, { cache: 'no-cache' });
+        const response = await fetch(url);
         if (!response.ok) {
             throw new Error(`HTTP ${response.status} - ${response.statusText} for ${url}`);
         }
@@ -655,7 +662,10 @@
             state.worker.postMessage({ type: 'init', payload: { characters: state.allCharacters } });
 
             try {
-                state.skillDescriptions = await fetchData(SKILL_DESCRIPTIONS_PATH);
+                const rawDescriptions = await fetchData(SKILL_DESCRIPTIONS_PATH);
+                state.skillDescriptions = Object.fromEntries(
+                    Object.entries(rawDescriptions).map(([key, value]) => [normalizeSkillName(key), value])
+                );
             } catch (error) {
                 console.warn("스킬 설명 데이터를 불러오지 못했습니다. 툴팁 기능이 비활성화됩니다.", error);
                 state.skillDescriptions = {};
