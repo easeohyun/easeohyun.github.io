@@ -112,8 +112,13 @@
     const createCharacterCard = (char) => {
         const card = DOM.cardTemplate.content.cloneNode(true).firstElementChild;
         card.dataset.id = char.id;
+        
         if (char.color) {
             card.style.setProperty("--character-color", char.color);
+            card.dataset.color = char.color;
+        }
+        if (char.color2) {
+            card.dataset.color2 = char.color2;
         }
 
         const identityDiv = card.querySelector(".card-identity");
@@ -433,12 +438,13 @@
         const skillDescription = state.skillDescriptions[normalizedSkillName];
         
         const card = target.closest('.character-card');
-        const characterColor = card ? card.style.getPropertyValue('--character-color') : 'var(--color-primary)';
-
+        const mainColor = card ? card.dataset.color : 'var(--color-primary)';
+        const secondaryColor = card ? card.dataset.color2 : null;
+        
         const tooltip = document.createElement('div');
         tooltip.className = 'skill-tooltip';
-        tooltip.textContent = skillDescription || "스킬 정보를 찾을 수 없어요.";
-        tooltip.style.setProperty('--character-color', characterColor);
+        tooltip.textContent = skillDescription || "스킬 정보를 찾을 수 없습니다.";
+        tooltip.style.borderColor = secondaryColor || mainColor;
         
         state.activeTooltip.element = tooltip;
         state.activeTooltip.target = target;
@@ -489,6 +495,7 @@
         window.addEventListener('popstate', (event) => {
             if (state.isModalOpen && !event.state?.modal) closeModal();
         });
+        
         DOM.contactEmailLink.addEventListener("click", function(e) {
             e.preventDefault();
             if (this.href.endsWith('#')) {
@@ -498,7 +505,8 @@
                 this.textContent = email;
                 this.href = `mailto:${email}`;
             }
-            if (confirm(`메일 클라이언트를 열어 '${this.textContent}' 주소로 메일을 보내시겠어요?`)) {
+            
+            if (confirm(`메일 클라이언트를 열어 '${this.textContent}' 주소로 메일을 보내시겠습니까?`)) {
                 window.open(this.href, '_blank');
             }
         });
@@ -608,7 +616,7 @@
             const [characters, rawDescriptions] = await Promise.all([
                 fetchData(CHARACTERS_JSON_PATH),
                 fetchData(SKILL_DESCRIPTIONS_PATH).catch(err => {
-                    console.warn("스킬 설명 데이터를 불러오지 못했어요. 툴팁 기능이 비활성화할게요.", err);
+                    console.warn("스킬 설명 데이터를 불러오지 못했습니다. 툴팁 기능이 비활성화됩니다.", err);
                     return {};
                 })
             ]);
