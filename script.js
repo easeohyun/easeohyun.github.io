@@ -40,7 +40,10 @@
         longPressTimer: null,
         longPressInterval: null,
         isModalOpen: false,
-        activeTooltip: null,
+        activeTooltip: {
+            element: null,
+            target: null,
+        },
     };
 
     const normalizeSkillName = (name) => {
@@ -59,71 +62,34 @@
             timeout = setTimeout(() => func.apply(this, args), delay);
         };
     };
-
-    const setCheckboxIcons = () => {
-        const iconMap = {
-            'filter-turf': 'grass',
-            'filter-dirt': 'landslide',
-            'filter-speed': 'podiatry',
-            'filter-stamina': 'favorite',
-            'filter-power': 'ulna_radius_alt',
-            'filter-guts': 'mode_heat',
-            'filter-wit': 'school',
-            'filter-short': 'directions_run',
-            'filter-mile': 'directions_run',
-            'filter-medium': 'directions_run',
-            'filter-long': 'directions_run',
-            'filter-front': 'directions_run',
-            'filter-pace': 'directions_run',
-            'filter-late': 'directions_run',
-            'filter-end': 'directions_run'
-        };
-
-        for (const [id, icon] of Object.entries(iconMap)) {
-            const element = document.querySelector(`#${id} label`);
-            if (element) {
-                element.style.setProperty('--icon-content', `'${icon}'`);
-            }
-        }
-    };
     
     const createStatItem = (displayName, value, isBonus = false) => {
-        const itemLi = document.createElement('li');
-        itemLi.className = 'stat-item';
         const valueSpan = isBonus
             ? `${value}<span class="percent">%</span>`
             : `<span class="grade-${String(value).toLowerCase()}">${value}</span>`;
-        itemLi.innerHTML = `<span class="label">${displayName}</span><span class="value">${valueSpan}</span>`;
-        return itemLi;
+        return `<li class="stat-item"><span class="label">${displayName}</span><span class="value">${valueSpan}</span></li>`;
     };
 
     const createStatGroup = (char, sectionKey, groupName, itemMap, isBonus = false) => {
         const statData = char[sectionKey];
-        if (!statData) return null;
+        if (!statData) return '';
 
-        const items = Object.entries(itemMap)
+        const itemsHtml = Object.entries(itemMap)
             .map(([itemKey, displayName]) => {
                 const value = statData[itemKey];
                 return value !== undefined ? createStatItem(displayName, value, isBonus) : null;
             })
-            .filter(Boolean);
+            .filter(Boolean)
+            .join('');
 
-        if (items.length === 0) return null;
+        if (!itemsHtml) return '';
 
-        const groupDiv = document.createElement('div');
-        groupDiv.className = 'stat-group';
-
-        const titleDiv = document.createElement('div');
-        titleDiv.className = 'stat-group-title';
-        titleDiv.textContent = groupName;
-        groupDiv.appendChild(titleDiv);
-
-        const listUl = document.createElement('ul');
-        listUl.className = 'stat-items-list';
-        items.forEach(item => listUl.appendChild(item));
-        groupDiv.appendChild(listUl);
-
-        return groupDiv;
+        return `
+            <div class="stat-group">
+                <div class="stat-group-title">${groupName}</div>
+                <ul class="stat-items-list">${itemsHtml}</ul>
+            </div>
+        `;
     };
     
     const createCharacterCard = (char) => {
@@ -146,30 +112,21 @@
         const bonusMap = {
             StatBonuses: { name: "성장률", map: { Speed: "스피드", Stamina: "스태미나", Power: "파워", Guts: "근성", Wit: "지능" }, isBonus: true }
         };
-
+        
+        let statsHtml = '';
         for (const [sectionKey, { name, map }] of Object.entries(aptitudeMap)) {
-            const groupEl = createStatGroup(char, sectionKey, name, map);
-            if (groupEl) statsContainer.appendChild(groupEl);
+            statsHtml += createStatGroup(char, sectionKey, name, map);
         }
         for (const [sectionKey, { name, map, isBonus }] of Object.entries(bonusMap)) {
-            const groupEl = createStatGroup(char, sectionKey, name, map, isBonus);
-            if (groupEl) statsContainer.appendChild(groupEl);
+            statsHtml += createStatGroup(char, sectionKey, name, map, isBonus);
         }
-
+        statsContainer.innerHTML = statsHtml;
+        
         const createSkillRow = (skills, color) => {
-            if (!skills || skills.length === 0) return null;
-            const rowDiv = document.createElement('div');
-            rowDiv.className = 'skill-row';
-            skills.forEach(skill => {
-                if (!skill) return;
-                const slotDiv = document.createElement('div');
-                slotDiv.className = `skill-slot skill-interactive skill-${color}`;
-                slotDiv.textContent = skill;
-                slotDiv.setAttribute('role', 'button');
-                slotDiv.setAttribute('tabindex', '0');
-                rowDiv.appendChild(slotDiv);
-            });
-            return rowDiv;
+            if (!skills || skills.length === 0) return '';
+            return `<div class="skill-row">${skills.map(skill => skill ? `
+                <div class="skill-slot skill-interactive skill-${color}" role="button" tabindex="0">${skill}</div>
+            ` : '').join('')}</div>`;
         };
         
         const skillContainer = card.querySelector(".skill-container");
@@ -179,10 +136,12 @@
             yellow: char.skills?.yellow,
             white: char.skills?.white,
         };
+
+        let skillsHtml = '';
         for (const [color, skills] of Object.entries(skillsMap)) {
-            const row = createSkillRow(skills, color);
-            if (row) skillContainer.appendChild(row);
+            skillsHtml += createSkillRow(skills, color);
         }
+        skillContainer.innerHTML = skillsHtml;
         
         const skillDetails = card.querySelector('.skill-details');
         const skillSummary = card.querySelector('.skill-summary');
@@ -195,17 +154,9 @@
     };
 
     const setLoadingState = (isLoading, message = "") => {
-        if (isLoading) {
-            if (DOM.characterList) DOM.characterList.innerHTML = "";
-            if (DOM.resultSummary) {
-                DOM.resultSummary.setAttribute('aria-live', 'assertive');
-                DOM.resultSummary.innerHTML = message;
-            }
-        } else {
-            if (DOM.resultSummary) {
-                DOM.resultSummary.setAttribute('aria-live', 'polite');
-            }
-        }
+        DOM.characterList.innerHTML = "";
+        DOM.resultSummary.setAttribute('aria-live', isLoading ? 'assertive' : 'polite');
+        DOM.resultSummary.innerHTML = isLoading ? message : DOM.resultSummary.innerHTML;
     };
     
     const renderCharacters = (charactersToRender) => {
@@ -229,47 +180,37 @@
 
         let summaryText = "";
         if (!hasActiveFilters) {
-            const messages = [
-                `트레센 학원에 어서오세요, 이렇게 많은 친구들은 처음이죠?<p>지금부터 <strong>${state.allCharacters.length}</strong>명의 우마무스메 중에서 3년을 함께할 학생을 찾아봐요.</p>`
-            ];
-            summaryText = getRandomMessage(messages);
+            summaryText = `트레센 학원에 어서오세요, 이렇게 많은 친구들은 처음이죠?<p>지금부터 <strong>${state.allCharacters.length}</strong>명의 우마무스메 중에서 3년을 함께할 학생을 찾아봐요.</p>`;
         } else {
-            if (count === 1) {
-                const messages = [
+             const messages = {
+                1: [
                     "당신이 찾던 그 우마무스메가... 딱 <strong>1명</strong> 있었어요!",
                     "앞으로 3년을 함께할 우마무스메를 <strong>1명</strong> 찾았어요.",
                     "지금 이 <strong>1명</strong>과 만남은 운명, 꿈은 목표."
-                ];
-                summaryText = getRandomMessage(messages);
-            } else if (count >= 2 && count <= 5) {
-                const messages = [
+                ],
+                few: [
                     `당신이 찾던 그 우마무스메는... <strong>${count}</strong>명 중에 있을 거예요.`,
                     `<strong>${count}</strong>명의 우마무스메를 찾았어요. 어떤 옷을 입히고 싶으신가요?`,
                     `<strong>${count}</strong>명의 우마무스메 중에서, 결정이 필요할 거예요.`
-                ];
-                summaryText = getRandomMessage(messages);
-            } else if (count >= 6 && count <= 15) {
-                const messages = [
+                ],
+                some: [
                     `당신이 찾던 그 우마무스메는... <strong>${count}</strong>명 중에 있을 것 같아요.`,
                     `<strong>${count}</strong>명의 우마무스메를 찾았어요. 아직은 좀 많죠?`,
                     `<strong>${count}</strong>명의 우마무스메 중에서, 간추릴 필요가 있어요.`
-                ];
-                summaryText = getRandomMessage(messages);
-            } else if (count >= 16 && count <= 50) {
-                 const messages = [
+                ],
+                many: [
                     `당신이 찾는 그 우마무스메는... <strong>${count}</strong>명 중에 있는 것 맞죠?`,
                     `<strong>${count}</strong>명의 우마무스메를 찾았는데요, 더 둘러봐야 해요.`,
                     `<strong>${count}</strong>명의 우마무스메 중에서, 대체 어디있을까요?`
-                ];
-                summaryText = getRandomMessage(messages);
-            } else {
-                const messages = [
+                ],
+                lots: [
                     `당신이 찾는 그 우마무스메가... <strong>${count}</strong>명 중에 있기를 바랍니다!`,
                     `<strong>${count}</strong>명의 우마무스메를 찾았는데요, 이제 시작이에요.`,
                     `<strong>${count}</strong>명의 우마무스메 중에서, 이제 찾아볼까요?`
-                ];
-                summaryText = getRandomMessage(messages);
-            }
+                ]
+            };
+            const category = count === 1 ? '1' : count <= 5 ? 'few' : count <= 15 ? 'some' : count <= 50 ? 'many' : 'lots';
+            summaryText = getRandomMessage(messages[category]);
         }
         resultSummary.innerHTML = summaryText;
         
@@ -307,7 +248,7 @@
         for (const el of DOM.filterForm.elements) {
             if (el.type === "checkbox" && el.checked) {
                 const key = el.name;
-                const isStatBonus = el.id.match(/Speed|Stamina|Power|Guts|Wit/);
+                const isStatBonus = ['Speed', 'Stamina', 'Power', 'Guts', 'Wit'].includes(el.id);
                 const filter = isStatBonus
                     ? { key, type: "value", value: parseInt(formData.get(`${key}-value`), 10) || 0 }
                     : { key, type: "grade", value: GRADE_MAP[formData.get(`${key}-grade`)] };
@@ -351,7 +292,7 @@
 
     const updateScrollButtonsVisibility = () => {
         const { scrollTopButton, scrollBottomButton } = DOM;
-        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const scrollTop = window.scrollY;
         const scrollHeight = document.documentElement.scrollHeight;
         const windowHeight = window.innerHeight;
         const isAtBottom = scrollTop + windowHeight >= scrollHeight - 20;
@@ -368,7 +309,7 @@
 
         if (event.key === 'Escape') {
             event.preventDefault();
-            if (state.activeTooltip) {
+            if (state.activeTooltip.element) {
                 hideTooltip();
             } else if (state.isModalOpen) {
                 closeModal();
@@ -424,7 +365,9 @@
         if (state.isModalOpen) return;
         state.isModalOpen = true;
         
-        history.pushState({ modal: true }, '', '#modal');
+        if (history.state?.modal !== true) {
+            history.pushState({ modal: true }, '', '#modal');
+        }
         
         DOM.modalContainer.hidden = false;
         requestAnimationFrame(() => {
@@ -440,16 +383,18 @@
         DOM.modalContainer.classList.remove("active");
         DOM.modalContainer.addEventListener("transitionend", () => {
             DOM.modalContainer.hidden = true;
-            if (location.hash === "#modal") {
-                 history.back();
-            }
         }, { once: true });
+        
+        if (history.state?.modal === true) {
+             history.back();
+        }
     };
 
     const hideTooltip = () => {
-        if (state.activeTooltip) {
-            state.activeTooltip.remove();
-            state.activeTooltip = null;
+        if (state.activeTooltip.element) {
+            state.activeTooltip.element.remove();
+            state.activeTooltip.element = null;
+            state.activeTooltip.target = null;
         }
     };
 
@@ -468,7 +413,8 @@
         tooltip.textContent = skillDescription || "스킬 정보를 찾을 수 없습니다.";
         tooltip.style.setProperty('--character-color', characterColor);
         
-        state.activeTooltip = tooltip;
+        state.activeTooltip.element = tooltip;
+        state.activeTooltip.target = target;
         DOM.body.appendChild(tooltip);
 
         const targetRect = target.getBoundingClientRect();
@@ -477,9 +423,9 @@
         let top = targetRect.bottom + window.scrollY + 8;
         let left = targetRect.left + window.scrollX + (targetRect.width / 2) - (tooltipRect.width / 2);
 
-        if (left < 0) left = 8;
-        if (left + tooltipRect.width > window.innerWidth) left = window.innerWidth - tooltipRect.width - 8;
-        if (top + tooltipRect.height > window.innerHeight + window.scrollY) {
+        if (left < 8) left = 8;
+        if (left + tooltipRect.width > window.innerWidth - 8) left = window.innerWidth - tooltipRect.width - 8;
+        if (top + tooltipRect.height > window.innerHeight + window.scrollY && targetRect.top > tooltipRect.height) {
             top = targetRect.top + window.scrollY - tooltipRect.height - 8;
         }
 
@@ -488,7 +434,7 @@
         tooltip.style.opacity = 1;
     };
 
-    const setupFormEventListeners = () => {
+    const setupEventListeners = () => {
         const debouncedUpdate = debounce(updateDisplay, DEBOUNCE_DELAY);
         DOM.filterForm.addEventListener("input", e => {
             if (e.target.matches('input[type="checkbox"], select, input[type="number"]')) {
@@ -499,23 +445,22 @@
         DOM.sortOrder.addEventListener("change", updateDisplay);
         DOM.resetFiltersButton.addEventListener("click", resetAllFilters);
         DOM.noResultsResetButton.addEventListener("click", resetAllFilters);
-    };
 
-    const setupScrollEventListeners = () => {
         DOM.scrollTopButton.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
         DOM.scrollBottomButton.addEventListener("click", () => window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" }));
-        window.addEventListener("scroll", debounce(() => {
+        
+        const debouncedScrollHandler = debounce(() => {
             updateScrollButtonsVisibility();
             hideTooltip();
-        }, 150));
-    };
+        }, 150);
+        window.addEventListener("scroll", debouncedScrollHandler);
+        window.addEventListener("resize", debouncedScrollHandler);
 
-    const setupModalEventListeners = () => {
         DOM.openModalBtn.addEventListener("click", openModal);
         DOM.closeModalBtn.addEventListener("click", closeModal);
         DOM.modalOverlay.addEventListener("click", closeModal);
-        window.addEventListener('popstate', () => {
-            if (state.isModalOpen) closeModal();
+        window.addEventListener('popstate', (event) => {
+            if (state.isModalOpen && !event.state?.modal) closeModal();
         });
         DOM.contactEmailLink.addEventListener("click", function(e) {
             e.preventDefault();
@@ -532,9 +477,7 @@
                 window.open(this.href, '_blank');
             }
         });
-    };
-    
-    const setupTooltipEventListeners = () => {
+        
         DOM.characterList.addEventListener('mouseover', e => {
             const target = e.target.closest('.skill-interactive');
             if (target) showTooltip(target);
@@ -545,74 +488,57 @@
         DOM.characterList.addEventListener('click', e => {
             const target = e.target.closest('.skill-interactive');
             if (target) {
-                if (state.activeTooltip && state.activeTooltip.target === target) {
-                    hideTooltip();
-                } else {
-                    showTooltip(target);
-                    state.activeTooltip.target = target;
-                }
+                (state.activeTooltip.target === target) ? hideTooltip() : showTooltip(target);
+            } else if (!e.target.closest('.skill-tooltip')) {
+                hideTooltip();
             }
         });
         DOM.characterList.addEventListener('keydown', e => {
             const target = e.target.closest('.skill-interactive');
             if (target && (e.key === 'Enter' || e.key === ' ')) {
                 e.preventDefault();
-                showTooltip(target);
+                (state.activeTooltip.target === target) ? hideTooltip() : showTooltip(target);
             }
         });
-        document.addEventListener('click', e => {
-            if (!e.target.closest('.skill-interactive') && !e.target.closest('.skill-tooltip')) {
-                hideTooltip();
-            }
-        });
-    };
-    
-    const setupKeyboardAndMiscEventListeners = () => {
+        
         DOM.toggleSkillsButton.addEventListener("click", toggleAllSkills);
         DOM.darkModeToggleButton.addEventListener("click", toggleTheme);
         document.addEventListener("keydown", handleKeyboardShortcuts);
-        window.addEventListener("resize", debounce(() => {
-            updateScrollButtonsVisibility();
-            hideTooltip();
-        }, 150));
         
         const stopLongPress = () => {
             clearTimeout(state.longPressTimer);
             clearInterval(state.longPressInterval);
         };
-        DOM.filterForm.addEventListener("mousedown", e => {
-            if (!e.target.classList.contains("spinner-btn")) return;
+        const handleSpinner = (e) => {
+            const btn = e.target.closest(".spinner-btn");
+            if (!btn) return;
+            
             e.preventDefault();
-            const wrapper = e.target.closest(".number-input-wrapper");
-            if (!wrapper) return;
-            const input = wrapper.querySelector('input[type="number"]');
+            const wrapper = btn.closest(".number-input-wrapper");
+            const input = wrapper?.querySelector('input[type="number"]');
             if (!input) return;
 
             const changeValue = () => {
                 const step = parseFloat(input.step) || 1;
                 let value = parseFloat(input.value) || 0;
-                const min = parseFloat(input.min) || 0;
-                const max = parseFloat(input.max) || 30;
-                if (e.target.classList.contains("up")) value = Math.min(max, value + step);
-                else if (e.target.classList.contains("down")) value = Math.max(min, value - step);
+                const min = parseFloat(input.min);
+                const max = parseFloat(input.max);
+                
+                if (btn.classList.contains("up")) value = Math.min(max, value + step);
+                else if (btn.classList.contains("down")) value = Math.max(min, value - step);
+                
                 input.value = value;
-                input.dispatchEvent(new Event('input', { bubbles: true, cancelable: true }));
+                input.dispatchEvent(new Event('input', { bubbles: true }));
             };
             changeValue();
             state.longPressTimer = setTimeout(() => {
                 state.longPressInterval = setInterval(changeValue, 100);
             }, 500);
-        });
+        }
+
+        DOM.filterForm.addEventListener("mousedown", handleSpinner);
         document.addEventListener("mouseup", stopLongPress);
         document.addEventListener("mouseleave", stopLongPress);
-    };
-
-    const setupEventListeners = () => {
-        setupFormEventListeners();
-        setupScrollEventListeners();
-        setupModalEventListeners();
-        setupTooltipEventListeners();
-        setupKeyboardAndMiscEventListeners();
     };
     
     const initWorker = () => {
@@ -622,13 +548,12 @@
             }
             const worker = new Worker('./workers/filterWorker.js');
             worker.onmessage = e => {
-                const { type, payload } = e.data;
-                if (type === 'filtered') renderCharacters(payload);
+                if (e.data.type === 'filtered') renderCharacters(e.data.payload);
             };
             worker.onerror = error => {
                 console.error(`Web Worker error: ${error.message}`, error);
                 setLoadingState(false);
-                DOM.resultSummary.innerHTML = `<div style="color:red; text-align:center;"><p><strong>Error:</strong> An error occurred while processing data.</p><p>Please refresh the page.</p></div>`;
+                DOM.resultSummary.innerHTML = `<div class="error-message"><p><strong>Error:</strong> 데이터 처리 중 오류가 발생했습니다.</p><p>페이지를 새로고침 해주세요.</p></div>`;
                 reject(error);
             };
             resolve(worker);
@@ -644,12 +569,7 @@
     };
 
     const initializeApp = async () => {
-        const style = document.createElement('style');
-        style.textContent = `.theme-transition, .theme-transition *, .theme-transition *::before, .theme-transition *::after { transition: background-color 150ms ease-out, color 150ms ease-out, border-color 150ms ease-out !important; }`;
-        document.head.appendChild(style);
-
         setupEventListeners();
-        setCheckboxIcons();
 
         const savedTheme = localStorage.getItem("theme");
         const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -659,38 +579,48 @@
 
         try {
             state.worker = await initWorker();
-        } catch (error) {
-            console.error("Failed to initialize Web Worker:", error);
-            setLoadingState(false);
-            DOM.resultSummary.innerHTML = `<div style="color:var(--color-danger); text-align:center;"><p><strong>오류:</strong> 여기서 꼭 필요한 기능을 불러오지 못했어요.</p><p>새로고침을 해보세요. 최신 버전의 브라우저, 다른 브라우저를 사용하는 것도 방법이에요.</p></div>`;
-            return;
-        }
+            
+            const [characters, rawDescriptions] = await Promise.all([
+                fetchData(CHARACTERS_JSON_PATH),
+                fetchData(SKILL_DESCRIPTIONS_PATH).catch(err => {
+                    console.warn("스킬 설명 데이터를 불러오지 못했습니다. 툴팁 기능이 비활성화됩니다.", err);
+                    return {};
+                })
+            ]);
 
-        try {
-            state.allCharacters = await fetchData(CHARACTERS_JSON_PATH);
+            state.allCharacters = characters;
             state.worker.postMessage({ type: 'init', payload: { characters: state.allCharacters } });
-
-            try {
-                const rawDescriptions = await fetchData(SKILL_DESCRIPTIONS_PATH);
-                state.skillDescriptions = Object.fromEntries(
-                    Object.entries(rawDescriptions).map(([key, value]) => [normalizeSkillName(key), value])
-                );
-            } catch (error) {
-                console.warn("스킬 설명 데이터를 불러오지 못했습니다. 툴팁 기능이 비활성화됩니다.", error);
-                state.skillDescriptions = {};
-            }
+            
+            state.skillDescriptions = Object.fromEntries(
+                Object.entries(rawDescriptions).map(([key, value]) => [normalizeSkillName(key), value])
+            );
 
             renderCharacters(state.allCharacters);
 
         } catch (error) {
             console.error("Failed to load critical data:", error);
             setLoadingState(false);
-            DOM.resultSummary.innerHTML = `<div style="color:var(--color-danger); text-align:center;"><p><strong>오류:</strong> 우마무스메 데이터를 불러오지 못했어요.</p><p>인터넷에 연결이 잘 되었는지 확인하고 새로고침을 부탁드려요!</p></div>`;
+            DOM.resultSummary.innerHTML = `<div class="error-message"><p><strong>오류:</strong> 우마무스메 데이터를 불러오지 못했어요.</p><p>인터넷 연결을 확인하고 새로고침을 부탁드려요!</p></div>`;
         } finally {
             updateScrollButtonsVisibility();
         }
     };
     
+    const registerServiceWorker = () => {
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('ServiceWorker registration failed: ', error);
+                    });
+            });
+        }
+    };
+
     document.addEventListener("DOMContentLoaded", initializeApp);
+    registerServiceWorker();
 
 })();
