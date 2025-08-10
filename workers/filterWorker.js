@@ -43,14 +43,16 @@ const smartIncludes = (term, character) => {
     
     const chosungTerm = [...sanitizedTerm].map(getChosung).join("");
 
-    if (originalFields.name.includes(sanitizedTerm) || originalFields.nickname.includes(sanitizedTerm) ||
-        originalFields.skills.some(skill => skill.includes(sanitizedTerm)) ||
+    if (originalFields.name.includes(sanitizedTerm) || 
+        originalFields.nickname.includes(sanitizedTerm) ||
+        originalFields.skills.some(skill => skill.includes(sanitizedTerm)) || 
         originalFields.tags.some(tag => tag.includes(sanitizedTerm))) {
         return true;
     }
     
-    if (chosungFields.name.includes(chosungTerm) || chosungFields.nickname.includes(chosungTerm) ||
-        chosungFields.skills.some(skillChosung => skillChosung.includes(chosungTerm)) ||
+    if (chosungFields.name.includes(chosungTerm) || 
+        chosungFields.nickname.includes(chosungTerm) ||
+        chosungFields.skills.some(skillChosung => skillChosung.includes(chosungTerm)) || 
         chosungFields.tags.some(tagChosung => tagChosung.includes(chosungTerm))) {
         return true;
     }
