@@ -1,4 +1,4 @@
-const CACHE_VERSION = 4;
+const CACHE_VERSION = 5;
 const CURRENT_CACHE_NAME = `umamusume-filter-cache-v${CACHE_VERSION}`;
 const APP_SHELL_ASSETS = [
   './',
@@ -32,22 +32,6 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-const handleApiRequest = async (request) => {
-    const cache = await caches.open(CURRENT_CACHE_NAME);
-    const cachedResponse = await cache.match(request);
-
-    const networkFetchPromise = fetch(request).then(networkResponse => {
-        if (networkResponse.ok) {
-            cache.put(request, networkResponse.clone());
-        }
-        return networkResponse;
-    }).catch(error => {
-        console.error('Network fetch failed:', error);
-    });
-
-    return cachedResponse || networkFetchPromise;
-};
-
 const handleAssetRequest = async (request) => {
     const cache = await caches.open(CURRENT_CACHE_NAME);
     const cachedResponse = await cache.match(request);
@@ -62,13 +46,30 @@ const handleAssetRequest = async (request) => {
     });
 };
 
+const handleJsonRequest = async (request) => {
+    try {
+        const networkResponse = await fetch(request);
+        if (networkResponse.ok) {
+            const cache = await caches.open(CURRENT_CACHE_NAME);
+            await cache.put(request, networkResponse.clone());
+        }
+        return networkResponse;
+    } catch (error) {
+        console.warn('Network request failed, attempting to serve from cache.', error);
+        const cache = await caches.open(CURRENT_CACHE_NAME);
+        return await cache.match(request);
+    }
+};
+
 self.addEventListener('fetch', (event) => {
     const { request } = event;
     const url = new URL(request.url);
 
     if (url.pathname.endsWith('.json')) {
-        event.respondWith(handleApiRequest(request));
-    } else if (APP_SHELL_ASSETS.some(asset => url.href === new URL(asset, self.location.origin).href)) {
+        event.respondWith(handleJsonRequest(request));
+    } else if (APP_SHELL_ASSETS.includes(request.url) || url.pathname === '/' || url.pathname.endsWith('.html')) {
+        event.respondWith(handleAssetRequest(request));
+    } else if (url.origin === 'https://fonts.googleapis.com' || url.origin === 'https://fonts.gstatic.com') {
         event.respondWith(handleAssetRequest(request));
     }
 });
