@@ -1,11 +1,13 @@
 (function () {
     'use strict';
 
-    const GRADE_MAP = Object.freeze({ S: 8, A: 7, B: 6, C: 5, D: 4, E: 3, F: 2, G: 1 });
-    const CHARACTERS_JSON_PATH = "./characters.json";
-    const SKILL_DESCRIPTIONS_PATH = "./skill-descriptions.json";
-    const DEBOUNCE_DELAY = 250;
-    const SANITIZE_REGEX = /[\s\-!@#$%^&*()_+={}\[\]:;"'<>,.?\/\\|`~♪☆・！？—ﾟ∀]/g;
+    const CONSTANTS = Object.freeze({
+        GRADE_MAP: Object.freeze({ S: 8, A: 7, B: 6, C: 5, D: 4, E: 3, F: 2, G: 1 }),
+        CHARACTERS_JSON_PATH: "./characters.json",
+        SKILL_DESCRIPTIONS_PATH: "./skill-descriptions.json",
+        DEBOUNCE_DELAY: 250,
+        SANITIZE_REGEX: /[\s\-!@$%^&*()_+={}\[\]:;"'<>,.?\/\\|`~♪☆・！？—ﾟ∀]/g
+    });
 
     const DOM = {
         html: document.documentElement,
@@ -49,7 +51,7 @@
 
     const normalizeSkillName = (name) => {
         if (typeof name !== 'string') return '';
-        return name.toLowerCase().replace(SANITIZE_REGEX, '');
+        return name.toLowerCase().replace(CONSTANTS.SANITIZE_REGEX, '');
     };
     
     const getRandomMessage = (messages) => {
@@ -103,7 +105,7 @@
         titleDiv.className = 'stat-group-title';
         titleDiv.textContent = groupName;
         const ul = document.createElement('ul');
-ul.className = 'stat-items-list';
+        ul.className = 'stat-items-list';
         ul.append(...items);
         
         groupDiv.append(titleDiv, ul);
@@ -273,28 +275,36 @@ ul.className = 'stat-items-list';
         characterList.appendChild(fragment);
     };
 
+    const parseSearchTerms = (searchTermString) => {
+        const rawTerms = searchTermString.split(",").map(term => term.trim()).filter(Boolean);
+        return {
+            inclusionTerms: rawTerms.filter(term => !term.startsWith("-")),
+            exclusionTerms: rawTerms.filter(term => term.startsWith("-")).map(term => term.substring(1)).filter(Boolean)
+        };
+    };
+
+    const getActiveFilters = () => {
+        const formData = new FormData(DOM.filterForm);
+        const statBonusKeys = new Set(['Speed', 'Stamina', 'Power', 'Guts', 'Wit']);
+
+        return Array.from(DOM.filterForm.elements).reduce((acc, el) => {
+            if (el.type === "checkbox" && el.checked) {
+                const key = el.name;
+                const isStatBonus = statBonusKeys.has(el.id);
+                const filter = isStatBonus
+                    ? { key, type: "value", value: parseInt(formData.get(`${key}-value`), 10) || 0 }
+                    : { key, type: "grade", value: CONSTANTS.GRADE_MAP[formData.get(`${key}-grade`)] };
+                acc.push(filter);
+            }
+            return acc;
+        }, []);
+    };
+
     const updateDisplay = () => {
         if (!state.worker) return;
 
-        const formData = new FormData(DOM.filterForm);
-        const activeFilters = [];
-        for (const el of DOM.filterForm.elements) {
-            if (el.type === "checkbox" && el.checked) {
-                const key = el.name;
-                const isStatBonus = ['Speed', 'Stamina', 'Power', 'Guts', 'Wit'].includes(el.id);
-                const filter = isStatBonus
-                    ? { key, type: "value", value: parseInt(formData.get(`${key}-value`), 10) || 0 }
-                    : { key, type: "grade", value: GRADE_MAP[formData.get(`${key}-grade`)] };
-                activeFilters.push(filter);
-            }
-        }
-        
-        const rawSearchTerms = DOM.searchBox.value.split(",").map(term => term.trim()).filter(Boolean);
-        const searchTerms = {
-            inclusionTerms: rawSearchTerms.filter(term => !term.startsWith("-")),
-            exclusionTerms: rawSearchTerms.filter(term => term.startsWith("-")).map(term => term.substring(1)).filter(Boolean)
-        };
-        
+        const activeFilters = getActiveFilters();
+        const searchTerms = parseSearchTerms(DOM.searchBox.value);
         const sortBy = DOM.sortOrder.value;
 
         setLoadingState(true, "조건에 맞는 우마무스메를 찾고 있습니다...");
@@ -469,7 +479,7 @@ ul.className = 'stat-items-list';
     };
 
     const setupEventListeners = () => {
-        const debouncedUpdate = debounce(updateDisplay, DEBOUNCE_DELAY);
+        const debouncedUpdate = debounce(updateDisplay, CONSTANTS.DEBOUNCE_DELAY);
         DOM.filterForm.addEventListener("input", e => {
             if (e.target.matches('input[type="checkbox"], select, input[type="number"]')) {
                 debouncedUpdate();
@@ -661,8 +671,8 @@ ul.className = 'stat-items-list';
             state.worker = await initWorker();
             
             const [characters, rawDescriptions] = await Promise.all([
-                fetchData(CHARACTERS_JSON_PATH),
-                fetchData(SKILL_DESCRIPTIONS_PATH).catch(err => {
+                fetchData(CONSTANTS.CHARACTERS_JSON_PATH),
+                fetchData(CONSTANTS.SKILL_DESCRIPTIONS_PATH).catch(err => {
                     console.warn("스킬 설명 데이터를 불러오지 못했습니다. 툴팁 기능이 비활성화됩니다.", err);
                     return {};
                 })
