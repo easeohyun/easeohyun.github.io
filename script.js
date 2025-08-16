@@ -431,7 +431,7 @@ ul.className = 'stat-items-list';
         }
     };
 
-    const showTooltip = (target) => {
+const showTooltip = (target) => {
     hideTooltip();
 
     const skillName = target.textContent.trim();
@@ -693,4 +693,5 @@ ul.className = 'stat-items-list';
     registerServiceWorker();
 
 })();
+
 
