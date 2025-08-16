@@ -432,41 +432,44 @@ ul.className = 'stat-items-list';
     };
 
     const showTooltip = (target) => {
-        hideTooltip();
+    hideTooltip();
 
-        const skillName = target.textContent.trim();
-        const normalizedSkillName = normalizeSkillName(skillName);
-        const skillDescription = state.skillDescriptions[normalizedSkillName];
-        
-        const card = target.closest('.character-card');
-        const mainColor = card ? card.dataset.color : 'var(--color-primary)';
-        const secondaryColor = card ? card.dataset.color2 : null;
-        
-        const tooltip = document.createElement('div');
-        tooltip.className = 'skill-tooltip';
-        tooltip.textContent = skillDescription || "스킬 정보를 찾을 수 없습니다.";
-        tooltip.style.borderColor = secondaryColor || mainColor;
-        
-        state.activeTooltip.element = tooltip;
-        state.activeTooltip.target = target;
-        DOM.body.appendChild(tooltip);
+    const skillName = target.textContent.trim();
+    const normalizedSkillName = normalizeSkillName(skillName);
+    const skillDescription = state.skillDescriptions[normalizedSkillName] || "스킬 정보를 찾을 수 없습니다.";
 
-        const targetRect = target.getBoundingClientRect();
-        const tooltipRect = tooltip.getBoundingClientRect();
-        
-        let top = targetRect.bottom + window.scrollY + 8;
-        let left = targetRect.left + window.scrollX + (targetRect.width / 2) - (tooltipRect.width / 2);
+    const card = target.closest('.character-card');
+    const mainColor = card?.dataset.color || 'var(--color-primary)';
+    const secondaryColor = card?.dataset.color2;
 
-        if (left < 8) left = 8;
-        if (left + tooltipRect.width > window.innerWidth - 8) left = window.innerWidth - tooltipRect.width - 8;
-        if (top + tooltipRect.height > window.innerHeight + window.scrollY && targetRect.top > tooltipRect.height) {
-            top = targetRect.top + window.scrollY - tooltipRect.height - 8;
-        }
+    const tooltip = document.createElement('div');
+    tooltip.className = 'skill-tooltip';
+    tooltip.textContent = skillDescription;
+    tooltip.style.borderColor = secondaryColor || mainColor;
 
-        tooltip.style.top = `${top}px`;
-        tooltip.style.left = `${left}px`;
-        tooltip.style.opacity = 1;
-    };
+    state.activeTooltip.element = tooltip;
+    state.activeTooltip.target = target;
+    DOM.body.appendChild(tooltip);
+
+    const targetRect = target.getBoundingClientRect();
+    const tooltipRect = tooltip.getBoundingClientRect();
+    const viewportMargin = 8;
+
+    let top = targetRect.bottom + viewportMargin;
+    if (top + tooltipRect.height > window.innerHeight - viewportMargin) {
+        top = targetRect.top - tooltipRect.height - viewportMargin;
+    }
+
+    let left = targetRect.left + (targetRect.width - tooltipRect.width) / 2;
+    if (left < viewportMargin) {
+        left = viewportMargin;
+    } else if (left + tooltipRect.width > window.innerWidth - viewportMargin) {
+        left = window.innerWidth - tooltipRect.width - viewportMargin;
+    }
+
+    tooltip.style.transform = `translate(${Math.round(left)}px, ${Math.round(top + window.scrollY)}px)`;
+    tooltip.style.opacity = 1;
+};
 
     const setupEventListeners = () => {
         const debouncedUpdate = debounce(updateDisplay, DEBOUNCE_DELAY);
@@ -690,3 +693,4 @@ ul.className = 'stat-items-list';
     registerServiceWorker();
 
 })();
+
