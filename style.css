@@ -446,7 +446,9 @@ input[type="number"].filter-item-interactive:focus-visible, select.filter-item-i
 }
 
 .skill-tooltip {
-    position: absolute;
+    position: fixed; /* 'absolute'에서 'fixed'로 변경 */
+    top: 0;
+    left: 0;
     background-color: var(--color-surface-1);
     color: var(--color-text-primary);
     border: 1px solid var(--color-border);
@@ -460,7 +462,8 @@ input[type="number"].filter-item-interactive:focus-visible, select.filter-item-i
     pointer-events: none;
     opacity: 0;
     box-shadow: var(--shadow-elevation-medium);
-    transition: opacity var(--transition-fast), border-color var(--transition-fast);
+    transition: opacity var(--transition-fast), border-color var(--transition-fast), transform 0s; 
+    will-change: transform, opacity; 
 }
 
 
@@ -637,3 +640,4 @@ html[data-theme="dark"] #dark-mode-toggle:hover .material-symbols-outlined {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
   .button:hover, .scroll-buttons button:hover, .character-card:hover { transform: none; }
 }
+
