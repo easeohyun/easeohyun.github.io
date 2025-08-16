@@ -555,7 +555,7 @@
     "StrategyAptitude": { "Front": "F", "Pace": "A", "Late": "A", "End": "F" },
     "StatBonuses": { "Speed": 20, "Stamina": 0, "Power": 0, "Guts": 0, "Wit": 10 },
     "skills": { "rainbow": ["당신에게 바치는 프리 푸어링"], "pink": ["꿈을 이루는 결의를 드리죠", "지고의 승리를 맛보시길"], "yellow": ["결의의 직활강", "지고의 다운힐러"], "white": ["내리막 달인", "직활강", "집중 마크○", "중거리 코너○", "선행 코너○"] },
-    "tags": ["근육", "두리안", "스위트메모리티타임", "Mejiro Ryan", "メジロライアン"]
+    "tags": ["밸런타인", "초코두리안", "스위트메모리티타임", "Mejiro Ryan", "メジロライアン"]
   },
   {
     "id": 102801, "name": "히시 아케보노", "nickname": "보노☆알라모다", "color": "#208bcd", "color2": "#fa6f8b", 
@@ -582,7 +582,7 @@
     "StrategyAptitude": { "Front": "C", "Pace": "A", "Late": "F", "End": "G" },
     "StatBonuses": { "Speed": 8, "Stamina": 0, "Power": 8, "Guts": 14, "Wit": 0 },
     "skills": { "rainbow": ["많이 드셔유!"], "pink": ["좀 더 힘내는 겨", "곡선에 흩날리는 눈"], "yellow": ["언스토퍼블", "곡선의 소믈리에"], "white": ["공세", "오기", "코너 가속○", "대항 의식○", "마일 코너○"] },
-    "tags": ["시골", "Yukino Bijin", "ユキノビジン"]
+    "tags": ["시골", "어서오세유아늑한코미안", "Yukino Bijin", "ユキノビジン"]
   },	
   {
     "id": 103001, "name": "라이스 샤워", "nickname": "로제스 드림", "color": "#384a86", "color2": "#ca3e6d",
@@ -590,8 +590,8 @@
     "DistanceAptitude": { "Short": "E", "Mile": "C", "Medium": "A", "Long": "A" },
     "StrategyAptitude": { "Front": "B", "Pace": "A", "Late": "C", "End": "G" },
     "StatBonuses": { "Speed": 0, "Stamina": 10, "Power": 0, "Guts": 20, "Wit": 0 },
-    "skills": { "rainbow": ["블루 로즈 체이서"], "pink": ["결의의 직활강", "불굴의 마음"], "yellow": ["직활강", "등산가"], "white": ["추월 확정 태세", "뒷심", "외곽 추월 준비", "진흙탕길○", "선행 긴장"] },
-    "tags": ["히어로", "빌런"]
+    "skills": { "rainbow": ["블루 로즈 체이서"], "pink": ["결의의 히어로", "검은 자객"], "yellow": ["결의의 직활강", "쿨다운"], "white": ["선행 견제", "직활강", "심호흡", "등산가", "영양 보급"] },
+    "tags": ["히어로", "빌런", "Rice Shower", "ライスシャワー"]
   },
   {
     "id": 103002, "name": "라이스 샤워", "nickname": "Make up Vampire!", "color": "#384a86", "color2": "#ca3e6d",
@@ -599,8 +599,8 @@
     "DistanceAptitude": { "Short": "E", "Mile": "C", "Medium": "A", "Long": "A" },
     "StrategyAptitude": { "Front": "B", "Pace": "A", "Late": "C", "End": "G" },
     "StatBonuses": { "Speed": 0, "Stamina": 15, "Power": 15, "Guts": 0, "Wit": 0 },
-    "skills": { "rainbow": ["블루 로즈 체이서"], "pink": ["결의의 직활강", "불굴의 마음"], "yellow": ["직활강", "등산가"], "white": ["추월 확정 태세", "뒷심", "외곽 추월 준비", "진흙탕길○", "선행 긴장"] },
-    "tags": ["할로윈", "핼러윈"]
+    "skills": { "rainbow": ["Drain for rose"], "pink": ["힘내자~ …오~!", "트릭 & 트릿"], "yellow": ["여유만만", "넋이 나가는 트릭"], "white": ["트릭(앞)", "장거리 직선○", "스태미나 킵", "코너 회복○", "도주 주저"] },
+    "tags": ["할로윈", "핼러윈", "흡혈귀", "뱀파이어", "MakeupinHalloween", "Rice Shower", "ライスシャワー"]
   },
   {
     "id": 103003, "name": "라이스 샤워", "nickname": "Yummy Dreamy Fairy", "color": "#384a86", "color2": "#ca3e6d",
@@ -608,20 +608,56 @@
     "DistanceAptitude": { "Short": "E", "Mile": "C", "Medium": "A", "Long": "A" },
     "StrategyAptitude": { "Front": "B", "Pace": "A", "Late": "C", "End": "G" },
     "StatBonuses": { "Speed": 0, "Stamina": 20, "Power": 0, "Guts": 10, "Wit": 0 },
-    "skills": { "rainbow": ["블루 로즈 체이서"], "pink": ["결의의 직활강", "불굴의 마음"], "yellow": ["직활강", "등산가"], "white": ["추월 확정 태세", "뒷심", "외곽 추월 준비", "진흙탕길○", "선행 긴장"] },
-    "tags": ["대풍식제"]
+    "skills": { "rainbow": ["푸른 하늘 쿠킹♪"], "pink": ["정상에서 잘 먹겠습니다", "요도의 축복"], "yellow": ["궁극의 힐 클라이머", "요도가 점지한 아이"], "white": ["등산가", "교토 경기장○", "노력의 결과", "장거리 직선○", "진가 발휘"] },
+    "tags": ["대풍식제", "시나리오", "햇반", "Rice Shower", "ライスシャワー"]
   },
   {
-    "id": 103001, "name": "아이네스 후진", "nickname": "스푸트니크・스타", "color": "#FF69B4",
+    "id": 103101, "name": "아이네스 후진", "nickname": "올 타임・피버", "color": "#f078c5", "color2": "#54ae1b",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
-    "DistanceAptitude": { "Short": "D", "Mile": "A", "Medium": "B", "Long": "F" },
-    "StrategyAptitude": { "Front": "A", "Pace": "B", "Late": "G", "End": "G" },
-    "StatBonuses": { "Speed": 20, "Stamina": 0, "Power": 0, "Guts": 10, "Wit": 0 },
-    "skills": { "rainbow": ["플라이트・소울"], "pink": ["카리스마 항공", "터뷸런스"], "yellow": ["컨센트레이션", "도주 코너○"], "white": ["집중력", "선두 프라이드", "꼬리 올리기", "빠른 걸음", "굳히기 준비"] },
-    "tags": ["풍신", "알바"]
+    "DistanceAptitude": { "Short": "G", "Mile": "A", "Medium": "A", "Long": "C" },
+    "StrategyAptitude": { "Front": "A", "Pace": "C", "Late": "G", "End": "G" },
+    "StatBonuses": { "Speed": 15, "Stamina": 0, "Power": 0, "Guts": 15, "Wit": 0 },
+    "skills": { "rainbow": ["충전 완료! 전속 전진!"], "pink": ["말괄량이 우마무스메 언니", "사나운 풍신"], "yellow": ["말괄량이 우마무스메", "사나운 회오리바람"], "white": ["슬립 스트림", "기세로 밀어붙이기", "기백을 담아서", "도쿄 경기장○", "스피드 이터"] },
+    "tags": ["풍신", "에너지바", "선바이저", "알바", "아르바이트", "Ines Fujin", "アイネスフウジン"]
   },
   {
-    "id": 103101, "name": "아그네스 타키온", "nickname": "네임드・오브・카오스", "color": "#008B8B",
+    "id": 103102, "name": "아이네스 후진", "nickname": "MELTY GIFT", "color": "#35b2b6", "color2": "#e2e868",
+    "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
+    "DistanceAptitude": { "Short": "G", "Mile": "A", "Medium": "A", "Long": "C" },
+    "StrategyAptitude": { "Front": "A", "Pace": "C", "Late": "G", "End": "G" },
+    "StatBonuses": { "Speed": 14, "Stamina": 0, "Power": 0, "Guts": 8, "Wit": 8 },
+    "skills": { "rainbow": ["프레시☆팔러"], "pink": ["주문은 확실하게!", "화려한 서빙"], "yellow": ["컨센트레이션", "진풍원인"], "white": ["터다지기", "집중력", "도주 코너○", "도주의 요령○", "스피드 이터"] },
+    "tags": ["밸런타인", "초후진", "스위트메모리티타임", "Ines Fujin", "アイネスフウジン"]
+  },
+  {
+    "id": 103103, "name": "아이네스 후진", "nickname": "Hello Hello Island", "color": "#35b2b6", "color2": "#e2e868",
+    "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
+    "DistanceAptitude": { "Short": "G", "Mile": "A", "Medium": "A", "Long": "C" },
+    "StrategyAptitude": { "Front": "A", "Pace": "C", "Late": "G", "End": "G" },
+    "StatBonuses": { "Speed": 12, "Stamina": 0, "Power": 10, "Guts": 8, "Wit": 0 },
+    "skills": { "rainbow": ["全力全開！サイクロン"], "pink": ["一番眺めのいい場所へ！", "青空の下で待ってるよ！"], "yellow": ["누구보다 앞으로!", "먼저 갑니다!"], "white": ["제일 먼저", "포지션 센스", "장난은 끝이야!", "抜きん出る一歩", "追い風に乗って"] },
+    "tags": ["무인도에어서오세요", "시나리오", "Ines Fujin", "アイネスフウジン"]
+  },
+  {
+    "id": 103201, "name": "아그네스 타키온", "nickname": "tach-nology", "color": "#35b2b6", "color2": "#e2e868",
+    "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
+    "DistanceAptitude": { "Short": "F", "Mile": "B", "Medium": "A", "Long": "B" },
+    "StrategyAptitude": { "Front": "G", "Pace": "B", "Late": "A", "End": "C" },
+    "StatBonuses": { "Speed": 0, "Stamina": 0, "Power": 0, "Guts": 15, "Wit": 15 },
+    "skills": { "rainbow": ["U=mc²"], "pink": ["지적 호기심", "천재의 통찰"], "yellow": ["중거리 직선○", "뒷심"], "white": ["의기충천", "꼬리 올리기", "가벼운 발걸음", "외곽 추월 준비", "책사"] },
+    "tags": ["모르모트", "실험"]
+  },
+  {
+    "id": 103202, "name": "아그네스 타키온", "nickname": "Lunatic Lab", "color": "#35b2b6", "color2": "#e2e868",
+    "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
+    "DistanceAptitude": { "Short": "F", "Mile": "B", "Medium": "A", "Long": "B" },
+    "StrategyAptitude": { "Front": "G", "Pace": "B", "Late": "A", "End": "C" },
+    "StatBonuses": { "Speed": 0, "Stamina": 0, "Power": 0, "Guts": 15, "Wit": 15 },
+    "skills": { "rainbow": ["U=mc²"], "pink": ["지적 호기심", "천재의 통찰"], "yellow": ["중거리 직선○", "뒷심"], "white": ["의기충천", "꼬리 올리기", "가벼운 발걸음", "외곽 추월 준비", "책사"] },
+    "tags": ["모르모트", "실험"]
+  },
+  {
+    "id": 103203, "name": "아그네스 타키온", "nickname": "Σ Experiment", "color": "#35b2b6", "color2": "#e2e868",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "F", "Mile": "B", "Medium": "A", "Long": "B" },
     "StrategyAptitude": { "Front": "G", "Pace": "B", "Late": "A", "End": "C" },
@@ -690,7 +726,7 @@
     "StrategyAptitude": { "Front": "F", "Pace": "A", "Late": "A", "End": "F" },
     "StatBonuses": { "Speed": 10, "Stamina": 0, "Power": 10, "Guts": 0, "Wit": 10 },
     "skills": { "rainbow": ["KEEP IT REAL."], "pink": ["선견지명", "런웨이의 주역"], "yellow": ["혜안", "능숙한 환승"], "white": ["한신 경기장○", "전개 살피기", "추월 확정 태세", "슬립 스트림", "액셀러레이션"] },
-    "tags": ["모델"]
+    "tags": ["모델", "무인도에어서오세요"]
   },	
   {
     "id": 103901, "name": "슈퍼 크릭", "nickname": "힐링・커들", "color": "#F5DEB3",
