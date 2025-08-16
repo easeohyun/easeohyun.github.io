@@ -294,7 +294,7 @@
     "StrategyAptitude": { "Front": "E", "Pace": "A", "Late": "A", "End": "C" },
     "StatBonuses": { "Speed": 20, "Stamina": 0, "Power": 0, "Guts": 0, "Wit": 10 },
     "skills": { "rainbow": ["플란차☆가나도르", "열혈☆아미고"], "pink": ["매의 눈", "여유로운 퍼포먼스"], "yellow": ["천리안", "여유만만"], "white": ["직선 달인", "호크아이", "선행 직선○", "스태미나 킵", "템포 업"] },
-    "tags": ["가나돌", "맘보", "황금세대", "El Condor Pasa","エルコンドルパサー"]  
+    "tags": ["가나돌", "맘보", "왕수", "결정타", "황금세대", "El Condor Pasa","エルコンドルパサー"]  
   },
   {
     "id": 101402, "name": "엘 콘도르 파사", "nickname": "쿠쿨칸・몽크", "color": "#dd4e31",
@@ -510,7 +510,7 @@
     "StrategyAptitude": { "Front": "G", "Pace": "C", "Late": "A", "End": "C" },
     "StatBonuses": { "Speed": 0, "Stamina": 30, "Power": 0, "Guts": 0, "Wit": 0 },
     "skills": { "rainbow": ["당신을・뒤쫓아서"], "pink": ["커피 브레이크", "두고 가지 마"], "yellow": ["릴랙스", "스태미나 그리드"], "white": ["비 오는 날○", "스태미나 이터", "짧은 휴식", "등산가", "능숙한 패스"] },
-    "tags": ["맨해튼카페", "SS", "친구", "커피", "Manhattan Cafe", "マンハッタンカフェ"]
+    "tags": ["맨해튼카페", "SS", "친구", "커피", "까훼", "Manhattan Cafe", "マンハッタンカフェ"]
   },  
   {
     "id": 102502, "name": "맨하탄 카페", "nickname": "버들빛 밤", "color": "#494541",
@@ -641,65 +641,119 @@
   {
     "id": 103201, "name": "아그네스 타키온", "nickname": "tach-nology", "color": "#35b2b6", "color2": "#e2e868",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
-    "DistanceAptitude": { "Short": "F", "Mile": "B", "Medium": "A", "Long": "B" },
-    "StrategyAptitude": { "Front": "G", "Pace": "B", "Late": "A", "End": "C" },
-    "StatBonuses": { "Speed": 0, "Stamina": 0, "Power": 0, "Guts": 15, "Wit": 15 },
-    "skills": { "rainbow": ["U=mc²"], "pink": ["지적 호기심", "천재의 통찰"], "yellow": ["중거리 직선○", "뒷심"], "white": ["의기충천", "꼬리 올리기", "가벼운 발걸음", "외곽 추월 준비", "책사"] },
-    "tags": ["모르모트", "실험"]
+    "DistanceAptitude": { "Short": "G", "Mile": "D", "Medium": "A", "Long": "B" },
+    "StrategyAptitude": { "Front": "E", "Pace": "A", "Late": "B", "End": "F" },
+    "StatBonuses": { "Speed": 20, "Stamina": 0, "Power": 0, "Guts": 10, "Wit": 0 },
+    "skills": { "rainbow": ["U=ma2", "introduction: My body"], "pink": ["가능성의 걸음", "효율적 휴식법"], "yellow": ["독점력", "레이스 플래너"], "white": ["근간거리○", "속박", "좋은 위치 뒤따르기", "중거리 직선○", "중거리 코너○"] },
+    "tags": ["모르모트", "실험", "극장판", "초광속의입자", "Agnes Tachyon", "アグネスタキオン"]
   },
   {
     "id": 103202, "name": "아그네스 타키온", "nickname": "Lunatic Lab", "color": "#35b2b6", "color2": "#e2e868",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
-    "DistanceAptitude": { "Short": "F", "Mile": "B", "Medium": "A", "Long": "B" },
-    "StrategyAptitude": { "Front": "G", "Pace": "B", "Late": "A", "End": "C" },
-    "StatBonuses": { "Speed": 0, "Stamina": 0, "Power": 0, "Guts": 15, "Wit": 15 },
-    "skills": { "rainbow": ["U=mc²"], "pink": ["지적 호기심", "천재의 통찰"], "yellow": ["중거리 직선○", "뒷심"], "white": ["의기충천", "꼬리 올리기", "가벼운 발걸음", "외곽 추월 준비", "책사"] },
-    "tags": ["모르모트", "실험"]
+    "DistanceAptitude": { "Short": "G", "Mile": "D", "Medium": "A", "Long": "B" },
+    "StrategyAptitude": { "Front": "E", "Pace": "A", "Late": "B", "End": "F" },
+    "StatBonuses": { "Speed": 8, "Stamina": 0, "Power": 8, "Guts": 15, "Wit": 14 },
+    "skills": { "rainbow": ["여름 하늘 헐레이션"], "pink": ["라플라스의 악마", "찬란한 룩손"], "yellow": ["싱귤래러티", "언스토퍼블"], "white": ["탐구심", "남김 없이", "공세", "여름 우마무스메○", "정면 승부"] },
+    "tags": ["여름의햇살은푸르고잔잔하게", "수키온", "수영복", "여름", "Agnes Tachyon", "アグネスタキオン"]
   },
   {
     "id": 103203, "name": "아그네스 타키온", "nickname": "Σ Experiment", "color": "#35b2b6", "color2": "#e2e868",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "F", "Mile": "B", "Medium": "A", "Long": "B" },
     "StrategyAptitude": { "Front": "G", "Pace": "B", "Late": "A", "End": "C" },
-    "StatBonuses": { "Speed": 0, "Stamina": 0, "Power": 0, "Guts": 15, "Wit": 15 },
-    "skills": { "rainbow": ["U=mc²"], "pink": ["지적 호기심", "천재의 통찰"], "yellow": ["중거리 직선○", "뒷심"], "white": ["의기충천", "꼬리 올리기", "가벼운 발걸음", "외곽 추월 준비", "책사"] },
-    "tags": ["모르모트", "실험"]
+    "StatBonuses": { "Speed": 14, "Stamina": 0, "Power": 8, "Guts": 0, "Wit": 8 },
+    "skills": { "rainbow": ["초광속 미립자의 가능성"], "pink": ["지적 호기심", "천재의 통찰"], "yellow": ["유성광저", "우마무스메 마니아"], "white": ["비약의 예감", "우마무스메 애호가", "자신감", "선행 코너○", "뒤처지기 방지"] },
+    "tags": ["신의상", "새의상", "욘사마", "Agnes Tachyon", "アグネスタキオン"]
   },
   {
-    "id": 103201, "name": "어드마이어 베가", "nickname": "솔・파사ージュ", "color": "#6A5ACD",
+    "id": 103301, "name": "어드마이어 베가", "nickname": "Starry Nocturne", "color": "#3865a1", "color2": "#78d5e1",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
-    "DistanceAptitude": { "Short": "F", "Mile": "B", "Medium": "A", "Long": "B" },
-    "StrategyAptitude": { "Front": "G", "Pace": "F", "Late": "C", "End": "A" },
-    "StatBonuses": { "Speed": 10, "Stamina": 10, "Power": 10, "Guts": 0, "Wit": 0 },
-    "skills": { "rainbow": ["전격의 아우프헤벤"], "pink": ["계승되는 재능", "고고한 영혼"], "yellow": ["추격", "강공책"], "white": ["외곽 추월 준비", "물고 늘어지기", "추입 직선○", "추입 코너○", "꼬리 올리기"] },
-    "tags": ["아야베", "어둠"]
+    "DistanceAptitude": { "Short": "F", "Mile": "C", "Medium": "A", "Long": "C" },
+    "StrategyAptitude": { "Front": "G", "Pace": "G", "Late": "B", "End": "A" },
+    "StatBonuses": { "Speed": 10, "Stamina": 0, "Power": 20, "Guts": 0, "Wit": 0 },
+    "skills": { "rainbow": ["디오스쿠로이의 유성"], "pink": ["조용한 맹세", "자신을 태우는 혜성"], "yellow": ["냉정 침착", "질풍노도"], "white": ["뒤처지기 방지", "속박", "냉정", "뛰어난 작전", "선행 견제"] },
+    "tags": ["아야베", "여동생", "Admire Vega", "アドマイヤベガ"]
   },
   {
-    "id": 103301, "name": "이나리 원", "nickname": "에도의 멋쟁이", "color": "#F4A460",
+    "id": 103302, "name": "어드마이어 베가", "nickname": "Glacialis Vega", "color": "#3865a1", "color2": "#78d5e1",
+    "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
+    "DistanceAptitude": { "Short": "F", "Mile": "C", "Medium": "A", "Long": "C" },
+    "StrategyAptitude": { "Front": "G", "Pace": "G", "Late": "B", "End": "A" },
+    "StatBonuses": { "Speed": 10, "Stamina": 0, "Power": 20, "Guts": 0, "Wit": 0 },
+    "skills": { "rainbow": ["Crystal Mist"], "pink": ["アル・ワーキを追いかけて", "氷星融解"], "yellow": ["追跡者", "一張一弛"], "white": ["혼신의 발걸음", "切り替え上手", "這い寄る足音", "중거리 코너○", "날것의 정열"] },
+    "tags": ["つどい歌えよ、星々よ！", "크리스마스", "겨울", "Admire Vega", "アドマイヤベガ"]
+  },
+	{
+    "id": 103401, "name": "이나리 원", "nickname": "여우와 연이 있는 보랏빛", "color": "#ae419e", "color2": "#ec86d0",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "A" },
-    "DistanceAptitude": { "Short": "G", "Mile": "D", "Medium": "A", "Long": "A" },
-    "StrategyAptitude": { "Front": "F", "Pace": "B", "Late": "A", "End": "A" },
-    "StatBonuses": { "Speed": 0, "Stamina": 0, "Power": 10, "Guts": 10, "Wit": 10 },
-    "skills": { "rainbow": ["에도의 멋쟁이, 납시오!"], "pink": ["올곧은 투쟁심", "달인의 기합"], "yellow": ["꼬리 올리기", "진흙탕길의 귀신"], "white": ["진창길○", "장거리 직선○", "선입 직선○", "안쪽 그룹 능숙○", "진가 발휘"] },
-    "tags": ["에도", "축제"]
+    "DistanceAptitude": { "Short": "F", "Mile": "B", "Medium": "A", "Long": "A" },
+    "StrategyAptitude": { "Front": "G", "Pace": "B", "Late": "B", "End": "A" },
+    "StatBonuses": { "Speed": 0, "Stamina": 10, "Power": 20, "Guts": 0, "Wit": 10 },
+    "skills": { "rainbow": ["쾌주로다, 쾌주로다!"], "pink": ["소방 사다리 오르기", "모래먼지의 전문가", "멋들어진 달인의 솜씨"], "yellow": ["꼬리 솟구쳐 오르기", "모래의 현인"], "white": ["꼬리 올리기", "추입 직선○", "모래 먼지 적응", "겨울 우마무스메○", "직선 주파"] },
+    "tags": ["에도", "드워프", "Inari One", "イナリワン"]
+  },
+	{
+    "id": 103402, "name": "이나리 원", "nickname": "꿈의 카나하라", "color": "#ae419e", "color2": "#ec86d0",
+    "SurfaceAptitude": { "Turf": "A", "Dirt": "A" },
+    "DistanceAptitude": { "Short": "F", "Mile": "B", "Medium": "A", "Long": "A" },
+    "StrategyAptitude": { "Front": "G", "Pace": "B", "Late": "B", "End": "A" },
+    "StatBonuses": { "Speed": 14, "Stamina": 0, "Power": 8, "Guts": 0, "Wit": 8 },
+    "skills": { "rainbow": ["등불"], "pink": ["부채춤", "돋보이는 춤사위"], "yellow": ["내적 체험", "육박하는 그림자"], "white": ["오이 경기장○", "안쪽 코너 여포", "직선 주파", "간파", "급부상"] },
+    "tags": ["마음을얽고마음을쫓고", "불나리", "축제", "드워프", "Inari One", "イナリワン"]
   },
   {
-    "id": 103401, "name": "위닝 티켓", "nickname": "풀 스로틀・기어", "color": "#B22222",
+    "id": 103501, "name": "위닝 티켓", "nickname": "Go To Winning!", "color": "#dd3d5b", "color2": "#ede233",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
-    "DistanceAptitude": { "Short": "F", "Mile": "C", "Medium": "A", "Long": "D" },
-    "StrategyAptitude": { "Front": "G", "Pace": "C", "Late": "A", "End": "B" },
-    "StatBonuses": { "Speed": 0, "Stamina": 0, "Power": 0, "Guts": 30, "Wit": 0 },
-    "skills": { "rainbow": ["울지 마! 자, 포효해라!"], "pink": ["기사회생", "전심전력"], "yellow": ["원 찬스", "전심전력"], "white": ["추월 확정 태세", "외곽 추월 준비", "물고 늘어지기", "꼬리 올리기", "중거리 직선○"] },
-    "tags": ["BNW", "티케조"]
+    "DistanceAptitude": { "Short": "G", "Mile": "F", "Medium": "A", "Long": "B" },
+    "StrategyAptitude": { "Front": "G", "Pace": "B", "Late": "A", "End": "G" },
+    "StatBonuses": { "Speed": 0, "Stamina": 10, "Power": 20, "Guts": 0, "Wit": 0 },
+    "skills": { "rainbow": ["승리의 티켓을 너에게!", "전력 V 사인"], "pink": ["꾸준한 노력", "위닝 로드"], "yellow": ["노력가", "신속 과감"], "white": ["양호한 경기장○", "물고 늘어지기", "근면한 태도", "위치 선정 밀어붙이기", "선입 코너○"] },
+    "tags": ["BNW", "티케조", "울보", "Winning Ticket", "ウイニングチケット"]
   },
   {
-    "id": 103501, "name": "에어 샤커", "nickname": "테스타・로사", "color": "#696969",
-    "SurfaceAptitude": { "Turf": "A", "Dirt": "F" },
-    "DistanceAptitude": { "Short": "G", "Mile": "F", "Medium": "A", "Long": "A" },
-    "StrategyAptitude": { "Front": "F", "Pace": "A", "Late": "B", "End": "F" },
-    "StatBonuses": { "Speed": 0, "Stamina": 0, "Power": 10, "Guts": 10, "Wit": 10 },
-    "skills": { "rainbow": ["계획대로, 완벽한 승리"], "pink": ["로지컬 라이딩", "쿨다운"], "yellow": ["책사", "쿨다운"], "white": ["심호흡", "안쪽 그룹 능숙○", "페이스 킵", "선행의 요령○", "선행 견제"] },
-    "tags": ["짜증", "네이놈"]
+    "id": 103502, "name": "위닝 티켓", "nickname": "Dream Deliverer", "color": "#dd3d5b", "color2": "#ede233",
+    "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
+    "DistanceAptitude": { "Short": "G", "Mile": "F", "Medium": "A", "Long": "B" },
+    "StrategyAptitude": { "Front": "G", "Pace": "B", "Late": "A", "End": "G" },
+    "StatBonuses": { "Speed": 8, "Stamina": 0, "Power": 14, "Guts": 8, "Wit": 0 },
+    "skills": { "rainbow": ["꿈 너머로, 전해져라!"], "pink": ["천만 마력!!!", "분명 날 수 있어!"], "yellow": ["백만 마력", "결사의 각오"], "white": ["내리막 달인", "십만 마력", "남김 없이", "위치 선정 밀어붙이기", "풀 스로틀"] },
+    "tags": ["스팀펑크", "판타지", "철익증기기담", "Winning Ticket", "ウイニングチケット"]
+  },
+  {
+    "id": 103503, "name": "위닝 티켓", "nickname": "Glorious Coat", "color": "#dd3d5b", "color2": "#ede233",
+    "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
+    "DistanceAptitude": { "Short": "G", "Mile": "F", "Medium": "A", "Long": "B" },
+    "StrategyAptitude": { "Front": "G", "Pace": "B", "Late": "A", "End": "G" },
+    "StatBonuses": { "Speed": 10, "Stamina": 10, "Power": 10, "Guts": 0, "Wit": 0 },
+    "skills": { "rainbow": ["GO! Full-send"], "pink": ["전・력・두근・두근!!", "Dreamer's Path"], "yellow": ["고양감", "천릿길"], "white": ["근간거리○", "앞으로 기우뚱", "한 걸음부터", "페이스 업", "진출 개시"] },
+    "tags": ["UAF", "시나리오", "올림픽", "Winning Ticket", "ウイニングチケット"]
+  },
+  {
+    "id": 103601, "name": "에어 샤커", "nickname": "unsigned", "color": "#2459b4", "color2": "#e1e000",
+    "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
+    "DistanceAptitude": { "Short": "G", "Mile": "E", "Medium": "A", "Long": "A" },
+    "StrategyAptitude": { "Front": "G", "Pace": "C", "Late": "A", "End": "A" },
+    "StatBonuses": { "Speed": 0, "Stamina": 0, "Power": 0, "Guts": 0, "Wit": 30 },
+    "skills": { "rainbow": ["trigger:BEAT"], "pink": ["업리프팅", "Lose Myself"], "yellow": ["고양감", "월영일섬"], "white": ["페이스 업", "앞으로 기우뚱", "추입 직선○", "냉정", "책사"] },
+    "tags": ["로지컬", "Air Shakur", "エアシャカール"]
+  },
+  {
+    "id": 103602, "name": "에어 샤커", "nickname": "unsigned", "color": "#2459b4", "color2": "#e1e000",
+    "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
+    "DistanceAptitude": { "Short": "G", "Mile": "E", "Medium": "A", "Long": "A" },
+    "StrategyAptitude": { "Front": "G", "Pace": "C", "Late": "A", "End": "A" },
+    "StatBonuses": { "Speed": 0, "Stamina": 14, "Power": 8, "Guts": 0, "Wit": 8 },
+    "skills": { "rainbow": ["...found you."], "pink": ["Gluttony's Grip", "죄인"], "yellow": ["스태미나 그리드", "내적 체험"], "white": ["스태미나 이터", "선입 코너○", "안쪽 코너 여포", "폭발하는 다리", "마이페이스"] },
+    "tags": ["로지컬", "Air Shakur", "エアシャカール"]
+  },
+  {
+    "id": 103701, "name": "에이신 플래시", "nickname": "Meisterschaft", "color": "#3d3b3a", "color2": "#e33067",
+    "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
+    "DistanceAptitude": { "Short": "G", "Mile": "E", "Medium": "A", "Long": "A" },
+    "StrategyAptitude": { "Front": "G", "Pace": "C", "Late": "A", "End": "A" },
+    "StatBonuses": { "Speed": 0, "Stamina": 14, "Power": 8, "Guts": 0, "Wit": 8 },
+    "skills": { "rainbow": ["...found you."], "pink": ["Gluttony's Grip", "죄인"], "yellow": ["스태미나 그리드", "내적 체험"], "white": ["스태미나 이터", "선입 코너○", "안쪽 코너 여포", "폭발하는 다리", "마이페이스"] },
+    "tags": ["로지컬", "Air Shakur", "エアシャカール"]
   },
   {
     "id": 104001, "name": "골드 시티", "nickname": "코스모스 단차트리체", "color": "#26529a",
