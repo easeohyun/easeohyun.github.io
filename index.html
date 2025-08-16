@@ -34,7 +34,7 @@
 
     <link rel="stylesheet" href="style.css">
     
-    <link rel="icon" type="image/svg+xml" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><text y="0.9em" font-size="90" fill="%23ee6dcb">♞</text></svg>' sizes="any">
+    <link rel="icon" type="image/svg+xml" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><text y="1em" font-size="100" fill="%23ee6dcb">♞</text></svg>' sizes="any">
 
     <script type="application/ld+json">
     {
@@ -59,17 +59,17 @@
             <p>까다로운 조건(챔미, 히오스 등)을 모두 만족하는 단 한 명의 운명적인 아이를 찾을 수 있어요.</p>
             <p>예를 들면, '스페셜 위크'는 'ㅅㅍㅅㅇㅋ'로 초성 검색이 가능해요.</p>
             <p>쉼표(,)로 조건을 추가할 수 있고, 하이픈(-)으로 결과에서 제외할 수 있어요.</p>
-<ul>
-    <li>2025년 07월 27일에 제작, 08월 17일 최종 수정, 정보 갱신 중이에요.</li>
-    <li>
-        <strong style="color: #E74C3C; font-size: calc(1em + 2px);">정보가 불확실</strong>하며,
-        <strong style="color: #E74C3C; font-size: calc(1em + 2px);">사이트가 불안정</strong>한 부분에 대해서는 양해를 부탁드려요.
-    </li>
-    <li>
-        공식 홈페이지 기준으로 <strong style="color: #ee6dcb;">스페셜 위크</strong>(001)부터
-        <strong style="color: #e146a7;">카와카미 프린세스</strong>(039)까지 보정했어요.
-    </li>
-</ul>
+            <ul>
+                <li>2025년 07월 27일에 제작, 08월 17일 최종 수정, 정보 갱신 중이에요.</li>
+                <li>
+                    <strong class="highlight-red">정보가 불확실</strong>하며,
+                    <strong class="highlight-red">사이트가 불안정</strong>한 부분에 대해서는 양해를 부탁드려요.
+                </li>
+                <li>
+                    공식 홈페이지 기준으로 <strong class="highlight-pink">스페셜 위크</strong>(001)부터
+                    <strong class="highlight-kawakami">카와카미 프린세스</strong>(039)까지 보정했어요.
+                </li>
+            </ul>
         </header>
         <section class="filter-section">
             <form id="filter-form">
@@ -234,12 +234,62 @@
                 </noscript>
         </section>
     </main>
+
     <div class="scroll-buttons">
         <button id="scroll-top" title="맨 위로 (W)" aria-label="맨 위로 스크롤"><span class="material-symbols-outlined">keyboard_arrow_up</span></button>
         <button id="toggle-skills-btn" title="모든 스킬 펼치기 (A)" aria-label="모든 스킬 정보 펼치기/접기"><span class="material-symbols-outlined">unfold_more</span></button>
         <button id="dark-mode-toggle" title="어두운 테마로 전환 (D)" aria-label="다크/라이트 모드 전환"><span class="material-symbols-outlined">dark_mode</span></button>
         <button id="scroll-bottom" title="맨 아래로 (S)" aria-label="맨 아래로 스크롤"><span class="material-symbols-outlined">keyboard_arrow_down</span></button>
     </div>
+
+    <footer>
+        <p>
+            모든 저작권은 원 개발사인 <a href="https://umamusume.jp" title="umamusume project, Cygames" target="_blank" rel="noopener noreferrer">Cygames</a>와 국내 서비스사인
+            <a href="https://umamusume.kakaogames.com" title="누구보다 빠르게 달리고 싶어 우마무스메 프리티 더비, 카카오게임즈" target="_blank" rel="noopener noreferrer">Kakao Games</a>에 있어요. 
+        </p>
+        <p><strong>ⓒ Cygames, Inc. ⓒ Kakao Games Corp. All rights reserved.</strong></p>
+        <p>참고용으로만 활용하시고, 정확한 정보는 <a href="https://cafe.daum.net/umamusume-kor" title="우마무스메 프리티 더비 공식 카페" target="_blank" rel="noopener noreferrer">공식 카페</a>와 인게임을 통해 확인하세요.  
+        </p>
+        <p>
+            <a href="https://gametora.com/umamusume" title="Uma Musume on GameTora" target="_blank" rel="noopener noreferrer">GameTora</a>와
+            <a href="https://uma.inven.co.kr" title="우마무스메 인벤" target="_blank" rel="noopener noreferrer">우마인벤</a>이 출처이며, 하이퍼링크를 클릭해서 이동하세요!
+        </p>
+        <p>Google의 LLM AI인 'Gemini'와 Microsoft의 LLM AI인 'Copilot'의 도움으로 HTML과 JavaScript를 사용하여 만들었어요!</p>
+        <p>방문자의 정보를 수집하지 않으며, Github를 통해 호스팅하고 있어요.</p>
+        <p>구글 크롬(Google Chrome)에서 최적화가 제일 잘 되어 있어요!</p>
+
+        <p><button id="open-modal-btn" class="modal-trigger-button">[ 알려드릴 내용이 있어요! ]</button></p>
+    </footer>
+
+    <div id="contact-modal" class="modal-container" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <header class="modal-header">
+                <h2 id="modal-title">알려드릴 내용이에요!</h2>
+                <button id="close-modal-btn" class="modal-close-button" aria-label="닫기">&times;</button>
+            </header>
+            <main class="modal-body">
+                <h2>여기까지 찾아온 트레이너를 위한 가이드</h2>
+                <h3><strong><abbr title="(交集合, intersection) 두 집합 A와 B에 동시에 속하는 원소들의 집합이에요!">교집합</abbr></strong>으로 해당 조건을 쉽고 빠르게 찾아요.</h3>
+                <p><strong>첫 번째</strong>; 경기장, 거리, 각질, 성장률을 체크박스로 선택하여 찾는 우마무스메를 간추릴 수 있어요. <sub>'더트', '마일', '선행'을 선택한다면, 해당 조건에 딱 맞는 우마무스메를 소집할 수 있어요! 성장률까지 생각한다면 원하는 우마무스메의 육성까지 바라볼 수 있어요.</sub></p>
+                <p><strong>두 번째</strong>; 우마무스메의 이름과 스킬으로도 검색할 수 있습어요. <sub>글자 하나씩으로도 음절 검색이 가능하며, 초성 검색도 가능해요! 만약, '마치카네 후쿠키타루' 양을 찾으신다면, '<mark>ㅁㅊㅋㄴㅎㅋㅋㅌㄹ</mark>'로 검색할 수 있어요. 띄어쓰기를 무시하지만, 겹받침(ㄶ)이나 음절과 초성의 조합은 검색할 수 없어요!</sub></p>
+                <p><strong>세 번째</strong>; 중복 검색과 제외 검색이 가능해요. <sub>쉼표(,)와 하이픈(-)을 통해 두 가지 이상의 스킬 이름으로 찾고자 하는 우마무스메를 좁혀 나갈 수 있으며, 필요하지 않은 스킬을 지닌 우마무스메를 제외할 수 있어요. '직선' 스킬과 '코너' 스킬의 검색 결과로 충분히 만족하겠지만, 제외 기능도 필요할 거예요!</sub></p>
+                <p><strong>네 번째</strong>; 태그 검색을 넣어놨어요. <sub>당신의 <em>애마</em>를 음해하지 않는 선 내에서 찾을 수 있는 별명을 넣었어요. 필요하지 않거나, 싫어하는 별명이라면 지울게요! 별명은 보이지 않도록 설정했고, 상황에 적절한 태그도 함께 넣었으니, 찾는 재미가 분명 있을 거예요!</sub></p>
+                <h3><strong>단축키</strong>로 페이지를 쉽게 이동해요.</h3>
+                <p><strong>모든 스킬 정보 펼치기</strong>/<strong>접기</strong>: <q><strong>A</strong></q> 키, 우측 하단 무지개 버튼, <sub>기본적으로 감춰진 캐릭터의 보유 스킬 정보를 한 눈에 볼 수 있어요. (이벤트 스킬은 결과값에 없어요.)</sub></p>
+                <p><strong>다크 모드 전환</strong>: <q><strong>D</strong></q>키, 우측 하단 달 모양 버튼, <sub>그 반대는 해 모양 버튼으로 라이트 모드 전환이에요!</sub></p>
+                <p><strong>페이지 스크롤</strong>: <q><strong>W</strong></q> 키, <q><strong>S</strong></q> 키, 우측 하단 화살표 버튼, <sub>맨 위로 올라갔다가 맨 아래로 내려갈 수 있어요.</sub></p>
+                <p><strong>바로 검색</strong>: <q><strong>Q</strong></q>키, <sub>사실, 슬래시 키로도 이동할 수 있어요!</sub></p>
+                <p><strong>초기화</strong>: <q><strong>R</strong></q>키, 검색창 옆 초기화 버튼, <sub>긴급한 버튼은 항상 빨간색이죠?</sub></p>
+                <div class="email-info">
+                    <p><strong>개선할 점은 버튼을 확인하여 연락 주세요!</strong></p>
+                    <a href="#" id="contact-email-link" class="email-text-image" role="button" tabindex="0">이메일 주소 확인하기</a>
+                    <p><small>ESC 키를 눌러 창을 닫아주세요...</small></p>
+                </div>
+            </main>
+        </div>
+    </div>
+
     <template id="character-card-template">
         <div class="character-card">
             <div class="card-main-info">
@@ -271,59 +321,7 @@
             </div>
         </div>
     </template>
-    <footer>
-    <p>
-        모든 저작권은 원 개발사인 <a href="https://umamusume.jp" title="umamusume project, Cygames" target="_blank" rel="noopener noreferrer">Cygames</a>와 국내 서비스사인
-        <a href="https://umamusume.kakaogames.com" title="누구보다 빠르게 달리고 싶어 우마무스메 프리티 더비, 카카오게임즈" target="_blank" rel="noopener noreferrer">Kakao Games</a>에 있어요. 
-    </p>
-    <p><strong>ⓒ Cygames, Inc. ⓒ Kakao Games Corp. All rights reserved.</strong></p>
-    <p>참고용으로만 활용하시고, 정확한 정보는 <a href="https://cafe.daum.net/umamusume-kor" title="우마무스메 프리티 더비 공식 카페" target="_blank" rel="noopener noreferrer">공식 카페</a>와 인게임을 통해 확인하세요.  
-    </p>
-    <p>
-        <a href="https://gametora.com/umamusume" title="Uma Musume on GameTora" target="_blank" rel="noopener noreferrer">GameTora</a>와
-        <a href="https://uma.inven.co.kr" title="우마무스메 인벤" target="_blank" rel="noopener noreferrer">우마인벤</a>이 출처이며, 하이퍼링크를 클릭해서 이동하세요!
-    </p>
-    <p>Google의 LLM AI인 'Gemini'와 Microsoft의 LLM AI인 'Copilot'의 도움으로 HTML과 JavaScript를 사용하여 만들었어요!</p>
-    <p>방문자의 정보를 수집하지 않으며, Github를 통해 호스팅하고 있어요.</p>
-    <p>구글 크롬(Google Chrome)에서 최적화가 제일 잘 되어 있어요!</p>
 
-    <p><button id="open-modal-btn" class="modal-trigger-button">[ 알려드릴 내용이 있어요! ]</button></p>
-</footer>
-    <div id="contact-modal" class="modal-container" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
-        <div class="modal-overlay"></div>
-        <div class="modal-content">
-            <header class="modal-header">
-                <h2 id="modal-title">알려드릴 내용이에요!</h2>
-                <button id="close-modal-btn" class="modal-close-button" aria-label="닫기">&times;</button>
-            </header>
-            <main class="modal-body">
-                <h2>여기까지 찾아온 트레이너를 위한 가이드</h2>
-                <h3><strong><abbr title="(交集合, intersection) 두 집합 A와 B에 동시에 속하는 원소들의 집합이에요!">교집합</abbr></strong>으로 해당 조건을 쉽고 빠르게 찾아요.</h3>
-                <p><strong>첫 번째</strong>; 경기장, 거리, 각질, 성장률을 체크박스로 선택하여 찾는 우마무스메를 간추릴 수 있어요. <sub>'더트', '마일', '선행'을 선택한다면, 해당 조건에 딱 맞는 우마무스메를 소집할 수 있어요! 성장률까지 생각한다면 원하는 우마무스메의 육성까지 바라볼 수 있어요.</sub></p>
-                <p><strong>두 번째</strong>; 우마무스메의 이름과 스킬으로도 검색할 수 있습어요. <sub>글자 하나씩으로도 음절 검색이 가능하며, 초성 검색도 가능해요! 만약, '마치카네 후쿠키타루' 양을 찾으신다면, '<mark>ㅁㅊㅋㄴㅎㅋㅋㅌㄹ</mark>'로 검색할 수 있어요. 띄어쓰기를 무시하지만, 겹받침(ㄶ)이나 음절과 초성의 조합은 검색할 수 없어요!</sub></p>
-                <p><strong>세 번째</strong>; 중복 검색과 제외 검색이 가능해요. <sub>쉼표(,)와 하이픈(-)을 통해 두 가지 이상의 스킬 이름으로 찾고자 하는 우마무스메를 좁혀 나갈 수 있으며, 필요하지 않은 스킬을 지닌 우마무스메를 제외할 수 있어요. '직선' 스킬과 '코너' 스킬의 검색 결과로 충분히 만족하겠지만, 제외 기능도 필요할 거예요!</sub></p>
-                <p><strong>네 번째</strong>; 태그 검색을 넣어놨어요. <sub>당신의 <em>애마</em>를 음해하지 않는 선 내에서 찾을 수 있는 별명을 넣었어요. 필요하지 않거나, 싫어하는 별명이라면 지울게요! 별명은 보이지 않도록 설정했고, 상황에 적절한 태그도 함께 넣었으니, 찾는 재미가 분명 있을 거예요!</sub></p>
-                <h3><strong>단축키</strong>로 페이지를 쉽게 이동해요.</h3>
-                <p><strong>모든 스킬 정보 펼치기</strong>/<strong>접기</strong>: <q><strong>A</strong></q> 키, 우측 하단 무지개 버튼, <sub>기본적으로 감춰진 캐릭터의 보유 스킬 정보를 한 눈에 볼 수 있어요. (이벤트 스킬은 결과값에 없어요.)</sub></p>
-                <p><strong>다크 모드 전환</strong>: <q><strong>D</strong></q>키, 우측 하단 달 모양 버튼, <sub>그 반대는 해 모양 버튼으로 라이트 모드 전환이에요!</sub></p>
-                <p><strong>페이지 스크롤</strong>: <q><strong>W</strong></q> 키, <q><strong>S</strong></q> 키, 우측 하단 화살표 버튼, <sub>맨 위로 올라갔다가 맨 아래로 내려갈 수 있어요.</sub></p>
-                <p><strong>바로 검색</strong>: <q><strong>Q</strong></q>키, <sub>사실, 슬래시 키로도 이동할 수 있어요!</sub></p>
-                <p><strong>초기화</strong>: <q><strong>R</strong></q>키, 검색창 옆 초기화 버튼, <sub>긴급한 버튼은 항상 빨간색이죠?</sub></p>
-                <div class="email-info">
-                    <p><strong>개선할 점은 버튼을 확인하여 연락 주세요!</strong></p>
-                    <a href="#" id="contact-email-link" class="email-text-image" role="button" tabindex="0">이메일 주소 확인하기</a>
-                    <p><small>ESC 키를 눌러 창을 닫아주세요...</small></p>
-                </div>
-            </main>
-        </div>
-    </div>
     <script type="module" src="script.js" defer></script>
 </body>
 </html>
-
-
-
-
-
-
-
