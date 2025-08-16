@@ -27,7 +27,7 @@
     "tags": ["메인스토리", "총대장", "총스페", "반짝임은끝없이", "Special Week", "スペシャルウィーク"]
   },
   {
-    "id": 100201, "name": "사일런스 스즈카", "nickname": "사일런트 이노센스", "color": "#29bd70",
+    "id": 100201, "name": "사일런스 스즈카", "nickname": "사일런트 이노센스", "color": "#29bd70", "color2": "#ffce48",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "D", "Mile": "A", "Medium": "A", "Long": "E" }, 
     "StrategyAptitude": { "Front": "A", "Pace": "C", "Late": "E", "End": "G" },
@@ -36,7 +36,7 @@
     "tags": ["1기", "오리지널", "절벽", "니게시스", "도주시스터즈", "내가더빨라", "침묵의일요일", "Silence Suzuka", "サイレンススズカ"] 
   },
   {
-    "id": 100202, "name": "사일런스 스즈카", "nickname": "물결 사이의 에메랄드", "color": "#29bd70",
+    "id": 100202, "name": "사일런스 스즈카", "nickname": "물결 사이의 에메랄드", "color": "#29bd70", "color2": "#ffce48",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "D", "Mile": "A", "Medium": "A", "Long": "E" }, 
     "StrategyAptitude": { "Front": "A", "Pace": "C", "Late": "E", "End": "G" },
@@ -45,7 +45,7 @@
     "tags": ["여름", "수영복", "수즈카", "여름의햇살은푸르고잔잔하게", "Silence Suzuka", "サイレンススズカ"]  
   },
   {
-    "id": 100301, "name": "토카이 테이오", "nickname": "톱・오브・조이풀", "color": "#3376d2",
+    "id": 100301, "name": "토카이 테이오", "nickname": "톱・오브・조이풀", "color": "#3376d2", "color2": "#ff99d0",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "F", "Mile": "E", "Medium": "A", "Long": "B" }, 
     "StrategyAptitude": { "Front": "D", "Pace": "A", "Late": "C", "End": "E" },
@@ -54,7 +54,7 @@
     "tags": ["2기", "주인공", "골절", "회오리감자", "하찌미", "Tokai Teio", "トウカイテイオー"]  
   },
   {
-    "id": 100302, "name": "토카이 테이오", "nickname": "비욘드・더・호라이즌", "color": "#3376d2",
+    "id": 100302, "name": "토카이 테이오", "nickname": "비욘드・더・호라이즌", "color": "#3376d2", "color2": "#ff99d0",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "F", "Mile": "E", "Medium": "A", "Long": "B" }, 
     "StrategyAptitude": { "Front": "D", "Pace": "A", "Late": "C", "End": "E" },
@@ -63,7 +63,7 @@
     "tags": ["애니 콜라보", "BrandnewFriend", "불닭", "Tokai Teio", "トウカイテイオー"]
   },
   {
-    "id": 100303, "name": "토카이 테이오", "nickname": "자색 구름의 나비", "color": "#3376d2",
+    "id": 100303, "name": "토카이 테이오", "nickname": "자색 구름의 나비", "color": "#3376d2", "color2": "#ff99d0",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "F", "Mile": "E", "Medium": "A", "Long": "A" }, 
     "StrategyAptitude": { "Front": "D", "Pace": "A", "Late": "C", "End": "E" },
@@ -72,7 +72,7 @@
     "tags": ["축제", "무녀", "음이오", "한적한가을엮이는추억", "Tokai Teio", "トウカイテイオー"]  
   },
   {
-    "id": 100401, "name": "마루젠스키", "nickname": "포뮬러 오브 루주", "color": "#ea504a",
+    "id": 100401, "name": "마루젠스키", "nickname": "포뮬러 오브 루주", "color": "#ea504a", "color2": "#ffcd00",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "D" },
     "DistanceAptitude": { "Short": "B", "Mile": "A", "Medium": "B", "Long": "C" }, 
     "StrategyAptitude": { "Front": "A", "Pace": "E", "Late": "G", "End": "G" },
@@ -81,16 +81,16 @@
     "tags": ["슈퍼카", "틀딱", "마르젠스키", "니게시스", "도주시스터즈", "Maruzensky", "マルゼンスキー"]  
   },  
   {
-    "id": 100402, "name": "마루젠스키", "nickname": "날아라☆서머 나이트", "color": "#ea504a",
+    "id": 100402, "name": "마루젠스키", "nickname": "날아라☆서머 나이트", "color": "#ea504a", "color2": "#ffcd00",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "D" },
     "DistanceAptitude": { "Short": "B", "Mile": "A", "Medium": "B", "Long": "C" }, 
     "StrategyAptitude": { "Front": "A", "Pace": "E", "Late": "G", "End": "G" },
     "StatBonuses": { "Speed": 15, "Stamina": 0, "Power": 0, "Guts": 0, "Wit": 15 },
     "skills": { "rainbow": ["뭉클하게♪Chu"], "pink": ["심쿵☆말괄량이 우마무스메!", "단상의 지배자"], "yellow": ["말괄량이 우마무스메", "마일의 지배자"], "white": ["코너 회복○", "적극책", "기세로 밀어붙이기", "스리 세븐", "스피드 이터"] },
-    "tags": ["여름", "수영복", "수루젠", "삼대장", "그아이가수영복으로갈아입는다면우마무스메여름이야기", "Maruzensky", "マルゼンスキー"] 
+    "tags": ["여름", "수영복", "수루젠", "삼대장", "3대장", "그아이가수영복으로갈아입는다면우마무스메여름이야기", "Maruzensky", "マルゼンスキー"] 
   },
   {
-    "id": 100403, "name": "마루젠스키", "nickname": "祝ひ寿ぐ神速天女", "color": "#ea504a",
+    "id": 100403, "name": "마루젠스키", "nickname": "祝ひ寿ぐ神速天女", "color": "#ea504a", "color2": "#ffcd00",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "D" },
     "DistanceAptitude": { "Short": "B", "Mile": "A", "Medium": "B", "Long": "C" }, 
     "StrategyAptitude": { "Front": "A", "Pace": "E", "Late": "G", "End": "G" },
@@ -99,7 +99,7 @@
     "tags": ["새해", "신년", "선녀", "뉴루젠", "Maruzensky", "マルゼンスキー"]  
   },
   {
-    "id": 100501, "name": "후지 키세키", "nickname": "슈팅 스타・레뷔", "color": "#444745",
+    "id": 100501, "name": "후지 키세키", "nickname": "슈팅 스타・레뷔", "color": "#444745", "color2": "#33b839",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "F" },
     "DistanceAptitude": { "Short": "B", "Mile": "A", "Medium": "B", "Long": "E" }, 
     "StrategyAptitude": { "Front": "C", "Pace": "A", "Late": "C", "End": "G" },
@@ -108,7 +108,7 @@
     "tags": ["극장판", "활주로", "Fuji Kiseki", "フジキセキ"]  
   },
   {
-    "id": 100502, "name": "후지 키세키", "nickname": "쉭세・에투알", "color": "#444745",
+    "id": 100502, "name": "후지 키세키", "nickname": "쉭세・에투알", "color": "#444745", "color2": "#33b839",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "F" },
     "DistanceAptitude": { "Short": "B", "Mile": "A", "Medium": "B", "Long": "E" }, 
     "StrategyAptitude": { "Front": "C", "Pace": "A", "Late": "C", "End": "G" },
@@ -117,7 +117,7 @@
     "tags": ["무도회", "뉴세키", "Fuji Kiseki", "フジキセキ"]  
   },
   {
-    "id": 100601, "name": "오구리 캡", "nickname": "스타라이트 비트", "color": "#3a7ad2",
+    "id": 100601, "name": "오구리 캡", "nickname": "스타라이트 비트", "color": "#3a7ad2", "color2": "#ece7e7",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "B" },
     "DistanceAptitude": { "Short": "E", "Mile": "A", "Medium": "A", "Long": "B" }, 
     "StrategyAptitude": { "Front": "F", "Pace": "A", "Late": "A", "End": "D" },
@@ -126,16 +126,16 @@
     "tags": ["신데렐라그레이", "주인공", "Oguri Cap", "オグリキャップ"]  
   },
   {
-    "id": 100602, "name": "오구리 캡", "nickname": "기적의 하얀 별", "color": "#3a7ad2",
+    "id": 100602, "name": "오구리 캡", "nickname": "기적의 하얀 별", "color": "#3a7ad2", "color2": "#ece7e7",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "B" },
     "DistanceAptitude": { "Short": "E", "Mile": "A", "Medium": "A", "Long": "B" }, 
     "StrategyAptitude": { "Front": "F", "Pace": "A", "Late": "A", "End": "D" },
     "StatBonuses": { "Speed": 15, "Stamina": 15, "Power": 0, "Guts": 0, "Wit": 0 },
     "skills": { "rainbow": ["크리스마스 이브의 미라클 런!"], "pink": ["폭식 보양", "크리스마스의 기적 체험"], "yellow": ["먹보", "내적 체험"], "white": ["쥐어짜기", "안쪽 코너 여포", "영양 보급", "짧은 휴식", "스리 세븐"] },
-    "tags": ["산타클로스", "크리스마스", "클구리", "삼대장", "성스러운밤에더해지는기적", "Oguri Cap", "オグリキャップ"]    
+    "tags": ["산타클로스", "크리스마스", "클구리", "삼대장", "3대장", "성스러운밤에더해지는기적", "Oguri Cap", "オグリキャップ"]    
   },
   {
-    "id": 100701, "name": "골드 쉽", "nickname": "레드 스트라이프", "color": "#da3c57",
+    "id": 100701, "name": "골드 쉽", "nickname": "레드 스트라이프", "color": "#da3c57", "color2": "#e9da36",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "G", "Mile": "C", "Medium": "A", "Long": "A" }, 
     "StrategyAptitude": { "Front": "G", "Pace": "B", "Late": "B", "End": "A" },
@@ -144,7 +144,7 @@
     "tags": ["피스피스스피스피고루시짱", "파카튜브", "주인공", "스테고일족", "Gold Ship", "ゴールドシップ"]  
   },
   {
-    "id": 100702, "name": "골드 쉽", "nickname": "RUN! 럼블! 런처!!", "color": "#da3c57",
+    "id": 100702, "name": "골드 쉽", "nickname": "RUN! 럼블! 런처!!", "color": "#da3c57", "color2": "#e9da36",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "G", "Mile": "C", "Medium": "A", "Long": "A" }, 
     "StrategyAptitude": { "Front": "G", "Pace": "B", "Late": "B", "End": "A" },
@@ -153,7 +153,7 @@
     "tags": ["여름", "수영복", "수루시", "대난투여름빛바캉스", "Gold Ship", "ゴールドシップ"]  
   },
   {
-    "id": 100703, "name": "골드 쉽", "nickname": "La Mode 564", "color": "#da3c57",
+    "id": 100703, "name": "골드 쉽", "nickname": "La Mode 564", "color": "#da3c57", "color2": "#e9da36",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "G", "Mile": "C", "Medium": "A", "Long": "A" }, 
     "StrategyAptitude": { "Front": "G", "Pace": "B", "Late": "B", "End": "A" },
@@ -501,7 +501,7 @@
     "StrategyAptitude": { "Front": "A", "Pace": "A", "Late": "B", "End": "B" },
     "StatBonuses": { "Speed": 8, "Stamina": 15, "Power": 0, "Guts": 0, "Wit": 7 },
     "skills": { "rainbow": ["HOP STEP♪LOCK ON!"], "pink": ["お先に☆テールウィンド", "コックピット・マジシャン"], "yellow": ["만리일공", "早業"], "white": ["위험 회피", "망설임 없음", "目にも留まらず", "터다지기", "気の向くままに"] },
-    "tags": ["웨딩드레스", "결혼식", "신부", "スラップスティック・クラッシュ！", "Mayano Top Gun", "マヤノトップガン"]
+    "tags": ["할로윈", "고양이", "핼러윈", "スラップスティック・クラッシュ！", "Mayano Top Gun", "マヤノトップガン"]
   },
   {
     "id": 102501, "name": "맨하탄 카페", "nickname": "Creeping Black", "color": "#494541",
@@ -537,50 +537,77 @@
     "StrategyAptitude": { "Front": "A", "Pace": "E", "Late": "G", "End": "G" },
     "StatBonuses": { "Speed": 10, "Stamina": 10, "Power": 10, "Guts": 0, "Wit": 0 },
     "skills": { "rainbow": ["오퍼레이션・Cacao"], "pink": ["완벽한 에러 대처술", "퍼펙트 부트"], "yellow": ["탈출술", "컨센트레이션"], "white": ["집중력", "빠른 걸음", "외장 탱크", "도주의 요령○", "터다지기"] },
-    "tags": ["초코봉", "삼대장", "영관의 파티스리", "Mihono Bourbon", "ミホノブルボン"]
+    "tags": ["초코봉", "삼대장", "3대장", "영관의파티스리", "Mihono Bourbon", "ミホノブルボン"]
   },
   {
-    "id": 102701, "name": "메지로 라이언", "nickname": "브라이트・제너럴", "color": "#4682B4",
+    "id": 102701, "name": "메지로 라이언", "nickname": "스트레이트・라인", "color": "#14baae", "color2": "#7c4d3a", 
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
-    "DistanceAptitude": { "Short": "F", "Mile": "E", "Medium": "A", "Long": "A" },
-    "StrategyAptitude": { "Front": "G", "Pace": "C", "Late": "A", "End": "B" },
-    "StatBonuses": { "Speed": 0, "Stamina": 0, "Power": 20, "Guts": 10, "Wit": 0 },
-    "skills": { "rainbow": ["근육 활성화! 아나볼릭・러브!"], "pink": ["정면근육!", "근육 발레"], "yellow": ["치열한 승부", "전심전력"], "white": ["뒷심", "직선 가속", "추월 확정 태세", "외곽 추월 준비", "안쪽 그룹 능숙○"] },
-    "tags": ["근육", "두리안"]
+    "DistanceAptitude": { "Short": "E", "Mile": "C", "Medium": "A", "Long": "B" },
+    "StrategyAptitude": { "Front": "F", "Pace": "A", "Late": "A", "End": "E" },
+    "StatBonuses": { "Speed": 0, "Stamina": 0, "Power": 20, "Guts": 0, "Wit": 10 },
+    "skills": { "rainbow": ["레츠 아나볼릭!", "불타라 근육!"], "pink": ["머슬 앤섬", "라이징 벌크업"], "yellow": ["킬러 튠", "승천하는 용"], "white": ["비 오는 날○", "템포 업", "외곽 추월 준비", "페이스 킵", "중거리 직선○"] },
+    "tags": ["근육", "두리안", "Mejiro Ryan", "メジロライアン"]
+  },
+   {
+    "id": 102702, "name": "메지로 라이언", "nickname": "마가렛・라떼", "color": "#14baae", "color2": "#7c4d3a", 
+    "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
+    "DistanceAptitude": { "Short": "E", "Mile": "C", "Medium": "A", "Long": "B" },
+    "StrategyAptitude": { "Front": "F", "Pace": "A", "Late": "A", "End": "F" },
+    "StatBonuses": { "Speed": 20, "Stamina": 0, "Power": 0, "Guts": 0, "Wit": 10 },
+    "skills": { "rainbow": ["당신에게 바치는 프리 푸어링"], "pink": ["꿈을 이루는 결의를 드리죠", "지고의 승리를 맛보시길"], "yellow": ["결의의 직활강", "지고의 다운힐러"], "white": ["내리막 달인", "직활강", "집중 마크○", "중거리 코너○", "선행 코너○"] },
+    "tags": ["근육", "두리안", "스위트메모리티타임", "Mejiro Ryan", "メジロライアン"]
   },
   {
-    "id": 102801, "name": "히시 아케보노", "nickname": "보노☆알라모다", "color": "#FFFF00",
+    "id": 102801, "name": "히시 아케보노", "nickname": "보노☆알라모다", "color": "#208bcd", "color2": "#fa6f8b", 
     "SurfaceAptitude": { "Turf": "A", "Dirt": "F" },
     "DistanceAptitude": { "Short": "A", "Mile": "B", "Medium": "F", "Long": "G" },
-    "StrategyAptitude": { "Front": "A", "Pace": "A", "Late": "G", "End": "G" },
+    "StrategyAptitude": { "Front": "B", "Pace": "A", "Late": "C", "End": "G" },
     "StatBonuses": { "Speed": 0, "Stamina": 0, "Power": 20, "Guts": 10, "Wit": 0 },
-    "skills": { "rainbow": ["I'M☆FULL☆SPEED!!"], "pink": ["사전 준비 완료!", "보노한 대식가", "붙어 보자!"], "yellow": ["준비 와뇰!", "먹보"], "white": ["단거리 직선○", "단거리 코너○", "선행 직선○", "리드 킵", "기세로 밀어붙이기"] },
-    "tags": ["보노", "거인"]
+    "skills": { "rainbow": ["I'M☆FULL☆SPEED!!"], "pink": ["사전 준비 완료!", "보노한 대식가", "붙어 보자!"], "yellow": ["준비 완료!", "먹보"], "white": ["맑은 날○", "영양 보급", "작전 준비", "새 출발", "후방 못박기"] },
+    "tags": ["보노", "거인", "창코나베", "최장신", "스모", "Hishi Akebono", "ヒシアケボノ"]
   },
   {
-    "id": 103001, "name": "라이스 샤워", "nickname": "로제・콜리에", "color": "#191970",
+    "id": 102901, "name": "유키노 비진", "nickname": "귀엽고 귀여운 눈꽃", "color": "#af7e51", "color2": "#c8d8eb", 
+    "SurfaceAptitude": { "Turf": "A", "Dirt": "B" },
+    "DistanceAptitude": { "Short": "D", "Mile": "A", "Medium": "A", "Long": "E" },
+    "StrategyAptitude": { "Front": "C", "Pace": "A", "Late": "F", "End": "G" },
+    "StatBonuses": { "Speed": 10, "Stamina": 0, "Power": 0, "Guts": 20, "Wit": 0 },
+    "skills": { "rainbow": ["눈에 반사되는 빛을 쫓아서"], "pink": ["동경하는 시티 걸", "설국에서 익힌 직활강", "결의의 근성무스메"], "yellow": ["논스톱 걸", "결의의 직활강"], "white": ["뒤처지기 방지", "중거리 직선○", "직활강", "눈 오는 날○", "선행 코너○"] },
+    "tags": ["시골", "사투리", "Yukino Bijin", "ユキノビジン"]
+  },  
+  {
+    "id": 102902, "name": "유키노 비진", "nickname": "차 과자와 눈의 요정", "color": "#af7e51", "color2": "#c8d8eb", 
+    "SurfaceAptitude": { "Turf": "A", "Dirt": "A" },
+    "DistanceAptitude": { "Short": "D", "Mile": "A", "Medium": "A", "Long": "E" },
+    "StrategyAptitude": { "Front": "C", "Pace": "A", "Late": "F", "End": "G" },
+    "StatBonuses": { "Speed": 8, "Stamina": 0, "Power": 8, "Guts": 14, "Wit": 0 },
+    "skills": { "rainbow": ["많이 드셔유!"], "pink": ["좀 더 힘내는 겨", "곡선에 흩날리는 눈"], "yellow": ["언스토퍼블", "곡선의 소믈리에"], "white": ["공세", "오기", "코너 가속○", "대항 의식○", "마일 코너○"] },
+    "tags": ["시골", "Yukino Bijin", "ユキノビジン"]
+  },	
+  {
+    "id": 103001, "name": "라이스 샤워", "nickname": "로제스 드림", "color": "#384a86", "color2": "#ca3e6d",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
-    "DistanceAptitude": { "Short": "G", "Mile": "F", "Medium": "A", "Long": "A" },
-    "StrategyAptitude": { "Front": "F", "Pace": "A", "Late": "B", "End": "G" },
-    "StatBonuses": { "Speed": 0, "Stamina": 20, "Power": 10, "Guts": 0, "Wit": 0 },
+    "DistanceAptitude": { "Short": "E", "Mile": "C", "Medium": "A", "Long": "A" },
+    "StrategyAptitude": { "Front": "B", "Pace": "A", "Late": "C", "End": "G" },
+    "StatBonuses": { "Speed": 0, "Stamina": 10, "Power": 0, "Guts": 20, "Wit": 0 },
     "skills": { "rainbow": ["블루 로즈 체이서"], "pink": ["결의의 직활강", "불굴의 마음"], "yellow": ["직활강", "등산가"], "white": ["추월 확정 태세", "뒷심", "외곽 추월 준비", "진흙탕길○", "선행 긴장"] },
-    "tags": ["히어로"]
+    "tags": ["히어로", "빌런"]
   },
   {
-    "id": 103002, "name": "라이스 샤워", "nickname": "Make up Vampire!", "color": "#191970",
+    "id": 103002, "name": "라이스 샤워", "nickname": "Make up Vampire!", "color": "#384a86", "color2": "#ca3e6d",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
-    "DistanceAptitude": { "Short": "G", "Mile": "F", "Medium": "A", "Long": "A" },
-    "StrategyAptitude": { "Front": "F", "Pace": "A", "Late": "B", "End": "G" },
-    "StatBonuses": { "Speed": 0, "Stamina": 20, "Power": 10, "Guts": 0, "Wit": 0 },
+    "DistanceAptitude": { "Short": "E", "Mile": "C", "Medium": "A", "Long": "A" },
+    "StrategyAptitude": { "Front": "B", "Pace": "A", "Late": "C", "End": "G" },
+    "StatBonuses": { "Speed": 0, "Stamina": 15, "Power": 15, "Guts": 0, "Wit": 0 },
     "skills": { "rainbow": ["블루 로즈 체이서"], "pink": ["결의의 직활강", "불굴의 마음"], "yellow": ["직활강", "등산가"], "white": ["추월 확정 태세", "뒷심", "외곽 추월 준비", "진흙탕길○", "선행 긴장"] },
     "tags": ["할로윈", "핼러윈"]
   },
   {
-    "id": 103003, "name": "라이스 샤워", "nickname": "Yummy Dreamy Fairy", "color": "#191970",
+    "id": 103003, "name": "라이스 샤워", "nickname": "Yummy Dreamy Fairy", "color": "#384a86", "color2": "#ca3e6d",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
-    "DistanceAptitude": { "Short": "G", "Mile": "F", "Medium": "A", "Long": "A" },
-    "StrategyAptitude": { "Front": "F", "Pace": "A", "Late": "B", "End": "G" },
-    "StatBonuses": { "Speed": 0, "Stamina": 20, "Power": 10, "Guts": 0, "Wit": 0 },
+    "DistanceAptitude": { "Short": "E", "Mile": "C", "Medium": "A", "Long": "A" },
+    "StrategyAptitude": { "Front": "B", "Pace": "A", "Late": "C", "End": "G" },
+    "StatBonuses": { "Speed": 0, "Stamina": 20, "Power": 0, "Guts": 10, "Wit": 0 },
     "skills": { "rainbow": ["블루 로즈 체이서"], "pink": ["결의의 직활강", "불굴의 마음"], "yellow": ["직활강", "등산가"], "white": ["추월 확정 태세", "뒷심", "외곽 추월 준비", "진흙탕길○", "선행 긴장"] },
     "tags": ["대풍식제"]
   },
