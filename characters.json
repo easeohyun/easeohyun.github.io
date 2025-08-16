@@ -749,11 +749,65 @@
   {
     "id": 103701, "name": "에이신 플래시", "nickname": "Meisterschaft", "color": "#3d3b3a", "color2": "#e33067",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
-    "DistanceAptitude": { "Short": "G", "Mile": "E", "Medium": "A", "Long": "A" },
-    "StrategyAptitude": { "Front": "G", "Pace": "C", "Late": "A", "End": "A" },
-    "StatBonuses": { "Speed": 0, "Stamina": 14, "Power": 8, "Guts": 0, "Wit": 8 },
-    "skills": { "rainbow": ["...found you."], "pink": ["Gluttony's Grip", "죄인"], "yellow": ["스태미나 그리드", "내적 체험"], "white": ["스태미나 이터", "선입 코너○", "안쪽 코너 여포", "폭발하는 다리", "마이페이스"] },
-    "tags": ["로지컬", "Air Shakur", "エアシャカール"]
+    "DistanceAptitude": { "Short": "G", "Mile": "F", "Medium": "A", "Long": "A" },
+    "StrategyAptitude": { "Front": "G", "Pace": "B", "Late": "A", "End": "C" },
+    "StatBonuses": { "Speed": 0, "Stamina": 0, "Power": 10, "Guts": 0, "Wit": 20 },
+    "skills": { "rainbow": ["Schwarzes Schwert"], "pink": ["섬광의 마기아", "긍지를 걸고"], "yellow": ["레인의 마술사", "전심전력"], "white": ["임기응변", "선입의 요령○", "중거리 코너○", "뒷심", "집중력"] },
+    "tags": ["펜싱", "Eishin Flash", "エイシンフラッシュ"]
+  },
+  {
+    "id": 103702, "name": "에이신 플래시", "nickname": "컬렉트・쇼콜라티에", "color": "#3d3b3a", "color2": "#e33067",
+    "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
+    "DistanceAptitude": { "Short": "G", "Mile": "F", "Medium": "A", "Long": "A" },
+    "StrategyAptitude": { "Front": "G", "Pace": "B", "Late": "A", "End": "C" },
+    "StatBonuses": { "Speed": 0, "Stamina": 8, "Power": 8, "Guts": 0, "Wit": 14 },
+    "skills": { "rainbow": ["Guten Appetit♪"], "pink": ["승리의 레시피", "재료 준비는 완벽", "검은 섬광"], "yellow": ["독점력", "광망일섬"], "white": ["복병○", "위치 선정 밀어붙이기", "속박", "중거리 직선○", "선입 코너○"] },
+    "tags": ["밸런타인", "발렌타인", "영관의파티스리", "Eishin Flash", "エイシンフラッシュ"]
+  },
+  {
+    "id": 103703, "name": "에이신 플래시", "nickname": "Reines Plätschern", "color": "#3d3b3a", "color2": "#e33067",
+    "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
+    "DistanceAptitude": { "Short": "G", "Mile": "F", "Medium": "A", "Long": "A" },
+    "StrategyAptitude": { "Front": "G", "Pace": "B", "Late": "A", "End": "C" },
+    "StatBonuses": { "Speed": 0, "Stamina": 10, "Power": 10, "Guts": 0, "Wit": 10 },
+    "skills": { "rainbow": ["바닷바람의 Geshenk"], "pink": ["Ritter von Fuchu", "섬광의 분류"], "yellow": ["후츄가 점지한 아이", "용왕매진"], "white": ["선입 직선○", "도쿄 경기장○", "풀 스로틀", "폭발하는 다리", "진출 개시"] },
+    "tags": ["여름", "바캉스", "수영복", "수이신", "夕映えは渚のJugend", "Eishin Flash", "エイシンフラッシュ"]
+  },
+  {
+    "id": 103801, "name": "카렌짱", "nickname": "Reines Plätschern", "color": "#f86669", "color2": "#47423e",
+    "SurfaceAptitude": { "Turf": "A", "Dirt": "F" },
+    "DistanceAptitude": { "Short": "A", "Mile": "D", "Medium": "F", "Long": "F" },
+    "StrategyAptitude": { "Front": "B", "Pace": "A", "Late": "E", "End": "G" },
+    "StatBonuses": { "Speed": 10, "Stamina": 0, "Power": 20, "Guts": 0, "Wit": 10 },
+    "skills": { "rainbow": ["#LookatCurren"], "pink": ["#귀여운_교란♪", "#반해라♪"], "yellow": ["현혹의 교란", "뇌쇄술"], "white": ["페이스 업", "교란", "후방 못박기", "작전 준비", "빠져나갈 준비"] },
+    "tags": ["SNS", "오니짱", "이야기", "IYAGI", "귀여움의화신", "Curren Chan", "カレンチャン"]
+  },
+  {
+    "id": 103802, "name": "카렌짱", "nickname": "Reines Plätschern", "color": "#f86669", "color2": "#47423e",
+    "SurfaceAptitude": { "Turf": "A", "Dirt": "F" },
+    "DistanceAptitude": { "Short": "A", "Mile": "D", "Medium": "G", "Long": "G" },
+    "StrategyAptitude": { "Front": "B", "Pace": "A", "Late": "E", "End": "G" },
+    "StatBonuses": { "Speed": 10, "Stamina": 0, "Power": 10, "Guts": 0, "Wit": 10 },
+    "skills": { "rainbow": ["One True Color"], "pink": ["#카렌으로_물들어_볼래?", "마음을 빼앗기는 섬광", "#뷰티_스프린트"], "yellow": ["뇌쇄술", "스프린트 터보"], "white": ["도주 주저", "선행 코너○", "후방 못박기", "스프린트 기어", "선행의 요령○"] },
+    "tags": ["정각SilksThreeRiddles", "웨딩드레스", "신부", "결혼식", "Curren Chan", "カレンチャン"]
+  },
+  {
+    "id": 103901, "name": "카와카미 프린세스", "nickname": "프린세스・오브・핑크", "color": "#e146a7", "color2": "#00c7b1",
+    "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
+    "DistanceAptitude": { "Short": "D", "Mile": "B", "Medium": "A", "Long": "F" },
+    "StrategyAptitude": { "Front": "G", "Pace": "C", "Late": "A", "End": "D" },
+    "StatBonuses": { "Speed": 0, "Stamina": 0, "Power": 10, "Guts": 20, "Wit": 0 },
+    "skills": { "rainbow": ["공주라면, 우승을 이 손에"], "pink": ["논스톱 프린세스", "날뛰는 용"], "yellow": ["후츄가 점지한 아이", "용왕매진"], "white": ["뒤처지기 방지", "오기", "외곽 추월 준비", "선입 직선○", "근간거리○"] },
+    "tags": ["공주님", "마빡이", "맹마주의", "이마빡", "Kawakami Princess", "カワカミプリンセス"]
+  },
+  {
+    "id": 103902, "name": "카와카미 프린세스", "nickname": "무사 요조숙녀", "color": "#e146a7", "color2": "#00c7b1",
+    "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
+    "DistanceAptitude": { "Short": "D", "Mile": "B", "Medium": "A", "Long": "F" },
+    "StrategyAptitude": { "Front": "G", "Pace": "C", "Late": "A", "End": "D" },
+    "StatBonuses": { "Speed": 0, "Stamina": 8, "Power": 8, "Guts": 14, "Wit": 0 },
+    "skills": { "rainbow": ["유쾌하고도 굳센 힘"], "pink": ["톱・오브・더・공주!", "폭주맹희☆급전직하!!"], "yellow": ["톱기어", "지고의 다운힐러"], "white": ["폭발하는 다리", "앞으로 기우뚱", "내리막 달인", "달려들기", "중거리 코너○"] },
+    "tags": ["축제", "무녀", "한적한가을엮이는추억", "Kawakami Princess", "カワカミプリンセス"]
   },
   {
     "id": 104001, "name": "골드 시티", "nickname": "코스모스 단차트리체", "color": "#26529a",
