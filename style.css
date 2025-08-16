@@ -133,6 +133,17 @@ header h1 a { color: inherit; text-decoration: none; font-size: clamp(1.8rem, 5v
 header p { color: var(--color-text-secondary); max-width: 65ch; margin: 0.5em auto 0; }
 .warning-notice { margin-top: 1em; }
 
+.highlight-red {
+    color: #E74C3C;
+    font-size: calc(1em + 2px);
+}
+.highlight-pink {
+    color: #ee6dcb;
+}
+.highlight-kawakami {
+    color: #e146a7;
+}
+
 footer {
     font-size: 0.875rem;
     color: var(--color-text-secondary);
