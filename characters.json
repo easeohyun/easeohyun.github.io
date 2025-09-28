@@ -60,7 +60,7 @@
     "StrategyAptitude": { "Front": "D", "Pace": "A", "Late": "C", "End": "E" },
     "StatBonuses": { "Speed": 20, "Stamina": 10, "Power": 0, "Guts": 0, "Wit": 0 },
     "skills": { "rainbow": ["절대는, 나야"], "pink": ["레이스의 천재", "지평선 저편까지"], "yellow": ["레이스 플래너", "신들린 스텝"], "white": ["포지션 센스", "경쾌한 스텝", "좋은 위치 뒤따르기", "봄 우마무스메○", "코너 회복○"] },
-    "tags": ["애니 콜라보", "BrandnewFriend", "불닭", "Tokai Teio", "トウカイテイオー"]
+    "tags": ["애니 콜라보", "BrandnewFriend", "불닭", "브금재생기", "Tokai Teio", "トウカイテイオー"]
   },
   {
     "id": 100303, "name": "토카이 테이오", "nickname": "자색 구름의 나비", "color": "#3376d2", "color2": "#ff99d0",
@@ -162,7 +162,7 @@
     "tags": ["ReachforthestarsProjectL'Arc", "개선문상", "개루시", "Gold Ship", "ゴールドシップ"]  
   },
   {
-    "id": 100801, "name": "보드카", "nickname": "와일드 톱기어", "color": "#d4c200",
+    "id": 100801, "name": "보드카", "nickname": "와일드 톱기어", "color": "#d4c200", "color2": "#3dd1d7",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "F", "Mile": "A", "Medium": "A", "Long": "F" }, 
     "StrategyAptitude": { "Front": "C", "Pace": "B", "Late": "A", "End": "F" },
@@ -171,7 +171,7 @@
     "tags": ["우옥까", "Vodka", "ウオッカ"]  
   },
   {
-    "id": 100802, "name": "보드카", "nickname": "얼지 않는 아쿠아・비타이", "color": "#d4c200",
+    "id": 100802, "name": "보드카", "nickname": "얼지 않는 아쿠아・비타이", "color": "#d4c200", "color2": "#3dd1d7",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "F", "Mile": "A", "Medium": "A", "Long": "E" }, 
     "StrategyAptitude": { "Front": "C", "Pace": "B", "Late": "A", "End": "F" },
@@ -180,7 +180,7 @@
     "tags": ["우옥까", "크리스마스", "클드카", "IlluminatetheHeart", "Vodka", "ウオッカ"]    
   },
   {
-    "id": 100901, "name": "다이와 스칼렛", "nickname": "톱・오브・블루", "color": "#4f64d8",
+    "id": 100901, "name": "다이와 스칼렛", "nickname": "톱・오브・블루", "color": "#4f64d8", "color2": "#e73472",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "F", "Mile": "A", "Medium": "A", "Long": "B" }, 
     "StrategyAptitude": { "Front": "A", "Pace": "A", "Late": "E", "End": "G" },
@@ -189,7 +189,7 @@
     "tags": ["다스카", "중학생", "Daiwa Scarlet", "ダイワスカーレット"]  
   },
   {
-    "id": 100902, "name": "다이와 스칼렛", "nickname": "다홍색 뉘・에투알레", "color": "#4f64d8",
+    "id": 100902, "name": "다이와 스칼렛", "nickname": "다홍색 뉘・에투알레", "color": "#4f64d8", "color2": "#e73472",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "F", "Mile": "B", "Medium": "A", "Long": "A" }, 
     "StrategyAptitude": { "Front": "A", "Pace": "A", "Late": "E", "End": "G" },
@@ -198,7 +198,7 @@
     "tags": ["다스카", "크리스마스", "클스카", "IlluminatetheHeart", "Daiwa Scarlet", "ダイワスカーレット"]  
   },
   {
-    "id": 101001, "name": "타이키 셔틀", "nickname": "와일드・프론티어", "color": "#73c032",
+    "id": 101001, "name": "타이키 셔틀", "nickname": "와일드・프론티어", "color": "#73c032", "color2": "#ffac42",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "B" },
     "DistanceAptitude": { "Short": "A", "Mile": "A", "Medium": "E", "Long": "G" }, 
     "StrategyAptitude": { "Front": "C", "Pace": "A", "Late": "E", "End": "G" },
@@ -207,7 +207,7 @@
     "tags": ["빅샷", "열사", "댕댕이", "Taiki Shuttle" ,"タイキシャトル"]  
   },
   {
-    "id": 101002, "name": "타이키 셔틀", "nickname": "Bubblegum☆Memories", "color": "#73c032",
+    "id": 101002, "name": "타이키 셔틀", "nickname": "Bubblegum☆Memories", "color": "#73c032", "color2": "#ffac42",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "B" },
     "DistanceAptitude": { "Short": "A", "Mile": "A", "Medium": "E", "Long": "G" }, 
     "StrategyAptitude": { "Front": "C", "Pace": "A", "Late": "E", "End": "G" },
@@ -216,7 +216,7 @@
     "tags": ["캠핑", "캠핑키", "시크솔브서머워크", "Taiki Shuttle" ,"タイキシャトル"]  
   },
   {
-    "id": 101101, "name": "그래스 원더", "nickname": "바위 뚫는 파랑", "color": "#3a34ac",
+    "id": 101101, "name": "그래스 원더", "nickname": "바위 뚫는 파랑", "color": "#3a34ac", "color2": "#e3493f",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "G", "Mile": "A", "Medium": "B", "Long": "A" }, 
     "StrategyAptitude": { "Front": "F", "Pace": "A", "Late": "A", "End": "F" },
@@ -225,7 +225,7 @@
     "tags": ["그라스", "유리스", "민들레", "창찌", "황금세대", "Grass Wonder", "グラスワンダー"]  
   },
   {
-    "id": 101102, "name": "그래스 원더", "nickname": "세인트 제이드・힐러", "color": "#3a34ac",
+    "id": 101102, "name": "그래스 원더", "nickname": "세인트 제이드・힐러", "color": "#3a34ac", "color2": "#e3493f",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "G", "Mile": "A", "Medium": "B", "Long": "A" }, 
     "StrategyAptitude": { "Front": "F", "Pace": "A", "Late": "A", "End": "F" },
@@ -234,7 +234,7 @@
     "tags": ["환상세계우마네스트", "힐라스", "판타지", "Grass Wonder", "グラスワンダー"]  
   },
   {
-    "id": 101103, "name": "그래스 원더", "nickname": "蒼炎の誉", "color": "#3a34ac",
+    "id": 101103, "name": "그래스 원더", "nickname": "蒼炎の誉", "color": "#3a34ac", "color2": "#e3493f",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "G", "Mile": "B", "Medium": "A", "Long": "A" }, 
     "StrategyAptitude": { "Front": "F", "Pace": "A", "Late": "A", "End": "F" },
@@ -243,7 +243,7 @@
     "tags": ["새해", "신년", "창라스", "Grass Wonder", "グラスワンダー"]  
   },
   {
-    "id": 101201, "name": "히시 아마존", "nickname": "아마조네스・라피스", "color": "#2185d0",
+    "id": 101201, "name": "히시 아마존", "nickname": "아마조네스・라피스", "color": "#2185d0", "color2": "#e6453a",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "E" },
     "DistanceAptitude": { "Short": "D", "Mile": "A", "Medium": "A", "Long": "B" }, 
     "StrategyAptitude": { "Front": "G", "Pace": "B", "Late": "C", "End": "A" },
@@ -252,7 +252,7 @@
     "tags": ["타이만다", "히시아마네상", "Hishi Amazon", "ヒシアマゾン"]  
   },
   {
-    "id": 101202, "name": "히시 아마존", "nickname": "Hungry Veil", "color": "#2185d0",
+    "id": 101202, "name": "히시 아마존", "nickname": "Hungry Veil", "color": "#2185d0", "color2": "#e6453a",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "E" },
     "DistanceAptitude": { "Short": "D", "Mile": "A", "Medium": "A", "Long": "B" }, 
     "StrategyAptitude": { "Front": "G", "Pace": "B", "Late": "C", "End": "A" },
@@ -261,25 +261,25 @@
     "tags": ["선서싸우는그대를향한프러포즈", "웨딩드레스", "신부", "결혼식", "아침차려주는예쁜누나", "Hishi Amazon", "ヒシアマゾン"]  
   },
   {
-    "id": 101301, "name": "메지로 맥퀸", "nickname": "엘레강스・라인", "color": "#00b5be",
+    "id": 101301, "name": "메지로 맥퀸", "nickname": "엘레강스・라인", "color": "#00b5be", "color2": "#dfc8e7",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "E" },
     "DistanceAptitude": { "Short": "G", "Mile": "F", "Medium": "A", "Long": "A" }, 
     "StrategyAptitude": { "Front": "B", "Pace": "A", "Late": "D", "End": "F" },
     "StatBonuses": { "Speed": 0, "Stamina": 20, "Power": 0, "Guts": 0, "Wit": 10 },
     "skills": { "rainbow": ["존귀한 사명을 완수하기 위하여"], "pink": ["메지로의 마음가짐", "명배우의 여유"], "yellow": ["선봉의 마음가짐", "여유만만"], "white": ["봄 우마무스메○", "스태미나 킵", "리드 킵", "장거리 코너○", "영양 보급"] },
-    "tags": ["파쿠파쿠데스와", "마꾸잉", "영애", "Mejiro McQueen", "メジロマックイーン"]  
+    "tags": ["파쿠파쿠데스와", "마꾸잉", "영애", "스테고일족", "Mejiro McQueen", "メジロマックイーン"]  
   },
   {
-    "id": 101302, "name": "메지로 맥퀸", "nickname": "엔드・오브・스카이", "color": "#00b5be",
+    "id": 101302, "name": "메지로 맥퀸", "nickname": "엔드・오브・스카이", "color": "#00b5be", "color2": "#dfc8e7",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "E" },
     "DistanceAptitude": { "Short": "G", "Mile": "F", "Medium": "A", "Long": "A" }, 
     "StrategyAptitude": { "Front": "B", "Pace": "A", "Late": "D", "End": "F" },
     "StatBonuses": { "Speed": 0, "Stamina": 10, "Power": 10, "Guts": 0, "Wit": 10 },
     "skills": { "rainbow": ["최강의 이름을 걸고"], "pink": ["액티브 레스트", "하늘 끝까지"], "yellow": ["쿨다운", "한줄기 질풍"], "white": ["직선 달인", "스태미나 킵", "심호흡", "가을 우마무스메○", "페이스 업"] },
-    "tags": ["애니 콜라보", "빙닭", "명배우", "스테고일족", "BrandnewFriend", "Mejiro McQueen", "メジロマックイーン"]  
+    "tags": ["애니 콜라보", "빙닭", "명배우", "브금재생기", "BrandnewFriend", "Mejiro McQueen", "メジロマックイーン"]  
   },
   {
-    "id": 101303, "name": "메지로 맥퀸", "nickname": "잔물결 페어 레이디", "color": "#00b5be",
+    "id": 101303, "name": "메지로 맥퀸", "nickname": "잔물결 페어 레이디", "color": "#00b5be", "color2": "#dfc8e7",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "E" },
     "DistanceAptitude": { "Short": "G", "Mile": "F", "Medium": "A", "Long": "A" }, 
     "StrategyAptitude": { "Front": "B", "Pace": "A", "Late": "D", "End": "F" },
@@ -288,7 +288,7 @@
     "tags": ["여름", "수영복", "수맥퀸", "대난투여름빛바캉스", "Mejiro McQueen", "メジロマックイーン"]  
   },
   {
-    "id": 101401, "name": "엘 콘도르 파사", "nickname": "엘☆Número 1", "color": "#dd4e31",
+    "id": 101401, "name": "엘 콘도르 파사", "nickname": "엘☆Número 1", "color": "#dd4e31", "color2": "#efdb28",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "B" },
     "DistanceAptitude": { "Short": "F", "Mile": "A", "Medium": "A", "Long": "B" }, 
     "StrategyAptitude": { "Front": "E", "Pace": "A", "Late": "A", "End": "C" },
@@ -297,7 +297,7 @@
     "tags": ["가나돌", "맘보", "왕수", "결정타", "황금세대", "El Condor Pasa","エルコンドルパサー"]  
   },
   {
-    "id": 101402, "name": "엘 콘도르 파사", "nickname": "쿠쿨칸・몽크", "color": "#dd4e31",
+    "id": 101402, "name": "엘 콘도르 파사", "nickname": "쿠쿨칸・몽크", "color": "#dd4e31", "color2": "#efdb28",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "B" },
     "DistanceAptitude": { "Short": "F", "Mile": "A", "Medium": "A", "Long": "B" }, 
     "StrategyAptitude": { "Front": "E", "Pace": "A", "Late": "A", "End": "C" },
@@ -306,7 +306,7 @@
     "tags": ["판타지", "환상세계우마네스트", "파닭", "El Condor Pasa","エルコンドルパサー"]  
   },
   {
-    "id": 101501, "name": "티엠 오페라 오", "nickname": "오・솔레・수오!", "color": "#f271c4",
+    "id": 101501, "name": "티엠 오페라 오", "nickname": "오・솔레・수오!", "color": "#f271c4", "color2": "#fbe415",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "E" },
     "DistanceAptitude": { "Short": "G", "Mile": "E", "Medium": "A", "Long": "A" }, 
     "StrategyAptitude": { "Front": "C", "Pace": "A", "Late": "A", "End": "G" },
@@ -315,7 +315,7 @@
     "tags": ["세기말패왕", "T.M. Opera O", "テイエムオペラオー"]  
   },
   {
-    "id": 101502, "name": "티엠 오페라 오", "nickname": "새해 창천・푸르른 현란", "color": "#f271c4",
+    "id": 101502, "name": "티엠 오페라 오", "nickname": "새해 창천・푸르른 현란", "color": "#f271c4", "color2": "#fbe415",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "E" },
     "DistanceAptitude": { "Short": "G", "Mile": "E", "Medium": "A", "Long": "A" }, 
     "StrategyAptitude": { "Front": "C", "Pace": "A", "Late": "A", "End": "G" },
@@ -324,7 +324,7 @@
     "tags": ["새해", "신년", "뉴페라", "서화요란새해카루타접전", "T.M. Opera O", "テイエムオペラオー"]  
   },
   {
-    "id": 101601, "name": "나리타 브라이언", "nickname": "Maverick", "color": "#75358c",
+    "id": 101601, "name": "나리타 브라이언", "nickname": "Maverick", "color": "#75358c", "color2": "#d638a3",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "F", "Mile": "B", "Medium": "A", "Long": "A" }, 
     "StrategyAptitude": { "Front": "G", "Pace": "A", "Late": "A", "End": "D" },
@@ -333,7 +333,7 @@
     "tags": ["나리브", "쉐브", "고늑", "Narita Brian", "ナリタブライアン"]  
   },
   {
-    "id": 101602, "name": "나리타 브라이언", "nickname": "굶주린 늑대", "color": "#75358c",
+    "id": 101602, "name": "나리타 브라이언", "nickname": "굶주린 늑대", "color": "#75358c", "color2": "#d638a3",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "F", "Mile": "B", "Medium": "A", "Long": "A" }, 
     "StrategyAptitude": { "Front": "G", "Pace": "A", "Late": "A", "End": "D" },
@@ -342,7 +342,7 @@
     "tags": ["메인스토리", "Blaze", "겜리브", "Narita Brian", "ナリタブライアン"]  
   },
   {
-    "id": 101701, "name": "심볼리 루돌프", "nickname": "로드・오브・엠퍼러", "color": "#1c7763",
+    "id": 101701, "name": "심볼리 루돌프", "nickname": "로드・오브・엠퍼러", "color": "#1c7763", "color2": "#c6314b",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "E", "Mile": "C", "Medium": "A", "Long": "A" }, 
     "StrategyAptitude": { "Front": "B", "Pace": "A", "Late": "A", "End": "C" },
@@ -351,16 +351,16 @@
     "tags": ["학생회장", "말장난", "Symboli Rudolf", "シンボリルドルフ"]  
   },
   {
-    "id": 101702, "name": "심볼리 루돌프", "nickname": "밝은 달의 활잡이", "color": "#1c7763",
+    "id": 101702, "name": "심볼리 루돌프", "nickname": "밝은 달의 활잡이", "color": "#1c7763", "color2": "#c6314b",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "E", "Mile": "C", "Medium": "A", "Long": "A" }, 
     "StrategyAptitude": { "Front": "B", "Pace": "A", "Late": "A", "End": "C" },
     "StatBonuses": { "Speed": 8, "Stamina": 14, "Power": 0, "Guts": 0, "Wit": 8 },
     "skills": { "rainbow": ["어스름이 물러서는 떠들썩한 화살"], "pink": ["신색자약", "풍상고결"], "yellow": ["여유만만", "초가을 강풍"], "white": ["가을 우마무스메○", "안쪽 코너 여포", "스태미나 킵", "직활강", "선행 직선○"] },
-    "tags": ["축제", "활돌프", "한조", "늦가을장단이울려퍼지다", "Symboli Rudolf", "シンボリルドルフ"]  
+    "tags": ["가을", "축제", "활돌프", "한조", "늦가을장단이울려퍼지다", "Symboli Rudolf", "シンボリルドルフ"]  
   },
   {
-    "id": 101801, "name": "에어 그루브", "nickname": "엠프리스 로드", "color": "#0092cb",
+    "id": 101801, "name": "에어 그루브", "nickname": "엠프리스 로드", "color": "#0092cb", "color2": "#fae053",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "C", "Mile": "B", "Medium": "A", "Long": "E" }, 
     "StrategyAptitude": { "Front": "D", "Pace": "A", "Late": "A", "End": "G" },
@@ -369,7 +369,7 @@
     "tags": ["타와케", "부회장", "Air Groove", "エアグルーヴ"]  
   },
   {
-    "id": 101802, "name": "에어 그루브", "nickname": "퀘르쿠스・키윌리스", "color": "#0092cb",
+    "id": 101802, "name": "에어 그루브", "nickname": "퀘르쿠스・키윌리스", "color": "#0092cb", "color2": "#fae053",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "C", "Mile": "B", "Medium": "A", "Long": "E" }, 
     "StrategyAptitude": { "Front": "D", "Pace": "A", "Late": "A", "End": "G" },
@@ -378,7 +378,7 @@
     "tags": ["웨딩드레스", "신부", "결혼식", "꽃피는소녀의JunePride", "Air Groove", "エアグルーヴ"]
   },
   {
-    "id": 101901, "name": "아그네스 디지털", "nickname": "초특급! 풀컬러 특수 PP", "color": "#f37f96",
+    "id": 101901, "name": "아그네스 디지털", "nickname": "초특급! 풀컬러 특수 PP", "color": "#f37f96", "color2": "#f9f189",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "A" },
     "DistanceAptitude": { "Short": "F", "Mile": "A", "Medium": "A", "Long": "G" },
     "StrategyAptitude": { "Front": "G", "Pace": "A", "Late": "A", "End": "B" },
@@ -387,7 +387,7 @@
     "tags": [ "용사", "디지땅", "변태", "오타쿠", "Agnes Digital", "アグネスデジタル"]
   },  
   {
-    "id": 101902, "name": "아그네스 디지털", "nickname": "아이리♡강시", "color": "#f37f96",
+    "id": 101902, "name": "아그네스 디지털", "nickname": "아이리♡강시", "color": "#f37f96", "color2": "#f9f189",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "A" },
     "DistanceAptitude": { "Short": "F", "Mile": "A", "Medium": "A", "Long": "G" },
     "StrategyAptitude": { "Front": "G", "Pace": "A", "Late": "A", "End": "B" },
@@ -396,7 +396,7 @@
     "tags": ["할로윈", "핼러윈", "데이즈인어플래시", "Agnes Digital", "アグネスデジタル"]
   },
   {
-    "id": 102001, "name": "세이운 스카이", "nickname": "푸른 구름 서밍", "color": "#65d283",
+    "id": 102001, "name": "세이운 스카이", "nickname": "푸른 구름 서밍", "color": "#65d283", "color2": "#f4da40",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "G", "Mile": "C", "Medium": "A", "Long": "A" },
     "StrategyAptitude": { "Front": "A", "Pace": "B", "Late": "D", "End": "E" },
@@ -405,7 +405,7 @@
     "tags": ["황금세대", "퐁퐁", "연애허접", "Seiun Sky", "セイウンスカイ"]
   },
   {
-    "id": 102002, "name": "세이운 스카이", "nickname": "수아레・드・샤통", "color": "#65d283",
+    "id": 102002, "name": "세이운 스카이", "nickname": "수아레・드・샤통", "color": "#65d283", "color2": "#f4da40",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "G", "Mile": "C", "Medium": "A", "Long": "A" },
     "StrategyAptitude": { "Front": "A", "Pace": "B", "Late": "D", "End": "E" },
@@ -414,7 +414,7 @@
     "tags": ["무도회", "댄싱운", "두야", "오늘밤리뉴드로와트에서", "Seiun Sky", "セイウンスカイ"]
   },
   {
-    "id": 102101, "name": "타마모 크로스", "nickname": "질풍신뢰", "color": "#3290d6",
+    "id": 102101, "name": "타마모 크로스", "nickname": "질풍신뢰", "color": "#3290d6", "color2": "#c6dae7",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "F" },
     "DistanceAptitude": { "Short": "G", "Mile": "E", "Medium": "A", "Long": "A" },
     "StrategyAptitude": { "Front": "G", "Pace": "A", "Late": "A", "End": "A" },
@@ -423,7 +423,7 @@
     "tags": ["신데렐라그레이", "타마", "어내다", "우동은반찬이야", "Tamamo Cross", "タマモクロス"]
   },
   {
-    "id": 102102, "name": "타마모 크로스", "nickname": "날뛰는 나루카미", "color": "#3290d6",
+    "id": 102102, "name": "타마모 크로스", "nickname": "날뛰는 나루카미", "color": "#3290d6", "color2": "#c6dae7",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "F" },
     "DistanceAptitude": { "Short": "G", "Mile": "E", "Medium": "A", "Long": "A" },
     "StrategyAptitude": { "Front": "G", "Pace": "A", "Late": "A", "End": "A" },
@@ -432,7 +432,7 @@
     "tags": ["축제", "불타마", "마음을얽고마음을쫓고", "Tamamo Cross", "タマモクロス"]
   },
   {
-    "id": 102201, "name": "파인 모션", "nickname": "Noble Seamair", "color": "#20a95c",
+    "id": 102201, "name": "파인 모션", "nickname": "Noble Seamair", "color": "#20a95c", "color2": "#ee5340",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "F", "Mile": "A", "Medium": "A", "Long": "C" },
     "StrategyAptitude": { "Front": "D", "Pace": "A", "Late": "E", "End": "C" },
@@ -441,7 +441,7 @@
     "tags": ["SP", "공주님", "라면", "라멘", "아일랜드", "해병", "클로버", "Fine Motion", "ファインモーション"]
   },
   {
-    "id": 102202, "name": "파인 모션", "nickname": "Titania", "color": "#20a95c",
+    "id": 102202, "name": "파인 모션", "nickname": "Titania", "color": "#20a95c", "color2": "#ee5340",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "F", "Mile": "A", "Medium": "A", "Long": "C" },
     "StrategyAptitude": { "Front": "D", "Pace": "A", "Late": "E", "End": "C" },
@@ -450,7 +450,7 @@
     "tags": ["정각SilksThreeRiddles", "웨딩드레스", "신부", "결혼식", "Fine Motion", "ファインモーション"]
   },
   {
-    "id": 102301, "name": "비와 하야히데", "nickname": "pf.Victory formula...", "color": "#b03d81",
+    "id": 102301, "name": "비와 하야히데", "nickname": "pf.Victory formula...", "color": "#b03d81", "color2": "#e776b6",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "F" },
     "DistanceAptitude": { "Short": "F", "Mile": "C", "Medium": "A", "Long": "A" },
     "StrategyAptitude": { "Front": "E", "Pace": "A", "Late": "B", "End": "E" },
@@ -459,7 +459,7 @@
     "tags": ["BNW", "안경", "대두", "언니", "바나나", "Biwa Hayahide", "ビワハヤヒデ"]
   },
 {
-    "id": 102302, "name": "비와 하야히데", "nickname": "노엘 루주・캐럴", "color": "#b03d81",
+    "id": 102302, "name": "비와 하야히데", "nickname": "노엘 루주・캐럴", "color": "#b03d81", "color2": "#e776b6",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "F" },
     "DistanceAptitude": { "Short": "F", "Mile": "C", "Medium": "A", "Long": "A" },
     "StrategyAptitude": { "Front": "E", "Pace": "A", "Late": "B", "End": "E" },
@@ -468,16 +468,16 @@
     "tags": ["성스러운밤에더해지는기적", "산타클로스", "크리스마스", "Biwa Hayahide", "ビワハヤヒデ"]
   },
   {
-    "id": 102303, "name": "비와 하야히데", "nickname": "Engineered Victory", "color": "#b03d81",
+    "id": 102303, "name": "비와 하야히데", "nickname": "Engineered Victory", "color": "#b03d81", "color2": "#e776b6",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "F" },
     "DistanceAptitude": { "Short": "F", "Mile": "C", "Medium": "A", "Long": "A" },
     "StrategyAptitude": { "Front": "E", "Pace": "A", "Late": "B", "End": "E" },
     "StatBonuses": { "Speed": 0, "Stamina": 10, "Power": 10, "Guts": 10, "Wit": 0 },
     "skills": { "rainbow": ["勝利ヘ至ル累積"], "pink": ["シミュレートグラス・オン", "ネオンの尾を引いて"], "yellow": ["一点集中", "민첩함의 너머로"], "white": ["정확히 노려서", "장거리 직선○", "한눈팔지 않고", "시계(우) 방향○", "결정타"] },
-    "tags": ["Biwa Hayahide", "ビワハヤヒデ"]
+    "tags": ["메카", "Biwa Hayahide", "ビワハヤヒデ"]
   },
   {
-    "id": 102401, "name": "마야노 탑건", "nickname": "스크램블☆존", "color": "#f57d38",
+    "id": 102401, "name": "마야노 탑건", "nickname": "스크램블☆존", "color": "#f57d38", "color2": "#ffc845",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "E" },
     "DistanceAptitude": { "Short": "D", "Mile": "D", "Medium": "A", "Long": "A" },
     "StrategyAptitude": { "Front": "A", "Pace": "A", "Late": "B", "End": "B" },
@@ -486,7 +486,7 @@
     "tags": ["변환자재", "자유자재", "코도모드래곤", "Mayano Top Gun", "マヤノトップガン"]
   },
   {
-    "id": 102402, "name": "마야노 탑건", "nickname": "선라이트・부케", "color": "#f57d38",
+    "id": 102402, "name": "마야노 탑건", "nickname": "선라이트・부케", "color": "#f57d38", "color2": "#ffc845",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "E" },
     "DistanceAptitude": { "Short": "D", "Mile": "D", "Medium": "A", "Long": "A" },
     "StrategyAptitude": { "Front": "A", "Pace": "A", "Late": "B", "End": "B" },
@@ -495,7 +495,7 @@
     "tags": ["웨딩드레스", "결혼식", "신부", "꽃피는소녀의JunePride", "Mayano Top Gun", "マヤノトップガン"]
   },  
   {
-    "id": 102403, "name": "마야노 탑건", "nickname": "ろっきん☆MewMeow", "color": "#f57d38",
+    "id": 102403, "name": "마야노 탑건", "nickname": "ろっきん☆MewMeow", "color": "#f57d38", "color2": "#ffc845",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "E" },
     "DistanceAptitude": { "Short": "D", "Mile": "D", "Medium": "A", "Long": "A" },
     "StrategyAptitude": { "Front": "A", "Pace": "A", "Late": "B", "End": "B" },
@@ -504,7 +504,7 @@
     "tags": ["할로윈", "고양이", "핼러윈", "スラップスティック・クラッシュ！", "Mayano Top Gun", "マヤノトップガン"]
   },
   {
-    "id": 102501, "name": "맨하탄 카페", "nickname": "Creeping Black", "color": "#494541",
+    "id": 102501, "name": "맨하탄 카페", "nickname": "Creeping Black", "color": "#494541", "color2": "#e8dd4c",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "G", "Mile": "F", "Medium": "B", "Long": "A" },
     "StrategyAptitude": { "Front": "G", "Pace": "C", "Late": "A", "End": "C" },
@@ -513,7 +513,7 @@
     "tags": ["맨해튼카페", "SS", "친구", "커피", "까훼", "Manhattan Cafe", "マンハッタンカフェ"]
   },  
   {
-    "id": 102502, "name": "맨하탄 카페", "nickname": "버들빛 밤", "color": "#494541",
+    "id": 102502, "name": "맨하탄 카페", "nickname": "버들빛 밤", "color": "#494541", "color2": "#e8dd4c",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "G", "Mile": "F", "Medium": "B", "Long": "A" },
     "StrategyAptitude": { "Front": "G", "Pace": "C", "Late": "A", "End": "A" },
@@ -522,7 +522,7 @@
     "tags": ["발렌타인", "캣맘", "냥카페", "말차라떼카페", "녹차카페", "어서오세유아늑한코미안", "Manhattan Cafe", "マンハッタンカフェ"]
   },
   {
-    "id": 102601, "name": "미호노 부르봉", "nickname": "MB-19890425", "color": "#ee60a1",
+    "id": 102601, "name": "미호노 부르봉", "nickname": "MB-19890425", "color": "#ee60a1", "color2": "#f0ed41",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "C", "Mile": "B", "Medium": "A", "Long": "B" },
     "StrategyAptitude": { "Front": "A", "Pace": "E", "Late": "G", "End": "G" },
@@ -531,7 +531,7 @@
     "tags": ["스파르타의바람", "신념의갑옷", "사이보그", "마스터", "스테이더스", "오퍼레이션", "Mihono Bourbon", "ミホノブルボン"]
   }, 
   {
-    "id": 102602, "name": "미호노 부르봉", "nickname": "CODE: 글라사주", "color": "#ee60a1",
+    "id": 102602, "name": "미호노 부르봉", "nickname": "CODE: 글라사주", "color": "#ee60a1", "color2": "#f0ed41",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
     "DistanceAptitude": { "Short": "C", "Mile": "B", "Medium": "A", "Long": "B" },
     "StrategyAptitude": { "Front": "A", "Pace": "E", "Late": "G", "End": "G" },
@@ -798,7 +798,7 @@
     "StrategyAptitude": { "Front": "G", "Pace": "C", "Late": "A", "End": "D" },
     "StatBonuses": { "Speed": 0, "Stamina": 0, "Power": 10, "Guts": 20, "Wit": 0 },
     "skills": { "rainbow": ["공주라면, 우승을 이 손에"], "pink": ["논스톱 프린세스", "날뛰는 용"], "yellow": ["후츄가 점지한 아이", "용왕매진"], "white": ["뒤처지기 방지", "오기", "외곽 추월 준비", "선입 직선○", "근간거리○"] },
-    "tags": ["공주님", "마빡이", "맹마주의", "이마빡", "Kawakami Princess", "カワカミプリンセス"]
+    "tags": ["공주님", "마빡이", "맹마주의", "이마빡", "프린파이", "Kawakami Princess", "カワカミプリンセス"]
   },
   {
     "id": 103902, "name": "카와카미 프린세스", "nickname": "무사 요조숙녀", "color": "#e146a7", "color2": "#00c7b1",
@@ -810,32 +810,50 @@
     "tags": ["축제", "무녀", "한적한가을엮이는추억", "Kawakami Princess", "カワカミプリンセス"]
   },
   {
-    "id": 104001, "name": "골드 시티", "nickname": "코스모스 단차트리체", "color": "#26529a",
+    "id": 104001, "name": "골드 시티", "nickname": "[오센틱/1928]", "color": "#245099", "color2": "#e63c5c",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "D" },
     "DistanceAptitude": { "Short": "F", "Mile": "A", "Medium": "B", "Long": "B" },
     "StrategyAptitude": { "Front": "F", "Pace": "A", "Late": "A", "End": "F" },
-    "StatBonuses": { "Speed": 10, "Stamina": 0, "Power": 10, "Guts": 0, "Wit": 10 },
+    "StatBonuses": { "Speed": 10, "Stamina": 0, "Power": 10, "Guts": 20, "Wit": 0 },
     "skills": { "rainbow": ["KEEP IT REAL."], "pink": ["선견지명", "런웨이의 주역"], "yellow": ["혜안", "능숙한 환승"], "white": ["한신 경기장○", "전개 살피기", "추월 확정 태세", "슬립 스트림", "액셀러레이션"] },
-    "tags": ["모델"]
+    "tags": ["모델", "Gold City", "ゴールドシチー"]
   },
   {
-    "id": 104002, "name": "골드 시티", "nickname": "Boho Flare", "color": "#26529a",
+    "id": 104002, "name": "골드 시티", "nickname": "코스모스 단차트리체", "color": "#245099", "color2": "#e63c5c",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "D" },
     "DistanceAptitude": { "Short": "F", "Mile": "A", "Medium": "B", "Long": "B" },
     "StrategyAptitude": { "Front": "F", "Pace": "A", "Late": "A", "End": "F" },
-    "StatBonuses": { "Speed": 10, "Stamina": 0, "Power": 10, "Guts": 0, "Wit": 10 },
-    "skills": { "rainbow": ["KEEP IT REAL."], "pink": ["선견지명", "런웨이의 주역"], "yellow": ["혜안", "능숙한 환승"], "white": ["한신 경기장○", "전개 살피기", "추월 확정 태세", "슬립 스트림", "액셀러레이션"] },
-    "tags": ["모델"]
+    "StatBonuses": { "Speed": 8, "Stamina": 0, "Power": 8, "Guts": 0, "Wit": 14 },
+    "skills": { "rainbow": ["GET DOWN"], "pink": ["깔끔한 포진", "호시탐탐"], "yellow": ["포진", "잠복 태세"], "white": ["비 오는 날○", "포석", "조용한 호흡", "선입의 요령○", "선입 코너○"] },
+    "tags": ["축제", "가을", "늦가을장단이울려퍼지다", "Gold City", "ゴールドシチー"]
   },	
   {
-    "id": 104003, "name": "골드 시티", "nickname": "[오센틱/1928]", "color": "#26529a",
+    "id": 104003, "name": "골드 시티", "nickname": "[Boho Flare", "color": "#245099", "color2": "#e63c5c",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "D" },
-    "DistanceAptitude": { "Short": "F", "Mile": "A", "Medium": "B", "Long": "B" },
+    "DistanceAptitude": { "Short": "F", "Mile": "B", "Medium": "A", "Long": "A" },
     "StrategyAptitude": { "Front": "F", "Pace": "A", "Late": "A", "End": "F" },
-    "StatBonuses": { "Speed": 10, "Stamina": 0, "Power": 10, "Guts": 0, "Wit": 10 },
-    "skills": { "rainbow": ["KEEP IT REAL."], "pink": ["선견지명", "런웨이의 주역"], "yellow": ["혜안", "능숙한 환승"], "white": ["한신 경기장○", "전개 살피기", "추월 확정 태세", "슬립 스트림", "액셀러레이션"] },
-    "tags": ["모델", "무인도에어서오세요"]
+    "StatBonuses": { "Speed": 0, "Stamina": 10, "Power": 0, "Guts": 15, "Wit": 5 },
+    "skills": { "rainbow": ["Silent Sunset Gold"], "pink": ["Wild Runway", "黄金の炎陽"], "yellow": ["용왕매진", "陽炎"], "white": ["풀 스로틀", "선입 코너○", "静かな熱", "상식 파괴", "치밀어 오르는 열"] },
+    "tags": ["무인도에어서오세요", "Gold City", "ゴールドシチー"]
   },	
+{
+    "id": 104101, "name": "사쿠라 바쿠신 오", "nickname": "사쿠라, 나아가라!", "color": "#ee6fab", "color2": "#f2d4d7",
+    "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
+    "DistanceAptitude": { "Short": "A", "Mile": "B", "Medium": "G", "Long": "G" },
+    "StrategyAptitude": { "Front": "A", "Pace": "A", "Late": "G", "End": "G" },
+    "StatBonuses": { "Speed": 20, "Stamina": 0, "Power": 0, "Guts": 0, "Wit": 10 },
+    "skills": { "rainbow": ["초광속! 전력 박신!"], "pink": ["날려 버렷!", "전력 전개!"], "yellow": ["단거리 직선○", "단거리 코너○"], "white": ["도주 직선○", "도주 코너○", "집중력", "기세로 밀어붙이기", "앞장서기"] },
+    "tags": ["반장", "박신"]
+  },
+{
+    "id": 104102, "name": "사쿠라 바쿠신 오", "nickname": "박신적☆스피드", "color": "#ee6fab", "color2": "#f2d4d7",
+    "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
+    "DistanceAptitude": { "Short": "A", "Mile": "B", "Medium": "G", "Long": "G" },
+    "StrategyAptitude": { "Front": "A", "Pace": "A", "Late": "G", "End": "G" },
+    "StatBonuses": { "Speed": 30, "Stamina": 0, "Power": 0, "Guts": 0, "Wit": 0 },
+    "skills": { "rainbow": ["초광속! 전력 박신!"], "pink": ["날려 버렷!", "전력 전개!"], "yellow": ["단거리 직선○", "단거리 코너○"], "white": ["도주 직선○", "도주 코너○", "집중력", "기세로 밀어붙이기", "앞장서기"] },
+    "tags": ["반장", "박신"]
+  },
   {
     "id": 103901, "name": "슈퍼 크릭", "nickname": "힐링・커들", "color": "#F5DEB3",
     "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
@@ -952,24 +970,6 @@
     "StatBonuses": { "Speed": 0, "Stamina": 0, "Power": 10, "Guts": 10, "Wit": 10 },
     "skills": { "rainbow": ["긍지 높은 여왕"], "pink": ["자긍심", "숙련된 솜씨"], "yellow": ["전심전력", "단거리 직선○"], "white": ["봄 우마무스메○", "단거리 코너○", "뒷심", "가벼운 발걸음", "외곽 추월 준비"] },
     "tags": ["일류", "황금세대"]
-  },
-  {
-    "id": 105201, "name": "카와카미 프린세스", "nickname": "로열・프림로즈", "color": "#FFC0CB",
-    "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
-    "DistanceAptitude": { "Short": "G", "Mile": "A", "Medium": "A", "Long": "D" },
-    "StrategyAptitude": { "Front": "E", "Pace": "A", "Late": "A", "End": "G" },
-    "StatBonuses": { "Speed": 0, "Stamina": 10, "Power": 20, "Guts": 0, "Wit": 0 },
-    "skills": { "rainbow": ["공주님의 필살기☆"], "pink": ["프린세스・에스코트", "강철 같은 의지"], "yellow": ["기세로 밀어붙이기", "장난은 끝이야!"], "white": ["오기", "대항 의식○", "선행 코너○", "꼬리 올리기", "뒤처지기 방지"] },
-    "tags": ["공주", "프린파이"]
-  },
-  {
-    "id": 105301, "name": "사쿠라 바쿠신 오", "nickname": "박신적☆스피드", "color": "#EE82EE",
-    "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
-    "DistanceAptitude": { "Short": "A", "Mile": "B", "Medium": "G", "Long": "G" },
-    "StrategyAptitude": { "Front": "A", "Pace": "A", "Late": "G", "End": "G" },
-    "StatBonuses": { "Speed": 30, "Stamina": 0, "Power": 0, "Guts": 0, "Wit": 0 },
-    "skills": { "rainbow": ["초광속! 전력 박신!"], "pink": ["날려 버렷!", "전력 전개!"], "yellow": ["단거리 직선○", "단거리 코너○"], "white": ["도주 직선○", "도주 코너○", "집중력", "기세로 밀어붙이기", "앞장서기"] },
-    "tags": ["반장", "박신"]
   },
   {
     "id": 105401, "name": "사토노 다이아몬드", "nickname": "Natural Brilliance", "color": "#CCCCCC",
@@ -1095,7 +1095,7 @@
     "StrategyAptitude": { "Front": "A", "Pace": "A", "Late": "G", "End": "G" },
     "StatBonuses": { "Speed": 10, "Stamina": 0, "Power": 0, "Guts": 20, "Wit": 0 },
     "skills": { "rainbow": ["등불이 인도하는 승리의 함성"], "pink": ["화룡점정", "망설임 없음"], "yellow": ["대단원", "망설임 없음"], "white": ["장거리 코너○", "선두 프라이드", "기세로 밀어붙이기", "노력의 결과", "꼬리 올리기"] },
-    "tags": ["메인스토리", "만화", "아듀"]
+    "tags": ["메인스토리", "만화", "브금재생기"]
    },
    {
     "id": 106701, "name": "사토노 다이아몬드", "nickname": "Natural Brilliance", "color": "#76EEC6",
