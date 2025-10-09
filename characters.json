@@ -871,8 +871,5 @@
     "StatBonuses": { "Speed": 30, "Stamina": 0, "Power": 0, "Guts": 0, "Wit": 0 },
     "skills": { "rainbow": ["『I'm possible』"], "pink": ["세계를 꿰뚫는 지고의 반짝임", "펄류 댄스 배틀"], "yellow": ["자전일섬", "여장부 기질"], "white": ["양호한 경기장○", "단거리 직선○", "오기", "가벼운 발걸음", "정면 승부"] },
     "tags": ["Seeking the Pearl", "シーキングザパール"]
-  },
- 
-
+  }
 ]
-
