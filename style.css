@@ -137,12 +137,6 @@ header p { color: var(--color-text-secondary); max-width: 65ch; margin: 0.5em au
     color: #E74C3C;
     font-size: calc(1em + 2px);
 }
-.highlight-pink {
-    color: #ee6dcb;
-}
-.highlight-kawakami {
-    color: #e146a7;
-}
 
 footer {
     font-size: 0.875rem;
@@ -648,3 +642,4 @@ html[data-theme="dark"] #dark-mode-toggle:hover .material-symbols-outlined {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
   .button:hover, .scroll-buttons button:hover, .character-card:hover { transform: none; }
 }
+
