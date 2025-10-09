@@ -744,7 +744,7 @@
     "StrategyAptitude": { "Front": "G", "Pace": "C", "Late": "A", "End": "A" },
     "StatBonuses": { "Speed": 0, "Stamina": 0, "Power": 0, "Guts": 0, "Wit": 30 },
     "skills": { "rainbow": ["trigger:BEAT"], "pink": ["업리프팅", "Lose Myself"], "yellow": ["고양감", "월영일섬"], "white": ["페이스 업", "앞으로 기우뚱", "추입 직선○", "냉정", "책사"] },
-    "tags": ["로지컬", "Air Shakur", "エアシャカール"]
+    "tags": ["7cm", "로지컬", "Air Shakur", "エアシャカール"]
   },
   {
     "id": 103602, "name": "에어 샤커", "nickname": "unsigned", "color": "#2459b4", "color2": "#e1e000",
@@ -753,7 +753,7 @@
     "StrategyAptitude": { "Front": "G", "Pace": "C", "Late": "A", "End": "A" },
     "StatBonuses": { "Speed": 0, "Stamina": 14, "Power": 8, "Guts": 0, "Wit": 8 },
     "skills": { "rainbow": ["...found you."], "pink": ["Gluttony's Grip", "죄인"], "yellow": ["스태미나 그리드", "내적 체험"], "white": ["스태미나 이터", "선입 코너○", "안쪽 코너 여포", "폭발하는 다리", "마이페이스"] },
-    "tags": ["로지컬", "Air Shakur", "エアシャカール"]
+    "tags": ["Air Shakur", "エアシャカール"]
   },
   {
     "id": 103701, "name": "에이신 플래시", "nickname": "Meisterschaft", "color": "#3d3b3a", "color2": "#e33067",
@@ -868,8 +868,53 @@
     "SurfaceAptitude": { "Turf": "A", "Dirt": "F" },
     "DistanceAptitude": { "Short": "A", "Mile": "A", "Medium": "E", "Long": "G" },
     "StrategyAptitude": { "Front": "C", "Pace": "A", "Late": "A", "End": "B" },
-    "StatBonuses": { "Speed": 30, "Stamina": 0, "Power": 0, "Guts": 0, "Wit": 0 },
+    "StatBonuses": { "Speed": 10, "Stamina": 0, "Power": 0, "Guts": 0, "Wit": 20 },
     "skills": { "rainbow": ["『I'm possible』"], "pink": ["세계를 꿰뚫는 지고의 반짝임", "펄류 댄스 배틀"], "yellow": ["자전일섬", "여장부 기질"], "white": ["양호한 경기장○", "단거리 직선○", "오기", "가벼운 발걸음", "정면 승부"] },
-    "tags": ["Seeking the Pearl", "シーキングザパール"]
+    "tags": ["논논", "펄줌마", "파서블", "Seeking the Pearl", "シーキングザパール"]
+  },
+{
+    "id": 104202, "name": "시킹 더 펄", "nickname": "Be♪Witched", "color": "#b02d40", "color2": "#1690d4",
+    "SurfaceAptitude": { "Turf": "A", "Dirt": "F" },
+    "DistanceAptitude": { "Short": "A", "Mile": "A", "Medium": "E", "Long": "G" },
+    "StrategyAptitude": { "Front": "C", "Pace": "A", "Late": "A", "End": "B" },
+    "StatBonuses": { "Speed": 10, "Stamina": 0, "Power": 13, "Guts": 0, "Wit": 7 },
+    "skills": { "rainbow": ["Oh!bento-magic☆"], "pink": ["ミストラルに乗って", "海の底からキラめいて…☆"], "yellow": ["일진광풍", "네버 기브 업"], "white": ["직선 가속", "오기", "굴하지 않는 마음", "달려들기", "들뜬 마음"] },
+    "tags": ["할로윈", "핼러윈", "スラップスティック・クラッシュ！", "SHAKEROCK", "Seeking the Pearl", "シーキングザパール"]
+  },
+{
+    "id": 104301, "name": "신코 윈디", "nickname": "Wicked Punk", "color": "#63666a", "color2": "#6f2678",
+    "SurfaceAptitude": { "Turf": "F", "Dirt": "A" },
+    "DistanceAptitude": { "Short": "C", "Mile": "A", "Medium": "B", "Long": "G" },
+    "StrategyAptitude": { "Front": "G", "Pace": "A", "Late": "B", "End": "F" },
+    "StatBonuses": { "Speed": 10, "Stamina": 0, "Power": 10, "Guts": 10, "Wit": 0 },
+    "skills": { "rainbow": ["Ding Dong Boo"], "pink": ["전속전진인 것이다!", "장난 마이스터", "흙투성이 마왕님"], "yellow": ["일진광풍", "네버 기브 업"], "white": ["흙장난○", "진창길○", "쏜살같이", "기어 시프트", "오기"] },
+    "tags": ["Shinko Windy", "シンコウウインディ"]
+  },
+{
+    "id": 104401, "name": "스윕 토쇼", "nickname": "플라타너스・위치", "color": "#926dda", "color2": "#bc204b",
+    "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
+    "DistanceAptitude": { "Short": "E", "Mile": "A", "Medium": "A", "Long": "D" },
+    "StrategyAptitude": { "Front": "G", "Pace": "G", "Late": "A", "End": "A" },
+    "StatBonuses": { "Speed": 10, "Stamina": 0, "Power": 20, "Guts": 0, "Wit": 0 },
+    "skills": { "rainbow": ["받아 갈게☆스트렐리치아!"], "pink": ["방과 후 마법 소녀", "참 매직", "샐비어☆스플렌데스"], "yellow": ["하교 후의 스페셜리스트", "뜨거운 시선"], "white": ["트릭(뒤)", "하굣길의 즐거움", "원 찬스", "시선", "직선 주파"] },
+    "tags": ["마녀", "싫어", "참새", "야다드래곤", "이케조에","Ikezoe", "Sweep Tosho", "スイープトウショウ"]
+  },
+{
+    "id": 104402, "name": "스윕 토쇼", "nickname": "리얼라이즈・룬", "color": "#926dda", "color2": "#bc204b",
+    "SurfaceAptitude": { "Turf": "A", "Dirt": "G" },
+    "DistanceAptitude": { "Short": "E", "Mile": "A", "Medium": "A", "Long": "D" },
+    "StrategyAptitude": { "Front": "G", "Pace": "G", "Late": "A", "End": "A" },
+    "StatBonuses": { "Speed": 10, "Stamina": 0, "Power": 20, "Guts": 0, "Wit": 0 },
+    "skills": { "rainbow": ["비장의 materialize"], "pink": ["실피드・마기아", "긴급 마력 부스트"], "yellow": ["뛰어난 추입력", "일심불란"], "white": ["슬립 스트림", "추입력", "미련 없음", "뛰어난 작전", "소름 끼치게"] },
+    "tags": ["Sweep Tosho", "スイープトウショウ"]
+  },
+{
+    "id": 999999, "name": "name", "nickname": "nickname", "color": "#000000", "color2": "#FFFFFF",
+    "SurfaceAptitude": { "Turf": "G", "Dirt": "G" },
+    "DistanceAptitude": { "Short": "G", "Mile": "G", "Medium": "G", "Long": "G" },
+    "StrategyAptitude": { "Front": "G", "Pace": "G", "Late": "G", "End": "G" },
+    "StatBonuses": { "Speed": 0, "Stamina": 0, "Power": 0, "Guts": 0, "Wit": 0 },
+    "skills": { "rainbow": ["rainbow"], "pink": ["pink", "pink"], "yellow": ["yellow1", "yellow2"], "white": ["white", "white", "white", "white", "white"] },
+    "tags": ["tags"]
   }
 ]
